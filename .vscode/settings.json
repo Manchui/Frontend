@@ -5,7 +5,5 @@
     "source.fixAll": "always", //저장 시 모든 자동 수정 작업 실행
     "source.fixAll.eslint": "explicit" //ESLint 관련 모든 자동 수정 작업 실행
   },
-  "cSpell.words": [
-    "tailwindcss"
-  ]
+  "cSpell.words": ["tailwindcss"]
 }
