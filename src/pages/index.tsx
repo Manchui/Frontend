@@ -1,33 +1,15 @@
 import Image from 'next/image';
-import localFont from 'next/font/local';
-
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-  weight: '100 900',
-});
-const geistMono = localFont({
-  src: './fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono',
-  weight: '100 900',
-});
-
-const fly = 123;
-const fly22 = 123;
 
 console.log('test');
 
 export default function Home() {
   return (
-    <div
-      className={`${geistSans.variable} ${geistMono.variable} sm:p-20 grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20 font-[family-name:var(--font-geist-sans)]`}
-    >
-      <main className="sm:items-start row-start-2 flex h-[4px] w-[4px] flex-col items-center gap-8">
+    <div className="sm:p-20 grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 bg-black p-8 pb-20 font-[family-name:var(--font-geist-sans)] text-gray-300">
+      <main className="sm:items-start row-start-2 flex size-[4px] flex-col items-center gap-8">
         <img className="dark:invert" src="https://nextjs.org/icons/next.svg" alt="Next.js logo" width={180} height={38} />
         <ol className="sm:text-left list-inside list-decimal text-center font-[family-name:var(--font-geist-mono)] text-sm">
           <li className="mb-2">
-            Get started by editing <code className="rounded bg-black/[.05] px-1 py-0.5 font-semibold dark:bg-white/[.06]">src/pages/index.tsx</code>. Get
-            started by editing <code className="rounded bg-black/[.05] px-1 py-0.5 font-semibold dark:bg-white/[.06]">src/pages/index.tsx</code>.
+            화이팅 <div className="rounded bg-black/[.05] px-1 py-0.5 font-semibold dark:bg-white/[.06]">eslint/prettier 설정</div>
           </li>
           <li>Save and see your changes instantly.</li>
         </ol>
