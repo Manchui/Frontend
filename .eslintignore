@@ -1,0 +1,8 @@
+dist
+public
+
+package.json
+package-lock.json
+
+.github/*
+README.md
