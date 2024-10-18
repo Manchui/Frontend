@@ -1,16 +1,21 @@
 import { useState } from 'react';
 import Image from 'next/image';
-// Input 사용 시 필요한 props
-// name: input의 이름
-// type: input의 타입
-// passwordToMatch: 비밀번호 확인 시 비교할 비밀번호
-// onChange: input 값 변경 시 실행할 함수
+
+/**
+  *** Input 사용 시 필요한 props ***
+  - name: input의 이름
+  - type: input의 타입
+  - passwordToMatch: 비밀번호 확인 시 비교할 비밀번호
+  - onChange: input 값 변경 시 실행할 함수
+ */
+
 interface InputProps {
-  name: string;
-  type: string;
+  type: 'text' | 'email' | 'password';
+  name: 'name' | 'id' | 'password' | 'password_check';
   passwordToMatch?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
+
 export default function Input({ name, type, passwordToMatch, onChange }: InputProps) {
   const [value, setValue] = useState('');
   const [isValid, setIsValid] = useState(true); // 유효성 검사
