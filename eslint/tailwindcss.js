@@ -22,7 +22,7 @@ module.exports = {
   },
   settings: {
     tailwindcss: {
-      callees: [], // 'classnames', 'clsx', 'cva', 'cn'
+      callees: ['clsx', 'cva', 'cn'],
       whitelist: [],
     },
   },
