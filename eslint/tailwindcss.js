@@ -2,7 +2,7 @@ module.exports = {
   plugins: ['tailwindcss'],
   extends: ['plugin:tailwindcss/recommended'],
   rules: {
-    'tailwindcss/classnames-order': 'warn', // 클래스명을 일관되게 정렬합니다.
+    'tailwindcss/classnames-order': 'off', // 클래스명을 일관되게 정렬 - off
 
     'tailwindcss/enforces-negative-arbitrary-values': 'warn', // -top-[5px] 대신 top-[-5px] 같은 형식을 사용하도록 강제합니다.
 
