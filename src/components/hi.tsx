@@ -1,6 +1,6 @@
 function Hi() {
   
-  return <div></div>;
+  return <div />;
 }
 
 export default Hi;
