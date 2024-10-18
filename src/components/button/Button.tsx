@@ -1,19 +1,17 @@
-import React from 'react';
-
 export interface ButtonProps {
-  /** Button contents */
+  color: 'primary' | 'test';
+  /** 버튼 안에 들어갈 문자 */
   label: string;
-  /** Is this the principal call to action on the page? */
-  primary?: boolean;
-  /** How large should the button be? */
-  size?: 'small' | 'medium' | 'large';
+  /** 버튼 크기 */
+  size?: 'small' | 'large';
 }
 
-/** Primary UI component for user interaction */
-export function Button({ label, ...props }: ButtonProps) {
+/** 버튼 컴포너트입니다. */
+export function Button({ color = 'primary', label, ...props }: ButtonProps) {
   return (
-    <button type="button" style={{ height: '100px', backgroundColor: '#111827', color: '#E5E7EB', borderRadius: '20px' }} {...props}>
+    <button type="button" className="rounded-xl bg-slate-300 px-[35.5px] py-[10px] font-bold hover:text-stone-200" {...props}>
       {label}
+      {color}
     </button>
   );
 }
