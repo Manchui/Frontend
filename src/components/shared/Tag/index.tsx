@@ -3,13 +3,13 @@ import Image from 'next/image';
 Tag 컴포넌트
 * @description 오늘 마감되는 모임의 마감시간을 알려주는 컴포넌트
 * @param {number} [Hour=''] - 오늘 마감 시간
-* @param {'default' | 'Detail'} [Type='default'] - 버튼의 타입
+* @param {'default' | 'detail'} [Type='default'] - 버튼의 타입
 * @todo 반응형 작업하였고 추후 컬러만 변경
 */
 
 type TTagProps = {
   Hour: number;
-  Type: 'default' | 'Detail';
+  Type: 'default' | 'detail';
 };
 
 const baseStyles = 'flex items-center gap-1 h-8 bg-orange-600 py-1 pl-2 pr-4 rounded-bl-xl w-[123px]';
