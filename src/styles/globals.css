@@ -23,4 +23,22 @@
       'Segoe UI Symbol',
       sans-serif;
   }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #ced8d5;
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    cursor: pointer;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #fafafa;
+    border-radius: 10px;
+  }
 }
