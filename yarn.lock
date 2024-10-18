@@ -3072,6 +3072,11 @@ chokidar@^3.5.3:
   optionalDependencies:
     fsevents "~2.3.2"
 
+chromatic@^11.12.6:
+  version "11.12.6"
+  resolved "https://registry.yarnpkg.com/chromatic/-/chromatic-11.12.6.tgz#b2feb6d791eea3264f918b0ca0d5602f92c3fd13"
+  integrity sha512-lt6ekbx3LFLCwGheQrBZAkP2EhrXLPpESk7t45PrsV1DSpu0KOH2ZMN/G9QiF84ZGwj9RPC8BwWbnb2/kd66uA==
+
 chromatic@^11.4.0:
   version "11.12.5"
   resolved "https://registry.yarnpkg.com/chromatic/-/chromatic-11.12.5.tgz#befbc9cbf62722183a8ac73813b3a7fb07d0b62f"
