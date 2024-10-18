@@ -9,15 +9,37 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  argTypes: {},
+  argTypes: {
+    label: {
+      control: 'text',
+      description: '버튼 안에 들어갈 문자',
+    },
+  },
 } satisfies Meta<typeof Button>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {
+export const primaryButton: Story = {
   args: {
-    color: 'primary',
-    label: 'Button',
+    variant: 'white',
+    label: 'There is a button',
+    size: 'primary',
+  },
+};
+
+export const smallButton: Story = {
+  args: {
+    variant: 'primary',
+    label: '생성하기',
+    size: 'small',
+  },
+};
+
+export const largeButton: Story = {
+  args: {
+    variant: 'danger',
+    label: '생성하기',
+    size: 'large',
   },
 };
