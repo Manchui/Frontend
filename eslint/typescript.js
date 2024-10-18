@@ -17,7 +17,11 @@ module.exports = {
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
 
         // interface member 순서를 정렬하는 규칙을 적용합니다.
+<<<<<<< HEAD
+        // @typescript-eslint/member-ordering는 auto fix가 안되는 이슈가 있음, 대신 typescript-sort-keys를 사용합니다.
+=======
         // '@typescript-eslint/member-ordering'는 auto fix가 안되는 이슈가 있음, 대신 typescript-sort-keys를 사용합니다.
+>>>>>>> dev
         'plugin:typescript-sort-keys/recommended',
         'next/typescript',
       ],
