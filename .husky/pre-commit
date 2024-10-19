@@ -1,17 +1,11 @@
 #!/usr/bin/env sh
 
-echo "🪄Running ESLint..."
-yarn run lint
-
-if [ $? -ne 0 ]; then
-    echo "❌ Linting failed. Commit aborted."
-    exit 1  # 린트에 실패하면 커밋을 중단합니다.
-fi
+echo "🪄  Running ESLint..."
+yarn run lint --max-warnings=0
 
 current_branch=$(git branch --show-current)
 
 restricted_branches="^(main|master|dev)$"
-
 
 if [[ $current_branch =~ $restricted_branches ]]; then
   echo "❌ You are on a restricted branch: $current_branch.. ❌"
