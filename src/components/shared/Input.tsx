@@ -1,20 +1,24 @@
 import { useState } from 'react';
 import Image from 'next/image';
 
-/**
-  *** Input 사용 시 필요한 props ***
-  - name: input의 이름
-  - type: input의 타입
-  - passwordToMatch: 비밀번호 확인 시 비교할 비밀번호
-  - onChange: input 값 변경 시 실행할 함수
- */
-
 interface InputProps {
   type: 'text' | 'email' | 'password';
   name: 'name' | 'id' | 'password' | 'password_check';
   passwordToMatch?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
+
+/**
+ Input Component
+ * @description Resuable Input Component by using parameter of name, type, passwordToMatch. 
+ * onChange를 적용하여 원하는 value를 전 컴포넌트에 가져올 수 있다.
+ * 추가하고 싶은 type이 있다면 setting에 추가하여 사용하면 된다.
+ *
+ * @param type - text, email, password
+ * @param name - name, id, password, password_check
+ * @param passwordToMatch type - string | x
+ * 
+ */
 
 export default function Input({ name, type, passwordToMatch, onChange }: InputProps) {
   const [value, setValue] = useState('');
