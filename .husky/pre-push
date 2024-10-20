@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 
-yarn run lint
+echo "🪄  Running ESLint..."
+yarn run lint --max-warnings=0
 
 current_branch=$(git branch --show-current)
 
@@ -11,3 +12,5 @@ if [[ $current_branch =~ $restricted_branches ]]; then
   echo "❌ Commits to this branch are not allowed via pre-commit hook.. ❌"
   exit 1
 fi
+
+echo "🚀 Linting passed. Proceeding with Push."

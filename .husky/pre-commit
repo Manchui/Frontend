@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 echo "🪄  Running ESLint..."
-yarn run lint --max-warnings=0
+yarn run lint
 
 current_branch=$(git branch --show-current)
 
