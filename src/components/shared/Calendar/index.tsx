@@ -30,7 +30,7 @@ export default function Calendar() {
           className="cursor-pointer"
           onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1))}
         />
-        <span className="text-sm font-medium text-gray-800">
+        <span className="text-sm font-semibold text-gray-800">
           {months[currentDate.getMonth()]} {currentDate.getFullYear()}
         </span>
         <Image
@@ -53,3 +53,4 @@ export default function Calendar() {
     </div>
   );
 }
+// ["일","월","화","수","목","금","토"]
