@@ -20,13 +20,13 @@ export default function GNB({ isLoggedIn = false, profileImageUrl = '/images/pro
 
       <div className="flex flex-grow justify-center">
         <div className="hidden items-center gap-6 text-[16px] font-semibold text-white tablet:flex">
-          <Link href="/main" className={`transition-colors duration-200 ${router.pathname === '/main' ? 'text-black' : 'hover:text-black'}`}>
+          <Link href="/main" className={`transition-colors duration-100 ${router.pathname === '/main' ? 'text-black' : 'hover:text-black'}`}>
             모임 찾기
           </Link>
-          <Link href="/bookmark" className={`transition-colors duration-200 ${router.pathname === '/bookmark' ? 'text-black' : 'hover:text-black'}`}>
+          <Link href="/bookmark" className={`transition-colors duration-100 ${router.pathname === '/bookmark' ? 'text-black' : 'hover:text-black'}`}>
             찜한 모임
           </Link>
-          <Link href="/mypage" className={`transition-colors duration-200 ${router.pathname === '/mypage' ? 'text-black' : 'hover:text-black'}`}>
+          <Link href="/mypage" className={`transition-colors duration-100 ${router.pathname === '/mypage' ? 'text-black' : 'hover:text-black'}`}>
             모든 리뷰
           </Link>
         </div>
@@ -36,14 +36,13 @@ export default function GNB({ isLoggedIn = false, profileImageUrl = '/images/pro
         <div className="block tablet:hidden">
           <Drawer />
         </div>
-        <div className="hidden tablet:block">
-          <StartButton />
-        </div>
+        {isLoggedIn === false && <Image src={profileImageUrl} alt="로고" width={40} height={40} className="hidden tablet:block" />}
+        {isLoggedIn === true && (
+          <button className="hidden rounded-md bg-white px-4 py-2 font-semibold text-yellow-500 transition-colors duration-100 hover:bg-black tablet:block">
+            만취 시작하기
+          </button>
+        )}
       </div>
     </nav>
   );
-}
-
-function StartButton() {
-  return <button className="rounded-md bg-white px-4 py-2 font-semibold text-yellow-500 transition-colors duration-200 hover:bg-black">만취 시작하기</button>;
 }
