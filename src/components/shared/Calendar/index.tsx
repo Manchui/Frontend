@@ -4,6 +4,10 @@ import RenderCalendar from '@/components/shared/Calendar/RenderCalendar';
 
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
+/**
+ * 달력 컴포넌트 입니다.
+ */
+
 export default function Calendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -20,7 +24,6 @@ export default function Calendar() {
 
   return (
     <div className="mx-auto max-w-[250px]">
-      {/* rounded-xl border border-gray-200 px-11 py-6 */}
       <div className="flex items-center justify-between">
         <Image
           src="./assets/icons/left.svg"
@@ -53,4 +56,3 @@ export default function Calendar() {
     </div>
   );
 }
-// ["일","월","화","수","목","금","토"]
