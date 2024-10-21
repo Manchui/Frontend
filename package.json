@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint . --no-cache",
+    "postinstall": "husky install",
+    "format": "prettier --cache --write ."
   },
   "dependencies": {
     "class-variance-authority": "^0.7.0",
@@ -39,13 +41,15 @@
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-tailwindcss": "^3.17.5",
     "eslint-plugin-typescript-sort-keys": "^3.3.0",
+    "husky": "^9.1.6",
+    "pinst": "^3.0.0",
     "postcss": "^8",
     "postcss-import": "^16.1.0",
     "postcss-nesting": "^13.0.0",
     "prettier": "3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.8",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "5.4.4"
   },
   "resolutions": {
     "eslint-plugin-react-hooks": "^4.6.2"
