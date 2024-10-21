@@ -19,7 +19,7 @@ export default function Calendar() {
   console.log(months[currentDate.getMonth()], currentDate.getFullYear());
 
   return (
-    <div className="max-w-[336px] mx-auto">
+    <div className="max-w-[250px] mx-auto">
       {/* rounded-xl border border-gray-200 px-11 py-6 */}
       <div className="flex items-center justify-between">
         <Image

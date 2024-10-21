@@ -28,7 +28,7 @@ export default function CalendarGrid({ currentDate, onDateSelect, selectedDate }
     return (
       <div
         key={day}
-        className={`cursor-pointer rounded-lg py-[6px] text-center text-sm font-semibold ${selectedDate === date ? 'bg-orange-600 text-white' : ''}`}
+        className={`cursor-pointer rounded-lg py-[6px] text-center text-sm font-semibold ${selectedDate === date && 'bg-orange-600 text-white'}`}
         onClick={() => onDateSelect(date)}
       >
         {day}
