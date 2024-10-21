@@ -1,4 +1,6 @@
+import animation from './src/styles/tailwind.animation';
 import colors from './src/styles/tailwind.colors';
+import keyframes from './src/styles/tailwind.keyframes';
 import screens from './src/styles/tailwind.screens';
 import typography from './src/styles/tailwind.typography';
 
@@ -15,6 +17,8 @@ const config = {
       colors,
       screens,
       typography,
+      keyframes,
+      animation,
     },
   },
   plugins: [],
