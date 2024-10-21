@@ -9,6 +9,12 @@ interface GnbProps {
   profileImageUrl?: string;
 }
 
+/**
+ * GNB 컴포넌트
+ *
+ * @property {boolean} isLoggedIn - 로그인 확인 여부
+ * @property {string} profileImageUrl - 프로필 이미지
+ */
 export default function GNB({ isLoggedIn = false, profileImageUrl = '/images/profile.svg' }: GnbProps) {
   const router = useRouter();
 
