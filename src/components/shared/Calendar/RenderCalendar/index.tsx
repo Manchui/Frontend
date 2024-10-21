@@ -25,10 +25,17 @@ export default function CalendarGrid({ currentDate, onDateSelect, selectedDate }
     const day = i + 1;
     const date = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`; // YYYY-MM-DD 형식
 
+    // 현재 날짜
+    const today = new Date();
+    const todayDateString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+    const isToday = todayDateString === date;
+    const isSelected = selectedDate === date;
+
     return (
       <div
         key={day}
-        className={`cursor-pointer rounded-lg py-[6px] text-center text-sm font-semibold ${selectedDate === date && 'bg-orange-600 text-white'}`}
+        className={`cursor-pointer rounded-lg py-[6px] text-center text-sm font-semibold ${isSelected && 'bg-orange-600 text-white'} ${isToday && !isSelected && 'text-orange-600'}`}
         onClick={() => onDateSelect(date)}
       >
         {day}

@@ -19,14 +19,14 @@ export default function Calendar() {
   console.log(months[currentDate.getMonth()], currentDate.getFullYear());
 
   return (
-    <div className="max-w-[250px] mx-auto">
+    <div className="mx-auto max-w-[250px]">
       {/* rounded-xl border border-gray-200 px-11 py-6 */}
       <div className="flex items-center justify-between">
         <Image
           src="./assets/icons/left.svg"
           alt="Previous Btn"
-          width={24}
-          height={24}
+          width={22}
+          height={22}
           className="cursor-pointer"
           onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1))}
         />
@@ -36,8 +36,8 @@ export default function Calendar() {
         <Image
           src="./assets/icons/right.svg"
           alt="Previous Btn"
-          width={24}
-          height={24}
+          width={22}
+          height={22}
           className="cursor-pointer"
           onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1))}
         />
