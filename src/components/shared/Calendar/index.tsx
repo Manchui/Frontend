@@ -20,8 +20,6 @@ export default function Calendar() {
     }
   };
 
-  console.log(months[currentDate.getMonth()], currentDate.getFullYear());
-
   return (
     <div className="mx-auto max-w-[250px]">
       <div className="flex items-center justify-between">
