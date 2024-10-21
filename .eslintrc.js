@@ -13,6 +13,7 @@ module.exports = {
     './eslint/next.js',
     './eslint/custom-rules.js',
     './eslint/tailwindcss.js',
+    'plugin:storybook/recommended',
   ],
   plugins: [],
   rules: {
