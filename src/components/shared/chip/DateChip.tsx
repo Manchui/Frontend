@@ -16,10 +16,8 @@ export default function DateChip({ dateTime }: DateProps) {
   const dateTimes = dateTime.toISOString();
   const [month, day, time, today] = [dateTimes.slice(5, 7), dateTimes.slice(8, 10), dateTimes.slice(11, 16), new Date()];
 
-  let end = true;
-  if (today.getTime() < dateTime.getTime()) {
-    end = false;
-  }
+  const end = today.getTime() >= dateTime.getTime();
+  console.log(end);
 
   return (
     <div className='flex flex-row'>

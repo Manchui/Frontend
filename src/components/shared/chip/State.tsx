@@ -1,4 +1,5 @@
 import { cva } from 'class-variance-authority';
+import { cn } from '@/utils/classNames';
 import Image from 'next/image';
 
 interface StateProps {
@@ -52,7 +53,7 @@ const ComponentVariants = cva(
 export default function State({ stateProp }: StateProps) {
   const { text } = setting[stateProp];
   return (
-    <div className={ComponentVariants({ stateProp })}>
+    <div className={cn(ComponentVariants({ stateProp }))}>
       {stateProp === 'confirmed' && (
         <Image
           src="/icons/check.svg" // 아이콘의 경로를 여기에 입력하세요

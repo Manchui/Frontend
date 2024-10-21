@@ -8,8 +8,8 @@ interface OptionButtonProps {
 
 /**
  * Option Button Component
- * @param param0
- * @returns options - 카테고리 목록
+ * @param options - 카테고리 목록
+ * @returns
  */
 
 export default function OptionButton({ options }: OptionButtonProps) {
@@ -24,7 +24,7 @@ export default function OptionButton({ options }: OptionButtonProps) {
         <button
           key={option}
           onClick={() => handleOptionClick(option)}
-          className={clsx('flex w-fit flex-row rounded-md border-[1px] px-4 py-2', {
+          className={clsx('flex w-fit flex-row rounded-md px-4 py-2', {
             'bg-black text-white': selectedOption === option,
             'bg-white text-black': selectedOption !== option,
           })}
