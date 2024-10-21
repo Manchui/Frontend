@@ -67,7 +67,7 @@ export default function Input({ name, type, passwordToMatch, onChange }: InputPr
       <label htmlFor={type}>{labelName}</label>
       <input
         id={type}
-        placeholder={placeholderText[type]}
+        placeholder={placeholderText}
         name={type}
         type={type === 'password' && isVisible ? 'text' : type}
         value={value}
