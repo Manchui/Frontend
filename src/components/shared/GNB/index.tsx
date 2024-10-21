@@ -42,8 +42,8 @@ export default function GNB({ isLoggedIn = false, profileImageUrl = '/images/pro
         <div className="block tablet:hidden">
           <Drawer />
         </div>
-        {isLoggedIn === false && <Image src={profileImageUrl} alt="로고" width={40} height={40} className="hidden tablet:block" />}
-        {isLoggedIn === true && (
+        {isLoggedIn === true && <Image src={profileImageUrl} alt="로고" width={40} height={40} className="hidden tablet:block" />}
+        {isLoggedIn === false && (
           <button className="hidden rounded-md bg-white px-4 py-2 font-semibold text-yellow-500 transition-colors duration-100 hover:bg-black tablet:block">
             만취 시작하기
           </button>
