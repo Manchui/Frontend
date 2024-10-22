@@ -1,12 +1,19 @@
 import clsx from 'clsx';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 type ratingProps = {
   score: number;
-  onChange?: (newRating: number) => void;
+  onChange?: (newscore: number) => void;
 };
 
+/**
+ * Rating 컴포넌트
+ *
+ * @example const [newRating, setNewRating] = useState(0);
+ * @param {number} score - 별점 점수 최대 5, newRating
+ * @param {(newscore: number) => void} onChange - 점수 매기는 함수 , setNewRating
+ */
 export default function Rating({ score, onChange }: ratingProps) {
   const [hoveredScore, setHoveredScore] = useState<number | null>(null);
 
