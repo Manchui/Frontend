@@ -43,8 +43,14 @@ export function ProgressBar({ maxValue, value, style }: ProgressBarProps) {
               <span className={maxValue === value ? 'pl-[2px] text-orange-400' : 'pl-[2px]'}>
                 {value}/{maxValue}
               </span>
-              <Image className="ml-2 h-5 w-5 rounded-full bg-orange-400 p-[2px]" src={'/icons/check.svg'} alt="icon" width={20} height={20} />
-              <span className="ml-1 text-orange-400">{value >= 5 && maxValue > value ? '개설확정' : ''}</span>
+              {value >= 5 && maxValue > value ? (
+                <>
+                  <Image className="ml-2 h-5 w-5 rounded-full bg-orange-400 p-[2px]" src={'/icons/check.svg'} alt="icon" width={20} height={20} />
+                  <span className="ml-1 text-orange-400">개설확정</span>
+                </>
+              ) : (
+                ''
+              )}
             </div>
           ) : (
             ''
