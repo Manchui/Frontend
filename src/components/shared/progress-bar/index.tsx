@@ -74,7 +74,7 @@ export function ProgressBar({ maxValue, value, style }: ProgressBarProps) {
             '값 초과 입니다'
           )}
         </div>
-        {style === 'black' && maxValue >= value ? <div className="text-gray-400">{value}</div> : ''}
+        {style === 'black' && maxValue >= value ? <div className="w-6 text-gray-400">{value}</div> : ''}
       </div>
       {style === 'details' && maxValue >= value ? (
         <div className="mt-2 flex justify-between text-xs">
