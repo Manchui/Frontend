@@ -7,8 +7,8 @@ const meta = {
   component: ProgressBar,
   tags: ['autodocs'],
   argTypes: {
-    color: {
-      description: '색상',
+    style: {
+      description: '스타일',
     },
   },
 } satisfies Meta<typeof ProgressBar>;
@@ -20,15 +20,31 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     maxValue: 100,
-    minValue: 10,
-    color: 'primary',
+    value: 47,
+    style: 'primary',
+  },
+};
+
+export const Basics: Story = {
+  args: {
+    maxValue: 20,
+    value: 5,
+    style: 'basics',
+  },
+};
+
+export const Details: Story = {
+  args: {
+    maxValue: 20,
+    value: 17,
+    style: 'details',
   },
 };
 
 export const Black: Story = {
   args: {
-    maxValue: 27,
-    minValue: 10,
-    color: 'black',
+    maxValue: 32,
+    value: 27,
+    style: 'black',
   },
 };
