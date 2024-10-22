@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
@@ -21,9 +22,20 @@ export default function Rating({ score, onChange }: ratingProps) {
             width={24}
             height={24}
             alt="별"
-            onMouseOver={() => setHoveredScore(i)}
-            onMouseLeave={() => setHoveredScore(null)}
-            onClick={onChange ? () => onChange(i) : undefined}
+            className={clsx(
+              i === hoveredScore && 'scale-110 transition-all duration-100 ease-in-out',
+              hoveredScore === null && 'scale-100 transition-all duration-100 ease-in-out',
+            )}
+            onMouseOver={onChange ? () => setHoveredScore(i) : undefined}
+            onMouseLeave={onChange ? () => setHoveredScore(null) : undefined}
+            onClick={
+              onChange
+                ? () => {
+                    onChange(i);
+                    setHoveredScore(null);
+                  }
+                : undefined
+            }
             style={{ cursor: onChange ? 'pointer' : 'default' }}
           />
         </li>,
