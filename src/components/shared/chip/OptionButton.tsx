@@ -1,6 +1,6 @@
 import { useState } from 'react';
+import cx from 'clsx';
 import Image from 'next/image';
-import clsx from 'clsx';
 
 interface OptionButtonProps {
   options: string[];
@@ -22,9 +22,10 @@ export default function OptionButton({ options }: OptionButtonProps) {
     <div className="flex space-x-2">
       {options.map((option) => (
         <button
+          type="button"
           key={option}
           onClick={() => handleOptionClick(option)}
-          className={clsx('flex w-fit flex-row rounded-md px-4 py-2', {
+          className={cx('flex w-fit flex-row rounded-md border px-4 py-2', {
             'bg-black text-white': selectedOption === option,
             'bg-white text-black': selectedOption !== option,
           })}
