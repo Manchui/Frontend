@@ -45,6 +45,6 @@ export const Black: Story = {
   args: {
     maxValue: 32,
     value: 27,
-    style: 'black',
+    style: 'simple',
   },
 };

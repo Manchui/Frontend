@@ -1,13 +1,24 @@
 import { useEffect, useState } from 'react';
 import cx from 'clsx';
-import Image from 'next/image';
 
-interface ProgressBarProps {
+import { BasicsStyle } from './BasicsStyle';
+import { DetailsStyle } from './DetailsStyle';
+
+export interface BaseProgressBarProps {
+  /** details 이미지 개수 test */
+  imgLength?: number;
+  /** 최소 값 */
+  mainValue?: number;
   /** 기준량 */
   maxValue: number;
-  style: 'primary' | 'basics' | 'details' | 'black';
+  /** api userList */
+  userList?: [];
   /** 비교할 값 */
   value: number;
+}
+
+interface ProgressBarProps extends BaseProgressBarProps {
+  style: 'primary' | 'basics' | 'details' | 'simple';
 }
 
 /**
@@ -15,9 +26,11 @@ interface ProgressBarProps {
  *
  * @param maxValue - 기준량
  * @param value - 비교할 값
- * @param style - 'primary' | 'basics' | 'details' | 'black'
+ * @param style - 'primary' | 'basics' | 'details' | 'simple'
+ * @param mainValue - 최소 값
+ * @param userList - api userList
  */
-export function ProgressBar({ maxValue, value, style }: ProgressBarProps) {
+export function ProgressBar({ maxValue, value, style, mainValue = 0, imgLength = 0, userList }: ProgressBarProps) {
   const [width, setWidth] = useState(0);
   const percentage = (value / maxValue) * 100;
 
@@ -34,38 +47,24 @@ export function ProgressBar({ maxValue, value, style }: ProgressBarProps) {
       <div className="flex items-center justify-center gap-6 font-medium">
         <div className="flex-auto">
           {style === 'basics' && maxValue >= value ? (
-            <div className="mb-2 flex items-center text-sm">
-              {maxValue === value ? (
-                <Image src="/icons/person-yellow.svg" alt="icon" width={16} height={16} />
-              ) : (
-                <Image src="/icons/person-black.svg" alt="icon" width={16} height={16} />
-              )}
-              <span className={maxValue === value ? 'pl-[2px] text-orange-400' : 'pl-[2px]'}>
-                {value}/{maxValue}
-              </span>
-              {value >= 5 && maxValue > value ? (
-                <>
-                  <Image className="ml-2 size-5 rounded-full bg-orange-400 p-[2px]" src="/icons/check.svg" alt="icon" width={20} height={20} />
-                  <span className="ml-1 text-orange-400">개설확정</span>
-                </>
-              ) : (
-                ''
-              )}
-            </div>
+            <BasicsStyle maxValue={maxValue} mainValue={mainValue} value={value} />
           ) : (
-            ''
+            style === 'details' &&
+            maxValue >= value && (
+              <DetailsStyle maxValue={maxValue} mainValue={mainValue} value={value} location="up" imgLength={imgLength} userList={userList} />
+            )
           )}
           {maxValue >= value ? (
             <div
               className={cx('h-2 w-full rounded-full', {
                 'bg-orange-50': ['primary', 'basics', 'details'].includes(style),
-                'bg-gray-200': style === 'black',
+                'bg-gray-200': style === 'simple',
               })}
             >
               <div
                 className={cx('h-2 rounded-full transition-all duration-1000 ease-out', {
                   'bg-orange-400': ['primary', 'basics', 'details'].includes(style),
-                  'bg-gray-900': style === 'black',
+                  'bg-gray-900': style === 'simple',
                 })}
                 style={{ width: `${width}%` }}
               />
@@ -74,23 +73,9 @@ export function ProgressBar({ maxValue, value, style }: ProgressBarProps) {
             '값 초과 입니다'
           )}
         </div>
-        {style === 'black' && maxValue >= value ? <div className="w-6 text-gray-400">{value}</div> : ''}
+        {style === 'simple' && maxValue >= value && <div className="w-6 text-gray-400">{value}</div>}
       </div>
-      {style === 'details' && maxValue >= value ? (
-        <div className="mt-2 flex justify-between text-xs">
-          <div className="space-x-[6px]">
-            <span>최소인원</span>
-            <span>5명</span>
-          </div>
-
-          <div className="space-x-[6px]">
-            <span>최대인원</span>
-            <span>{maxValue}명</span>
-          </div>
-        </div>
-      ) : (
-        ''
-      )}
+      {style === 'details' && maxValue >= value && <DetailsStyle maxValue={maxValue} mainValue={mainValue} value={value} location="down" />}
     </div>
   );
 }
