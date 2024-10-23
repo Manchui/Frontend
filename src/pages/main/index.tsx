@@ -9,17 +9,17 @@ export default function MainPage() {
       <button type="button" onClick={openModal}>
         모달열기
       </button>
-      <Modal isOpen={isOpen} onClose={closeModal}>
-        <div className="md:w-[540px] md:px-[33px] m-auto px-[90px] pb-[28px] pt-[26px] text-right text-[18px]">
-          <p className="pb-[43px] pt-[53px] text-center font-semibold">모달 컴포넌트</p>
-          <span className="md:justify-end flex justify-center gap-2 font-semibold">
-            <button type="button" className="h-[42px] w-[138px] rounded-[8px] bg-black text-white">
-              확인
-            </button>
-            <button type="button" className="h-[42px] w-[138px] rounded-[8px] border border-black bg-white text-black" onClick={closeModal}>
-              취소
-            </button>
-          </span>
+      <Modal
+        isOpen={isOpen}
+        onClose={closeModal}
+        buttons={[
+          { label: '취소', onClick: closeModal },
+          { label: '확인', onClick: () => alert('확인 클릭됨') },
+        ]}
+      >
+        <div className="text-center font-semibold pt-7">
+          <p>정말 나가시겠어요?</p>
+          <p>작성된 내용이 모두 삭제됩니다.</p>
         </div>
       </Modal>
     </div>
