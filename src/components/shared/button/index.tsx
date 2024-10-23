@@ -1,13 +1,13 @@
-import clsx from 'clsx';
-import { ComponentProps } from 'react';
+import type { ComponentProps } from 'react';
+import cx from 'clsx';
 
 interface ButtonProps extends ComponentProps<'button'> {
-  /** 버튼 스타일 */
-  variant: 'primary' | 'danger' | 'white';
-  /** 버튼 내용*/
+  /** 버튼 내용 */
   label: string;
   /** 버튼 크기 */
   size: 'primary' | 'small' | 'large';
+  /** 버튼 스타일 */
+  variant: 'primary' | 'danger' | 'white';
 }
 
 /**
@@ -25,7 +25,7 @@ export function Button({ variant = 'primary', label, size, ...props }: ButtonPro
   return (
     <button
       type="button"
-      className={clsx(
+      className={cx(
         'flex cursor-pointer items-center justify-center rounded-xl px-[30px] py-[10px] text-sm duration-200 hover:scale-[1.02] active:scale-[0.9] disabled:scale-100 disabled:cursor-not-allowed md:text-base',
         {
           'bg-orange-600 text-white hover:bg-orange-700 disabled:bg-gray-400': variant === 'primary',

@@ -1,4 +1,4 @@
-import { type ReactNode, useState } from 'react';
+import { useState } from 'react';
 import ReactDOM from 'react-dom';
 
 type ModalProps = {

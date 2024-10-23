@@ -1,13 +1,13 @@
-import clsx from 'clsx';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import cx from 'clsx';
+import Image from 'next/image';
 
 interface ProgressBarProps {
   /** 기준량 */
   maxValue: number;
-  /** 비교할 값*/
-  value: number;
   style: 'primary' | 'basics' | 'details' | 'black';
+  /** 비교할 값 */
+  value: number;
 }
 
 /**
@@ -36,16 +36,16 @@ export function ProgressBar({ maxValue, value, style }: ProgressBarProps) {
           {style === 'basics' && maxValue >= value ? (
             <div className="mb-2 flex items-center text-sm">
               {maxValue === value ? (
-                <Image src={'/icons/person-yellow.svg'} alt="icon" width={16} height={16} />
+                <Image src="/icons/person-yellow.svg" alt="icon" width={16} height={16} />
               ) : (
-                <Image src={'/icons/person-black.svg'} alt="icon" width={16} height={16} />
+                <Image src="/icons/person-black.svg" alt="icon" width={16} height={16} />
               )}
               <span className={maxValue === value ? 'pl-[2px] text-orange-400' : 'pl-[2px]'}>
                 {value}/{maxValue}
               </span>
               {value >= 5 && maxValue > value ? (
                 <>
-                  <Image className="ml-2 h-5 w-5 rounded-full bg-orange-400 p-[2px]" src={'/icons/check.svg'} alt="icon" width={20} height={20} />
+                  <Image className="ml-2 size-5 rounded-full bg-orange-400 p-[2px]" src="/icons/check.svg" alt="icon" width={20} height={20} />
                   <span className="ml-1 text-orange-400">개설확정</span>
                 </>
               ) : (
@@ -57,13 +57,13 @@ export function ProgressBar({ maxValue, value, style }: ProgressBarProps) {
           )}
           {maxValue >= value ? (
             <div
-              className={clsx('h-2 w-full rounded-full', {
+              className={cx('h-2 w-full rounded-full', {
                 'bg-orange-50': ['primary', 'basics', 'details'].includes(style),
                 'bg-gray-200': style === 'black',
               })}
             >
               <div
-                className={clsx('h-2 rounded-full transition-all duration-1000 ease-out', {
+                className={cx('h-2 rounded-full transition-all duration-1000 ease-out', {
                   'bg-orange-400': ['primary', 'basics', 'details'].includes(style),
                   'bg-gray-900': style === 'black',
                 })}

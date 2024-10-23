@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Button } from './Button';
+import { Button } from '.';
 
 const meta = {
   title: 'Components/Button',
@@ -20,7 +20,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const primaryButton: Story = {
+export const PrimaryButton: Story = {
   args: {
     variant: 'white',
     label: 'There is a button',
@@ -28,7 +28,7 @@ export const primaryButton: Story = {
   },
 };
 
-export const smallButton: Story = {
+export const SmallButton: Story = {
   args: {
     variant: 'primary',
     label: '생성하기',
@@ -36,7 +36,7 @@ export const smallButton: Story = {
   },
 };
 
-export const largeButton: Story = {
+export const LargeButton: Story = {
   args: {
     variant: 'danger',
     label: '생성하기',
