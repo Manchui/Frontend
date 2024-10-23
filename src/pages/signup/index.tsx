@@ -4,6 +4,12 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
+/**
+ * 회원가입 페이지
+ * @description input 공용 컴포넌트를 이용하여 회원가입 페이지를 구성한다.
+ * @returns 
+ */
+
 export default function SignupPage() {
   const router = useRouter();
   const [nick, setNick] = useState('');
