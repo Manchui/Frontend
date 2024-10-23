@@ -2,6 +2,7 @@ const colors = {
   black: '#1B1B1B',
   white: '#ffffff',
   error: '#DC2626',
+  ocean: '#3369FF',
   background: '#FDF9F2',
   primary: {
     50: '#FEF5D7',
