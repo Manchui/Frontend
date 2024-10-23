@@ -20,7 +20,7 @@ const preview: Preview = {
           value: '#1F2937',
         },
       ],
-      default: 'dark',
+      default: 'default',
     },
   },
 };
