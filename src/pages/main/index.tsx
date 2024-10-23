@@ -11,8 +11,9 @@ export default function MainPage() {
         캘린더열기
       </button>
       <Modal isOpen={isOpen} onClose={closeModal}>
-        <div className="min-w-[472px] py-4">
-          <Calendar />
+        <div className="min-w-[472px] py-10">
+          <Calendar selectionType='single' />
+          <Calendar selectionType='range' />
         </div>
       </Modal>
     </div>
