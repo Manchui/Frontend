@@ -1,6 +1,6 @@
 const screens = {
-  mobile: '424px',
-  tablet: '768px',
+  mobile: '375px',
+  tablet: '820px',
   pc: '1240px',
 };
 
