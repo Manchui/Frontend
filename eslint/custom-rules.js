@@ -14,8 +14,6 @@ module.exports = {
 
     'no-var': 'error', // var 키워드를 사용하면 경고를 표시합니다.
 
-    'indent': ['error', 2], // 코드의 들여쓰기를 2칸으로 설정합니다.
-
     'quotes': ['error', 'single'], // 문자열 리터럴에 대해 작은 따옴표를 사용하도록 강제합니다.
 
     'semi': ['error', 'always'], // 모든 문장의 끝에 세미콜론을 반드시 사용해야 합니다.
