@@ -11,13 +11,6 @@ module.exports = {
   // 패키지명을 camelCase화해서 사용하도록 강제하여 코드의 일관성을 유지합니다.
   // 예외적으로 react와 clsx는 별도의 명명 규칙을 따릅니다.
   rules: {
-    'import-name/all-imports-name': [
-      'error',
-      {
-        clsx: 'cx',
-      },
-    ],
-
     // 유사한 항목을 그룹으로 묶어서 import를 정렬합니다.
     'simple-import-sort/imports': [
       'error',
