@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 
 interface InputProps {
-  name: 'name' | 'id' | 'password' | 'password_check';
+  name: 'nick' | 'id' | 'password' | 'password_check';
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   passwordToMatch?: string;
   type: 'text' | 'email' | 'password';
@@ -25,8 +25,8 @@ export default function Input({ name, type, passwordToMatch, onChange }: InputPr
   const [isValid, setIsValid] = useState(true); // 유효성 검사
   const [isVisible, setIsVisible] = useState(false); // 비밀번호 보이기/숨기기 상태
   const setting = {
-    name: {
-      labelName: '이름',
+    nick: {
+      labelName: '닉네임',
       placeholderText: '이름을 입력해주세요.',
       invalidText: '이름은 3자 이상이어야 합니다.',
       validate: (val: string) => val.length >= 3,
@@ -63,7 +63,7 @@ export default function Input({ name, type, passwordToMatch, onChange }: InputPr
     setIsVisible(!isVisible);
   };
   return (
-    <div className="relative w-full">
+    <div className="relative h-20 w-full">
       <label htmlFor={type}>{labelName}</label>
       <input
         id={type}
@@ -71,8 +71,9 @@ export default function Input({ name, type, passwordToMatch, onChange }: InputPr
         name={type}
         type={type === 'password' && isVisible ? 'text' : type}
         value={value}
+        autoComplete={name}
         onChange={handleChange}
-        className={`w-full rounded-xl border-2 bg-gray-100 p-2 px-4 ${isValid ? 'border-gray-300 focus:border-blue-500' : 'border-red-500 focus:border-red-500'}`}
+        className={`w-full rounded-xl border-2 bg-gray-100 p-2 px-4 ${isValid ? 'border-gray-100 focus:border-blue-500' : 'border-red-500 focus:border-red-500'}`}
       />
       {type === 'password' && (
         <button type="button" onClick={toggleVisibility} className="absolute right-2 top-8 text-gray-600">
