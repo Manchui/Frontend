@@ -27,7 +27,7 @@ const setting = {
 
 const ComponentVariants = cva(
   `
-  m-4 flex w-fit rounded-full border p-2 text-xs
+  flex w-fit rounded-full border p-2 text-xs
   `,
   {
     variants: {
