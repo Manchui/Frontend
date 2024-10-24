@@ -1,12 +1,12 @@
 import { useEffect,useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import Input from '@/components/shared/Input';
 // import axios from 'axios';
 
 export default function LoginPage() {
-  const router = useRouter();
+  // const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);

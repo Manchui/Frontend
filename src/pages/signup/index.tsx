@@ -1,7 +1,7 @@
 import { useEffect,useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import Input from '@/components/shared/Input';
 
 /**
@@ -11,7 +11,7 @@ import Input from '@/components/shared/Input';
  */
 
 export default function SignupPage() {
-  const router = useRouter();
+  // const router = useRouter();
   const [nick, setNick] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
