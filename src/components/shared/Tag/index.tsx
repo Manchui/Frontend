@@ -1,11 +1,11 @@
 import clsx from 'clsx';
 import Image from 'next/image';
 
-type tagProps = {
+type TagProps = {
   Hour?: number;
   Type: 'default' | 'detail';
-  finish?: boolean;
   className?: string;
+  finish?: boolean;
 };
 
 /**
@@ -16,7 +16,7 @@ Tag 컴포넌트
 * @param {boolean} finish - 모집 마감 여부
 * @param {string} className - tailwind.css 적용 가능
 */
-export default function Tag({ Type, Hour, className, finish = false }: tagProps) {
+export default function Tag({ Type, Hour, className, finish = false }: TagProps) {
   return (
     <>
       {finish === false && (
@@ -39,7 +39,7 @@ export default function Tag({ Type, Hour, className, finish = false }: tagProps)
             className,
           })}
         >
-          <img src="/icons/alarm-finish.svg" width={24} height={24} alt="alarm" />
+          <Image src="/icons/alarm-finish.svg" width={24} height={24} alt="alarm" />
 
           <p className="text-xs leading-4 text-yellow-400">모집 마감</p>
         </div>
