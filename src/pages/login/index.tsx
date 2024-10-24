@@ -1,48 +1,95 @@
 import Image from 'next/image';
 import Input from '@/components/shared/Input';
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
 export default function LoginPage() {
   const router = useRouter();
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const email = formData.get('id') as string;
-    const password = formData.get('password') as string;
-    const response = await axios.post('/apis/api.ts', { email, password }, { withCredentials: true });
+  const [loading, setLoading] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 1240);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  async function handleLogin(e) {
+    e.preventDefault();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || password.length < 8) {
+      return;
+    }
+    setLoading(true);
+    setTimeout(() => {
+      sessionStorage.setItem('id', email);
+      setLoading(false);
+      router.push('/main');
+      // const response = axios.post('/apis/api.ts', { email, password }, { withCredentials: true });
+    }, 1000);
   }
+
   return (
-    <div className="flex min-h-screen flex-col items-center bg-[#FDF9F2]">
-      <header className="m-4 text-center">
-        <h1 className="text-xl font-bold">사람들과 함께</h1>
-        <h2 className="text-xl font-bold">만취 모임에서 다양한 게임을 즐길 수 있어요!</h2>
-      </header>
-      <section className="m-4 text-center">
-        <p>팀을 이뤄 협동 게임에 도전하거나,</p>
-        <p>간단한 보드 게임으로 즐거운 경쟁을 펼쳐보세요.</p>
-      </section>
-      <Image src={'/images/nintendo-signup.png'} width={256} height={256} alt="nintendo" />
-      <form onSubmit={handleSubmit} className="mt-6 w-full max-w-sm rounded-2xl bg-white p-2">
-        <h2 className="mb-4 text-center text-lg font-bold">로그인</h2>
-        <p className="mb-4 text-center">지금 바로 로그인하여 특별한 경험을 만들어보세요.</p>
-        <div className="space-y-4">
-          <Input type="email" name="id" />
-          <Input type="password" name="password" onChange={(e) => setPassword(e.target.value)} />
+    <div className="flex min-h-screen justify-center bg-black">
+      {isDesktop ? (
+        // 1240px 이상에서 보일 PC 레이아웃
+        <div className="flex w-full items-center rounded-2xl bg-white">
+          <div className="flex w-1/2 flex-col items-center space-y-6 p-24">
+            <h2 className="m-auto text-4xl font-bold">로그인</h2>
+            <p className="m-auto text-center text-lg">
+              지금 바로 로그인하여 취미 활동을 통해 새로운 사람들과 <br /> 소통하며 특별한 경험을 만들어보세요.
+            </p>
+            <form onClick={handleLogin} className="flex w-[500px] flex-col space-y-4">
+              <Input type="email" name="id" onChange={(e) => setEmail(e.target.value)} />
+              <Input type="password" name="password" onChange={(e) => setPassword(e.target.value)} />
+              <button type="submit" disabled={loading} className={`mt-4 w-full rounded-xl ${loading ? 'bg-gray-300' : 'bg-black'} py-2 text-lg text-white`}>
+                {loading ? '처리 중...' : '로그인'}
+              </button>
+            </form>
+            <p className="m-auto mt-4 text-sm">
+              만취가 처음이신가요?{' '}
+              <Link href="/login" className="text-gray-400 underline">
+                회원가입
+              </Link>
+            </p>
+          </div>
+          <div className="relative flex min-h-screen w-1/2 items-center justify-center bg-black">
+            <Image src={'/images/children-signup.png'} className="h-auto w-auto" width={300} height={200} alt="nintendo" priority={true} />
+          </div>
         </div>
-        <button type="submit" className="mt-4 w-full rounded-xl bg-gray-400 py-2 text-white">
-          확인
-        </button>
-        <p className="mt-4 text-center">
-          회원가입을 안 하셨나요?{' '}
-          <Link href="/signup" className="text-yellow-400">
-            회원가입
-          </Link>
-        </p>
-      </form>
+      ) : (
+        // 1239px 이하에서 보일 모바일 레이아웃
+        <form onClick={handleLogin} className="m-4 flex flex-col items-center rounded-2xl bg-white p-8 mobile:w-3/4 tablet:w-[620px]">
+          <h2 className="mb-4 text-center text-xl font-bold mobile:text-2xl tablet:text-3xl">회원가입</h2>
+          <p className="mb-4 text-center text-sm mobile:text-base tablet:text-lg">
+            지금 바로 로그인하여 <br /> 특별한 경험을 만들어보세요.
+          </p>
+          <Image src={'/images/children-signup.png'} className="h-auto w-auto" width={200} height={200} alt="nintendo" priority={true} />
+          <div className="w-full space-y-4">
+            <Input type="email" name="id" onChange={(e) => setEmail(e.target.value)} />
+            <Input type="password" name="password" onChange={(e) => setPassword(e.target.value)} />
+          </div>
+          <button type="submit" disabled={loading} className={`mt-4 w-full rounded-xl ${loading ? 'bg-gray-300' : 'bg-black'} py-2 text-lg text-white`}>
+            {loading ? '처리 중...' : '로그인'}
+          </button>
+          <p className="mt-4 text-center text-sm mobile:text-base">
+            만취가 처음이신가요?{' '}
+            <Link href="/signup" className="text-gray-400 underline">
+              회원가입
+            </Link>
+          </p>
+        </form>
+      )}
     </div>
   );
 }
