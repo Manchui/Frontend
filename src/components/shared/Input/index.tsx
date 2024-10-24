@@ -2,10 +2,10 @@ import { useState } from 'react';
 import Image from 'next/image';
 
 interface InputProps {
-  type: 'text' | 'email' | 'password';
   name: 'nick' | 'id' | 'password' | 'password_check';
-  passwordToMatch?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  passwordToMatch?: string;
+  type: 'text' | 'email' | 'password';
 }
 
 /**
@@ -47,7 +47,7 @@ export default function Input({ name, type, passwordToMatch, onChange }: InputPr
       labelName: '비밀번호 확인',
       placeholderText: '비밀번호를 다시 입력해주세요.',
       invalidText: '비밀번호가 일치하지 않습니다.',
-      validate: (val: string) => val == passwordToMatch,
+      validate: (val: string) => val === passwordToMatch,
     },
   };
   const { placeholderText, invalidText, validate, labelName } = setting[name] || {};
@@ -66,7 +66,7 @@ export default function Input({ name, type, passwordToMatch, onChange }: InputPr
     <div className="relative h-20 w-full">
       <label htmlFor={type}>{labelName}</label>
       <input
-        id={name}
+        id={type}
         placeholder={placeholderText}
         name={type}
         type={type === 'password' && isVisible ? 'text' : type}

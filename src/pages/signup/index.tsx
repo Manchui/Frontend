@@ -1,8 +1,8 @@
+import { useEffect,useState } from 'react';
 import Image from 'next/image';
-import Input from '@/components/shared/Input';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import Input from '@/components/shared/Input';
 
 /**
  * 회원가입 페이지
@@ -35,7 +35,7 @@ export default function SignupPage() {
     };
   }, []);
 
-  const handleSignup = (e) => {
+  const handleSignup = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (nick.length < 3 || password.length < 8 || password !== passwordCheck || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return;
@@ -46,7 +46,7 @@ export default function SignupPage() {
       sessionStorage.setItem('id', email);
       sessionStorage.setItem('nick', nick);
       setLoading(false);
-      router.push('/login');
+      // router.push('/login');
     }, 1000);
   };
 
@@ -61,7 +61,7 @@ export default function SignupPage() {
             <form onClick={handleSignup} className="flex w-[500px] flex-col space-y-4">
               <div className="flex">
                 <Input type="text" name="nick" onChange={(e) => setNick(e.target.value)} />
-                <button className="ml-4 mt-7 h-10 w-24 rounded-xl border bg-black text-sm text-white">중복 확인</button>
+                <button type='button' className="ml-4 mt-7 h-10 w-24 rounded-xl border bg-black text-sm text-white">중복 확인</button>
               </div>
               <Input type="email" name="id" onChange={(e) => setEmail(e.target.value)} />
               <Input type="password" name="password" onChange={(e) => setPassword(e.target.value)} />
@@ -78,7 +78,7 @@ export default function SignupPage() {
             </p>
           </div>
           <div className="relative flex min-h-screen w-1/2 items-center justify-center bg-black">
-            <Image src={'/images/children-signup.png'} className="h-auto w-auto" width={300} height={200} alt="nintendo" priority={true} />
+            <Image src='/images/children-signup.png' className="size-auto" width={300} height={200} alt="nintendo" />
           </div>
         </div>
       ) : (
@@ -86,11 +86,11 @@ export default function SignupPage() {
         <form onClick={handleSignup} className="m-4 flex flex-col items-center rounded-2xl bg-white p-8 mobile:w-3/4 tablet:w-[620px]">
           <h2 className="mb-4 text-center text-xl font-bold mobile:text-2xl tablet:text-3xl">회원가입</h2>
           <p className="mb-4 text-center text-sm mobile:text-base tablet:text-lg">지금 바로 가입하여 특별한 경험을 만들어보세요.</p>
-          <Image src={'/images/children-signup.png'} className="h-auto w-auto" width={200} height={200} alt="nintendo" priority={true} />
+          <Image src='/images/children-signup.png' className="size-auto" width={200} height={200} alt="nintendo" />
           <div className="w-full space-y-4">
             <div className="flex">
               <Input type="text" name="nick" onChange={(e) => setNick(e.target.value)} />
-              <button className="ml-4 mt-7 h-10 w-24 rounded-xl border bg-black text-sm text-white">중복 확인</button>
+              <button type='button' className="ml-4 mt-7 h-10 w-24 rounded-xl border bg-black text-sm text-white">중복 확인</button>
             </div>
             <Input type="email" name="id" onChange={(e) => setEmail(e.target.value)} />
             <Input type="password" name="password" onChange={(e) => setPassword(e.target.value)} />

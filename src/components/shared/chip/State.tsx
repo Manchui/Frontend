@@ -1,6 +1,6 @@
 import { cva } from 'class-variance-authority';
-import { cn } from '@/utils/classNames';
 import Image from 'next/image';
+import { cn } from '@/utils/classNames';
 
 interface StateProps {
   stateProp: 'planed' | 'completed' | 'confirmed' | 'pending';
@@ -27,7 +27,7 @@ const setting = {
 
 const ComponentVariants = cva(
   `
-  m-4 flex w-fit rounded-full border-[1px] p-2 text-xs
+  m-4 flex w-fit rounded-full border p-2 text-xs
   `,
   {
     variants: {
