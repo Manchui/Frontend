@@ -4,10 +4,10 @@ import { cva } from 'class-variance-authority';
 import { cn } from '@/utils/classNames';
 
 type ModalProps = {
+  buttons: { label: string; onClick: () => void }[];
+  children: React.ReactNode;
   isOpen: boolean;
   onClose: () => void;
-  children: React.ReactNode;
-  buttons: { label: string; onClick: () => void }[];
 };
 
 const buttonStyles = cva('h-[42px] w-full min-w-[120px] rounded-xl text-base font-semibold', {

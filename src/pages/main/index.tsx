@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import Modal from '@/components/shared/Modal';
 import { useModal } from '@/hooks/useModal';
 
