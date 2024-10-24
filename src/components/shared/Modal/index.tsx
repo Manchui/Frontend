@@ -22,6 +22,15 @@ const buttonStyles = cva('h-[42px] w-full min-w-[120px] rounded-xl text-base fon
   },
 });
 
+/**
+ * Modal 컴포넌트
+ *
+ * @param {boolean} isOpen - 모달이 열려 있는지 여부
+ * @param {() => void} onClose - 모달을 닫는 함수
+ * @param {React.ReactNode} children - 모달 내부에 렌더링할 콘텐츠
+ * @param {{ label: string; onClick: () => void }[]} buttons - 모달 하단 버튼들, 버튼은 label과 onClick 함수로 구성
+ */
+
 export default function Modal({ isOpen, onClose, children, buttons = [] }: ModalProps) {
   const [animation, setAnimation] = useState<'animate-modal-open' | 'animate-modal-close'>('animate-modal-open');
 
