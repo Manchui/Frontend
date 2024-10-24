@@ -41,10 +41,10 @@ export function DetailsStyle({ maxValue, mainValue = 0, value, location, userLis
               )}
             </div>
           </div>
-          {value >= mainValue && maxValue > value && (
+          {value >= mainValue && (
             <div className="flex items-center">
-              <Image className="ml-2 size-4 rounded-full bg-orange-400 p-[2px]" src="/icons/check.svg" alt="icon" width={20} height={20} />
-              <span className="ml-1 text-sm font-medium text-orange-400">개설확정</span>
+              <Image className="ml-2 size-4 rounded-full bg-blue-800 p-[2px]" src="/icons/check.svg" alt="icon" width={20} height={20} />
+              <span className="ml-1 text-sm font-medium text-blue-800">개설확정</span>
             </div>
           )}
         </div>

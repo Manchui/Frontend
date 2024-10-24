@@ -33,6 +33,8 @@ interface ProgressBarProps extends BaseProgressBarProps {
 export function ProgressBar({ maxValue, value, style, mainValue = 0, imgLength = 0, userList }: ProgressBarProps) {
   const [width, setWidth] = useState(0);
   const percentage = (value / maxValue) * 100;
+  const isValueExceeded = value > maxValue;
+  const isFull = maxValue === value;
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -42,40 +44,35 @@ export function ProgressBar({ maxValue, value, style, mainValue = 0, imgLength =
     return () => clearTimeout(timer);
   }, [percentage]);
 
+  if (isValueExceeded) return <div>값 초과 입니다</div>;
+
+  const getContainerClass = () => (style === 'primary' ? 'bg-primary-50' : 'bg-gray-200');
+
+  const getBarClass = () => (style === 'primary' ? 'bg-primary-400' : 'bg-gray-900');
+
   return (
     <div>
       <div className="flex items-center justify-center gap-6 font-medium">
         <div className="flex-auto">
-          {style === 'basics' && maxValue >= value ? (
-            <BasicsStyle maxValue={maxValue} mainValue={mainValue} value={value} />
-          ) : (
-            style === 'details' &&
-            maxValue >= value && (
-              <DetailsStyle maxValue={maxValue} mainValue={mainValue} value={value} location="up" imgLength={imgLength} userList={userList} />
-            )
+          {style === 'basics' && <BasicsStyle maxValue={maxValue} mainValue={mainValue} value={value} />}
+          {style === 'details' && (
+            <DetailsStyle maxValue={maxValue} mainValue={mainValue} value={value} location="up" imgLength={imgLength} userList={userList} />
           )}
-          {maxValue >= value ? (
+
+          <div className={cx('h-2 w-full rounded-full', getContainerClass())}>
             <div
-              className={cx('h-2 w-full rounded-full', {
-                'bg-orange-50': ['primary', 'basics', 'details'].includes(style),
-                'bg-gray-200': style === 'simple',
+              className={cx('h-2 rounded-full transition-all duration-1000 ease-out', {
+                'bg-gray-200': style === 'basics' && isFull,
+                [getBarClass()]: !(style === 'basics' && isFull),
               })}
-            >
-              <div
-                className={cx('h-2 rounded-full transition-all duration-1000 ease-out', {
-                  'bg-orange-400': ['primary', 'basics', 'details'].includes(style),
-                  'bg-gray-900': style === 'simple',
-                })}
-                style={{ width: `${width}%` }}
-              />
-            </div>
-          ) : (
-            '값 초과 입니다'
-          )}
+              style={{ width: `${width}%` }}
+            />
+          </div>
         </div>
-        {style === 'simple' && maxValue >= value && <div className="w-6 text-gray-400">{value}</div>}
+        {style === 'simple' && <div className="w-6 text-gray-400">{value}</div>}
       </div>
-      {style === 'details' && maxValue >= value && <DetailsStyle maxValue={maxValue} mainValue={mainValue} value={value} location="down" />}
+
+      {style === 'details' && <DetailsStyle maxValue={maxValue} mainValue={mainValue} value={value} location="down" />}
     </div>
   );
 }
