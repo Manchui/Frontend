@@ -7,16 +7,10 @@ import { useRouter } from 'next/router';
 import Drawer from '../../Drawer';
 
 interface GnbProps {
-  isLoggedIn?: boolean;
+  isLoggedIn?: boolean; // boolean 타입 선언
   profileImageUrl?: string;
 }
 
-/**
- * GNB 컴포넌트
- *
- * @property {boolean} isLoggedIn - 로그인 확인 여부, 추후 로그인 저장 방법 변경시 코드 수정
- * @property {string} profileImageUrl - 프로필 이미지
- */
 export default function GNB({ isLoggedIn = false, profileImageUrl = '/images/profile.svg' }: GnbProps) {
   const router = useRouter();
 
@@ -51,7 +45,7 @@ export default function GNB({ isLoggedIn = false, profileImageUrl = '/images/pro
       </div>
 
       <div className="flex flex-grow justify-end tablet:hidden">
-        <Drawer />
+        <Drawer isLoggedIn={isLoggedIn} profileImageUrl={profileImageUrl} />
       </div>
       <div className="hidden w-[154px] flex-grow tablet:flex tablet:justify-end">
         {isLoggedIn ? (
