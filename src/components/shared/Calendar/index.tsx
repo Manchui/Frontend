@@ -1,7 +1,7 @@
-import Image from 'next/image';
 import { useState } from 'react';
-import RenderCalendar from '@/components/shared/Calendar/RenderCalendar';
 import clsx from 'clsx';
+import Image from 'next/image';
+import RenderCalendar from '@/components/shared/Calendar/RenderCalendar';
 
 interface CalendarProps {
   selectionType: 'single' | 'range';

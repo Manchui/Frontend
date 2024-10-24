@@ -1,16 +1,16 @@
+import { useState } from 'react';
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { useState } from 'react';
 
 const today = new Date();
 
 interface RenderCalendarProps {
   currentDate: Date;
+  onDateSelect: (date: string) => void;
   rangeEnd: string | null;
   rangeStart: string | null;
   selectedDate: string | null;
   selectionType: 'single' | 'range';
-  onDateSelect: (date: string) => void;
 }
 
 /**
@@ -116,5 +116,6 @@ export default function RenderCalendar({ currentDate, onDateSelect, selectedDate
     );
   });
 
+  // eslint-disable-next-line react/jsx-no-useless-fragment
   return <>{[...prevDays, ...currentDays, ...nextDays]}</>;
 }
