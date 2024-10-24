@@ -35,7 +35,7 @@ export default function SignupPage() {
     };
   }, []);
 
-  const handleLogin = (e) => {
+  const handleSignup = (e) => {
     e.preventDefault();
     if (nick.length < 3 || password.length < 8 || password !== passwordCheck || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return;
@@ -46,7 +46,7 @@ export default function SignupPage() {
       sessionStorage.setItem('id', email);
       sessionStorage.setItem('nick', nick);
       setLoading(false);
-      router.push('/main');
+      router.push('/login');
     }, 1000);
   };
 
@@ -58,7 +58,7 @@ export default function SignupPage() {
           <div className="flex w-1/2 flex-col items-center space-y-6 p-24">
             <h2 className="m-auto text-4xl font-bold">회원가입</h2>
             <p className="m-auto text-lg">지금 바로 가입하여 특별한 경험을 만들어보세요.</p>
-            <form onClick={handleLogin} className="flex w-[500px] flex-col space-y-4">
+            <form onClick={handleSignup} className="flex w-[500px] flex-col space-y-4">
               <div className="flex">
                 <Input type="text" name="nick" onChange={(e) => setNick(e.target.value)} />
                 <button className="ml-4 mt-7 h-10 w-24 rounded-xl border bg-black text-sm text-white">중복 확인</button>
@@ -83,7 +83,7 @@ export default function SignupPage() {
         </div>
       ) : (
         // 1239px 이하에서 보일 모바일 레이아웃
-        <form onClick={handleLogin} className="m-4 flex flex-col items-center rounded-2xl bg-white p-8 mobile:w-3/4 tablet:w-[620px]">
+        <form onClick={handleSignup} className="m-4 flex flex-col items-center rounded-2xl bg-white p-8 mobile:w-3/4 tablet:w-[620px]">
           <h2 className="mb-4 text-center text-xl font-bold mobile:text-2xl tablet:text-3xl">회원가입</h2>
           <p className="mb-4 text-center text-sm mobile:text-base tablet:text-lg">지금 바로 가입하여 특별한 경험을 만들어보세요.</p>
           <Image src={'/images/children-signup.png'} className="h-auto w-auto" width={200} height={200} alt="nintendo" priority={true} />
