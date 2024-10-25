@@ -1,5 +1,5 @@
 export type Data = {
-  data: User;
+  data: User | Gatherings;
   message: string;
   success: boolean;
 };
@@ -13,27 +13,28 @@ export type User = {
 
 export type Gatherings = {
   gatheringCount: number;
-  gatheringList: [
-    {
-      category: string;
-      createdAt: '2024-10-16 14:36:31';
-      deletedAt: null;
-      dueDate: '2024-10-22 23:59:59';
-      gatheringDate: '2024-10-24 19:30:00';
-      gatheringId: number;
-      gatheringImage: string;
-      groupName: string;
-      isCancled: boolean;
-      isClosed: boolean;
-      isHearted: boolean;
-      isOpened: boolean;
-      location: string;
-      maxUsers: number;
-      participantUsers: number;
-      updatedAt: '2024-10-16 14:36:31';
-    },
-  ];
+  gatheringList: GatheringList[];
   page: number;
   pageSize: number;
   totalPage: number;
+};
+
+export type GatheringList = {
+  category: string;
+  createdAt: string;
+  deletedAt: null;
+  dueDate: string;
+  gatheringDate: string;
+  gatheringId: number;
+  gatheringImage: string;
+  groupName: string;
+  isCancled: boolean;
+  isClosed: boolean;
+  isDeleted: boolean;
+  isHearted: boolean;
+  isOpened: boolean;
+  location: string;
+  maxUsers: number;
+  participantUsers: number;
+  updatedAt: string;
 };
