@@ -1,10 +1,10 @@
 import Image from 'next/image';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import DateChip from '@/components/shared/chip/DateChip';
 import RootLayout from '@/components/shared/RootLayout';
 
 export default function DetailPage() {
-  const router = useRouter();
+  // const router = useRouter();
   // const { id } = router.query;
 
   // 지울 것
