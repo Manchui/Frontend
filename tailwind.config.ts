@@ -1,8 +1,10 @@
 import animation from './src/styles/tailwind.animation';
 import colors from './src/styles/tailwind.colors';
+import height from './src/styles/tailwind.height';
 import keyframes from './src/styles/tailwind.keyframes';
 import screens from './src/styles/tailwind.screens';
 import typography from './src/styles/tailwind.typography';
+import width from './src/styles/tailwind.width';
 
 /** @type {import('tailwindcss').Config} */
 const config = {
@@ -19,6 +21,8 @@ const config = {
       typography,
       keyframes,
       animation,
+      height,
+      width,
     },
   },
   plugins: [],

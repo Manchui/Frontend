@@ -21,6 +21,7 @@
     "react": "^18",
     "react-dom": "^18",
     "save-dev": "^0.0.1-security",
+    "swiper": "^11.1.14",
     "tailwind-merge": "^2.5.4"
   },
   "devDependencies": {
