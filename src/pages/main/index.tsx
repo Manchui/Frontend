@@ -4,8 +4,8 @@ import 'swiper/css/bundle';
 
 import { useState } from 'react';
 import Image from 'next/image';
+import type SwiperCore from 'swiper';
 import { Autoplay, EffectCreative, Navigation, Thumbs, Virtual } from 'swiper/modules';
-import type { SwiperClass } from 'swiper/react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import RootLayout from '@/components/shared/RootLayout';
 
@@ -23,7 +23,7 @@ const images = [
 ];
 
 export default function MainPage() {
-  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
+  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperCore | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
@@ -49,7 +49,7 @@ export default function MainPage() {
           },
         }}
         slidesPerView={1.05}
-        onSlideChangeTransitionEnd={(swiper) => {
+        onSlideChangeTransitionEnd={(swiper: SwiperCore) => {
           setActiveIndex(swiper.realIndex);
         }}
         thumbs={thumbsSwiper ? { swiper: thumbsSwiper } : undefined}
@@ -71,7 +71,7 @@ export default function MainPage() {
 
       <Swiper
         modules={[Thumbs]}
-        onSwiper={(swiper) => setThumbsSwiper(swiper)}
+        onSwiper={(swiper: SwiperCore) => setThumbsSwiper(swiper)}
         slidesPerView={4}
         spaceBetween={10}
         className="pc:w-thumb-pc-responsive relative bottom-20 right-12 float-right !hidden tablet:!block tablet:h-[50px] tablet:w-thumb-tablet-responsive pc:h-[60px]"
