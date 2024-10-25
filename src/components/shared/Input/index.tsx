@@ -73,7 +73,7 @@ export default function Input({ name, type, passwordToMatch, onChange }: InputPr
         value={value}
         autoComplete={name}
         onChange={handleChange}
-        className={`w-full rounded-xl border-2 bg-gray-100 p-2 px-4 ${isValid ? 'border-gray-100 focus:border-blue-500' : 'border-red-500 focus:border-red-500'}`}
+        className={`w-full rounded-xl border-2 bg-blue-50 p-2 px-4 ${isValid ? 'border-blue-50 focus:border-blue-500' : 'border-red-500 focus:border-red-500'}`}
       />
       {type === 'password' && (
         <button type="button" onClick={toggleVisibility} className="absolute right-2 top-8 text-gray-600">

@@ -1,23 +1,22 @@
-import { useEffect,useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-// import { useRouter } from 'next/router';
+import instance from '@/apis/api';
 import Input from '@/components/shared/Input';
 
 /**
  * 회원가입 페이지
  * @description input 공용 컴포넌트를 이용하여 회원가입 페이지를 구성한다.
- * @returns 
+ * @returns
  */
 
 export default function SignupPage() {
-  // const router = useRouter();
   const [nick, setNick] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
-  const [loading, setLoading] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
+  const [error, setError] = useState('');
 
   // 화면 크기에 따라 레이아웃 변경
   useEffect(() => {
@@ -35,19 +34,22 @@ export default function SignupPage() {
     };
   }, []);
 
-  const handleSignup = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (nick.length < 3 || password.length < 8 || password !== passwordCheck || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return;
     }
 
-    setLoading(true);
-    setTimeout(() => {
-      sessionStorage.setItem('id', email);
-      sessionStorage.setItem('nick', nick);
-      setLoading(false);
-      // router.push('/login');
-    }, 1000);
+    try {
+      await instance.post('/api/auths/signup', {
+        name: nick,
+        email,
+        password,
+        passwordConfirm: passwordCheck,
+      });
+    } catch (err) {
+      setError(`error: ${String(err)}`);
+    }
   };
 
   return (
@@ -61,13 +63,16 @@ export default function SignupPage() {
             <form onClick={handleSignup} className="flex w-[500px] flex-col space-y-4">
               <div className="flex">
                 <Input type="text" name="nick" onChange={(e) => setNick(e.target.value)} />
-                <button type='button' className="ml-4 mt-7 h-10 w-24 rounded-xl border bg-black text-sm text-white">중복 확인</button>
+                <button type="button" className="ml-4 mt-7 h-10 w-24 rounded-xl border bg-black text-sm text-white">
+                  중복 확인
+                </button>
               </div>
               <Input type="email" name="id" onChange={(e) => setEmail(e.target.value)} />
               <Input type="password" name="password" onChange={(e) => setPassword(e.target.value)} />
               <Input type="password" name="password_check" passwordToMatch={password} onChange={(e) => setPasswordCheck(e.target.value)} />
-              <button type="submit" disabled={loading} className={`mt-4 w-full rounded-xl ${loading ? 'bg-gray-300' : 'bg-black'} py-2 text-lg text-white`}>
-                {loading ? '처리 중...' : '생성하기'}
+              {error && <p className="mt-1 text-sm text-red-500">회원가입에 실패했습니다. 다시 시도해주세요.</p>}
+              <button type="submit" className="mt-4 w-full rounded-xl bg-black py-2 text-lg text-white">
+                생성하기
               </button>
             </form>
             <p className="m-auto mt-4 text-sm">
@@ -77,8 +82,15 @@ export default function SignupPage() {
               </Link>
             </p>
           </div>
-          <div className="relative flex min-h-screen w-1/2 items-center justify-center bg-black">
-            <Image src='/images/children-signup.png' className="size-auto" width={300} height={200} alt="nintendo" />
+          <div className="relative flex min-h-screen w-1/2 flex-col items-center justify-center bg-black">
+            <Image src="/images/children-signup.png" className="size-auto" width={300} height={200} alt="nintendo" />
+            <h1 className="text-center text-2xl font-bold text-white">
+              사람들과 함께 <br /> 만취 모임에서 다양한 게임을 즐길 수 있어요.
+            </h1>
+            <p className="text-center text-white">
+              팀을 이뤄 협동 게임에 도전하거나, 간단한 보드게임으로 즐거운 경쟁을 펼쳐보세요. <br />
+              게임을 통해 더 가까워지고, 웃음이 가득한 시간이 기다리고 있습니다.
+            </p>
           </div>
         </div>
       ) : (
@@ -86,18 +98,21 @@ export default function SignupPage() {
         <form onClick={handleSignup} className="m-4 flex flex-col items-center rounded-2xl bg-white p-8 mobile:w-3/4 tablet:w-[620px]">
           <h2 className="mb-4 text-center text-xl font-bold mobile:text-2xl tablet:text-3xl">회원가입</h2>
           <p className="mb-4 text-center text-sm mobile:text-base tablet:text-lg">지금 바로 가입하여 특별한 경험을 만들어보세요.</p>
-          <Image src='/images/children-signup.png' className="size-auto" width={200} height={200} alt="nintendo" />
+          <Image src="/images/children-signup.png" className="size-auto" width={200} height={200} alt="nintendo" />
           <div className="w-full space-y-4">
             <div className="flex">
               <Input type="text" name="nick" onChange={(e) => setNick(e.target.value)} />
-              <button type='button' className="ml-4 mt-7 h-10 w-24 rounded-xl border bg-black text-sm text-white">중복 확인</button>
+              <button type="button" className="ml-4 mt-7 h-10 w-24 rounded-xl border bg-black text-sm text-white">
+                중복 확인
+              </button>
             </div>
             <Input type="email" name="id" onChange={(e) => setEmail(e.target.value)} />
             <Input type="password" name="password" onChange={(e) => setPassword(e.target.value)} />
             <Input type="password" name="password_check" passwordToMatch={password} onChange={(e) => setPasswordCheck(e.target.value)} />
           </div>
-          <button type="submit" disabled={loading} className={`mt-4 w-full rounded-xl ${loading ? 'bg-gray-300' : 'bg-black'} py-2 text-lg text-white`}>
-            {loading ? '처리 중...' : '생성하기'}
+          {error && <p className="mt-1 text-sm text-red-500">회원가입에 실패했습니다. 다시 시도해주세요.</p>}
+          <button type="submit" className="mt-4 w-full rounded-xl bg-black py-2 text-lg text-white">
+            생성하기
           </button>
           <p className="mt-4 text-center text-sm mobile:text-base">
             이미 회원이신가요?{' '}
