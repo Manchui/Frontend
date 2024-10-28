@@ -76,7 +76,7 @@ export default function Input({ name, type, passwordToMatch, onChange }: InputPr
         className={`w-full rounded-xl border-2 bg-blue-50 p-2 px-4 ${isValid ? 'border-blue-50 focus:border-blue-500' : 'border-red-500 focus:border-red-500'}`}
       />
       {type === 'password' && (
-        <button type="button" onClick={toggleVisibility} className="absolute right-2 top-8 text-gray-600 z-10">
+        <button type="button" onClick={toggleVisibility} className="absolute right-2 top-8 z-10 text-gray-600">
           {isVisible ? (
             <Image src="icons/visibility-on.svg" alt="eye-on" width={24} height={24} />
           ) : (

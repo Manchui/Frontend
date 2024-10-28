@@ -28,6 +28,12 @@ const IMG = [
   },
 ];
 
+/**
+ * Carousel Component
+ * @description Carousel Component for login page and signup page
+ * @returns 
+ */
+
 export default function Carousel() {
   const [current, setCurrent] = useState(1);
   const [transition, setTransition] = useState(true);

@@ -11,7 +11,7 @@ import Input from '@/components/shared/Input';
 
 /**
  * 회원가입 페이지
- * @description input 공용 컴포넌트를 이용하여 회원가입 페이지를 구성한다.
+ * @description input 공용 컴포넌트를 이용하여 회원가입 페이지를 구성
  * @returns
  */
 
@@ -95,9 +95,9 @@ export default function SignupPage() {
         // 1239px 이하에서 보일 모바일 레이아웃
         <form
           onSubmit={handleSignup}
-          className="flex flex-col items-center justify-center bg-white h-screen p-8 mobile:w-full tablet:h-[1000px] tablet:w-[620px] tablet:rounded-2xl"
+          className="flex h-screen flex-col items-center justify-center bg-white p-8 mobile:w-full tablet:h-[1000px] tablet:w-[620px] tablet:rounded-2xl"
         >
-          <h2 className="mb-4 text-center font-bold text-3xl">회원가입</h2>
+          <h2 className="mb-4 text-center text-3xl font-bold">회원가입</h2>
           <p className="mb-4 max-w-80 text-pretty text-center text-sm mobile:text-base tablet:text-lg">
             지금 바로 가입하여 취미 활동을 통해 새로운 사람들과 특별한 경험을 만들어보세요.
           </p>
