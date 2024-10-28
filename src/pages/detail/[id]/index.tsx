@@ -1,11 +1,15 @@
 import Image from 'next/image';
 // import { useRouter } from 'next/router';
 import DateChip from '@/components/shared/chip/DateChip';
+import { ProgressBar } from '@/components/shared/progress-bar';
+import Rating from '@/components/shared/Rating';
 import RootLayout from '@/components/shared/RootLayout';
+
 // 지울 것
 const PAGE_DATA = {
   category: '개발',
-  content: '모임 상세 설명 모임 상세 설명 모임 상세 설명 모임 상세 설명 모임 상세 설명 v  v 모임 상세 설명 모임 상세 설명 모임 상세 설명 모임 상세 설명 모임 상세 설명 모임 상세 설명 v',
+  content:
+    '모임 상세 설명 모임 상세 설명 모임 상세 설명 모임 상세 설명 모임 상세 설명 v  v 모임 상세 설명 모임 상세 설명 모임 상세 설명 모임 상세 설명 모임 상세 설명 모임 상세 설명 v',
   createdAt: '2024-10-16 14:36:31',
   deletedAt: null,
   dueDate: '2024-10-22 23:59:59',
@@ -29,6 +33,7 @@ const PAGE_DATA = {
       createdAt: '2024-10-14 14:36:31',
       profileImagePath: 'https://image.jpg',
       score: 5,
+      userNick: '김개발',
       userId: 'fc32e8b4-8de5-4d79-a154-4cb29fa48abf',
     },
     {
@@ -36,32 +41,39 @@ const PAGE_DATA = {
       createdAt: '2024-10-12 14:36:31',
       profileImagePath: 'https://image.jpg',
       score: 5,
+      userNick: '김디자인',
       userId: 'b0f0b618-ce1a-4c52-9693-340edadff154',
     },
   ],
   usersList: [
     {
       profileImagePath: '/images/test-detail.png',
+      userNick: '김개발',
       userId: 'abcd-1234',
     },
     {
       profileImagePath: '/images/test-detail.png',
+      userNick: '김디자인',
       userId: 'bcde-2345',
     },
     {
       profileImagePath: '/images/test-detail.png',
+      userNick: '김디자인',
       userId: 'cdef-3456',
     },
     {
       profileImagePath: '/images/test-detail.png',
+      userNick: '김디자인',
       userId: 'cdef-3456',
     },
     {
       profileImagePath: '/images/test-detail.png',
+      userNick: '김디자인',
       userId: 'cdef-3456',
     },
     {
       profileImagePath: '/images/test-detail.png',
+      userNick: '김디자인',
       userId: 'cdef-3456',
     },
   ],
@@ -73,9 +85,9 @@ export default function DetailPage() {
   const gatheringDate = new Date(PAGE_DATA.gatheringDate);
   return (
     <RootLayout>
-      <div>
-        <div className="flex items-center justify-center px-8 mobile:flex-col tablet:flex-row pc:flex-row">
-          <div className="relative m-4 h-48 min-w-80 rounded-2xl border bg-black">
+      <div className='h-screen'>
+        <div className="flex items-center justify-center px-8 flex-col tablet:flex-row pc:flex-row">
+          <div className="relative m-4 h-48 min-w-80 rounded-2xl border">
             <Image alt="test" src="/images/test-detail.png" layout="fill" objectFit="cover" className="rounded-2xl" />
           </div>
           <div className="m-4 h-48 min-w-80 rounded-2xl border-2 p-4">
