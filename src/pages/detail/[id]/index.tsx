@@ -5,7 +5,7 @@ import RootLayout from '@/components/shared/RootLayout';
 // 지울 것
 const PAGE_DATA = {
   category: '개발',
-  content: '모임 상세 설명',
+  content: '모임 상세 설명 모임 상세 설명 모임 상세 설명 모임 상세 설명 모임 상세 설명 v  v 모임 상세 설명 모임 상세 설명 모임 상세 설명 모임 상세 설명 모임 상세 설명 모임 상세 설명 v',
   createdAt: '2024-10-16 14:36:31',
   deletedAt: null,
   dueDate: '2024-10-22 23:59:59',
@@ -115,9 +115,9 @@ export default function DetailPage() {
         </div>
         <div className="px-8">
           <h1 className="text-xl font-bold">모임설명</h1>
-          <p />
+          <p className='my-2'>{PAGE_DATA.content}</p>
           <hr />
-          <h2>이용자들은 이 프로그램을 이렇게 느꼈어요!</h2>
+          <h2 className=''>이용자들은 이 프로그램을 이렇게 느꼈어요!</h2>
         </div>
       </div>
     </RootLayout>
