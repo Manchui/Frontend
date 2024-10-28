@@ -11,11 +11,11 @@ export default function MainPage() {
 
   const handleSubmit = () => {
     if (selectedDates.selectedDate) {
-      console.log('선택된 단일 날짜:', selectedDates.selectedDate);
+      // console.log('선택된 단일 날짜:', selectedDates.selectedDate);
     } else if (selectedDates.rangeStart && selectedDates.rangeEnd) {
-      console.log('선택된 범위:', selectedDates.rangeStart, '부터', selectedDates.rangeEnd, '까지');
+      // console.log('선택된 범위:', selectedDates.rangeStart, '부터', selectedDates.rangeEnd, '까지');
     } else {
-      console.log('날짜가 선택되지 않았습니다.');
+      // console.log('날짜가 선택되지 않았습니다.');
     }
   };
 
