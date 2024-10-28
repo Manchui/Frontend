@@ -49,18 +49,18 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex h-screen items-center justify-center bg-black">
+    <div className="flex h-screen items-center justify-center bg-blue-800">
       {isDesktop ? (
         // 1240px 이상에서 보일 PC 레이아웃
         <div className="flex w-full items-center bg-white">
           <div className="flex w-1/2 flex-col items-center space-y-6 p-24">
             <h2 className="m-auto text-4xl font-bold">로그인</h2>
-            <p className="m-auto text-lg">지금 바로 로그인하여 취미 활동을 통해 새로운 사람들과 특별한 경험을 만들어보세요.</p>
+            <p className="max-w-80 m-auto text-pretty text-center text-lg">지금 바로 로그인하여 취미 활동을 통해 새로운 사람들과 특별한 경험을 만들어보세요.</p>
             <form onSubmit={handleLogin} className="flex w-[500px] flex-col space-y-4">
               <Input type="email" name="id" onChange={(e) => setEmail(e.target.value)} />
               <Input type="password" name="password" onChange={(e) => setPassword(e.target.value)} />
               {error && <p className="mt-1 text-sm text-red-500">로그인에 실패했습니다. 다시 시도해주세요.</p>}
-              <button type="submit" className="mt-4 w-full rounded-xl bg-black py-2 text-lg text-white">
+              <button type="submit" className="mt-4 w-full rounded-xl bg-blue-800 py-2 text-lg text-white hover:bg-blue-700">
                 로그인
               </button>
             </form>
@@ -71,7 +71,7 @@ export default function LoginPage() {
               </Link>
             </p>
           </div>
-          <div className="relative flex min-h-screen w-1/2 flex-col items-center justify-center bg-black">
+          <div className="relative flex min-h-screen w-1/2 flex-col items-center justify-center bg-blue-800">
             <Carousel />
           </div>
         </div>
@@ -79,10 +79,10 @@ export default function LoginPage() {
         // 1239px 이하에서 보일 모바일 레이아웃
         <form
           onSubmit={handleLogin}
-          className="flex flex-col items-center justify-center bg-white p-8 mobile:max-h-fit mobile:w-full tablet:h-[1000px] tablet:w-[620px] tablet:rounded-2xl"
+          className="flex h-screen flex-col items-center justify-center bg-white p-8 mobile:h-screen mobile:w-full tablet:h-[1000px] tablet:w-[620px] tablet:rounded-2xl"
         >
-          <h2 className="mb-4 text-center text-xl font-bold mobile:text-2xl tablet:text-3xl">회원가입</h2>
-          <p className="mb-4 text-center text-sm mobile:text-base tablet:text-lg">
+          <h2 className="mb-4 text-center text-3xl font-bold">로그인</h2>
+          <p className="max-w-80 mb-4 text-center text-sm mobile:text-base tablet:text-lg">
             지금 바로 로그인하여 취미 활동을 통해 새로운 사람들과 특별한 경험을 만들어보세요.
           </p>
           <Image src="/images/gameday-signuppage.png" className="size-auto" width={200} height={200} alt="game" />
@@ -91,7 +91,7 @@ export default function LoginPage() {
             <Input type="password" name="password" onChange={(e) => setPassword(e.target.value)} />
           </div>
           {error && <p className="mt-1 text-sm text-red-500">로그인에 실패했습니다. 다시 시도해주세요.</p>}
-          <button type="submit" className="mt-4 w-full rounded-xl bg-black py-2 text-lg text-white">
+          <button type="submit" className="mt-4 w-full rounded-xl bg-blue-800 py-2 text-lg text-white hover:bg-blue-700">
             로그인
           </button>
           <p className="mt-4 text-center text-sm mobile:text-base">
