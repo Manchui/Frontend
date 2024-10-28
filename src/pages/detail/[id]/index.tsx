@@ -118,19 +118,56 @@ export default function DetailPage() {
               </div>
               <p>개설 확정</p>
             </div>
-            
+
             <div className="flex flex-row justify-between text-sm">
-              <p >최소 인원 {PAGE_DATA.minUsers}명</p>
+              <p>최소 인원 {PAGE_DATA.minUsers}명</p>
               <p>최대 인원 {PAGE_DATA.maxUsers}명</p>
             </div>
           </div>
         </div>
         <div className="px-8">
           <h1 className="text-xl font-bold">모임설명</h1>
-          <p className='my-2'>{PAGE_DATA.content}</p>
-          <hr />
-          <h2 className=''>이용자들은 이 프로그램을 이렇게 느꼈어요!</h2>
+          <p className="my-2">{PAGE_DATA.content}</p>
         </div>
+
+        <hr className="m-8" />
+        <div>
+          <div>{/* 지도 넣을 곳 */}</div>
+          <div className="my-4 flex flex-col items-center text-center">
+            <h2 className="">이용자들은 이 프로그램을 이렇게 느꼈어요!</h2>
+            {/* 스코어를 백엔드에서 계산해서 따로 api를 만들면 좋을 듯 */}
+            <h1 className="m-4 text-4xl font-bold">2.8</h1>
+            <Rating score={2.8} />
+            {/* 스코어 프로그래스바 추후에 더 좋은 방법 찾아서 변경 */}
+            <div className='flex flex-row'>
+              <p>5점: </p>
+              <div className="w-[200px]">
+                <ProgressBar maxValue={5} value={2.8} design="primary" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr className="m-8" />
+        {PAGE_DATA.reviewList.map((review, index) => (
+          <div key={index} className="z-10 px-8">
+            <div>
+              <Rating score={review.score} />
+              <p className="text-pretty">{review.comment}</p>
+            </div>
+            <div className="flex items-center">
+              <div className="relative size-6 rounded-full border-2 border-white">
+                <Image alt="profile" src="/icons/person-gray.svg" layout="fill" objectFit="cover" className="rounded-full" />
+              </div>
+              <div className="flex flex-row justify-center px-2">
+                {/* 닉네임을 백엔드에서 추가해야 할 듯 */}
+                <p>
+                  {review.userNick} | {review.createdAt}
+                </p>
+              </div>
+            </div>
+            <hr className="my-2 border-dashed" />
+          </div>
+        ))}
       </div>
     </RootLayout>
   );
