@@ -58,17 +58,17 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="flex h-screen items-center justify-center bg-black">
+    <div className="flex h-screen items-center justify-center bg-blue-800">
       {isDesktop ? (
         // 1240px 이상에서 보일 PC 레이아웃
         <div className="flex w-full items-center bg-white">
           <div className="flex w-1/2 flex-col items-center space-y-6 p-24">
             <h2 className="m-auto text-4xl font-bold">회원가입</h2>
-            <p className="m-auto text-lg">지금 바로 가입하여 특별한 경험을 만들어보세요.</p>
-            <form onClick={handleSignup} className="flex w-[500px] flex-col space-y-4">
+            <p className="m-auto max-w-80 text-pretty text-center text-lg">지금 바로 가입하여 취미 활동을 통해 새로운 사람들과 특별한 경험을 만들어보세요.</p>
+            <form onSubmit={handleSignup} className="flex w-[500px] flex-col space-y-4">
               <div className="flex">
                 <Input type="text" name="nick" onChange={(e) => setNick(e.target.value)} />
-                <button type="button" className="ml-4 mt-7 h-10 w-24 rounded-xl border bg-black text-sm text-white">
+                <button type="button" className="ml-4 mt-7 h-10 w-24 rounded-xl border bg-blue-800 text-sm text-white hover:bg-blue-700">
                   중복 확인
                 </button>
               </div>
@@ -76,7 +76,7 @@ export default function SignupPage() {
               <Input type="password" name="password" onChange={(e) => setPassword(e.target.value)} />
               <Input type="password" name="password_check" passwordToMatch={password} onChange={(e) => setPasswordCheck(e.target.value)} />
               {error && <p className="mt-1 text-sm text-red-500">회원가입에 실패했습니다. 다시 시도해주세요.</p>}
-              <button type="submit" className="mt-4 w-full rounded-xl bg-black py-2 text-lg text-white">
+              <button type="submit" className="mt-4 w-full rounded-xl bg-blue-800 py-2 text-lg text-white hover:bg-blue-700">
                 생성하기
               </button>
             </form>
@@ -87,23 +87,25 @@ export default function SignupPage() {
               </Link>
             </p>
           </div>
-          <div className="relative flex min-h-screen w-1/2 flex-col items-center justify-center bg-black">
+          <div className="relative flex min-h-screen w-1/2 flex-col items-center justify-center bg-blue-800 hover:bg-blue-700">
             <Carousel />
           </div>
         </div>
       ) : (
         // 1239px 이하에서 보일 모바일 레이아웃
         <form
-          onClick={handleSignup}
-          className="flex flex-col items-center justify-center bg-white p-8 mobile:max-h-fit mobile:w-full tablet:h-[1000px] tablet:w-[620px] tablet:rounded-2xl"
+          onSubmit={handleSignup}
+          className="flex flex-col items-center justify-center bg-white h-screen p-8 mobile:w-full tablet:h-[1000px] tablet:w-[620px] tablet:rounded-2xl"
         >
-          <h2 className="mb-4 text-center text-xl font-bold mobile:text-2xl tablet:text-3xl">회원가입</h2>
-          <p className="mb-4 text-center text-sm mobile:text-base tablet:text-lg">지금 바로 가입하여 특별한 경험을 만들어보세요.</p>
-          <Image src="/images/children-signup.png" className="size-auto" width={200} height={200} alt="nintendo" />
+          <h2 className="mb-4 text-center text-xl font-bold text-3xl">회원가입</h2>
+          <p className="mb-4 max-w-80 text-pretty text-center text-sm mobile:text-base tablet:text-lg">
+            지금 바로 가입하여 취미 활동을 통해 새로운 사람들과 특별한 경험을 만들어보세요.
+          </p>
+          <Image src="/images/board-signuppage.png" className="size-auto" width={200} height={200} alt="board" />
           <div className="w-full space-y-4">
             <div className="flex">
               <Input type="text" name="nick" onChange={(e) => setNick(e.target.value)} />
-              <button type="button" className="ml-4 mt-7 h-10 w-24 rounded-xl border bg-black text-sm text-white">
+              <button type="button" className="ml-4 mt-7 h-10 w-24 rounded-xl border bg-blue-800 text-sm text-white hover:bg-blue-700">
                 중복 확인
               </button>
             </div>
@@ -112,7 +114,7 @@ export default function SignupPage() {
             <Input type="password" name="password_check" passwordToMatch={password} onChange={(e) => setPasswordCheck(e.target.value)} />
           </div>
           {error && <p className="mt-1 text-sm text-red-500">회원가입에 실패했습니다. 다시 시도해주세요.</p>}
-          <button type="submit" className="mt-4 w-full rounded-xl bg-black py-2 text-lg text-white">
+          <button type="submit" className="mt-4 w-full rounded-xl bg-blue-800 py-2 text-lg text-white hover:bg-blue-700">
             생성하기
           </button>
           <p className="mt-4 text-center text-sm mobile:text-base">
