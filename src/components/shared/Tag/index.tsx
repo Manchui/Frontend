@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import cx from 'clsx';
 import Image from 'next/image';
 
 type TagProps = {
@@ -21,7 +21,7 @@ export default function Tag({ Type, Hour, className, finish = false }: TagProps)
     <>
       {finish === false && (
         <div
-          className={clsx('flex h-8 items-center gap-1 rounded-bl-xl bg-yellow-400 py-1 pl-2 pr-4', {
+          className={cx('flex h-8 items-center gap-1 rounded-bl-xl bg-yellow-400 py-1 pl-2 pr-4', {
             'rounded-tr-[22px] mobile:rounded-tr-[0px] mobile:pr-[10px]': Type === 'default',
             'rounded-tr-[22px]': Type === 'detail',
             className,
@@ -33,7 +33,7 @@ export default function Tag({ Type, Hour, className, finish = false }: TagProps)
       )}
       {finish === true && (
         <div
-          className={clsx('flex h-8 items-center gap-1 rounded-bl-xl bg-yellow-50 py-1 pl-2 pr-4', {
+          className={cx('flex h-8 items-center gap-1 rounded-bl-xl bg-yellow-50 py-1 pl-2 pr-4', {
             'rounded-tr-[22px] mobile:rounded-tr-[0px] mobile:pr-[10px]': Type === 'default',
             'rounded-tr-[22px]': Type === 'detail',
             className,
