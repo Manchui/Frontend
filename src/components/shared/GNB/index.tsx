@@ -15,7 +15,7 @@ export default function GNB({ isLoggedIn = false, profileImageUrl = '/images/pro
   const router = useRouter();
 
   return (
-    <nav className="fixed top-0 flex h-[60px] w-full items-center justify-between border-b border-gray-100 bg-white px-4 tablet:px-6 pc:px-10">
+    <nav className="fixed top-0 z-[9999] flex h-[60px] w-full items-center justify-between border-b border-gray-100 bg-white px-4 tablet:px-6 pc:px-10">
       <div className="hidden flex-grow tablet:flex tablet:justify-start">
         <div className="hidden items-center gap-6 text-[16px] font-semibold text-black tablet:flex pc:gap-[30px]">
           <Link href="/main" className={clsx('transition-colors duration-200', router.pathname === '/main' ? 'text-yellow-500' : 'hover:text-yellow-500')}>
@@ -55,14 +55,14 @@ export default function GNB({ isLoggedIn = false, profileImageUrl = '/images/pro
             <button
               type="button"
               onClick={() => router.push('/signup')}
-              className="text-base border-b-2 border-b-black font-semibold transition-colors duration-200 hover:border-yellow-500 hover:text-yellow-500"
+              className="border-b-2 border-b-black text-base font-semibold transition-colors duration-200 hover:border-yellow-500 hover:text-yellow-500"
             >
               회원가입
             </button>
             <button
               type="button"
               onClick={() => router.push('/login')}
-              className="text-base rounded-full border-2 border-black bg-white px-4 py-[7.5px] font-semibold text-black transition-colors duration-200 hover:border-yellow-500 hover:text-yellow-500"
+              className="rounded-full border-2 border-black bg-white px-4 py-[7.5px] text-base font-semibold text-black transition-colors duration-200 hover:border-yellow-500 hover:text-yellow-500"
             >
               로그인
             </button>
