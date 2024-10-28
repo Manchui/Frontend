@@ -97,7 +97,7 @@ export default function SignupPage() {
           onSubmit={handleSignup}
           className="flex flex-col items-center justify-center bg-white h-screen p-8 mobile:w-full tablet:h-[1000px] tablet:w-[620px] tablet:rounded-2xl"
         >
-          <h2 className="mb-4 text-center text-xl font-bold text-3xl">회원가입</h2>
+          <h2 className="mb-4 text-center font-bold text-3xl">회원가입</h2>
           <p className="mb-4 max-w-80 text-pretty text-center text-sm mobile:text-base tablet:text-lg">
             지금 바로 가입하여 취미 활동을 통해 새로운 사람들과 특별한 경험을 만들어보세요.
           </p>
