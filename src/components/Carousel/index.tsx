@@ -72,23 +72,23 @@ export default function Carousel() {
               <h1 className="text-center text-2xl font-bold">{img.heading2}</h1>
               <p className="text-center">{img.paragraph1}</p>
               <p className="text-center">{img.paragraph2}</p>
-              <div className="mt-4 flex flex-row justify-center gap-x-4">
-                {IMG.map((_, btnIndex) => (
-                  <button
-                    key={btnIndex}
-                    onClick={() => {
-                      setTransition(true);
-                      setCurrent(btnIndex + 1); // extendedImg에서 맞는 슬라이드 위치로 이동
-                    }}
-                    className={`h-4 ${current === btnIndex + 1 ? 'w-16' : 'w-4'} rounded-full bg-[#FDF9F2] transition-all duration-1000 ease-in-out`}
-                    type="button"
-                    aria-label={`carousel button ${btnIndex + 1}`}
-                  />
-                ))}
-              </div>
             </div>
           ))}
         </div>
+      </div>
+      <div className="relative mt-12 flex flex-row justify-center gap-x-4">
+        {IMG.map((_, btnIndex) => (
+          <button
+            key={btnIndex}
+            onClick={() => {
+              setTransition(true);
+              setCurrent(btnIndex + 1); // extendedImg에서 맞는 슬라이드 위치로 이동
+            }}
+            className={`h-4 ${current === btnIndex + 1 ? 'w-16 bg-[#FDF9F2]' : 'w-4 bg-gray-400'} rounded-full transition-all duration-1000 ease-in-out`}
+            type="button"
+            aria-label={`carousel button ${btnIndex + 1}`}
+          />
+        ))}
       </div>
     </div>
   );
