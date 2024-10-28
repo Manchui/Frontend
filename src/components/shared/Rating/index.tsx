@@ -30,7 +30,7 @@ export default function Rating({ score, onChange }: RatingProps) {
           index === hoveredScore && 'scale-110 transition-all duration-100 ease-in-out',
           hoveredScore === null && 'scale-100 transition-all duration-100 ease-in-out',
         )}
-        // onMouseOver={onChange ? () => setHoveredScore(index) : undefined}
+        onMouseEnter={onChange ? () => setHoveredScore(index) : undefined}
         onMouseLeave={onChange ? () => setHoveredScore(null) : undefined}
         onClick={
           onChange
