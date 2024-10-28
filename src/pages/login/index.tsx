@@ -54,7 +54,7 @@ export default function LoginPage() {
         // 1240px 이상에서 보일 PC 레이아웃
         <div className="flex w-full items-center bg-white">
           <div className="flex w-1/2 flex-col items-center space-y-6 p-24">
-            <h2 className="m-auto text-4xl font-bold">회원가입</h2>
+            <h2 className="m-auto text-4xl font-bold">로그인</h2>
             <p className="m-auto text-lg">지금 바로 로그인하여 취미 활동을 통해 새로운 사람들과 특별한 경험을 만들어보세요.</p>
             <form onSubmit={handleLogin} className="flex w-[500px] flex-col space-y-4">
               <Input type="email" name="id" onChange={(e) => setEmail(e.target.value)} />
