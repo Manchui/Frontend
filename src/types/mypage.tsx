@@ -30,7 +30,7 @@ export type GatheringList = {
   groupName: string;
   isCancled: boolean;
   isClosed: boolean;
-  isDeleted: boolean;
+  isDeleted?: boolean | null;
   isHearted: boolean;
   isOpened: boolean;
   location: string;

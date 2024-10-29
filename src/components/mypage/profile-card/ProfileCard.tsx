@@ -11,7 +11,7 @@ export function ProfileCard({ userData }: { userData: User }) {
     <div className="relative m-auto h-[178px] rounded-3xl bg-white p-5">
       <div className="flex justify-between">
         <div className="text-lg font-semibold">내 프로필</div>
-        <button onClick={openModal} type="button">
+        <button className="duration-200 hover:scale-[1.02] active:scale-[0.9]" onClick={openModal} type="button">
           <Image src="/buttons/edit1-profile.svg" alt="이미지 수정 아이콘" width={32} height={32} />
         </button>
         <Modal buttons={[{ label: '취소', onClick: () => closeModal }]} isOpen={isOpen} onClose={closeModal}>

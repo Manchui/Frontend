@@ -1,16 +1,18 @@
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import MeetingCard from '@/components/mypage/meeting-card/MeetingCard';
 import { ProfileCard } from '@/components/mypage/profile-card/ProfileCard';
 import RootLayout from '@/components/shared/RootLayout';
 import type { Gatherings, User } from '@/types/mypage';
 
+// TODO: 프로필 데이터
 const Data: User = {
   id: 'UUID',
   email: 'aaaa@gmail.com',
   name: 'hhihih',
   image: '/images/together-findpage-default.png',
 };
-
+// TODO: 나의 모임 목록 카드 데이터
 const MeetingData: Gatherings = {
   gatheringCount: 2,
   gatheringList: [
@@ -33,24 +35,59 @@ const MeetingData: Gatherings = {
       isDeleted: false,
       isHearted: true,
     },
+  ],
+  pageSize: 10,
+  page: 0,
+  totalPage: 1,
+};
+// TODO: 나의 리뷰 목록 카드 데이터
+const MyGatherData: Gatherings = {
+  gatheringCount: 2,
+  gatheringList: [
     {
-      gatheringId: 1,
-      groupName: '모각코',
+      gatheringId: 2,
+      groupName: '또잉',
       category: '개발',
-      location: '건대입구',
+      location: '홍대입구',
       gatheringImage: '/images/buddah-login.png',
-      gatheringDate: '2024-10-22 19:30:00',
-      dueDate: '2024-10-21 23:59:59',
+      gatheringDate: '2024-10-24 19:30:00',
+      dueDate: '2024-10-22 23:59:59',
       maxUsers: 10,
-      participantUsers: 3,
+      participantUsers: 2,
       isOpened: false,
       isCancled: false,
       isClosed: false,
       createdAt: '2024-10-16 14:36:31',
       updatedAt: '2024-10-16 14:36:31',
       deletedAt: null,
-      isDeleted: false,
-      isHearted: false,
+      isHearted: true,
+    },
+  ],
+  pageSize: 10,
+  page: 0,
+  totalPage: 1,
+};
+// TODO: 만든 모임 목록 카드 데이터
+const MyMakeData: Gatherings = {
+  gatheringCount: 2,
+  gatheringList: [
+    {
+      gatheringId: 2,
+      groupName: 'make',
+      category: '개발',
+      location: '홍대입구',
+      gatheringImage: '/images/buddah-login.png',
+      gatheringDate: '2024-10-24 19:30:00',
+      dueDate: '2024-10-22 23:59:59',
+      maxUsers: 10,
+      participantUsers: 2,
+      isOpened: false,
+      isCancled: false,
+      isClosed: false,
+      createdAt: '2024-10-16 14:36:31',
+      updatedAt: '2024-10-16 14:36:31',
+      deletedAt: null,
+      isHearted: true,
     },
   ],
   pageSize: 10,
@@ -60,36 +97,58 @@ const MeetingData: Gatherings = {
 
 export default function MyPage() {
   const router = useRouter();
-  const { category } = router.query;
+  const [date, setDate] = useState(MeetingData);
+  const [category, setCategory] = useState('');
+  const { query } = router;
 
-  const handleCategoryChange = (categoryId: string) => {
-    setTimeout(() => {
-      void router.push(`/mypage?category=${categoryId}`, undefined, { shallow: true });
-    }, 0);
+  // NOTE: URL 적는 걸로 생각하며 작성
+  const categories: { [key: string]: Gatherings } = {
+    '나의 모임': MeetingData,
+    '나의 리뷰': MyGatherData,
+    '내가 만든 모임': MyMakeData,
   };
 
-  const getButtonClass = (categoryId: string) => (categoryId === category ? 'bg-red-500 text-white font-bold' : 'hover:text-gray-500');
+  const handleCategoryChange = (categoryId: string) => {
+    if (category !== categoryId) {
+      setCategory(categoryId);
+      void router.push(`/mypage?category=${categoryId}`, undefined, { shallow: true });
+    }
+  };
+
+  // useEffect(() => {
+  //   if (!query.category && router.pathname === '/mypage') {
+  //     handleCategoryChange('나의 모임');
+  //   }
+  //   console.log(query.category);
+  // }, [router.pathname, query.category]);
+
+  // NOTE: 카테고리 선택시 임시 스타일(변경 예정)
+  const getButtonClass = (categoryId: string) => (categoryId === query.category ? 'rounded-3xl bg-red-500 p-2 text-white font-bold' : 'hover:text-gray-500');
 
   return (
     <RootLayout>
-      <div className="flex flex-col justify-center gap-4 px-4 tablet:px-6 pc:px-[102px]">
+      <div className="mt-[60px] flex flex-col justify-center gap-4 px-4 tablet:px-6 pc:px-[102px]">
         <div className="m-auto min-w-[343px] duration-100 tablet:min-w-[696px] pc:min-w-[996px]">
           <h1 className="text-lg font-semibold tablet:text-2xl pc:text-2xl">마이 페이지</h1>
           <ProfileCard userData={Data} />
         </div>
         <div className="m-auto flex min-w-[343px] flex-col gap-6 duration-100 tablet:min-w-[696px] pc:min-w-[996px]">
           <div className="flex gap-3">
-            <button onClick={() => handleCategoryChange('나의 모임')} className={getButtonClass('나의 모임')} type="button">
-              나의 모임
-            </button>
-            <button onClick={() => handleCategoryChange('나의 리뷰')} className={getButtonClass('나의 리뷰')} type="button">
-              나의 리뷰
-            </button>
-            <button onClick={() => handleCategoryChange('만든 모임')} className={getButtonClass('만든 모임')} type="button">
-              내가 만든 모임
-            </button>
+            {Object.keys(categories).map((item) => (
+              <button
+                key={item}
+                onClick={() => {
+                  setDate(categories[item]);
+                  handleCategoryChange(item);
+                }}
+                className={getButtonClass(item)}
+                type="button"
+              >
+                {item}
+              </button>
+            ))}
           </div>
-          {MeetingData.gatheringList.map((data, i) => (
+          {date.gatheringList.map((data, i) => (
             <MeetingCard key={i} MeetingData={data} />
           ))}
         </div>
