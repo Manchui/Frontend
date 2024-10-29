@@ -1,12 +1,13 @@
 import Image from 'next/image';
+import { GatheringCard } from '@/components/detail/GatheringCard';
 // import { useRouter } from 'next/router';
-import DateChip from '@/components/shared/chip/DateChip';
 import { ProgressBar } from '@/components/shared/progress-bar';
 import Rating from '@/components/shared/Rating';
 import RootLayout from '@/components/shared/RootLayout';
+import type { DetailData } from '@/types/detail';
 
 // 지울 것
-const PAGE_DATA = {
+const PAGE_DATA: DetailData = {
   category: '개발',
   content:
     '모임 상세 설명 모임 상세 설명 모임 상세 설명 모임 상세 설명 모임 상세 설명 v  v 모임 상세 설명 모임 상세 설명 모임 상세 설명 모임 상세 설명 모임 상세 설명 모임 상세 설명 v',
@@ -52,7 +53,7 @@ const PAGE_DATA = {
       userId: 'abcd-1234',
     },
     {
-      profileImagePath: '/images/test-detail.png',
+      profileImagePath: '/images/love-bookmarkpage.png',
       userNick: '김디자인',
       userId: 'bcde-2345',
     },
@@ -62,12 +63,12 @@ const PAGE_DATA = {
       userId: 'cdef-3456',
     },
     {
-      profileImagePath: '/images/test-detail.png',
+      profileImagePath: '/images/love-bookmarkpage.png',
       userNick: '김디자인',
       userId: 'cdef-3456',
     },
     {
-      profileImagePath: '/images/test-detail.png',
+      profileImagePath: '/images/love-bookmarkpage.png',
       userNick: '김디자인',
       userId: 'cdef-3456',
     },
@@ -83,48 +84,14 @@ const PAGE_DATA = {
 export default function DetailPage() {
   // const router = useRouter();
   // const { id } = router.query;
-  const gatheringDate = new Date(PAGE_DATA.gatheringDate);
   return (
     <RootLayout>
       <div className="h-screen">
         <div className="flex flex-col items-center justify-center px-8 tablet:flex-row pc:flex-row">
           <div className="relative m-4 h-48 min-w-80 rounded-2xl border">
-            <Image alt="test" src="/images/test-detail.png" layout="fill" objectFit="cover" className="rounded-2xl" />
+            <Image alt="모임 이미지" src="/images/test-detail.png" layout="fill" objectFit="cover" className="rounded-2xl" />
           </div>
-          <div className="m-4 h-48 min-w-80 rounded-2xl border-2 p-4">
-            <div>
-              <h1 className="text-lg font-bold">{PAGE_DATA.groupName}</h1>
-              <p>{PAGE_DATA.location}</p>
-              <DateChip dateTime={gatheringDate} />
-            </div>
-            <hr className="my-2 border-dashed" />
-            <div className="flex flex-row justify-between">
-              <p className="font-bold">모집 정원 {PAGE_DATA.participantUsers}명</p>
-              <div className="relative flex">
-                {PAGE_DATA.usersList.slice(0, 5).map((user, index) =>
-                  index < 4 ? (
-                    <div key={index} className="relative size-8 rounded-full border-2 border-white" style={{ marginLeft: `-${15}px` }}>
-                      <Image alt="test" src={user.profileImagePath} layout="fill" objectFit="cover" className="rounded-full" />
-                    </div>
-                  ) : (
-                    <div
-                      key={index}
-                      className="relative flex size-8 items-center justify-center rounded-full border-2 border-white bg-gray-300 text-white"
-                      style={{ marginLeft: `-${15}px` }}
-                    >
-                      +{PAGE_DATA.usersList.length - 4}
-                    </div>
-                  ),
-                )}
-              </div>
-              <p>개설 확정</p>
-            </div>
-
-            <div className="flex flex-row justify-between text-sm">
-              <p>최소 인원 {PAGE_DATA.minUsers}명</p>
-              <p>최대 인원 {PAGE_DATA.maxUsers}명</p>
-            </div>
-          </div>
+          <GatheringCard PAGE_DATA={PAGE_DATA} />
         </div>
         <div className="px-8">
           <h1 className="text-xl font-bold">모임설명</h1>

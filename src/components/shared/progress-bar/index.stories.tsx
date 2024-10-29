@@ -7,7 +7,7 @@ const meta = {
   component: ProgressBar,
   tags: ['autodocs'],
   argTypes: {
-    style: {
+    design: {
       description: '스타일',
     },
   },
@@ -21,7 +21,7 @@ export const Default: Story = {
   args: {
     maxValue: 100,
     value: 47,
-    style: 'primary',
+    design: 'primary',
   },
 };
 
@@ -29,7 +29,7 @@ export const Basics: Story = {
   args: {
     maxValue: 20,
     value: 5,
-    style: 'basics',
+    design: 'basics',
   },
 };
 
@@ -37,7 +37,7 @@ export const Details: Story = {
   args: {
     maxValue: 20,
     value: 17,
-    style: 'details',
+    design: 'details',
   },
 };
 
@@ -45,6 +45,6 @@ export const Black: Story = {
   args: {
     maxValue: 32,
     value: 27,
-    style: 'simple',
+    design: 'simple',
   },
 };

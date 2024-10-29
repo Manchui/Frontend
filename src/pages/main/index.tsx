@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useState } from 'react';
 import Calendar from '@/components/shared/Calendar';
 import RootLayout from '@/components/shared/RootLayout';
@@ -11,6 +12,7 @@ export default function MainPage() {
 
   const handleSubmit = () => {
     if (selectedDates.selectedDate) {
+      // TODO: 추후에 삭제해주세요.
       console.log('선택된 단일 날짜:', selectedDates.selectedDate);
     } else if (selectedDates.rangeStart && selectedDates.rangeEnd) {
       console.log('선택된 범위:', selectedDates.rangeStart, '부터', selectedDates.rangeEnd, '까지');

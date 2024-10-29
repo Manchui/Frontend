@@ -1,9 +1,9 @@
-import clsx from 'clsx';
 import { useState } from 'react';
+import clsx from 'clsx';
 
 type RatingProps = {
-  score: number;
   onChange?: (newScore: number) => void;
+  score: number;
 };
 
 /**
@@ -26,11 +26,11 @@ export default function Rating({ score, onChange }: RatingProps) {
       <div
         key={index}
         className={clsx(
-          'relative h-6 w-6 cursor-pointer',
+          'relative size-6 cursor-pointer',
           index === hoveredScore && 'scale-110 transition-all duration-100 ease-in-out',
           hoveredScore === null && 'scale-100 transition-all duration-100 ease-in-out',
         )}
-        onMouseOver={onChange ? () => setHoveredScore(index) : undefined}
+        onMouseEnter={onChange ? () => setHoveredScore(index) : undefined}
         onMouseLeave={onChange ? () => setHoveredScore(null) : undefined}
         onClick={
           onChange

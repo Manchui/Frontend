@@ -1,0 +1,45 @@
+export type BaseData = {
+  data: DetailData;
+  message: string;
+  success: boolean;
+};
+
+export type ReviewList = {
+  comment: string;
+  createdAt: string;
+  profileImagePath: string;
+  score: number;
+  userId: string;
+  userNick: string;
+};
+
+export type UsersList = {
+  profileImagePath: string;
+  userId: string;
+  userNick: string;
+};
+
+export type DetailData = {
+  category: string;
+  content: string;
+  createdAt: string;
+  deletedAt: null;
+  dueDate: string;
+  gatheringDate: string;
+  gatheringId: number;
+  gatheringImage: string;
+  groupName: string;
+  image: string;
+  isCanceled: boolean;
+  isClosed: boolean;
+  isHearted: boolean;
+  isOpened: boolean;
+  location: string;
+  maxUsers: number;
+  minUsers: number;
+  name: string;
+  participantUsers: number;
+  reviewList: ReviewList[];
+  updatedAt: string;
+  usersList: UsersList[];
+};
