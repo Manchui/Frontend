@@ -92,7 +92,7 @@ export default function DetailPage() {
         </div>
         <GatheringCard PAGE_DATA={PAGE_DATA} />
       </div>
-      <div className="px-8">
+      <div className="px-4 tablet:px-10 pc:px-[22px]">
         <h1 className="text-xl font-bold">모임설명</h1>
         <p className="my-2">{PAGE_DATA.content}</p>
       </div>

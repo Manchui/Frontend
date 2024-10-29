@@ -10,7 +10,7 @@ export function GatheringCard({ PAGE_DATA }: { PAGE_DATA: DetailData }) {
     <div className="m-4 h-[240px] w-[343px] rounded-2xl border bg-white py-[20.5px] duration-100 tablet:h-[240px] tablet:w-[360px] pc:h-[270px] pc:w-[486px] pc:py-6">
       <div className="mx-6">
         <p className="text-lg font-semibold">{PAGE_DATA.groupName}</p>
-        <p className="text-sm font-medium text-blue-800">{PAGE_DATA.location}</p>
+        <p className="mb-3 mt-[2px] text-sm font-medium text-blue-800">{PAGE_DATA.location}</p>
         <DateChip dateTime={gatheringDate} />
         <hr className="mt-6 border-dashed pc:mt-[43px]" />
       </div>
@@ -26,5 +26,3 @@ export function GatheringCard({ PAGE_DATA }: { PAGE_DATA: DetailData }) {
     </div>
   );
 }
-
-// 24/20.5
