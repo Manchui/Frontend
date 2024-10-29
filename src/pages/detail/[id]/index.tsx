@@ -4,7 +4,6 @@ import { ReviewListCard } from '@/components/detail/ReviewListCard';
 // import { useRouter } from 'next/router';
 import { ProgressBar } from '@/components/shared/progress-bar';
 import Rating from '@/components/shared/Rating';
-import RootLayout from '@/components/shared/RootLayout';
 import type { DetailData } from '@/types/detail';
 
 // 지울 것
@@ -80,10 +79,10 @@ export default function DetailPage() {
   // const router = useRouter();
   // const { id } = router.query;
   return (
-    <RootLayout>
-      <div className="mt-[60px]">
-        <GatheringCard PAGE_DATA={PAGE_DATA} />
+    <div className="mt-[60px]">
+      <GatheringCard PAGE_DATA={PAGE_DATA} />
 
+      <div className="mx-auto min-h-screen w-full max-w-[1200px]">
         <div className="mt-6 px-4 tablet:mt-9 tablet:px-10 pc:mt-10 pc:px-5">
           <h1 className="text-xl font-bold">모임설명</h1>
           <p className="my-2">{PAGE_DATA.content}</p>
@@ -91,7 +90,7 @@ export default function DetailPage() {
         </div>
 
         <div className="my-6 flex flex-col-reverse items-center justify-center gap-6 pc:mb-16 pc:mt-10 pc:flex-row pc:gap-[42px]">
-          <div className="flex flex-col items-center justify-center gap-6 text-center pc:gap-8">
+          <div className="flex flex-col justify-center gap-6 pc:gap-8">
             <h2 className="text-lg font-bold tablet:text-xl pc:text-xl">이용자들은 이 프로그램을 이렇게 느꼈어요!</h2>
             {/* 스코어를 백엔드에서 계산해서 따로 api를 만들면 좋을 듯 */}
             {/* 스코어 계산은 추후에 더 좋은 방법 찾아서 변경 */}
@@ -100,7 +99,7 @@ export default function DetailPage() {
                 <h1 className="text-5xl font-bold">2.8</h1>
                 <Rating score={2.8} />
               </div>
-              <div className="mb-1 flex items-center gap-4">
+              <div className="flex items-center gap-4">
                 <p className="text-sm font-medium text-gray-800">5점</p>
                 <div className="w-[200px]">
                   <ProgressBar maxValue={5} value={2.8} design="primary" />
@@ -109,7 +108,7 @@ export default function DetailPage() {
             </div>
           </div>
           <div className="relative h-[193px] w-[343px] duration-100 tablet:h-[414px] tablet:w-[737px] pc:h-[356px] pc:w-[619px]">
-            <Image alt="지도 이미지" src="/images/img-detail-page.png" fill style={{ objectFit: 'cover' }} />
+            <Image alt="지도 이미지" src="/images/img-detail-page.png" fill style={{ objectFit: 'cover' }} className="rounded-2xl" />
           </div>
         </div>
 
@@ -124,6 +123,6 @@ export default function DetailPage() {
           </div>
         </div>
       </div>
-    </RootLayout>
+    </div>
   );
 }
