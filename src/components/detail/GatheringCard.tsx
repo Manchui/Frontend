@@ -7,16 +7,24 @@ export function GatheringCard({ PAGE_DATA }: { PAGE_DATA: DetailData }) {
   const gatheringDate = new Date(PAGE_DATA.gatheringDate);
 
   return (
-    <div className="m-4 h-48 min-w-80 rounded-2xl border-2 p-4">
-      <div>
-        <h1 className="text-lg font-bold">{PAGE_DATA.groupName}</h1>
-        <p>{PAGE_DATA.location}</p>
+    <div className="m-4 h-[240px] w-[343px] rounded-2xl border bg-white py-[20.5px] duration-100 tablet:h-[240px] tablet:w-[360px] pc:h-[270px] pc:w-[486px] pc:py-6">
+      <div className="mx-6">
+        <p className="text-lg font-semibold">{PAGE_DATA.groupName}</p>
+        <p className="text-sm font-medium text-blue-800">{PAGE_DATA.location}</p>
         <DateChip dateTime={gatheringDate} />
+        <hr className="mt-6 border-dashed pc:mt-[43px]" />
       </div>
-      <hr className="my-2 border-dashed" />
-      <div>
-        <ProgressBar maxValue={10} value={5} design="details" userList={PAGE_DATA.usersList} />
+      <div className="mx-6 mt-5 pc:mt-6">
+        <ProgressBar
+          maxValue={PAGE_DATA.maxUsers}
+          mainValue={PAGE_DATA.minUsers}
+          value={PAGE_DATA.participantUsers}
+          design="details"
+          userList={PAGE_DATA.usersList}
+        />
       </div>
     </div>
   );
 }
+
+// 24/20.5
