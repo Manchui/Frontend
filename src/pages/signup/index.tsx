@@ -5,9 +5,14 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+// import Router from 'next/router';
 import instance from '@/apis/api';
 import Carousel from '@/components/Carousel';
 import Input from '@/components/shared/Input';
+
+interface AuthData {
+  name: string;
+}
 
 /**
  * 회원가입 페이지
@@ -22,6 +27,9 @@ export default function SignupPage() {
   const [passwordCheck, setPasswordCheck] = useState('');
   const [isDesktop, setIsDesktop] = useState(false);
   const [error, setError] = useState('');
+
+  // 회원가입 성공 시, 로그인 페이지로 이동
+  // const route = Router;
 
   // 화면 크기에 따라 레이아웃 변경
   useEffect(() => {
@@ -39,6 +47,20 @@ export default function SignupPage() {
     };
   }, []);
 
+  // 중복확인 버튼 클릭 시 중복 확인
+  const handleCheck = async () => {
+    try {
+      const response = await instance.get<AuthData[]>(`/auths?name=${nick}`);
+      if (response.data.length > 0) {
+        setError('이미 사용중인 닉네임입니다.');
+      } else {
+        setError('사용 가능한 닉네임입니다.');
+      }
+    } catch (err: any) {
+      setError(`중복 확인 버튼에 에러가 발생했습니다. ${err}`);
+    }
+  };
+
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (nick.length < 3 || password.length < 8 || password !== passwordCheck || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -46,13 +68,22 @@ export default function SignupPage() {
     }
 
     try {
-      await instance.post('/api/auths/signup', {
+      const response = await instance.post('/auths', {
         name: nick,
         email,
         password,
         passwordConfirm: passwordCheck,
       });
+      if (response.status === 201) {
+        // setError(response.message);
+        // void route.push('/login');
+      }
     } catch (err: any) {
+      // if (Array.isArray(err.response.message)) {
+      //   setError(err.response.message.join('\n'));
+      // } else {
+      //   setError(err.response.message);
+      // }
       setError(err);
     }
   };
@@ -68,7 +99,7 @@ export default function SignupPage() {
             <form onSubmit={handleSignup} className="flex w-[500px] flex-col space-y-4">
               <div className="flex">
                 <Input type="text" name="nick" onChange={(e) => setNick(e.target.value)} />
-                <button type="button" className="ml-4 mt-7 h-10 w-24 rounded-xl border bg-blue-800 text-sm text-white hover:bg-blue-700">
+                <button onClick={handleCheck} type="button" className="ml-4 mt-7 h-10 w-24 rounded-xl border bg-blue-800 text-sm text-white hover:bg-blue-700">
                   중복 확인
                 </button>
               </div>
@@ -105,7 +136,7 @@ export default function SignupPage() {
           <div className="w-full space-y-4">
             <div className="flex">
               <Input type="text" name="nick" onChange={(e) => setNick(e.target.value)} />
-              <button type="button" className="ml-4 mt-7 h-10 w-24 rounded-xl border bg-blue-800 text-sm text-white hover:bg-blue-700">
+              <button onClick={handleCheck} type="button" className="ml-4 mt-7 h-10 w-24 rounded-xl border bg-blue-800 text-sm text-white hover:bg-blue-700">
                 중복 확인
               </button>
             </div>
@@ -113,7 +144,7 @@ export default function SignupPage() {
             <Input type="password" name="password" onChange={(e) => setPassword(e.target.value)} />
             <Input type="password" name="password_check" passwordToMatch={password} onChange={(e) => setPasswordCheck(e.target.value)} />
           </div>
-          {error && <p className="mt-1 text-sm text-red-500">회원가입에 실패했습니다. 다시 시도해주세요.</p>}
+            {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
           <button type="submit" className="mt-4 w-full rounded-xl bg-blue-800 py-2 text-lg text-white hover:bg-blue-700">
             생성하기
           </button>
