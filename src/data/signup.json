@@ -1,0 +1,18 @@
+{
+  "auths": [
+    {
+      "id": "b066",
+      "name": "이용환",
+      "email": "dydghks311@gmail.com",
+      "password": "1234qwer",
+      "passwordConfirm": "1234qwer"
+    },
+    {
+      "id": "2be5",
+      "name": "fasdfsadfsdaf",
+      "email": "dydghks311@gmail.com",
+      "password": "1234qwer",
+      "passwordConfirm": "1234qwer"
+    }
+  ]
+}
