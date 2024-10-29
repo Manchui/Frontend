@@ -46,14 +46,14 @@ export default function MainPage() {
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     // 검색값 변화 확인
     setSearchValue(e.target.value);
-    console.log('searchValue', searchValue);
+    // console.log('searchValue', searchValue);
   };
 
   const handleSearchSubmit = (e: FormEvent) => {
     // 검색값 제출
     e.preventDefault();
     if (searchValue !== '') {
-      console.log('제출성공');
+      // console.log('제출성공');
       setSearchValue('');
     }
   };
@@ -63,7 +63,7 @@ export default function MainPage() {
   };
 
   const handleCloseFilter = () => {
-    console.log('마감임박');
+    // console.log('마감임박');
   };
 
   return (
