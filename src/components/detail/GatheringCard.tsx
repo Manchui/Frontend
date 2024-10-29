@@ -17,7 +17,7 @@ export function GatheringCard({ PAGE_DATA }: { PAGE_DATA: DetailData }) {
           width={486}
           height={270}
           style={{ objectFit: 'cover' }}
-          className="size-full rounded-2xl border-2 duration-100"
+          className="size-full rounded-[18px] border-2 duration-100"
         />
         <div className="absolute right-0 top-0">
           <Tag Hour={5} Type="detail" />
