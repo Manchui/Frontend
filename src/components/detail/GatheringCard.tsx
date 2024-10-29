@@ -3,14 +3,25 @@ import type { DetailData } from '@/types/detail';
 
 import DateChip from '../shared/chip/DateChip';
 import { ProgressBar } from '../shared/progress-bar';
+import Tag from '../shared/Tag';
 
 export function GatheringCard({ PAGE_DATA }: { PAGE_DATA: DetailData }) {
   const gatheringDate = new Date(PAGE_DATA.gatheringDate);
 
   return (
     <div className="flex flex-col items-center justify-center gap-6 bg-blue-800 py-[22px] tablet:flex-row tablet:pb-7 tablet:pt-6 pc:flex-row pc:pb-[34px] pc:pt-[27px]">
-      <div className="relative h-[180px] w-[343px] duration-100 tablet:h-[240px] tablet:w-[360px] pc:h-[270px] pc:w-[486px]">
-        <Image alt="모임 이미지" src={PAGE_DATA.gatheringImage} fill style={{ objectFit: 'cover' }} className="rounded-2xl border-2" />
+      <div className="relative h-[180px] w-[343px] tablet:h-[240px] tablet:w-[360px] pc:h-[270px] pc:w-[486px]">
+        <Image
+          alt="모임 이미지"
+          src={PAGE_DATA.gatheringImage}
+          width={486}
+          height={270}
+          style={{ objectFit: 'cover' }}
+          className="size-full rounded-2xl border-2 duration-100"
+        />
+        <div className="absolute right-0 top-0">
+          <Tag Hour={5} Type="detail" />
+        </div>
       </div>
       <div className="h-[240px] w-[343px] rounded-2xl border bg-white py-[20.5px] duration-100 tablet:h-[240px] tablet:w-[360px] pc:h-[270px] pc:w-[486px] pc:py-6">
         <div className="mx-6">
