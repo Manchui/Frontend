@@ -21,7 +21,7 @@ export default function MainCarousel({ images }: MainCarouselProps) {
       <Swiper
         modules={[Navigation, Autoplay, Virtual, EffectCreative, Thumbs, Pagination]}
         loop
-        speed={400}
+        speed={300}
         navigation={{
           prevEl: '.prev',
           nextEl: '.next',
@@ -30,11 +30,9 @@ export default function MainCarousel({ images }: MainCarouselProps) {
         effect="creative"
         creativeEffect={{
           prev: {
-            scale: 1.1,
             opacity: 0,
           },
           next: {
-            scale: 1.1,
             opacity: 0,
           },
         }}
@@ -52,11 +50,17 @@ export default function MainCarousel({ images }: MainCarouselProps) {
       >
         {images.map((image, i) => (
           <SwiperSlide key={i} className="absolute z-0 rounded-3xl">
-            <Image src={image.src} alt="test" fill className="w-full object-cover" loading="eager" priority quality={100} />
-            <button type="button" className="prev absolute bottom-1/2 left-0 mx-2 hidden translate-y-1/2 rounded-full border-2 p-1 mobile:block">
+            <Image src={image.src} alt="test" fill sizes="100vw" className="rounded-3xl object-cover" loading="eager" priority quality={100} />
+            <button
+              type="button"
+              className="prev absolute bottom-1/2 left-0 mx-2 hidden translate-y-1/2 rounded-full border-2 p-1 hover:brightness-0 hover:invert mobile:block"
+            >
               <Image src="./icons/carousel-left.svg" alt="Previous Btn" width={30} height={30} />
             </button>
-            <button type="button" className="next absolute bottom-1/2 right-0 mx-2 hidden translate-y-1/2 rounded-full border-2 p-1 mobile:block">
+            <button
+              type="button"
+              className="next absolute bottom-1/2 right-0 mx-2 hidden translate-y-1/2 rounded-full border-2 p-1 hover:brightness-0 hover:invert mobile:block"
+            >
               <Image src="./icons/carousel-right.svg" alt="Previous Btn" width={30} height={30} />
             </button>
           </SwiperSlide>
@@ -79,6 +83,7 @@ export default function MainCarousel({ images }: MainCarouselProps) {
               alt={`Thumbnail ${i}`}
               fill
               sizes="w-full"
+              priority
               className={`swiper-slide-active:border-gray-500 rounded-lg border object-cover ${activeIndex === i ? 'border-transparent' : ''}`}
             />
           </SwiperSlide>

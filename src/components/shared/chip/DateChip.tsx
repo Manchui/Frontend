@@ -5,7 +5,7 @@ interface DateProps {
   dateTime: Date;
 }
 
-const setting = 'rounded text-xs mobile:text-xs tablet:text-sm py-1 px-2 mr-2 font-medium';
+const setting = 'rounded text-xs mobile:text-xs mobile:font-semibold py-1 px-2 mr-2 font-medium';
 
 /**
  * Date Chip component

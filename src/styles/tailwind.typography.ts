@@ -8,6 +8,10 @@ const typography = {
     'xl': ['20px', '32px'],
     '2xl': ['24px', '32px'],
     '3xl': ['32px', '42px'],
+    'title-response': 'clamp(1.25rem, 0.7955rem + 1.9394vw, 2.25rem)',
+    'sub-response': 'clamp(0.8125rem, 0.7651rem + 0.2299vw, 0.9375rem)',
+    '16-20-response': 'clamp(1rem, 0.9052rem + 0.4598vw, 1.25rem)',
+    '13-16-response': 'clamp(0.8125rem, 0.7414rem + 0.3448vw, 1rem)',
   },
   fontWeight: {
     regular: 400,

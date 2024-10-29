@@ -8,7 +8,7 @@ export function BasicsStyle({ maxValue, mainValue = 0, value }: BaseProgressBarP
   const isConfirmed = value >= mainValue;
 
   return (
-    <div className="mb-3 flex items-center text-sm font-semibold">
+    <div className="mb-3 flex items-center text-sm font-semibold text-blue-800">
       {maxValue === value ? (
         <Image src="/icons/person-gray.svg" alt="icon" width={16} height={16} className="size-5" />
       ) : (

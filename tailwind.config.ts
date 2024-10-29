@@ -18,11 +18,11 @@ const config = {
     extend: {
       colors,
       screens,
-      typography,
       keyframes,
       animation,
       height,
       width,
+      ...typography,
     },
   },
   plugins: [],
