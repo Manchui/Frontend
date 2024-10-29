@@ -20,6 +20,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Node.js 설정
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
       - name: 캐시 종속성
         id: cache
         uses: actions/cache@v3
