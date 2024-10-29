@@ -79,14 +79,15 @@ const PAGE_DATA = {
   ],
   maxUsers: 10,
 };
+
 export default function DetailPage() {
   // const router = useRouter();
   // const { id } = router.query;
   const gatheringDate = new Date(PAGE_DATA.gatheringDate);
   return (
     <RootLayout>
-      <div className='h-screen'>
-        <div className="flex items-center justify-center px-8 flex-col tablet:flex-row pc:flex-row">
+      <div className="h-screen">
+        <div className="flex flex-col items-center justify-center px-8 tablet:flex-row pc:flex-row">
           <div className="relative m-4 h-48 min-w-80 rounded-2xl border">
             <Image alt="test" src="/images/test-detail.png" layout="fill" objectFit="cover" className="rounded-2xl" />
           </div>
@@ -139,7 +140,7 @@ export default function DetailPage() {
             <h1 className="m-4 text-4xl font-bold">2.8</h1>
             <Rating score={2.8} />
             {/* 스코어 프로그래스바 추후에 더 좋은 방법 찾아서 변경 */}
-            <div className='flex flex-row'>
+            <div className="flex flex-row">
               <p>5점: </p>
               <div className="w-[200px]">
                 <ProgressBar maxValue={5} value={2.8} design="primary" />
