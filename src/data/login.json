@@ -1,6 +1,12 @@
 {
-    "user1": {
-        "username": "user1",
-        "password": "password1"
+  "login": [
+    {
+      "Header": {
+      "Authorization": "Bearer gggeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+      }
+    },
+    {
+      "cookie": "refresh=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
     }
+  ]
 }
