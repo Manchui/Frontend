@@ -1,6 +1,7 @@
 import animation from './src/styles/tailwind.animation';
 import colors from './src/styles/tailwind.colors';
 import height from './src/styles/tailwind.height';
+import inset from './src/styles/tailwind.inset';
 import keyframes from './src/styles/tailwind.keyframes';
 import screens from './src/styles/tailwind.screens';
 import typography from './src/styles/tailwind.typography';
@@ -22,6 +23,7 @@ const config = {
       animation,
       height,
       width,
+      inset,
       ...typography,
     },
   },
