@@ -8,7 +8,7 @@ interface StateProps {
 
 const setting = {
   planed: {
-    style: 'bg-blue-50 text-blue-800 border-blue-50',
+    style: 'bg-blue-100 text-blue-800 border-blue-100',
     text: '이용 예정',
   },
   completed: {
@@ -16,7 +16,7 @@ const setting = {
     text: '이용 완료',
   },
   confirmed: {
-    style: 'bg-white text-blue-800 border-blue-800',
+    style: 'bg-blue-800 text-white border-blue-800',
     text: '개설 확정',
   },
   pending: {
@@ -56,7 +56,7 @@ export default function State({ stateProp }: StateProps) {
     <div className={cn(ComponentVariants({ stateProp }))}>
       {stateProp === 'confirmed' && (
         <Image
-          src="/icons/check-black.svg" // 아이콘의 경로를 여기에 입력하세요
+          src="/icons/check.svg" // 아이콘의 경로를 여기에 입력하세요
           alt="Public Icon"
           width={16}
           height={16}

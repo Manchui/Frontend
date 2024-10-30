@@ -12,13 +12,13 @@ const Data: User = {
   name: 'hhihih',
   image: '/images/together-findpage-default.png',
 };
-// TODO: 나의 모임 목록 카드 데이터
+// TODO: 나의 모임 목록 카드 데이터 0
 const MeetingData: Gatherings = {
   gatheringCount: 2,
   gatheringList: [
     {
       gatheringId: 2,
-      groupName: '모각코해요',
+      groupName: '모각코해요오오오오오오오오오오오',
       category: '개발',
       location: '홍대입구',
       gatheringImage: '/images/buddah-login.png',
@@ -123,7 +123,8 @@ export default function MyPage() {
   // }, [router.pathname, query.category]);
 
   // NOTE: 카테고리 선택시 임시 스타일(변경 예정)
-  const getButtonClass = (categoryId: string) => (categoryId === query.category ? 'rounded-3xl bg-red-500 p-2 text-white font-bold' : 'hover:text-gray-500');
+  const getButtonClass = (categoryId: string) =>
+    categoryId === query.category ? 'flex-1 py-[6px] border-b-2 border-blue-800' : 'flex-1 hover:text-gray-500 text-blue-400 py-[6px]';
 
   return (
     <RootLayout>
@@ -132,8 +133,8 @@ export default function MyPage() {
           <h1 className="text-lg font-semibold tablet:text-2xl pc:text-2xl">마이 페이지</h1>
           <ProfileCard userData={Data} />
         </div>
-        <div className="m-auto flex min-w-[343px] flex-col gap-6 duration-100 tablet:min-w-[696px] pc:min-w-[996px]">
-          <div className="flex gap-3">
+        <div className="m-auto flex min-w-[343px] flex-col duration-100 tablet:min-w-[696px] pc:min-w-[996px]">
+          <div className="flex items-center justify-between text-sm font-semibold tablet:text-lg pc:text-lg">
             {Object.keys(categories).map((item) => (
               <button
                 key={item}
