@@ -6,10 +6,15 @@ import { useRouter } from 'next/router';
 
 interface DrawerProps {
   isLoggedIn: boolean;
-  profileImageUrl?: string;
+  userData: {
+    email: string | null;
+    id: string | null;
+    img: string;
+    nick: string | null;
+  }
 }
 
-export default function Drawer({ isLoggedIn, profileImageUrl = '/images/profile.svg' }: DrawerProps) {
+export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
@@ -44,10 +49,10 @@ export default function Drawer({ isLoggedIn, profileImageUrl = '/images/profile.
           {isLoggedIn ? (
             <Link href="/mypage">
               <div className="flex gap-3">
-                <Image src={profileImageUrl} alt="프로필" width={40} height={40} />
+                <Image src={userData.img} alt="프로필" width={40} height={40} />
                 <div>
-                  <p className="text-sm font-semibold">username</p>
-                  <p className="text-[10px] font-medium text-gray-200">abc@email.com</p>
+                  <p className="text-sm font-semibold">user.nick</p>
+                  <p className="text-[10px] font-medium text-gray-200">user.email</p>
                 </div>
               </div>
             </Link>
