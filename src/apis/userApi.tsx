@@ -1,15 +1,12 @@
 import instance from '@/apis/api';
 
-// eslint-disable-next-line consistent-return
 interface UserInfo {
-  // Define the structure of the user info here
   id: string;
   image: string;
   name: string;
-  // Add other fields as necessary
 }
 
-export const getUserInfo = async (accessToken: string): Promise<UserInfo | undefined> => {
+export const getUserInfo = async (accessToken: string): Promise<UserInfo> => {
   try {
     const res = await instance.get<UserInfo>('http://localhost:3010/user', {
       headers: {
@@ -20,7 +17,7 @@ export const getUserInfo = async (accessToken: string): Promise<UserInfo | undef
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log(error);
-    return undefined;
+    return { id: '', image: '', name: '' };
   }
 };
 
