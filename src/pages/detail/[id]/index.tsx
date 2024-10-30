@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { FloatingBar } from '@/components/detail/FloatingBar';
 import { GatheringCard } from '@/components/detail/GatheringCard';
 import { ReviewListCard } from '@/components/detail/ReviewListCard';
 // import { useRouter } from 'next/router';
@@ -89,14 +90,14 @@ export default function DetailPage() {
   // const router = useRouter();
   // const { id } = router.query;
   return (
-    <main className="pt-[60px]">
+    <main className="pb-[96px] pt-[60px]">
       <GatheringCard PAGE_DATA={PAGE_DATA} />
 
       <div className="mx-auto w-full max-w-[1200px]">
         <article className="mt-6 px-4 tablet:mt-9 tablet:px-10 pc:mt-10 pc:px-5">
           <h1 className="text-xl font-bold">모임설명</h1>
           <p className="my-2">{PAGE_DATA.content}</p>
-          <hr />
+          <hr className="border-gray-50" />
         </article>
 
         <article className="my-6 flex flex-col-reverse items-center justify-center gap-6 pc:mb-16 pc:mt-10 pc:flex-row pc:gap-[42px]">
@@ -124,10 +125,10 @@ export default function DetailPage() {
         <article className="mt-6 min-h-20 px-4 tablet:mt-9 tablet:px-10 pc:mt-10 pc:px-5">
           {PAGE_DATA.reviewList.length > 0 ? (
             <>
-              <hr />
+              <hr className="border-gray-50" />
               <div className="flex flex-col items-center pt-2">
                 {PAGE_DATA.reviewList.map((review, i) => (
-                  <div key={i} className={`border-b border-dashed py-4 ${i === PAGE_DATA.reviewList.length - 1 ? 'border-b-0' : ''}`}>
+                  <div key={i} className={`border-b border-dashed border-gray-50 py-4 ${i === PAGE_DATA.reviewList.length - 1 ? 'border-b-0' : ''}`}>
                     <ReviewListCard review={review} />
                   </div>
                 ))}
@@ -138,6 +139,7 @@ export default function DetailPage() {
           )}
         </article>
       </div>
+      <FloatingBar usersList={PAGE_DATA.usersList} maxUsers={PAGE_DATA.maxUsers} />
     </main>
   );
 }

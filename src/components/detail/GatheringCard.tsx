@@ -28,7 +28,7 @@ export function GatheringCard({ PAGE_DATA }: { PAGE_DATA: DetailData }) {
           <p className="text-lg font-semibold">{PAGE_DATA.groupName}</p>
           <p className="mb-3 mt-[2px] text-sm font-medium text-blue-800">{PAGE_DATA.location}</p>
           <DateChip dateTime={gatheringDate} />
-          <hr className="mt-6 border-dashed pc:mt-[43px]" />
+          <hr className="mt-6 border-dashed border-gray-50 pc:mt-[43px]" />
         </div>
         <div className="mx-6 mt-5 pc:mt-6">
           <ProgressBar
