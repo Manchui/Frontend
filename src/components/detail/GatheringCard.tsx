@@ -9,7 +9,7 @@ export function GatheringCard({ PAGE_DATA }: { PAGE_DATA: DetailData }) {
   const gatheringDate = new Date(PAGE_DATA.gatheringDate);
 
   return (
-    <div className="flex flex-col items-center justify-center gap-6 bg-blue-800 py-[22px] tablet:flex-row tablet:pb-7 tablet:pt-6 pc:flex-row pc:pb-[34px] pc:pt-[27px]">
+    <article className="flex flex-col items-center justify-center gap-6 bg-blue-800 py-[22px] tablet:flex-row tablet:pb-7 tablet:pt-6 pc:flex-row pc:pb-[34px] pc:pt-[27px]">
       <div className="relative h-[180px] w-[343px] tablet:h-[240px] tablet:w-[360px] pc:h-[270px] pc:w-[486px]">
         <Image
           alt="모임 이미지"
@@ -40,6 +40,6 @@ export function GatheringCard({ PAGE_DATA }: { PAGE_DATA: DetailData }) {
           />
         </div>
       </div>
-    </div>
+    </article>
   );
 }
