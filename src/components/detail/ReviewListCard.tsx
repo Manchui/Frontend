@@ -14,7 +14,7 @@ export function ReviewListCard({ review }: { review: ReviewList }) {
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-2">
           <div className="relative size-6 rounded-full">
-            <Image alt="profile" src={review.profileImagePath} layout="fill" objectFit="cover" className="rounded-full" />
+            <Image alt="profile" src={review.profileImagePath} fill style={{ objectFit: 'cover' }} className="rounded-full" />
           </div>
           {/* 닉네임을 백엔드에서 추가해야 할 듯 */}
           <span>{review.name}</span>
