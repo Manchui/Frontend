@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import Cookies from 'js-cookie';
 
 // 토큰 저장 (로그인)
 export const saveToken = (accessToken: string) => {
@@ -16,13 +15,3 @@ export const clearToken = () => {
   localStorage.removeItem('accessToken');
   localStorage.removeItem('tokenExpiration');
 };
-
-// // 아마 지워지겠지?
-// // cookie 토큰 만들기
-// export const saveRefreshToken = (refreshToken: string) => {
-//   Cookies.set('refreshToken', refreshToken, { expires: 30 });
-// };
-
-// export const getRefreshToken = () => Cookies.get('refreshToken');
-
-// export const clearTokens = () => Cookies.remove('refreshToken');
