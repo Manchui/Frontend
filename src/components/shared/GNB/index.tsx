@@ -8,10 +8,15 @@ import Drawer from '../../Drawer';
 
 interface GnbProps {
   isLoggedIn?: boolean; // boolean 타입 선언
-  profileImageUrl?: string;
+  user: {
+    email: string | null;
+    id: string | null;
+    img: string;
+    nick: string | null;
+  };
 }
 
-export default function GNB({ isLoggedIn = false, profileImageUrl = '/images/profile.svg' }: GnbProps) {
+export default function GNB({ user, isLoggedIn}: GnbProps) {
   const router = useRouter();
 
   return (
@@ -45,11 +50,11 @@ export default function GNB({ isLoggedIn = false, profileImageUrl = '/images/pro
       </div>
 
       <div className="flex flex-grow justify-end tablet:hidden">
-        <Drawer isLoggedIn={isLoggedIn} profileImageUrl={profileImageUrl} />
+        <Drawer isLoggedIn={isLoggedIn ?? false} userData={user} />
       </div>
       <div className="hidden w-[154px] flex-grow tablet:flex tablet:justify-end">
         {isLoggedIn ? (
-          <Image src={profileImageUrl} alt="프로필" width={40} height={40} />
+          <Image src={user.img} alt="프로필" width={40} height={40} />
         ) : (
           <div className="flex gap-4">
             <button
