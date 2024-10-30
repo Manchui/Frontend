@@ -127,7 +127,7 @@ export default function MyPage() {
 
   return (
     <RootLayout>
-      <div className="mt-[60px] flex flex-col justify-center gap-4 px-4 tablet:px-6 pc:px-[102px]">
+      <div className="flex flex-col justify-center gap-4 px-4 pt-[60px] tablet:px-6 pc:px-[102px]">
         <div className="m-auto min-w-[343px] duration-100 tablet:min-w-[696px] pc:min-w-[996px]">
           <h1 className="text-lg font-semibold tablet:text-2xl pc:text-2xl">마이 페이지</h1>
           <ProfileCard userData={Data} />
