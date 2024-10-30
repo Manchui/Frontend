@@ -5,10 +5,11 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import instance from '@/apis/api';
 import Carousel from '@/components/Carousel';
-// import { useRouter } from 'next/router';
 import Input from '@/components/shared/Input';
+import { saveToken } from '@/utils/auth';
 
 /**
  * 로그인 페이지
@@ -21,6 +22,8 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [isDesktop, setIsDesktop] = useState(false);
   const [error, setError] = useState('');
+
+  const route = useRouter();
 
   // 화면 크기에 따라 레이아웃 변경
   useEffect(() => {
@@ -40,15 +43,27 @@ export default function LoginPage() {
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError('');
     if (password.length < 8 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return;
     }
 
     try {
-      await instance.post('/api/auths/login', {
+      const response = await instance.post('http://localhost:3000/signin', {
         email,
         password,
       });
+      // // api 받을 시, 지울 것
+      if (response.data) {
+        const data = await instance.get('http://localhost:3002/login');
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        const accessToken = data.data[0].Header.Authorization;
+        saveToken(accessToken);
+      }
+
+      // const refreshToken = document.cookie;
+      // console.log(`refresh: ${refreshToken}`);
+      void route.push('/main');
     } catch (err: any) {
       setError(err);
     }
