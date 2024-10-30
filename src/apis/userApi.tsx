@@ -1,5 +1,6 @@
 import instance from '@/apis/api';
 
+// eslint-disable-next-line consistent-return
 export const getUserInfo = async (accessToken: string) => {
   try {
     const res = await instance.get('http://localhost:3010/user', {
