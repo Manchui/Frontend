@@ -7,10 +7,10 @@ export type BaseData = {
 export type ReviewList = {
   comment: string;
   createdAt: string;
+  name: string;
   profileImagePath: string;
   score: number;
   userId: string;
-  userNick: string;
 };
 
 export type UsersList = {

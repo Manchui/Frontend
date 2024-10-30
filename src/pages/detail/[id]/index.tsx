@@ -1,4 +1,7 @@
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import Image from 'next/image';
+import { getGatheringData } from '@/apis/detail/get-gathering-data';
 import { FloatingBar } from '@/components/detail/FloatingBar';
 import { GatheringCard } from '@/components/detail/GatheringCard';
 import { ReviewListCard } from '@/components/detail/ReviewListCard';
@@ -7,76 +10,26 @@ import { ProgressBar } from '@/components/shared/progress-bar';
 import Rating from '@/components/shared/Rating';
 import type { DetailData } from '@/types/detail';
 
-// TODO: 지울 것
-const PAGE_DATA: DetailData = {
-  category: '개발',
-  content:
-    '모임 상세 설명 모임 상세 설명 모임 상세 설명 모임 상세 설명 모임 상세 설명 v  v 모임 상세 설명 모임 상세 설명 모임 상세 설명 모임 상세 설명 모임 상세 설명 모임 상세 설명 v',
-  createdAt: '2024-10-16 14:36:31',
-  deletedAt: null,
-  dueDate: '2024-10-22 23:59:59',
-  gatheringDate: '2024-10-28 19:30:00',
-  gatheringId: 2,
-  gatheringImage: '/images/test-detail.png',
-  groupName: '모각코해요',
-  image: 'https://profileImage.jpg',
-  isCanceled: false,
-  isClosed: false,
-  isHearted: false,
-  isOpened: false,
-  location: '홍대입구',
-  name: 'hi',
-  updatedAt: '2024-10-16 14:36:31',
-  minUsers: 3,
-  participantUsers: 6,
-  reviewList: [
-    {
-      comment: '오프라인으로 만나서 모각코 하니까 더 집중이 잘돼요',
-      createdAt: '2024-01-30 14:36:31',
-      profileImagePath: '/images/test-detail.png',
-      score: 5,
-      userNick: '김개발',
-      userId: 'fc32e8b4-8de5-4d79-a154-4cb29fa48abf',
-    },
-    {
-      comment: '각자 개발에 집중해서 좋았고 질문도 잘 받아주셨어요',
-      createdAt: '2024-10-12 14:36:31',
-      profileImagePath: '/images/test-detail.png',
-      score: 4,
-      userNick: '김디자인',
-      userId: 'b0f0b618-ce1a-4c52-9693-340edadff154',
-    },
-  ],
-  usersList: [
-    {
-      profileImagePath: '/images/test-detail.png',
-      userId: 'abcd-1234',
-    },
-    {
-      profileImagePath: '/images/love-bookmarkpage.png',
-      userId: 'bcde-2345',
-    },
-    {
-      profileImagePath: '/images/test-detail.png',
-      userId: 'cdef-3456',
-    },
-    {
-      profileImagePath: '/images/love-bookmarkpage.png',
-      userId: 'cdef-3456',
-    },
-    {
-      profileImagePath: '/images/love-bookmarkpage.png',
-      userId: 'cdef-3456',
-    },
-    {
-      profileImagePath: '/images/test-detail.png',
-      userId: 'cdef-3456',
-    },
-  ],
-  maxUsers: 10,
-};
-
 export default function DetailPage() {
+  const [gatherings, setGatherings] = useState<DetailData | null>(null);
+
+  const fetchGatherings = async () => {
+    const res: DetailData = await getGatheringData();
+    setGatherings(res);
+  };
+
+  useEffect(() => {
+    fetchGatherings().catch((e) => {
+      if (axios.isAxiosError(e)) {
+        throw e.response?.data;
+      } else {
+        throw new Error('error');
+      }
+    });
+  }, []);
+
+  if (!gatherings) return <div>Loading</div>;
+
   // TODO: 스코어를 백엔드에서 계산해서 따로 api를 만들면 좋을 듯
   // TODO: 스코어 계산은 추후에 더 좋은 방법 찾아서 변경
   const SCORE = (
@@ -91,12 +44,12 @@ export default function DetailPage() {
   // const { id } = router.query;
   return (
     <main className="pb-[96px] pt-[60px]">
-      <GatheringCard PAGE_DATA={PAGE_DATA} />
+      <GatheringCard gatherings={gatherings} />
 
       <div className="mx-auto w-full max-w-[1200px]">
         <section className="mt-6 px-4 tablet:mt-9 tablet:px-10 pc:mt-10 pc:px-5">
           <h1 className="text-xl font-bold">모임설명</h1>
-          <p className="my-2">{PAGE_DATA.content}</p>
+          <p className="my-2">{gatherings.content}</p>
           <hr className="border-gray-50" />
         </section>
 
@@ -123,12 +76,12 @@ export default function DetailPage() {
         </section>
 
         <section className="mt-6 min-h-20 px-4 tablet:mt-9 tablet:px-10 pc:mt-10 pc:px-5">
-          {PAGE_DATA.reviewList.length > 0 ? (
+          {gatherings.reviewList.length > 0 ? (
             <>
               <hr className="border-gray-50" />
               <article className="flex flex-col items-center pt-2">
-                {PAGE_DATA.reviewList.map((review, i) => (
-                  <div key={i} className={`border-b border-dashed border-gray-50 py-4 ${i === PAGE_DATA.reviewList.length - 1 ? 'border-b-0' : ''}`}>
+                {gatherings.reviewList.map((review, i) => (
+                  <div key={i} className={`border-b border-dashed border-gray-50 py-4 ${i === gatherings.reviewList.length - 1 ? 'border-b-0' : ''}`}>
                     <ReviewListCard review={review} />
                   </div>
                 ))}
@@ -139,7 +92,7 @@ export default function DetailPage() {
           )}
         </section>
       </div>
-      <FloatingBar usersList={PAGE_DATA.usersList} maxUsers={PAGE_DATA.maxUsers} />
+      <FloatingBar usersList={gatherings.usersList} maxUsers={gatherings.maxUsers} />
     </main>
   );
 }

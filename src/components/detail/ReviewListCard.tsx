@@ -17,7 +17,7 @@ export function ReviewListCard({ review }: { review: ReviewList }) {
             <Image alt="profile" src={review.profileImagePath} layout="fill" objectFit="cover" className="rounded-full" />
           </div>
           {/* 닉네임을 백엔드에서 추가해야 할 듯 */}
-          <span>{review.userNick}</span>
+          <span>{review.name}</span>
           <span>|</span>
         </div>
         <span>{formattedDate}</span>
