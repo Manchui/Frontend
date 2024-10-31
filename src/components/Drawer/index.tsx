@@ -11,7 +11,7 @@ interface DrawerProps {
     id: string | null;
     img: string;
     nick: string | null;
-  }
+  };
 }
 
 export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
@@ -23,8 +23,8 @@ export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
   }
 
   return (
-    <div className='z-[9999]'>
-      <button type="button" onClick={toggleDrawer} className="">
+    <div className="z-[9999]">
+      <button type="button" onClick={toggleDrawer}>
         <Image src="/icons/menu.svg" alt="메뉴 " width={38} height={38} />
       </button>
 

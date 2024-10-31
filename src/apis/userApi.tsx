@@ -1,20 +1,26 @@
 import instance from '@/apis/api';
 
 // eslint-disable-next-line consistent-return
-export const getUserInfo = async (accessToken: string) => {
+interface UserInfo {
+  // Define the structure of the user info here
+  id: string;
+  image: string;
+  name: string;
+  // Add other fields as necessary
+}
+
+export const getUserInfo = async (accessToken: string): Promise<UserInfo | undefined> => {
   try {
-    const res = await instance.get('http://localhost:3010/user', {
+    const res = await instance.get<UserInfo>('http://localhost:3010/user', {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    if (res.status === 200) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      return res.data;
-    }
+    return res.data;
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log(error);
+    return undefined;
   }
 };
 
