@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useState } from 'react';
 import Calendar from '@/components/shared/Calendar';
 import RootLayout from '@/components/shared/RootLayout';

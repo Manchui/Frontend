@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import cx from 'clsx';
+import type { UsersList } from '@/types/detail';
 
 import { BasicsStyle } from './BasicsStyle';
 import { DetailsStyle } from './DetailsStyle';
@@ -12,7 +13,7 @@ export interface BaseProgressBarProps {
   /** 기준량 */
   maxValue: number;
   /** api userList */
-  userList?: [];
+  userList?: UsersList[];
   /** 비교할 값 */
   value: number;
 }
@@ -26,7 +27,7 @@ interface ProgressBarProps extends BaseProgressBarProps {
  *
  * @param maxValue - 기준량
  * @param value - 비교할 값
- * @param style - 'primary' | 'basics' | 'details' | 'simple'
+ * @param design - 'primary' | 'basics' | 'details' | 'simple'
  * @param mainValue - 최소 값
  * @param userList - api userList
  */
