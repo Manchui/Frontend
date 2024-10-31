@@ -1,0 +1,26 @@
+{
+  "create": [
+    {
+      "id": "fffc",
+      "groupName": "1",
+      "gatheringContent": "1",
+      "category": "운동",
+      "location": "을지로 3가",
+      "minUsers": "3",
+      "maxUsers": "3",
+      "gatheringDate": "2024-11-19 11:00:00",
+      "gatheringImage": {}
+    },
+    {
+      "id": "84cf",
+      "groupName": "1",
+      "gatheringContent": "1",
+      "category": "운동",
+      "location": "을지로 3가",
+      "minUsers": "3",
+      "maxUsers": "3",
+      "gatheringDate": "2024-11-19 11:00:00",
+      "gatheringImage": {}
+    }
+  ]
+}
