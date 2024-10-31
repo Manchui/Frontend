@@ -28,8 +28,8 @@ export function Button({ variant = 'primary', label, size, ...props }: ButtonPro
       className={cx(
         'flex cursor-pointer items-center justify-center rounded-xl px-[30px] py-[10px] text-sm duration-200 hover:scale-[1.02] active:scale-[0.9] disabled:scale-100 disabled:cursor-not-allowed md:text-base',
         {
-          'bg-blue-800 text-white hover:bg-blue-700 disabled:bg-gray-400': variant === 'primary',
-          'bg-red-500 text-white hover:bg-red-600 disabled:bg-gray-400': variant === 'danger',
+          'bg-blue-800 text-white hover:bg-blue-700 disabled:bg-gray-100': variant === 'primary',
+          'bg-red-500 text-white hover:bg-red-600 disabled:bg-gray-100': variant === 'danger',
           'border border-blue-800 bg-white text-blue-800 hover:bg-blue-50 disabled:border-gray-400 disabled:text-gray-400': variant === 'white',
           '': size === 'primary',
           'h-[40px] w-[120px]': size === 'small',

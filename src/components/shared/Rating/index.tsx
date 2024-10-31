@@ -43,16 +43,16 @@ export default function Rating({ score, onChange }: RatingProps) {
         }
       >
         {index <= fullHearts ? (
-          <Image src="icons/heart-active-noround.svg" alt="Heart Icon" layout="fill" className="absolute inset-0" />
+          <Image src="/icons/heart-active-noround.svg" alt="Heart Icon" layout="fill" className="absolute inset-0" />
         ) : (
-          <Image src="icons/heart-inactive-noround.svg" alt="Heart Icon" layout="fill" className="absolute inset-0" />
+          <Image src="/icons/heart-inactive-noround.svg" alt="Heart Icon" layout="fill" className="absolute inset-0" />
         )}
 
         {isHalfHeart &&
           (halfHeartFill === 0.5 ? (
-            <Image src="icons/heart-active-half-noround.svg" alt="Heart Icon" layout="fill" className="absolute inset-0" />
+            <Image src="/icons/heart-active-half-noround.svg" alt="Heart Icon" layout="fill" className="absolute inset-0" />
           ) : (
-            <Image src="icons/heart-inactive-noround.svg" alt="Heart Icon" layout="fill" className="absolute inset-0" />
+            <Image src="/icons/heart-inactive-noround.svg" alt="Heart Icon" layout="fill" className="absolute inset-0" />
           ))}
       </div>
     );

@@ -1,0 +1,58 @@
+{
+  "success": true,
+  "message": "OK",
+  "data": {
+    "gatheringId": 2,
+    "name": "hi",
+    "image": "https://profileImage.jpg",
+    "groupName": "모각코해요",
+    "category": "개발",
+    "location": "홍대입구",
+    "gatheringImage": "/images/test-detail.png",
+    "content": "모임 상세 설명",
+    "gatheringDate": "2024-10-24 19:30:00",
+    "dueDate": "2024-10-22 23:59:59",
+    "maxUsers": 10,
+    "minUsers": 3,
+    "isOpened": false,
+    "isCanceled": false,
+    "isClosed": false,
+    "createdAt": "2024-10-16 14:36:31",
+    "updatedAt": "2024-10-16 14:36:31",
+    "deletedAt": null,
+    "isHearted": false,
+    "participantUsers": 3,
+    "usersList": [
+      {
+        "userId": "abcd-1234",
+        "profileImagePath": "/images/test-detail.png"
+      },
+      {
+        "userId": "bcde-2345",
+        "profileImagePath": "/images/love-bookmarkpage.png"
+      },
+      {
+        "userId": "cdef-3456",
+        "profileImagePath": "/images/test-detail.png"
+      }
+    ],
+    "reviewList": [
+      {
+        "userId": "fc32e8b4-8de5-4d79-a154-4cb29fa48abf",
+        "name": "user1",
+        "profileImagePath": "/images/test-detail.png",
+        "score": 5,
+        "comment": "오프라인으로 만나서 모각코 하니까 더 집중이 잘돼요",
+        "createdAt": "2024-10-14 14:36:31"
+      },
+      {
+        "userId": "b0f0b618-ce1a-4c52-9693-340edadff154",
+        "name": "user2",
+        "profileImagePath": "/images/test-detail.png",
+        "score": 5,
+        "comment": "각자 개발에 집중해서 좋았고 질문도 잘 받아주셨어요",
+        "createdAt": "2024-10-12 14:36:31"
+      }
+    ]
+  }
+}
