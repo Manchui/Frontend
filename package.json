@@ -11,9 +11,12 @@
     "format": "prettier --cache --write .",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "npx chromatic --project-token=chpt_7c63d99a915fab5"
+    "chromatic": "npx chromatic --project-token=chpt_7c63d99a915fab5",
+    "dev:db": "json-server src/data/main.json --port=8888"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.59.16",
+    "@tanstack/react-query-devtools": "^5.59.16",
     "axios": "^1.7.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -23,6 +26,7 @@
     "react": "^18",
     "react-dom": "^18",
     "save-dev": "^0.0.1-security",
+    "swiper": "^11.1.14",
     "tailwind-merge": "^2.5.4"
   },
   "devDependencies": {
