@@ -6,7 +6,7 @@ import type { GatheringList } from '@/types/mypage';
 export default function MeetingCard({ MeetingData }: { MeetingData: GatheringList }) {
   // const stateButton = MeetingData.
   const dateObj = new Date(MeetingData.gatheringDate);
-  // const nameTruncated = MeetingData.groupName.length > 12 ? `${MeetingData.groupName.slice(0, 12)}...` : MeetingData.groupName;
+  const addCss = MeetingData.groupName.length > 12 && 'w-52';
 
   return (
     <div className="flex justify-center bg-white p-6 tablet:justify-start pc:justify-start">
@@ -32,7 +32,7 @@ export default function MeetingCard({ MeetingData }: { MeetingData: GatheringLis
           </div>
           <div className="mb-[18px] mt-3">
             <div className="flex gap-2">
-              <div className="w-52 truncate text-lg font-semibold tablet:w-auto pc:w-auto">{MeetingData.groupName}</div>
+              <div className={`truncate text-lg font-semibold tablet:w-auto pc:w-auto ${addCss}`}>{MeetingData.groupName}</div>
               <span className="text-lg font-semibold">|</span>
               <span className="text-sm font-medium text-blue-700">{MeetingData.location}</span>
             </div>
