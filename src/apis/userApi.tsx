@@ -32,3 +32,15 @@ export const logout = async () => {
     console.error('Logout failed:', error);
   }
 };
+
+export const logout = async () => {
+  try {
+    await instance.post('http://localhost:3011/logout');
+    localStorage.removeItem('accessToken');
+    document.cookie = 'refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    window.location.reload();
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Logout failed:', error);
+  }
+};
