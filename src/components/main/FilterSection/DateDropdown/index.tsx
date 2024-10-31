@@ -15,9 +15,9 @@ export default function DateDropdown() {
     // 날짜 적용하기 제출 버튼
     const { rangeStart, rangeEnd } = selectedDates;
     if (!rangeStart || !rangeEnd) {
-      console.log('날짜가 선택되지 않았습니다. 범위를 선택해주세요.');
+      // console.log('날짜가 선택되지 않았습니다. 범위를 선택해주세요.');
     } else {
-      console.log(`선택된 범위: 시작 날짜 ${rangeStart}, 종료 날짜 ${rangeEnd}`);
+      // console.log(`선택된 범위: 시작 날짜 ${rangeStart}, 종료 날짜 ${rangeEnd}`);
       // 여기에 API 요청 로직 추가 가능
     }
     setDateDropOpen(false);

@@ -5,11 +5,11 @@ import { REGION_DATA } from '@/constants/main/contants';
 export default function RegionDropdown() {
   const [regionDropOpen, setRegionDropOpen] = useState(false);
 
-  const handleRegionSelect = (region: string) => {
-    // 지역 필터
-    console.log('선택된 지역:', region);
-    setRegionDropOpen(false);
-  };
+  // const handleRegionSelect = (region: string) => {
+  //   // 지역 필터
+  //   // console.log('선택된 지역:', region);
+  //   setRegionDropOpen(false);
+  // };
 
   return (
     <Dropdown dropOpen={regionDropOpen} isOpen={regionDropOpen} setIsOpen={setRegionDropOpen} buttonLabel="지역" className="left-0">
@@ -17,7 +17,7 @@ export default function RegionDropdown() {
         {REGION_DATA.map((region) => (
           <li
             key={region}
-            onClick={() => handleRegionSelect(region)}
+            // onClick={() => handleRegionSelect(region)}
             className="cursor-pointer p-2 text-13-15-response font-semibold text-gray-900 hover:bg-gray-50"
           >
             {region}

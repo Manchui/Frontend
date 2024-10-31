@@ -9,7 +9,7 @@ export default function CloseDateToggle() {
     const newCloseDateState = !closeDateToggle;
     setCloseDateToggle(newCloseDateState);
 
-    console.log(newCloseDateState ? 'closeDate' : '');
+    // console.log(newCloseDateState ? 'closeDate' : '');
   };
 
   return (

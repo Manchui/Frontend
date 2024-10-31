@@ -13,7 +13,7 @@ export default function CardContent() {
     // 찜하기 토글 버튼
     setHearted((prevHearted) => {
       const newHearted = !prevHearted;
-      console.log('찜 상태:', newHearted);
+      // console.log('찜 상태:', newHearted);
       return newHearted;
     });
   };
