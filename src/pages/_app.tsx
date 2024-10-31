@@ -24,6 +24,7 @@ export default function App({ Component, pageProps }: AppProps) {
           setIsLoading(false);
         }
       }
+      setIsLoading(false);
     };
 
     void axiosUserData();
@@ -32,7 +33,7 @@ export default function App({ Component, pageProps }: AppProps) {
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  
+
   return (
     <>
       <GNB user={user || { email: null, id: null, img: '', nick: null }} isLoggedIn={isLoggedIn} />
