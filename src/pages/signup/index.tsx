@@ -5,14 +5,10 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-// import Router from 'next/router';
-import instance from '@/apis/api';
+import Router from 'next/router';
+import { checkNick, signup } from '@/apis/signup';
 import Carousel from '@/components/Carousel';
 import Input from '@/components/shared/Input';
-
-interface AuthData {
-  name: string;
-}
 
 /**
  * 회원가입 페이지
@@ -27,9 +23,10 @@ export default function SignupPage() {
   const [passwordCheck, setPasswordCheck] = useState('');
   const [isDesktop, setIsDesktop] = useState(false);
   const [error, setError] = useState('');
+  const [checkError, setCheckError] = useState<'사용 가능' | '사용 불가능' | ''>('');
 
   // 회원가입 성공 시, 로그인 페이지로 이동
-  // const route = Router;
+  const route = Router;
 
   // 화면 크기에 따라 레이아웃 변경
   useEffect(() => {
@@ -49,15 +46,15 @@ export default function SignupPage() {
 
   // 중복확인 버튼 클릭 시 중복 확인
   const handleCheck = async () => {
-    try {
-      const response = await instance.get<AuthData[]>(`/auths?name=${nick}`);
-      if (response.data.length > 0) {
-        setError('이미 사용중인 닉네임입니다.');
-      } else {
-        setError('사용 가능한 닉네임입니다.');
-      }
-    } catch (err: any) {
-      setError(`중복 확인 버튼에 에러가 발생했습니다. ${err}`);
+    if (nick.length < 3) {
+      setError('닉네임은 3자 이상 입력해주세요.');
+      return;
+    }
+    const check = await checkNick(nick);
+    if (check) {
+      setCheckError('사용 불가능');
+    } else {
+      setCheckError('사용 가능');
     }
   };
 
@@ -67,24 +64,12 @@ export default function SignupPage() {
       return;
     }
 
-    try {
-      const response = await instance.post('/auths', {
-        name: nick,
-        email,
-        password,
-        passwordConfirm: passwordCheck,
-      });
-      if (response.status === 201) {
-        // setError(response.message);
-        // void route.push('/login');
-      }
-    } catch (err: any) {
-      // if (Array.isArray(err.response.message)) {
-      //   setError(err.response.message.join('\n'));
-      // } else {
-      //   setError(err.response.message);
-      // }
-      setError(err);
+    const result = await signup(nick, email, password, passwordCheck);
+
+    if (result && result.error) {
+      setError(result.error);
+    } else if (result && result.status === 201) {
+      void route.push('/login');
     }
   };
 
@@ -96,17 +81,28 @@ export default function SignupPage() {
           <div className="flex w-1/2 flex-col items-center space-y-6 p-24">
             <h2 className="m-auto text-4xl font-bold">회원가입</h2>
             <p className="m-auto max-w-80 text-pretty text-center text-lg">지금 바로 가입하여 취미 활동을 통해 새로운 사람들과 특별한 경험을 만들어보세요.</p>
-            <form onSubmit={handleSignup} className="flex w-[500px] flex-col space-y-4">
+            <form onSubmit={handleSignup} className="flex w-[500px] flex-col space-y-6">
               <div className="flex">
                 <Input type="text" name="nick" onChange={(e) => setNick(e.target.value)} />
-                <button onClick={handleCheck} type="button" className="ml-4 mt-7 h-10 w-24 rounded-xl border bg-blue-800 text-sm text-white hover:bg-blue-700">
-                  중복 확인
-                </button>
+                <div className="relative flex flex-col items-center">
+                  <button
+                    onClick={handleCheck}
+                    type="button"
+                    className="ml-4 mt-7 h-10 w-24 rounded-xl border bg-blue-800 text-sm text-white hover:bg-blue-700"
+                  >
+                    중복 확인
+                  </button>
+                  {checkError && (
+                    <p className={`${checkError === '사용 가능' ? 'text-green-500' : 'text-red-500'} absolute bottom-[-10px] right-1/4 mt-1 text-sm`}>
+                      {checkError}
+                    </p>
+                  )}
+                </div>
               </div>
               <Input type="email" name="id" onChange={(e) => setEmail(e.target.value)} />
               <Input type="password" name="password" onChange={(e) => setPassword(e.target.value)} />
               <Input type="password" name="password_check" passwordToMatch={password} onChange={(e) => setPasswordCheck(e.target.value)} />
-              {error && <p className="mt-1 text-sm text-red-500">회원가입에 실패했습니다. 다시 시도해주세요.</p>}
+              {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
               <button type="submit" className="mt-4 w-full rounded-xl bg-blue-800 py-2 text-lg text-white hover:bg-blue-700">
                 생성하기
               </button>
@@ -136,15 +132,22 @@ export default function SignupPage() {
           <div className="w-full space-y-4">
             <div className="flex">
               <Input type="text" name="nick" onChange={(e) => setNick(e.target.value)} />
-              <button onClick={handleCheck} type="button" className="ml-4 mt-7 h-10 w-24 rounded-xl border bg-blue-800 text-sm text-white hover:bg-blue-700">
-                중복 확인
-              </button>
+              <div className="relative flex flex-col items-center">
+                <button onClick={handleCheck} type="button" className="ml-4 mt-7 h-10 w-24 rounded-xl border bg-blue-800 text-sm text-white hover:bg-blue-700">
+                  중복 확인
+                </button>
+                {checkError && (
+                  <p className={`${checkError === '사용 가능' ? 'text-green-500' : 'text-red-500'} absolute bottom-[-10px] right-1/4 mt-1 text-sm`}>
+                    {checkError}
+                  </p>
+                )}
+              </div>
             </div>
             <Input type="email" name="id" onChange={(e) => setEmail(e.target.value)} />
             <Input type="password" name="password" onChange={(e) => setPassword(e.target.value)} />
             <Input type="password" name="password_check" passwordToMatch={password} onChange={(e) => setPasswordCheck(e.target.value)} />
           </div>
-            {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
+          {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
           <button type="submit" className="mt-4 w-full rounded-xl bg-blue-800 py-2 text-lg text-white hover:bg-blue-700">
             생성하기
           </button>
