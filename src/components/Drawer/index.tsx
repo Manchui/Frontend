@@ -23,7 +23,7 @@ export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
   }
 
   return (
-    <>
+    <div className='z-[9999]'>
       <button type="button" onClick={toggleDrawer} className="">
         <Image src="/icons/menu.svg" alt="메뉴 " width={38} height={38} />
       </button>
@@ -84,6 +84,6 @@ export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
           로그아웃
         </Link>
       </div>
-    </>
+    </div>
   );
 }
