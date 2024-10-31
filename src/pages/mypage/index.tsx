@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import MeetingCard from '@/components/mypage/meeting-card/MeetingCard';
-import { ProfileCard } from '@/components/mypage/profile-card/ProfileCard';
+import { MeetingCard } from '@/components/mypage/meeting-card';
+import { ProfileCard } from '@/components/mypage/profile-card';
 import RootLayout from '@/components/shared/RootLayout';
 import type { Gatherings, User } from '@/types/mypage';
 
@@ -144,10 +144,9 @@ export default function MyPage() {
   // NOTE: 카테고리 선택시 임시 스타일(변경 예정)
   const getButtonClass = (categoryId: string) =>
     categoryId === query.category ? 'flex-1 py-[6px] border-b-2 border-blue-800' : 'flex-1 hover:text-gray-500 text-blue-400 py-[6px] border-blue-100';
-
   return (
     <RootLayout>
-      <div className="flex flex-col justify-center gap-4 px-4 pt-[60px] tablet:px-6 pc:px-[102px]">
+      <div className="flex flex-col justify-center gap-4 px-4 pt-[60px]">
         <div className="m-auto min-w-[343px] duration-100 tablet:min-w-[696px] pc:min-w-[996px]">
           <h1 className="text-lg font-semibold tablet:text-2xl pc:text-2xl">마이 페이지</h1>
           <ProfileCard userData={Data} />
@@ -170,9 +169,7 @@ export default function MyPage() {
           </div>
           <div className="px-1">
             {date.gatheringList.map((data, i) => (
-              <div key={i} className="border-b-2 border-dashed border-gray-50 py-1">
-                <MeetingCard MeetingData={data} />
-              </div>
+              <MeetingCard key={i} MeetingData={data} />
             ))}
           </div>
         </div>
