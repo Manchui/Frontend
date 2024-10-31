@@ -19,6 +19,11 @@ export type Gatherings = {
   totalPage: number;
 };
 
+export type Reviewable = {
+  reviewableCount: 2;
+  reviewableList: ReviewableList[];
+};
+
 export type GatheringList = {
   category: string;
   createdAt: string;
@@ -28,7 +33,7 @@ export type GatheringList = {
   gatheringId: number;
   gatheringImage: string;
   groupName: string;
-  isCancled: boolean;
+  isCanceled: boolean;
   isClosed: boolean;
   isDeleted?: boolean | null;
   isHearted: boolean;
@@ -36,5 +41,17 @@ export type GatheringList = {
   location: string;
   maxUsers: number;
   participantUsers: number;
+  updatedAt: string;
+};
+
+export type ReviewableList = {
+  category: string;
+  createdAt: string;
+  gatheringDate: string;
+  gatheringId: number;
+  gatheringImage: string;
+  groupName: string;
+  location: string;
+  score: number;
   updatedAt: string;
 };

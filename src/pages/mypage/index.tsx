@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import MeetingCard from '@/components/mypage/meeting-card/MeetingCard';
 import { ProfileCard } from '@/components/mypage/profile-card/ProfileCard';
+import { ReviewableCard } from '@/components/mypage/reviewable-card/ReviewableCard';
 import RootLayout from '@/components/shared/RootLayout';
 import type { Gatherings, User } from '@/types/mypage';
 
@@ -22,12 +23,12 @@ const MeetingData: Gatherings = {
       category: '개발',
       location: '홍대입구',
       gatheringImage: '/images/buddah-login.png',
-      gatheringDate: '2024-10-24 19:30:00', // 모임 날짜
+      gatheringDate: '2024-10-31 19:30:00', // 모임 날짜
       dueDate: '2024-10-22 23:59:59', // 마감
       maxUsers: 10,
       participantUsers: 2,
-      isOpened: false,
-      isCancled: false,
+      isOpened: true,
+      isCanceled: false,
       isClosed: false,
       createdAt: '2024-10-16 14:36:31', // 모임 생성일
       updatedAt: '2024-10-16 14:36:31', // 업데이트 날짜
@@ -55,7 +56,7 @@ const MyGatherData: Gatherings = {
       maxUsers: 10,
       participantUsers: 2,
       isOpened: false,
-      isCancled: false,
+      isCanceled: false,
       isClosed: false,
       createdAt: '2024-10-16 14:36:31',
       updatedAt: '2024-10-16 14:36:31',
@@ -82,7 +83,7 @@ const MyMakeData: Gatherings = {
       maxUsers: 10,
       participantUsers: 2,
       isOpened: false,
-      isCancled: false,
+      isCanceled: false,
       isClosed: false,
       createdAt: '2024-10-16 14:36:31',
       updatedAt: '2024-10-16 14:36:31',
@@ -134,7 +135,7 @@ export default function MyPage() {
           <ProfileCard userData={Data} />
         </div>
         <div className="m-auto flex min-w-[343px] flex-col duration-100 tablet:min-w-[696px] pc:min-w-[996px]">
-          <div className="flex items-center justify-between text-sm font-semibold tablet:text-lg pc:text-lg">
+          <div className="flex select-none items-center justify-between text-sm font-semibold tablet:text-lg pc:text-lg">
             {Object.keys(categories).map((item) => (
               <button
                 key={item}
@@ -150,7 +151,10 @@ export default function MyPage() {
             ))}
           </div>
           {date.gatheringList.map((data, i) => (
-            <MeetingCard key={i} MeetingData={data} />
+            <>
+              <MeetingCard key={i} MeetingData={data} />
+              <ReviewableCard />
+            </>
           ))}
         </div>
       </div>
