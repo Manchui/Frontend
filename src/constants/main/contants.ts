@@ -1,12 +1,5 @@
 export const REGION_DATA = ['건대 입구', '을지로 3가', '신림', '홍대 입구', '성수', '여의도', '강남', '영등포', '잠실', '이태원'];
 
-export const DATES = new Date('2024-11-03 20:10');
-
-export const minUsers = 10;
-export const maxUsers = 20;
-
-export const closed = false;
-
 export const FILTER_OPTIONS = [
   { id: 'all', label: '전체', icon: '/icons/main/all.svg' },
   { id: 'health', label: '운동', icon: '/icons/main/health.svg' },

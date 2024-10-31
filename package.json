@@ -11,7 +11,8 @@
     "format": "prettier --cache --write .",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "npx chromatic --project-token=chpt_7c63d99a915fab5"
+    "chromatic": "npx chromatic --project-token=chpt_7c63d99a915fab5",
+    "dev:db": "json-server src/data/main.json --port=8888"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.59.16",

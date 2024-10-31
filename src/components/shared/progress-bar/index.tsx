@@ -64,7 +64,7 @@ export function ProgressBar({ maxValue, value, design, mainValue = 0, imgLength 
           <div className={cx('h-2 w-full rounded-full', getContainerClass())}>
             <div
               className={cx('h-2 rounded-full transition-all duration-1000 ease-out', {
-                'bg-gray-200': design === 'basics' && isFull,
+                '!bg-gray-900': design === 'basics' && isFull,
                 [getBarClass()]: !((design === 'basics' && isFull) || closed),
               })}
               style={{ width: `${width}%` }}

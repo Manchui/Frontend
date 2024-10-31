@@ -7,17 +7,21 @@ import Image from 'next/image';
 import type SwiperCore from 'swiper';
 import { Autoplay, EffectCreative, Navigation, Pagination, Thumbs, Virtual } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import type { Main } from '@/types/main/types';
 
 interface MainCarouselProps {
-  images: string[];
+  mainData: Main;
 }
 
-export default function MainCarousel({ images }: MainCarouselProps) {
+export default function MainCarousel({ mainData }: MainCarouselProps) {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperCore | null>(null);
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
+
+  // 캐러셀 이미지 데이터 변수
+  const images = mainData?.data?.gatheringList.map((gathering) => gathering.gatheringImage) || [];
 
   return (
     <main className="relative min-w-[320px] bg-background pt-[70px]">

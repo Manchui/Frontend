@@ -23,6 +23,7 @@ export interface GatheringListData {
   hearted: boolean;
   location: string;
   maxUsers: number;
+  minUsers: number;
   name: string;
   opened: boolean;
   profileImage: string;
