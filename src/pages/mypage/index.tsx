@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import MeetingCard from '@/components/mypage/meeting-card/MeetingCard';
 import { ProfileCard } from '@/components/mypage/profile-card/ProfileCard';
-import { ReviewableCard } from '@/components/mypage/reviewable-card/ReviewableCard';
 import RootLayout from '@/components/shared/RootLayout';
 import type { Gatherings, User } from '@/types/mypage';
 
@@ -22,7 +21,26 @@ const MeetingData: Gatherings = {
       groupName: '모각코해요오오오오오오오오오오오',
       category: '개발',
       location: '홍대입구',
-      gatheringImage: '/images/buddah-login.png',
+      gatheringImage: '/images/test-detail.png',
+      gatheringDate: '2024-10-31 19:30:00', // 모임 날짜
+      dueDate: '2024-10-22 23:59:59', // 마감
+      maxUsers: 10,
+      participantUsers: 2,
+      isOpened: true,
+      isCanceled: false,
+      isClosed: false,
+      createdAt: '2024-10-16 14:36:31', // 모임 생성일
+      updatedAt: '2024-10-16 14:36:31', // 업데이트 날짜
+      deletedAt: null,
+      isDeleted: false,
+      isHearted: true,
+    },
+    {
+      gatheringId: 2,
+      groupName: '모각코해요',
+      category: '개발',
+      location: '홍대입구',
+      gatheringImage: '/images/test-detail.png',
       gatheringDate: '2024-10-31 19:30:00', // 모임 날짜
       dueDate: '2024-10-22 23:59:59', // 마감
       maxUsers: 10,
@@ -50,7 +68,7 @@ const MyGatherData: Gatherings = {
       groupName: '또잉',
       category: '개발',
       location: '홍대입구',
-      gatheringImage: '/images/buddah-login.png',
+      gatheringImage: '/images/test-detail.png',
       gatheringDate: '2024-10-24 19:30:00',
       dueDate: '2024-10-22 23:59:59',
       maxUsers: 10,
@@ -77,7 +95,7 @@ const MyMakeData: Gatherings = {
       groupName: 'make',
       category: '개발',
       location: '홍대입구',
-      gatheringImage: '/images/buddah-login.png',
+      gatheringImage: '/images/test-detail.png',
       gatheringDate: '2024-10-24 19:30:00',
       dueDate: '2024-10-22 23:59:59',
       maxUsers: 10,
@@ -125,7 +143,7 @@ export default function MyPage() {
 
   // NOTE: 카테고리 선택시 임시 스타일(변경 예정)
   const getButtonClass = (categoryId: string) =>
-    categoryId === query.category ? 'flex-1 py-[6px] border-b-2 border-blue-800' : 'flex-1 hover:text-gray-500 text-blue-400 py-[6px]';
+    categoryId === query.category ? 'flex-1 py-[6px] border-b-2 border-blue-800' : 'flex-1 hover:text-gray-500 text-blue-400 py-[6px] border-blue-100';
 
   return (
     <RootLayout>
@@ -143,19 +161,20 @@ export default function MyPage() {
                   setDate(categories[item]);
                   handleCategoryChange(item);
                 }}
-                className={getButtonClass(item)}
+                className={`border-b-2 ${getButtonClass(item)}`}
                 type="button"
               >
                 {item}
               </button>
             ))}
           </div>
-          {date.gatheringList.map((data, i) => (
-            <>
-              <MeetingCard key={i} MeetingData={data} />
-              <ReviewableCard />
-            </>
-          ))}
+          <div className="px-1">
+            {date.gatheringList.map((data, i) => (
+              <div key={i} className="border-b-2 border-dashed border-gray-50 py-1">
+                <MeetingCard MeetingData={data} />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </RootLayout>
