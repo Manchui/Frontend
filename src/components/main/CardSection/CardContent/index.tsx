@@ -20,10 +20,13 @@ export default function CardContent({ gathering }: CardContentProps) {
 
       // API 요청
       await instance.put(`http://localhost:8888/gatheringList/${gathering.gatheringId}`, { ...gathering, hearted: !hearted });
-      console.log(`hearted: ${!hearted}`);
-    } catch (error) {
-      console.error('API 요청에 실패했습니다:', error);
+      // console.log(`hearted: ${!hearted}`);
+    } finally {
+      //
     }
+    // catch (error) {
+    //   console.error('API 요청에 실패했습니다:', error);
+    // }
   };
 
   // const toggleHeart = async () => {

@@ -52,12 +52,15 @@ export const getServerSideProps: GetServerSideProps = async () => {
         mainData: res.data,
       },
     };
-  } catch (e) {
-    console.error('Failed to fetch data:', e);
-    return {
-      props: {
-        mainData: null, // 데이터를 가져오지 못했을 때 처리
-      },
-    };
+  } finally {
+    //
   }
+  // catch (e) {
+  //   console.error('Failed to fetch data:', e);
+  //   return {
+  //     props: {
+  //       mainData: null, // 데이터를 가져오지 못했을 때 처리
+  //     },
+  //   };
+  // }
 };
