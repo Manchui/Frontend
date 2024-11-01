@@ -29,7 +29,8 @@
     "react-toastify": "^10.0.6",
     "save-dev": "^0.0.1-security",
     "swiper": "^11.1.14",
-    "tailwind-merge": "^2.5.4"
+    "tailwind-merge": "^2.5.4",
+    "zustand": "^5.0.1"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "1.9.0",
