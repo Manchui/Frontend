@@ -146,12 +146,10 @@ export default function MyPage() {
     categoryId === query.category ? 'flex-1 py-[6px] border-b-2 border-blue-800' : 'flex-1 hover:text-gray-500 text-blue-400 py-[6px] border-blue-100';
   return (
     <RootLayout>
-      <div className="flex flex-col justify-center gap-4 px-4 pt-[60px]">
-        <div className="m-auto min-w-[343px] duration-100 tablet:min-w-[696px] pc:min-w-[996px]">
-          <h1 className="text-lg font-semibold tablet:text-2xl pc:text-2xl">마이 페이지</h1>
-          <ProfileCard userData={Data} />
-        </div>
-        <div className="m-auto flex min-w-[343px] flex-col duration-100 tablet:min-w-[696px] pc:min-w-[996px]">
+      <div className="m-auto px-4 pt-[60px] duration-100 mobile:px-10 tablet:max-w-[996px] pc:max-w-[996px]">
+        <h1 className="text-lg font-semibold tablet:text-2xl pc:text-2xl">마이 페이지</h1>
+        <ProfileCard userData={Data} />
+        <div className="flex flex-col">
           <div className="flex select-none items-center justify-between text-sm font-semibold tablet:text-lg pc:text-lg">
             {Object.keys(categories).map((item) => (
               <button
