@@ -10,7 +10,7 @@ const Data: User = {
   id: 'UUID',
   email: 'aaaa@gmail.com',
   name: 'hhihih',
-  image: '/images/together-findpage-default.png',
+  image: '/images/together-findpage-large.png',
 };
 // TODO: 나의 모임 목록 카드 데이터 0
 const MeetingData: Gatherings = {
@@ -143,35 +143,38 @@ export default function MyPage() {
 
   // NOTE: 카테고리 선택시 임시 스타일(변경 예정)
   const getButtonClass = (categoryId: string) =>
-    categoryId === query.category ? 'flex-1 py-[6px] border-b-2 border-blue-800' : 'flex-1 hover:text-gray-500 text-blue-400 py-[6px] border-blue-100';
+    categoryId === query.category ? 'flex-1 py-1.5 border-b-2 border-blue-800' : 'flex-1 hover:text-gray-500 text-blue-400 py-1.5 border-blue-100';
+
   return (
-    <RootLayout>
-      <div className="m-auto px-4 pt-[60px] duration-100 mobile:px-10 tablet:max-w-[996px] pc:max-w-[996px]">
-        <h1 className="text-lg font-semibold tablet:text-2xl pc:text-2xl">마이 페이지</h1>
-        <ProfileCard userData={Data} />
-        <div className="flex flex-col">
-          <div className="flex select-none items-center justify-between text-sm font-semibold tablet:text-lg pc:text-lg">
-            {Object.keys(categories).map((item) => (
-              <button
-                key={item}
-                onClick={() => {
-                  setDate(categories[item]);
-                  handleCategoryChange(item);
-                }}
-                className={`border-b-2 ${getButtonClass(item)}`}
-                type="button"
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-          <div className="px-1">
-            {date.gatheringList.map((data, i) => (
-              <MeetingCard key={i} MeetingData={data} />
-            ))}
+    <div>
+      <div className="mt-[60px] h-[155px] bg-blue-800 text-lg font-semibold text-white duration-100 tablet:h-[249px] tablet:text-2xl pc:h-[302px] pc:text-2xl" />
+      <RootLayout>
+        <div className="m-auto flex flex-col gap-8 px-4 duration-100 mobile:px-10 tablet:max-w-[996px] tablet:gap-10 pc:max-w-[996px] pc:gap-14">
+          <ProfileCard userData={Data} />
+          <div className="flex flex-col">
+            <div className="flex select-none items-center justify-between text-sm font-semibold tablet:text-lg pc:text-lg">
+              {Object.keys(categories).map((item) => (
+                <button
+                  key={item}
+                  onClick={() => {
+                    setDate(categories[item]);
+                    handleCategoryChange(item);
+                  }}
+                  className={`border-b-2 ${getButtonClass(item)}`}
+                  type="button"
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+            <div className="px-1">
+              {date.gatheringList.map((data, i) => (
+                <MeetingCard key={i} MeetingData={data} />
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    </RootLayout>
+      </RootLayout>
+    </div>
   );
 }
