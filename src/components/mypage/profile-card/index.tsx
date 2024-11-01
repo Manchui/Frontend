@@ -9,11 +9,18 @@ export function ProfileCard({ userData }: { userData: User }) {
 
   return (
     <div className="relative m-auto h-auto w-full rounded-3xl p-2.5 tablet:p-4 pc:p-5">
-      <div className="absolute left-[4%] top-[-40%] rounded-full bg-white p-1 tablet:left-[6%] pc:left-[8.5%]">
-        <Image className="size-[60px] md:size-[90px]" src={userData.image} alt="프로필 이미지" width={70} height={70} style={{ objectFit: 'cover' }} />
+      <div className="absolute left-[4%] top-[-40%] rounded-full bg-white p-1 phablet:left-[7%] tablet:left-[6%] pc:left-[8.5%]">
+        <Image
+          className="size-[60px] phablet:size-[70px] md:size-[90px]"
+          src={userData.image}
+          alt="프로필 이미지"
+          width={70}
+          height={70}
+          style={{ objectFit: 'cover' }}
+        />
       </div>
       <div className="flex">
-        <div className="m-2 size-1/6" />
+        <div className="m-2 size-1/6 phablet:size-1/5 tablet:size-1/6" />
         <div className="flex flex-1 justify-between">
           <div className="flex flex-col gap-1 tablet:gap-2 pc:gap-2">
             <div className="text-16-20-response font-semibold">{userData.name}</div>

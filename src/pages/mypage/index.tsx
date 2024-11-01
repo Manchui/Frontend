@@ -170,8 +170,7 @@ export default function MyPage() {
                 </button>
               ))}
             </div>
-            {/* phablet:grid-cols-2 grid grid-cols-1  tablet:grid-cols-1 pc:grid-cols-1 */}
-            <div className="px-1">
+            <div className="grid grid-cols-1 px-1 phablet:grid-cols-2 tablet:grid-cols-1 pc:grid-cols-1">
               {date.gatheringList.map((data, i) => (
                 <MeetingCard key={i} MeetingData={data} />
               ))}
