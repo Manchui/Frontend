@@ -1,0 +1,11 @@
+.swiper-pagination-bullet {
+  width: 7px !important;
+  height: 7px !important;
+  background-color: darkgray !important;
+  opacity: 0.4 !important;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: aliceblue !important;
+  opacity: 100 !important;
+}

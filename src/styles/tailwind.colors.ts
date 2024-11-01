@@ -3,7 +3,8 @@ const colors = {
   white: '#ffffff',
   error: '#DC2626',
   ocean: '#3369FF',
-  background: '#F5F5F5',
+  background: '#F9FAFB',
+  full: '#F5BF08',
   primary: {
     50: '#FEF5D7',
     100: '#FCE9A6',
