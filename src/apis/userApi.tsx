@@ -1,29 +1,38 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import instance from '@/apis/api';
 
 interface UserInfo {
-  id: string;
-  image: string;
-  name: string;
+  data: {
+    email: string;
+    id: string;
+    image: string;
+    name: string;
+  };
 }
 
-export const getUserInfo = async (accessToken: string): Promise<UserInfo> => {
+export const getUserInfo = async (accessToken: string) => {
   try {
-    const res = await instance.get<UserInfo>('http://localhost:3010/user', {
+    const res = await instance.get<UserInfo>('/api/auths/user', {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: accessToken,
       },
     });
-    return res.data;
+    return { res:res.data.data, result: true };
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(error);
-    return { id: '', image: '', name: '' };
+    return {error, result: false};
   }
 };
 
-export const logout = async () => {
+export const logout = () => {
   try {
-    await instance.post('http://localhost:3011/logout');
+    // 403 에러 해결 시 주석 해제
+    // await instance.post('/api/auths/signout', {
+    //   headers: {
+    //     Authorization: localStorage.getItem('accessToken'),
+    //   }
+    // });
+
     localStorage.removeItem('accessToken');
     document.cookie = 'refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     window.location.reload();
