@@ -1,3 +1,4 @@
+/* eslint-disable tailwindcss/no-custom-classname */
 import { useState } from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
@@ -26,6 +27,7 @@ export default function Calendar({ selectionType, onDateChange }: CalendarProps)
 
   const handleDateSelection = (date: string) => {
     if (selectionType === 'single') {
+      // 단일 날짜 선택 모드
       if (selectedDate === date) {
         setSelectedDate(null);
         onDateChange({ selectedDate: undefined });
@@ -36,8 +38,9 @@ export default function Calendar({ selectionType, onDateChange }: CalendarProps)
     } else if (selectionType === 'range') {
       if (!rangeStart) {
         setRangeStart(date);
+        setRangeEnd(null);
         onDateChange({ rangeStart: date, rangeEnd: undefined });
-      } else if (rangeStart && !rangeEnd && date >= rangeStart) {
+      } else if (!rangeEnd && date > rangeStart) {
         setRangeEnd(date);
         onDateChange({ rangeStart, rangeEnd: date });
       } else {
@@ -61,7 +64,7 @@ export default function Calendar({ selectionType, onDateChange }: CalendarProps)
     <div className="mx-auto size-[250px]">
       <div className="flex items-center justify-between">
         <div className="relative flex w-full items-center justify-between">
-          <span onClick={() => setDropOpen(!dropOpen)} className="flex cursor-pointer items-center gap-1 text-sm font-semibold text-gray-700">
+          <span onClick={() => setDropOpen(!dropOpen)} className="text-13-15-response flex cursor-pointer items-center gap-1 font-semibold text-gray-700">
             {currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월{' '}
             <Image src="./icons/down-arrow.svg" alt="down arrow" width={18} height={18} className={`duration-300 ${dropOpen ? 'rotate-180' : 'rotate-0'}`} />
           </span>
