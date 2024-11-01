@@ -7,7 +7,7 @@ export default function RegionDropdown() {
 
   // const handleRegionSelect = (region: string) => {
   //   // 지역 필터
-  //   // console.log('선택된 지역:', region);
+  //   console.log('선택된 지역:', region);
   //   setRegionDropOpen(false);
   // };
 

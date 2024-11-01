@@ -193,7 +193,7 @@
   },
   "gatheringList": [
     {
-      "id": "1",
+      "gatheringId": 1,
       "name": "hi",
       "profileImage": "/icons/main/0.jpg",
       "groupName": "모각코해요1",
@@ -210,7 +210,8 @@
       "createdAt": "2024-10-16 14:36:31",
       "updatedAt": "2024-10-16 14:36:31",
       "deletedAt": null,
-      "hearted": false
+      "hearted": true,
+      "id": "1"
     },
     {
       "gatheringId": 2,
@@ -234,7 +235,7 @@
       "id": "2"
     },
     {
-      "id": "3",
+      "gatheringId": 3,
       "name": "hi2",
       "profileImage": "/icons/main/2.jpg",
       "groupName": "모각코해요3",
@@ -251,7 +252,8 @@
       "createdAt": "2024-10-16 14:36:31",
       "updatedAt": "2024-10-16 14:36:31",
       "deletedAt": null,
-      "hearted": false
+      "hearted": true,
+      "id": "3"
     },
     {
       "id": "4",
@@ -274,7 +276,7 @@
       "hearted": false
     },
     {
-      "id": "5",
+      "gatheringId": 5,
       "name": "hi2",
       "profileImage": "/icons/main/4.jpg",
       "groupName": "모각코해요5",
@@ -291,10 +293,11 @@
       "createdAt": "2024-10-16 14:36:31",
       "updatedAt": "2024-10-16 14:36:31",
       "deletedAt": null,
-      "hearted": false
+      "hearted": false,
+      "id": "5"
     },
     {
-      "id": "6",
+      "gatheringId": 6,
       "name": "hi2",
       "profileImage": "/icons/main/5.jpg",
       "groupName": "모각코해요6",
@@ -311,7 +314,8 @@
       "createdAt": "2024-10-16 14:36:31",
       "updatedAt": "2024-10-16 14:36:31",
       "deletedAt": null,
-      "hearted": false
+      "hearted": true,
+      "id": "6"
     },
     {
       "id": "7",

@@ -1,26 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { getUserInfo } from '@/apis/userApi';
 import Drawer from '@/components/Drawer';
 import Toggle from '@/components/shared/GNB/Toggle';
 
-interface GnbProps {
-  isLoggedIn?: boolean; // boolean 타입 선언
-  user: {
-    email: string | null;
-    id: string | null;
-    img: string;
-    nick: string | null;
-  };
-}
+export default function GNB() {
+  const [user, setUser] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-export default function GNB({ user, isLoggedIn }: GnbProps) {
   const router = useRouter();
 
+  useEffect(() => {
+    const axiosUserData = async () => {
+      const accessToken: string | null = localStorage.getItem('accessToken');
+      if (accessToken) {
+        const userData = await getUserInfo(accessToken);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        setUser(userData);
+        if (userData) {
+          setIsLoggedIn(true);
+          setIsLoading(false);
+        } else {
+          setIsLoading(false);
+        }
+      }
+      setIsLoading(false);
+    };
+
+    void axiosUserData();
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <nav className="fixed top-0 z-[9999] flex h-[60px] w-full items-center justify-between border-b border-gray-100 bg-white px-4 tablet:px-6 pc:px-10">
+    <nav className="fixed top-0 z-[9998] flex h-[60px] w-full items-center justify-between border-b border-gray-100 bg-white px-4 tablet:px-6 pc:px-10">
       <div className="absolute left-1/2 -translate-x-1/2 transform">
         <Link href="/">
           <Image src="/logo/logo.png" alt="로고" width={73} height={35} />
