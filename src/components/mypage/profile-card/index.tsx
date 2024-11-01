@@ -8,35 +8,51 @@ export function ProfileCard({ userData }: { userData: User }) {
   const { isOpen, openModal, closeModal } = useModal();
 
   return (
-    <div className="relative m-auto h-auto w-full rounded-3xl p-5">
-      <div className="absolute -top-1/4 right-3/4 rounded-full bg-white p-1 tablet:-top-1/3 pc:-top-1/3">
-        <Image src={userData.image} alt="프로필 이미지" width={100} height={100} style={{ objectFit: 'cover' }} />
+    <div className="relative m-auto h-auto w-full rounded-3xl p-2.5 tablet:p-4 pc:p-5">
+      <div className="absolute -top-[40%] left-[4%] rounded-full bg-white p-1 tablet:left-[6%] pc:left-[8.5%]">
+        <Image
+          className="h-[60px] w-[60px] md:h-[90px] md:w-[90px]"
+          src={userData.image}
+          alt="프로필 이미지"
+          width={70}
+          height={70}
+          style={{ objectFit: 'cover' }}
+        />
       </div>
-      <div className="flex justify-between">
-        <div className="flex flex-col gap-1 tablet:gap-2 pc:gap-2">
-          <div className="text-base font-semibold tablet:text-lg pc:text-lg">{userData.name}</div>
-          <div className="space-y-0.5 text-xs text-gray-400 tablet:text-sm pc:text-sm">
-            <div>이메일: {userData.email}</div>
-            <div>가입날짜: {userData.email}</div>
+      <div className="flex">
+        <div className="m-2 h-1/6 w-1/6" />
+        <div className="flex flex-1 justify-between">
+          <div className="flex flex-col gap-1 tablet:gap-2 pc:gap-2">
+            <div className="text-16-20-response font-semibold">{userData.name}</div>
+            <div className="space-y-0.5 text-13-15-response text-gray-400">
+              <div>이메일: {userData.email}</div>
+              <div>가입날짜: {userData.createdAt}</div>
+            </div>
           </div>
-        </div>
-        <div>
-          <button
-            className="rounded-full bg-blue-800 px-2 py-1 text-xs text-white duration-200 hover:scale-[1.02] active:scale-[0.9] md:px-7 md:py-1.5 md:text-sm"
-            type="button"
-            onClick={openModal}
+          <div>
+            <button
+              className="rounded-full bg-blue-800 px-2 py-1 text-xs text-white duration-200 hover:scale-[1.02] active:scale-[0.9] md:px-7 md:py-1.5 md:text-sm"
+              type="button"
+              onClick={openModal}
+            >
+              수정하기
+            </button>
+          </div>
+          <Modal
+            buttons={[
+              { label: '취소', onClick: () => closeModal },
+              { label: '수정하기', onClick: () => closeModal },
+            ]}
+            isOpen={isOpen}
+            onClose={closeModal}
           >
-            수정하기
-          </button>
+            <div className="flex flex-col gap-5 px-6 pt-6">
+              <div className="text-2lg font-semibold">프로필 수정하기</div>
+              <Image src={userData.image} alt="프로필 이미지" width={56} height={56} style={{ objectFit: 'cover' }} />
+              <Input type="text" name="nick" />
+            </div>
+          </Modal>
         </div>
-        <Modal buttons={[{ label: '취소', onClick: () => closeModal }]} isOpen={isOpen} onClose={closeModal}>
-          <div className="p-4">
-            <div className="text-lg">프로필 수정하기</div>
-            <Image src={userData.image} alt="프로필 이미지" width={40} height={40} style={{ objectFit: 'cover' }} />
-            <div>{userData.name}</div>
-            <Input type="text" name="nick" />
-          </div>
-        </Modal>
       </div>
     </div>
   );

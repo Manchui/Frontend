@@ -11,6 +11,7 @@ const Data: User = {
   email: 'aaaa@gmail.com',
   name: 'hhihih',
   image: '/images/together-findpage-large.png',
+  createdAt: '2020-10-10',
 };
 // TODO: 나의 모임 목록 카드 데이터 0
 const MeetingData: Gatherings = {
@@ -147,12 +148,14 @@ export default function MyPage() {
 
   return (
     <div>
-      <div className="mt-[60px] h-[155px] bg-blue-800 text-lg font-semibold text-white duration-100 tablet:h-[249px] tablet:text-2xl pc:h-[302px] pc:text-2xl" />
+      <div className="mt-[60px] h-[155px] select-none bg-blue-800 px-11 py-6 text-md font-semibold text-blue-800 duration-100 tablet:h-[249px] tablet:text-2xl pc:h-[302px] pc:text-2xl pc:text-white">
+        마이페이지
+      </div>
       <RootLayout>
-        <div className="m-auto flex flex-col gap-8 px-4 duration-100 mobile:px-10 tablet:max-w-[996px] tablet:gap-10 pc:max-w-[996px] pc:gap-14">
+        <div className="m-auto flex flex-col gap-8 px-4 duration-100 tablet:gap-10 pc:gap-14">
           <ProfileCard userData={Data} />
           <div className="flex flex-col">
-            <div className="flex select-none items-center justify-between text-sm font-semibold tablet:text-lg pc:text-lg">
+            <div className="flex select-none items-center justify-between text-sub-response font-semibold">
               {Object.keys(categories).map((item) => (
                 <button
                   key={item}
@@ -167,6 +170,7 @@ export default function MyPage() {
                 </button>
               ))}
             </div>
+            {/* phablet:grid-cols-2 grid grid-cols-1  tablet:grid-cols-1 pc:grid-cols-1 */}
             <div className="px-1">
               {date.gatheringList.map((data, i) => (
                 <MeetingCard key={i} MeetingData={data} />

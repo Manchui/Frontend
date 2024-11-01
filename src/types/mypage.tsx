@@ -5,6 +5,7 @@ export type Data = {
 };
 
 export type User = {
+  createdAt: string;
   email: string;
   id: string;
   image: string;
