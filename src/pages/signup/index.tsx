@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
@@ -5,6 +6,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import router from 'next/router';
 import instance from '@/apis/api';
 import Carousel from '@/components/Carousel';
 import Input from '@/components/shared/Input';
@@ -52,8 +54,9 @@ export default function SignupPage() {
         password,
         passwordConfirm: passwordCheck,
       });
+      void router.push('/');
     } catch (err: any) {
-      setError(err);
+      setError(err.response.data.message);
     }
   };
 
@@ -75,7 +78,7 @@ export default function SignupPage() {
               <Input type="email" name="id" onChange={(e) => setEmail(e.target.value)} />
               <Input type="password" name="password" onChange={(e) => setPassword(e.target.value)} />
               <Input type="password" name="password_check" passwordToMatch={password} onChange={(e) => setPasswordCheck(e.target.value)} />
-              {error && <p className="mt-1 text-sm text-red-500">회원가입에 실패했습니다. 다시 시도해주세요.</p>}
+              {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
               <button type="submit" className="mt-4 w-full rounded-xl bg-blue-800 py-2 text-lg text-white hover:bg-blue-700">
                 생성하기
               </button>
@@ -113,7 +116,7 @@ export default function SignupPage() {
             <Input type="password" name="password" onChange={(e) => setPassword(e.target.value)} />
             <Input type="password" name="password_check" passwordToMatch={password} onChange={(e) => setPasswordCheck(e.target.value)} />
           </div>
-          {error && <p className="mt-1 text-sm text-red-500">회원가입에 실패했습니다. 다시 시도해주세요.</p>}
+          {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
           <button type="submit" className="mt-4 w-full rounded-xl bg-blue-800 py-2 text-lg text-white hover:bg-blue-700">
             생성하기
           </button>
