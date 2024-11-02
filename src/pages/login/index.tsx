@@ -5,10 +5,12 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import instance from '@/apis/api';
+import { getUserInfo } from '@/apis/userApi';
 import Carousel from '@/components/Carousel';
-// import { useRouter } from 'next/router';
 import Input from '@/components/shared/Input';
+import { userStore } from '@/store/userStore';
 
 /**
  * 로그인 페이지
@@ -21,6 +23,11 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [isDesktop, setIsDesktop] = useState(false);
   const [error, setError] = useState('');
+  const router = useRouter();
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  const login = userStore((state) => state.login);
+  const userUpdate = userStore((state) => state.updateUser);
 
   // 화면 크기에 따라 레이아웃 변경
   useEffect(() => {
@@ -45,12 +52,20 @@ export default function LoginPage() {
     }
 
     try {
-      await instance.post('/api/auths/login', {
+      const res = await instance.post('/api/auths/signin', {
         email,
         password,
       });
+      localStorage.setItem('accessToken', res.headers.authorization);
+      const userData = await getUserInfo(res.headers.authorization);
+      if (userData.res) {
+        userUpdate(userData.res);
+      }
+      login();
+      void router.push('/');
     } catch (err: any) {
-      setError(err);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      setError(err.response.data.message);
     }
   };
 
@@ -65,14 +80,14 @@ export default function LoginPage() {
             <form onSubmit={handleLogin} className="flex w-[500px] flex-col space-y-4">
               <Input type="email" name="id" onChange={(e) => setEmail(e.target.value)} />
               <Input type="password" name="password" onChange={(e) => setPassword(e.target.value)} />
-              {error && <p className="mt-1 text-sm text-red-500">로그인에 실패했습니다. 다시 시도해주세요.</p>}
+              {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
               <button type="submit" className="mt-4 w-full rounded-xl bg-blue-800 py-2 text-lg text-white hover:bg-blue-700">
                 로그인
               </button>
             </form>
             <p className="m-auto mt-4 text-sm">
               이미 회원이신가요?{' '}
-              <Link href="/login" className="text-gray-400 underline hover:text-primary-400">
+              <Link href="/signup" className="text-gray-400 underline hover:text-primary-400">
                 회원가입
               </Link>
             </p>
@@ -96,13 +111,13 @@ export default function LoginPage() {
             <Input type="email" name="id" onChange={(e) => setEmail(e.target.value)} />
             <Input type="password" name="password" onChange={(e) => setPassword(e.target.value)} />
           </div>
-          {error && <p className="mt-1 text-sm text-red-500">로그인에 실패했습니다. 다시 시도해주세요.</p>}
+            {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
           <button type="submit" className="mt-4 w-full rounded-xl bg-blue-800 py-2 text-lg text-white hover:bg-blue-700">
             로그인
           </button>
           <p className="mt-4 text-center text-sm mobile:text-base">
             이미 회원이신가요?{' '}
-            <Link href="/login" className="text-gray-400 underline hover:text-primary-400">
+            <Link href="/signup" className="text-gray-400 underline hover:text-primary-400">
               회원가입
             </Link>
           </p>
