@@ -1,21 +1,26 @@
-/* eslint-disable radix */
-/* eslint-disable no-alert */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
-import { useEffect, useRef, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable radix */
+
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import clsx from 'clsx';
-import Image from 'next/image';
+import instance from '@/apis/api';
+import { CapacityDropdown } from '@/components/Create/CapacityDropdown';
+import { CategoryDropdown } from '@/components/Create/CategoryDropdown';
+import { DescriptionInput } from '@/components/Create/DescriptionInput';
+import { GroupNameInput } from '@/components/Create/GroupNameInput';
+import ImageUploader from '@/components/Create/ImageUploader';
+import { LocationDropdown } from '@/components/Create/LocationDropdown';
 import Calendar from '@/components/shared/Calendar';
-import LongDropdown from '@/components/shared/Dropdown/LongDropdown';
+import { Toast } from '@/components/shared/Toast';
 
+type TimeChip = {
+  disable: boolean;
+  time: number;
+};
 
-
-const API_BASE_URL = axios.create({
-  baseURL: 'http://localhost:3001/create', // 테스트
-});
 export default function CreatePage() {
   const [name, setName] = useState<string | null>(null);
   const [description, setDescription] = useState<string | null>(null);
@@ -24,97 +29,82 @@ export default function CreatePage() {
   const [selectedMinNum, setSelectedMinNum] = useState<string | null>(null);
   const [selectedMaxNum, setSelectedMaxNum] = useState<string | null>(null);
   const [selectedDates, setSelectedDates] = useState<{
-    selectedDate?: string | null;
+    selectedDate?: string | null; // 검사 날짜 추가
   }>({});
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [timeChips, setTimeChips] = useState<TimeChip[]>([...Array.from({ length: 10 }, (_, i) => ({ time: 9 + i, disable: true }))]);
+  const exampleCurrentDate = new Date();
+
   const [isChipEnabled, setIsChipEnabled] = useState(false);
 
-  const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-  
-  const [formData, setFormData] = useState<any>({});
 
-  const category = ['운동', '영화', '공부', '문화/예술', '게임', '여행', '맛집', '음악'];
-  const location = ['건대 입구', '을지로 3가', '신림', '홍대 입구', '성수', '여의도', '강남', '영등포', '잠실', '이태원'];
-  const Num = Array.from({ length: 99 }).map((_, index) => (index + 2).toString());
-  const currentTime = new Date();
+  const [error, setError] = useState('');
 
-  const handleDateApply = () => {
-    const selectedDateObj = selectedDates.selectedDate && new Date(selectedDates.selectedDate);
-    if (selectedDateObj && selectedDateObj > currentTime) {
-      setIsChipEnabled(true);
-    } else {
-      
-      alert('모임 생성은 최소 2일전부터 생성이 가능합니다.');
-      setSelectedDates({ selectedDate: null });
-      setIsChipEnabled(false);
-    }
-  };
-
+  // 날짜 초기화 함수
   const handleDateReset = () => {
     setSelectedDates({ selectedDate: null });
-    setSelectedTime(null);
-    setIsChipEnabled(false);
+    setSelectedTime('');
+    setTimeChips((prevChips) => prevChips.map((chip) => ({ ...chip, disable: true })));
   };
 
+  // 시간 선택 함수 - 단일 선택
   const handleTimeSelect = (time: string) => {
-    if (isChipEnabled) setSelectedTime(time);
+    setSelectedTime(time);
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0] || null;
-    if (file) {
-      setSelectedImage(file);
-      setPreviewImage(URL.createObjectURL(file));
+  const handleDateApply = () => {
+    if (!selectedDates.selectedDate) return;
+
+    const selectedDate = new Date(selectedDates.selectedDate);
+    const hoursLater29 = new Date(exampleCurrentDate.getTime() + 29 * 60 * 60 * 1000);
+    const nextDay = new Date(exampleCurrentDate);
+    nextDay.setDate(nextDay.getDate() + 1);
+
+    // 29시간 후가 같은 날에 있다면, 그 이후로 활성화
+    if (selectedDate.toDateString() === hoursLater29.toDateString() && hoursLater29.getHours() < 18) {
+      setTimeChips((prevChips) =>
+        prevChips.map((chip) => ({
+          ...chip,
+          disable: chip.time <= hoursLater29.getHours(),
+        })),
+      );
+    }
+
+    // 29시간 후가 오후 6시 이후일 경우: 날짜 초기화 및 에러 표시
+    else if (
+      (selectedDate.toDateString() === hoursLater29.toDateString() && hoursLater29.getHours() >= 18) ||
+      (selectedDate.toDateString() === nextDay.toDateString() && exampleCurrentDate.getHours() >= 19)
+    ) {
+      Toast('error', '모임 생성은 이틀뒤부터 가능합니다.');
+
+      handleDateReset();
+    }
+    // 29시간 후가 다음날 9시 이전이면 해당 날짜의 모든 시간대를 활성화
+    else if (selectedDate > hoursLater29 || hoursLater29.getHours() < 9) {
+      setTimeChips((prevChips) => prevChips.map((chip) => ({ ...chip, disable: false })));
+    } else {
+      setTimeChips((prevChips) => prevChips.map((chip) => ({ ...chip, disable: true })));
     }
   };
 
-  const handleButtonClick = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleMinChange = (value: string) => setSelectedMinNum(value);
-  const handleMaxChange = (value: string) => setSelectedMaxNum(value);
-  // 이미지 삭제 핸들러
-  // const handleImageRemove = () => {
-  //   setSelectedImage(null);
-  //   setPreviewImage(null);
-  //   if (fileInputRef.current) fileInputRef.current.value = '';
-  // };
-  useEffect(() => {
-    setFormData({
-      groupName: name,
-      gatheringContent: description,
-      category: selectedCategory,
-      location: selectedLocation,
-      minUsers: 1, 
-      maxUsers: 1, 
-      gatheringDate: selectedDates.selectedDate,
-      time: selectedTime,
-      gatheringImage: selectedImage,
-    });
-  }, [name, description, selectedCategory, selectedLocation, selectedMinNum, selectedMaxNum, selectedDates, selectedTime, selectedImage]);
-
-  const handleSubmit = async (): Promise<void> => {
+  const handleSubmit = async () => {
     const data = new FormData();
-    let formattedDateTime = ''; 
-    
+    let formattedDateTime = '';
+
     // 날짜와 시간 결합
     if (selectedDates.selectedDate && selectedTime) {
       formattedDateTime = `${selectedDates.selectedDate} ${selectedTime}:00`;
     }
 
-  
     data.append('groupName', name || ''); // 텍스트 값
     data.append('gatheringContent', description || ''); // 텍스트 값
     data.append('category', selectedCategory || ''); // 텍스트 값
     data.append('location', selectedLocation || ''); // 텍스트 값
-    
-    data.append('minUsers', JSON.stringify(5)); // 숫자 값
-    data.append('maxUsers', JSON.stringify(5)); // 숫자 값
-    data.append('gatheringDate', formattedDateTime); // 텍스트 값
 
+    data.append('minUsers', JSON.stringify(Number(selectedMinNum))); // 숫자 값
+    data.append('maxUsers', JSON.stringify(Number(selectedMaxNum))); // 숫자 값
+    data.append('gatheringDate', formattedDateTime); // 텍스트 값
 
     // 이미지 파일 추가
     if (selectedImage) {
@@ -130,25 +120,18 @@ export default function CreatePage() {
     //   }),
     // };
 
-
     try {
-      await axios.post('http://13.125.48.255:8080/api/gathering', data, {
+      await instance.post('/api/gathering', data, {
         headers: {
-            // 'Content-Type': 'multipart/form-data',
-            // 자동으로 form-data 설정됨
+          // 'Content-Type': 'multipart/form-data',
+          // 자동으로 form-data 설정됨
         },
-      
       });
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error('등록 실패:', error.message);
-      } else {
-        console.error('등록 실패: 알 수 없는 에러', error);
-      }
+    } catch (err: any) {
+      setError(err);
+      Toast('error', '서버연걸실패하였습니다.');
     }
-    data.forEach((value, key) => {
-      console.log(key, ':', value);
-    });
+
     if (
       !name ||
       !description ||
@@ -172,7 +155,7 @@ export default function CreatePage() {
       if (!selectedTime) missingFields.push('시간');
       if (!selectedImage) missingFields.push('이미지');
 
-      alert(`${missingFields.join(', ')}는 필수입니다.`);
+      Toast('warning', `${missingFields.join(', ')}는 필수입니다.`);
     }
   };
   return (
@@ -182,63 +165,20 @@ export default function CreatePage() {
       </header>
       <div className="mx-auto flex max-w-[343px] flex-col items-center justify-center px-3 mobile:max-w-[744px] tablet:max-w-[1000px]">
         <main className="w-full space-y-6 mobile:space-y-10">
-          <div>
-            <h2 className="text-base font-semibold text-gray-900"> 모임 이름 </h2>
-            <input
-              placeholder=" 모임 이름을 작성해주세요"
-              className="mt-3 h-11 w-full rounded-xl border border-blue-100 bg-blue-50 pl-2 text-sm font-medium"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
-            />
-          </div>
+          <GroupNameInput name={name} setName={setName} />
 
-          <div>
-            <h2 className="mb-3 text-base font-semibold text-gray-900"> 선택 서비스 </h2>
+          <CategoryDropdown setSelectedCategory={setSelectedCategory} />
 
-            <LongDropdown listDropdown={category} placeholder="서비스 카테고리를 정해주세요." onListChange={setSelectedCategory} />
-          </div>
+          <DescriptionInput description={description} setDescription={setDescription} />
 
-          <div>
-            <h2 className="mb-3 text-base font-semibold text-gray-900"> 모임 설명 </h2>
-            <textarea
-              placeholder=" 모임에 대한 설명을 작성해주세요."
-              className="min-h-40 w-full rounded-xl border border-blue-100 bg-blue-50 pl-2 pt-3 text-sm font-medium"
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
+          <LocationDropdown setSelectedLocation={setSelectedLocation} />
 
-          <div>
-            <h2 className="mb-3 text-base font-semibold text-gray-900"> 장소 </h2>
-
-            <LongDropdown listDropdown={location} placeholder="모임 위치를 정해주세요." onListChange={setSelectedLocation} />
-          </div>
-
-          <div>
-            <h2 className="mb-3 text-base font-semibold text-gray-900"> 모집 정원 </h2>
-            <div className="flex w-full flex-col justify-center gap-2 mobile:flex-row mobile:justify-between tablet:gap-12">
-              <div className="flex flex-1 items-center">
-                <p className="mr-2 whitespace-nowrap text-sm font-medium">최소 인원 </p>
-                <div className="flex-1">
-                  <LongDropdown
-                    listDropdown={Num}
-                    placeholder="최소 정원을 정해주세요."
-                    onListChange={handleMinChange}
-                    maxValue={selectedMaxNum ? parseInt(selectedMaxNum) : undefined} 
-                  />
-                </div>
-              </div>
-              <div className="flex flex-1 items-center">
-                <p className="mr-2 whitespace-nowrap text-sm font-medium">최대 인원 </p>
-                <div className="flex-1">
-                  <LongDropdown
-                    listDropdown={Num}
-                    placeholder="최대 정원을 정해주세요."
-                    onListChange={handleMaxChange}
-                    minValue={selectedMinNum ? parseInt(selectedMinNum) : undefined} 
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+          <CapacityDropdown
+            selectedMaxNum={selectedMaxNum}
+            selectedMinNum={selectedMinNum}
+            setSelectedMinNum={setSelectedMinNum}
+            setSelectedMaxNum={setSelectedMaxNum}
+          />
 
           <div>
             <h2 className="mb-3 text-base font-semibold text-gray-900"> 날짜 </h2>
@@ -265,93 +205,44 @@ export default function CreatePage() {
 
           <div>
             <h2 className="mb-3 text-base font-semibold text-gray-900">오전</h2>
-
-            <div className="scrollbar-hidden flex shrink-0 space-x-1.5 overflow-x-auto">
-              {Array.from({ length: 3 }, (_, index) => 9 + index).map((time) => (
+            <div className="scrollbar-hide flex shrink-0 space-x-1.5 overflow-x-auto">
+              {timeChips.slice(0, 3).map((chip) => (
                 <button
                   type="button"
-                  key={time}
-                  onClick={() => handleTimeSelect(`${time}:00`)}
+                  key={chip.time}
+                  onClick={() => !chip.disable && handleTimeSelect(`${chip.time}:00`)}
+                  disabled={chip.disable}
                   className={clsx(
                     'relative h-8 w-[60px] shrink-0 rounded-lg border text-sm font-medium text-gray-900',
-                    selectedTime === `${time}:00` ? 'bg-blue-600 text-white' : 'bg-blue-50',
-                    !isChipEnabled && 'cursor-not-allowed opacity-50',
+                    selectedTime === `${chip.time}:00` ? 'bg-blue-600 text-white' : 'bg-blue-50',
+                    chip.disable && 'cursor-not-allowed opacity-50',
                   )}
-                  disabled={!isChipEnabled}
                 >
-                  {time}:00
+                  {chip.time}:00
                 </button>
               ))}
             </div>
-          </div>
 
-          <div>
             <h2 className="mb-3 text-base font-semibold text-gray-900">오후</h2>
-
-            <div className="scrollbar-hidden flex shrink-0 space-x-1.5 overflow-x-auto">
-              {Array.from({ length: 7 }, (_, index) => 12 + index).map((time) => (
+            <div className="scrollbar-hide flex shrink-0 space-x-1.5 overflow-x-auto">
+              {timeChips.slice(3).map((chip) => (
                 <button
                   type="button"
-                  key={time}
-                  onClick={() => handleTimeSelect(`${time}:00`)}
+                  key={chip.time}
+                  onClick={() => !chip.disable && handleTimeSelect(`${chip.time}:00`)}
+                  disabled={chip.disable}
                   className={clsx(
                     'relative h-8 w-[60px] shrink-0 rounded-lg border text-sm font-medium text-gray-900',
-                    selectedTime === `${time}:00` ? 'bg-blue-600 text-white' : 'bg-blue-50',
-                    !isChipEnabled && 'cursor-not-allowed opacity-50',
+                    selectedTime === `${chip.time}:00` ? 'bg-blue-600 text-white' : 'bg-blue-50',
+                    chip.disable && 'cursor-not-allowed opacity-50',
                   )}
-                  disabled={!isChipEnabled}
                 >
-                  {time}:00
+                  {chip.time}:00
                 </button>
               ))}
             </div>
           </div>
-
-          <div>
-            <div className="flex items-baseline gap-1">
-              <h2 className="mb-3 text-base font-semibold text-gray-900">이미지</h2>
-              <span className="text-sm text-gray-400">({previewImage ? '1' : '0'}/1)</span>
-            </div>
-
-            <div className="scrollbar-hidden -mt-3 flex items-center space-x-3 overflow-x-auto">
-              <button
-                type="button"
-                className="flex size-[100px] shrink-0 flex-col items-center justify-center rounded-lg border border-blue-200 text-sm font-medium text-blue-800 mobile:size-[150px] my-3"
-                onClick={handleButtonClick}
-              >
-                <Image src="/icons/+.svg" alt="+" width={18} height={18} className="mb-2" />
-                이미지 등록
-              </button>
-              <input
-                type="file"
-                accept="image/*"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                style={{ display: 'none' }} 
-              />
-              {previewImage && (
-                <div className="relative my-3 size-[100px] shrink-0 rounded-lg border border-blue-200 mobile:size-[150px]">
-                  <Image
-                    src={previewImage}
-                    alt="예시 이미지"
-                    layout="fill" 
-                    objectFit="cover" 
-                    className="rounded-lg"
-                  />
-                  <button
-                    type="button"
-                    className="absolute -right-2 -top-2 flex size-5 items-center justify-center rounded-full bg-black opacity-60"
-                    onClick={() => {
-                      setSelectedImage(null);
-                      setPreviewImage(null);
-                    }}
-                  >
-                    <Image src="/icons/x-white.svg" alt="닫기" width={12} height={12} />
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
+          <ImageUploader setSelectedImage={setSelectedImage} />
         </main>
         <footer className="my-8 flex w-full gap-2">
           <button
