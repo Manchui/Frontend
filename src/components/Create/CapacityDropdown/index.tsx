@@ -19,6 +19,9 @@ export function CapacityDropdown({errorMin,errorMax, selectedMinNum, selectedMax
 
  
   return (
+    
+      
+       
     <div>
       <h2 className="mb-3 text-base font-semibold text-gray-900"> 모집 정원 </h2>
       <div className="flex w-full flex-col justify-center gap-2 mobile:flex-row mobile:justify-between tablet:gap-12">

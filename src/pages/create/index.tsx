@@ -199,14 +199,14 @@ export default function CreatePage() {
     e.preventDefault();
 
    
-    const hasErrors = validateFields(); 
+    const hasErrors = validateFields(); // 유효성 검사 호출
   if (hasErrors) {
     return; 
   }
     const data = new FormData();
     let formattedDateTime = '';
 
-   
+
     if (selectedDates.selectedDate && selectedTime) {
       formattedDateTime = `${selectedDates.selectedDate} ${selectedTime}:00`;
     }
@@ -254,8 +254,8 @@ export default function CreatePage() {
         <h1 className="text-lg font-semibold text-white mobile:font-bold tablet:text-2xl">만취 모임 만들기</h1>
       </header>
       <div className="mx-auto flex max-w-[343px] flex-col items-center justify-center px-3 mobile:max-w-[744px] tablet:max-w-[1000px]">
-        <form onSubmit={handleSubmit}>
-          <main className="w-full space-y-6 mobile:space-y-10">
+        <form onSubmit={handleSubmit} className="w-full space-y-6 mobile:space-y-10">
+          
             <GroupNameInput name={name} setName={handleInputChange('모임 이름')}        
               error={errors['모임 이름']}
 />
@@ -342,7 +342,7 @@ export default function CreatePage() {
             </div>
 
             <ImageUploader setSelectedImage={handleInputChange('이미지')} error={errors['이미지'] } />
-          </main>
+           </form>
           <footer className="my-8 flex w-full gap-2">
             <button
               type="button"
@@ -355,7 +355,7 @@ export default function CreatePage() {
               등록하기
             </button>
           </footer>
-        </form>
+       
       </div>
     </>
   );
