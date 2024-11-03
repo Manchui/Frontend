@@ -1,19 +1,19 @@
 import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 
-// Props 인터페이스 정의
 interface ImageUploaderProps {
-  setSelectedImage: (image: File | null) => void; // 이미지 상태 업데이트 함수
+  error: string;
+  setSelectedImage: (image: File | null) => void;
 }
 
-export default function ImageUploader({ setSelectedImage }: ImageUploaderProps) {
+export default function ImageUploader({ error, setSelectedImage }: ImageUploaderProps) {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
     if (file) {
-      setSelectedImage(file); // 부모의 상태를 업데이트
+      setSelectedImage(file);
       setPreviewImage(URL.createObjectURL(file));
     }
   };
@@ -23,7 +23,7 @@ export default function ImageUploader({ setSelectedImage }: ImageUploaderProps) 
   };
 
   const handleImageRemove = () => {
-    setSelectedImage(null); // 부모의 상태를 null로 설정
+    setSelectedImage(null);
     setPreviewImage(null);
   };
 
@@ -37,7 +37,7 @@ export default function ImageUploader({ setSelectedImage }: ImageUploaderProps) 
       <div className="scrollbar-hide -mt-3 flex items-center space-x-3 overflow-x-auto">
         <button
           type="button"
-          className="my-3 flex size-[100px] shrink-0 flex-col items-center justify-center rounded-lg border border-blue-200 text-sm font-medium text-blue-800 mobile:size-[150px]"
+          className="mt-3 flex size-[100px] shrink-0 flex-col items-center justify-center rounded-lg border border-blue-200 text-sm font-medium text-blue-800 mobile:size-[150px]"
           onClick={handleButtonClick}
         >
           <Image src="/icons/+.svg" alt="+" width={18} height={18} className="mb-2" />
@@ -47,7 +47,7 @@ export default function ImageUploader({ setSelectedImage }: ImageUploaderProps) 
         <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }} />
 
         {previewImage && (
-          <div className="relative my-3 size-[100px] shrink-0 rounded-lg border border-blue-200 mobile:size-[150px]">
+          <div className="relative mt-3 size-[100px] shrink-0 rounded-lg border border-blue-200 mobile:size-[150px]">
             <Image src={previewImage} alt="예시 이미지" layout="fill" objectFit="cover" className="rounded-lg" />
             <button
               type="button"
@@ -59,6 +59,7 @@ export default function ImageUploader({ setSelectedImage }: ImageUploaderProps) 
           </div>
         )}
       </div>
+      {error && <p className="-mb-2 mt-1 text-sm font-medium text-red-500">{error}을 등록하세요.</p>}
     </div>
   );
 }

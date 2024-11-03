@@ -3,22 +3,27 @@
 import LongDropdown from '@/components/shared/Dropdown/LongDropdown';
 
 type CapacitySelectorProps = {
+  errorMax: string;
+  errorMin: string;
   selectedMaxNum: string | null;
   selectedMinNum: string | null;
   setSelectedMaxNum: (maxNum: string) => void;
   setSelectedMinNum: (minNum: string) => void;
 };
 
-export function CapacityDropdown({ selectedMinNum, selectedMaxNum, setSelectedMinNum, setSelectedMaxNum }: CapacitySelectorProps) {
+export function CapacityDropdown({errorMin,errorMax, selectedMinNum, selectedMaxNum, setSelectedMinNum, setSelectedMaxNum }: CapacitySelectorProps) {
   const Num = Array.from({ length: 99 }).map((_, index) => (index + 2).toString());
 
   const handleMinChange = (value: string) => setSelectedMinNum(value);
   const handleMaxChange = (value: string) => setSelectedMaxNum(value);
+
+ 
   return (
     <div>
       <h2 className="mb-3 text-base font-semibold text-gray-900"> 모집 정원 </h2>
       <div className="flex w-full flex-col justify-center gap-2 mobile:flex-row mobile:justify-between tablet:gap-12">
-        <div className="flex flex-1 items-center">
+     <div>
+         <div className="flex flex-1 items-center">
           <p className="mr-2 whitespace-nowrap text-sm font-medium">최소 인원 </p>
           <div className="flex-1">
             <LongDropdown
@@ -28,7 +33,10 @@ export function CapacityDropdown({ selectedMinNum, selectedMaxNum, setSelectedMi
               maxValue={selectedMaxNum ? parseInt(selectedMaxNum) : undefined}
             />
           </div>
+          </div>
+          {errorMin && <p className="mt-1 -mb-5 text-red-500 text-sm font-medium ">{errorMin}를 선택하세요.</p>}
         </div>
+        <div>
         <div className="flex flex-1 items-center">
           <p className="mr-2 whitespace-nowrap text-sm font-medium">최대 인원 </p>
           <div className="flex-1">
@@ -39,6 +47,8 @@ export function CapacityDropdown({ selectedMinNum, selectedMaxNum, setSelectedMi
               minValue={selectedMinNum ? parseInt(selectedMinNum) : undefined}
             />
           </div>
+          </div>
+          {errorMax && <p className="mt-1 -mb-5 text-red-500 text-sm font-medium ">{errorMax}를 선택하세요.</p>}
         </div>
       </div>
     </div>
