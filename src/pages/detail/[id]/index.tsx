@@ -98,7 +98,7 @@ export default function DetailPage() {
           )}
         </section>
       </div>
-      <FloatingBar usersList={gatherings.usersList} maxUsers={gatherings.maxUsers} />
+      <FloatingBar id={id} usersList={gatherings.usersList} maxUsers={gatherings.maxUsers} />
     </main>
   );
 }

@@ -4,11 +4,11 @@ import type { BaseData } from '@/types/detail';
 
 import instance from '../api';
 
-export default async function getGatheringData(gatheringsId: string) {
+export default async function submitAttendance(gatheringsId: string) {
   try {
-    const res = await instance.get<BaseData>(`/api/gatherings/${gatheringsId}`);
+    const res = await instance.post<BaseData>(`/api/gatherings/${gatheringsId}/attendance`);
     return res.data.data;
-  } catch (e: unknown) {
+  } catch (e) {
     if (axios.isAxiosError(e)) {
       throw e.response?.data;
     } else {

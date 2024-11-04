@@ -1,5 +1,5 @@
 export type BaseData = {
-  data: DetailData;
+  data: DetailData | null;
   message: string;
   success: boolean;
 };

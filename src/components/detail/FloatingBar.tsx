@@ -1,22 +1,25 @@
-import { useModal } from '@/hooks/useModal';
 import type { UsersList } from '@/types/detail';
 
+import AttendanceButton from './button/AttendanceButton';
+import { CancelButton } from './button/CancelButton';
 import { Button } from '../shared/button';
-import Modal from '../shared/Modal';
 
-interface FloatingBarProps {
+export interface DetailPageBaseType {
+  id: string | string[] | undefined;
+}
+
+interface FloatingBarProps extends DetailPageBaseType {
   maxUsers: number;
   usersList: UsersList[];
 }
 
-export function FloatingBar({ usersList, maxUsers }: FloatingBarProps) {
+export function FloatingBar({ id, usersList, maxUsers }: FloatingBarProps) {
   // NOTE: 임시 값
   const myUserName = 'test11';
   // const myUserName = localStorage.getItem('userName');
 
   const findUserId = usersList.find((user) => user.name === myUserName);
   const isDisabled = usersList.length === maxUsers;
-  const { isOpen, openModal, closeModal } = useModal();
 
   return (
     <footer className="fixed inset-x-0 bottom-0 flex min-h-[84px] items-center justify-between border-t bg-white px-10 py-5">
@@ -25,15 +28,12 @@ export function FloatingBar({ usersList, maxUsers }: FloatingBarProps) {
         <span className="text-sm font-medium text-[#111827]">프로그램을 통해 지친 몸과 마음을 회복해봐요</span>
       </div>
       {findUserId ? (
-        <Button onClick={openModal} label="참여 취소하기" size="primary" variant="white" />
+        <CancelButton id={id} />
       ) : isDisabled ? (
         <Button label="참여하기" size="primary" variant="primary" disabled />
       ) : (
-        <Button onClick={openModal} label="참여하기" size="primary" variant="primary" />
+        <AttendanceButton id={id} />
       )}
-      <Modal buttons={[{ label: '확인', onClick: () => closeModal }]} isOpen={isOpen} onClose={closeModal}>
-        {findUserId ? <div className="mx-6 mt-16">예약을 취소하시겠습니까?</div> : <div className="mx-6 mt-16">로그인이 필요합니다.</div>}
-      </Modal>
     </footer>
   );
 }
