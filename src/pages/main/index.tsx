@@ -1,26 +1,60 @@
-/* eslint-disable no-console */
 import { useState } from 'react';
-import type { GetServerSideProps } from 'next';
-import instance from '@/apis/api';
+import { useRouter } from 'next/router';
+import { getGatheringData } from '@/apis/getGatheringData';
 import CardSection from '@/components/main/CardSection';
 import FilterSection from '@/components/main/FilterSection';
 import HeaderSection from '@/components/main/HeaderSection';
 import MainCarousel from '@/components/main/MainCarousel';
 import MainContainer from '@/components/main/MainContainer';
 import RootLayout from '@/components/shared/RootLayout';
-import type { Main } from '@/types/main/types';
+import { dehydrate, keepPreviousData, QueryClient, useQuery } from '@tanstack/react-query';
 
-type MainPageProps = {
-  mainData: Main;
-};
+export default function MainPage() {
+  const router = useRouter();
 
-export default function MainPage({ mainData }: MainPageProps) {
-  const [searchValue, setSearchValue] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('전체'); // 카테고리
+  const [page] = useState<number>(Number(router.query.page) || 1);
+  const [keyword, setKeyword] = useState<string | undefined>((router.query.keyword as string | undefined) || undefined);
+  const [region, setRegion] = useState<string | undefined>((router.query.category as string | undefined) || undefined);
+  const [category, setCategory] = useState<string | undefined>((router.query.category as string | undefined) || undefined);
+  const [closeDate, setCloseDate] = useState<string | undefined>(undefined);
 
-  const handleCategoryClick = (category: string) => {
+  const [dateStart, setDateStart] = useState<string | undefined>(undefined);
+  const [dateEnd, setDateEnd] = useState<string | undefined>(undefined);
+
+  const { data: mainData } = useQuery({
+    queryKey: ['main', { query: keyword, location: region, category, sort: closeDate, startDate: dateStart, endDate: dateEnd }],
+    queryFn: () =>
+      getGatheringData({
+        page,
+        size: 20,
+        query: keyword,
+        location: region,
+        startDate: dateStart,
+        endDate: dateEnd,
+        sort: closeDate,
+        category,
+      }),
+    placeholderData: keepPreviousData,
+  });
+  console.log(mainData);
+  console.log(category);
+
+  const handleCategoryClick = (selectedCategory: string) => {
     // 카테고리 클릭
-    setSelectedCategory(category);
+    setCategory(selectedCategory);
+  };
+
+  const handleSearchSubmit = (submitValue: string) => {
+    setKeyword(submitValue);
+  };
+
+  const handleCloseDateClick = (value: string) => {
+    setCloseDate(value);
+  };
+
+  const handleDateSubmit = ({ start, end }: { end: string; start: string }) => {
+    setDateStart(start);
+    setDateEnd(end);
   };
 
   return (
@@ -29,15 +63,19 @@ export default function MainPage({ mainData }: MainPageProps) {
       <RootLayout>
         <MainContainer>
           {/* Header (타이틀, 검색창) */}
-          <HeaderSection searchValue={searchValue} setSearchValue={setSearchValue} selectedCategory={selectedCategory} />
-
+          <HeaderSection keyword={keyword} category={category} handleSearchSubmit={handleSearchSubmit} />
           {/* 카테고리 */}
-          <FilterSection selectedCategory={selectedCategory} handleCategoryClick={handleCategoryClick} />
-          {/* 카드-------------------------------------------------------------------------------- */}
+          <FilterSection
+            region={region}
+            setRegion={setRegion}
+            category={category}
+            handleCategoryClick={handleCategoryClick}
+            handleCloseDateClick={handleCloseDateClick}
+            handleDateSubmit={handleDateSubmit}
+          />
+          {/* 카드 */}
           <div className="mx-auto grid w-full select-none grid-cols-1 grid-rows-3 gap-6 px-4 mobile:p-0 tablet:grid-cols-3">
-            {mainData.data.gatheringList.map((gathering) => (
-              <CardSection key={gathering.gatheringId} gathering={gathering} />
-            ))}
+            {mainData?.data.gatheringList.map((gathering) => <CardSection key={gathering.gatheringId} gathering={gathering} />)}
           </div>
         </MainContainer>
       </RootLayout>
@@ -45,23 +83,17 @@ export default function MainPage({ mainData }: MainPageProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  try {
-    const res = await instance.get<Main>('http://localhost:8888/main');
-    return {
-      props: {
-        mainData: res.data,
-      },
-    };
-  } finally {
-    //
-  }
-  // catch (e) {
-  //   console.error('Failed to fetch data:', e);
-  //   return {
-  //     props: {
-  //       mainData: null, // 데이터를 가져오지 못했을 때 처리
-  //     },
-  //   };
-  // }
+export const getServerSideProps = async () => {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ['main'],
+    queryFn: () => getGatheringData({}),
+  });
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
 };

@@ -1,3 +1,4 @@
+import type { Dispatch, SetStateAction } from 'react';
 import Link from 'next/link';
 import CategoryList from '@/components/main/FilterSection/CategoryList';
 import CloseDateToggle from '@/components/main/FilterSection/CloseDateToggle';
@@ -5,21 +6,25 @@ import DateDropdown from '@/components/main/FilterSection/DateDropdown';
 import RegionDropdown from '@/components/main/FilterSection/RegionDropdown';
 
 interface FilterSectionProps {
+  category?: string;
   handleCategoryClick: (category: string) => void;
-  selectedCategory: string;
+  handleCloseDateClick: (value: string) => void;
+  handleDateSubmit: ({ start, end }: { end: string; start: string }) => void;
+  region?: string;
+  setRegion: Dispatch<SetStateAction<string | undefined>>;
 }
 
-export default function FilterSection({ handleCategoryClick, selectedCategory }: FilterSectionProps) {
+export default function FilterSection({ handleCategoryClick, category, setRegion, handleCloseDateClick, region, handleDateSubmit }: FilterSectionProps) {
   return (
     <div className="scrollbar-hide relative mb-8 mt-4 flex w-full select-none flex-col gap-2 bg-white px-4 py-5 mobile:rounded-lg">
-      <CategoryList selectedCategory={selectedCategory} handleCategoryClick={handleCategoryClick} />
+      <CategoryList category={category} handleCategoryClick={handleCategoryClick} />
 
       {/* 필터 */}
       <div className="flex select-none items-center justify-between">
         <div className="flex items-center gap-2">
-          <CloseDateToggle />
-          <RegionDropdown />
-          <DateDropdown />
+          <CloseDateToggle onCloseDateClick={handleCloseDateClick} />
+          <RegionDropdown region={region} setRegion={setRegion} />
+          <DateDropdown handleDateSubmit={handleDateSubmit} />
         </div>
 
         {/* 모임 만들기 버튼 */}

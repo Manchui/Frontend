@@ -7,10 +7,10 @@ import Image from 'next/image';
 import type SwiperCore from 'swiper';
 import { Autoplay, EffectCreative, Navigation, Pagination, Thumbs, Virtual } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import type { Main } from '@/types/main/types';
+import type { GetGatheringResponse } from '@manchui-api';
 
 interface MainCarouselProps {
-  mainData: Main;
+  mainData?: GetGatheringResponse;
 }
 
 export default function MainCarousel({ mainData }: MainCarouselProps) {
@@ -28,11 +28,11 @@ export default function MainCarousel({ mainData }: MainCarouselProps) {
       {/* Banner Carousel */}
       <Swiper
         modules={[Navigation, Autoplay, Virtual, EffectCreative, Thumbs, Pagination]}
-        loop
-        loopPreventsSliding
-        // init
-        // initialSlide={0}
-        // loopAdditionalSlides={1}
+        // loop
+        // loopPreventsSliding
+        init
+        initialSlide={0}
+        loopAdditionalSlides={1}
         speed={300}
         navigation={{
           prevEl: prevRef.current,
