@@ -1,10 +1,10 @@
 import { Bagel_Fat_One } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
-import type { GatheringListData } from '@/types/main/types';
+import type { GetGatheringResponse } from '@manchui-api';
 
 interface CardImageProps {
-  gathering: GatheringListData;
+  gathering: GetGatheringResponse['data']['gatheringList'][number];
 }
 
 const bagelFatOne = Bagel_Fat_One({ weight: '400', subsets: ['latin'] });
@@ -13,7 +13,7 @@ export default function CardImage({ gathering }: CardImageProps) {
   return (
     <Link
       href={`/main/${gathering.gatheringId}`}
-      className="relative h-1/2 w-full cursor-pointer overflow-hidden mobile:h-full mobile:w-1/3 tablet:h-1/2 tablet:w-full"
+      className="relative h-1/2 min-h-36 w-full cursor-pointer overflow-hidden mobile:h-full mobile:w-1/3 tablet:h-1/2 tablet:w-full"
     >
       <Image
         src={gathering.gatheringImage}

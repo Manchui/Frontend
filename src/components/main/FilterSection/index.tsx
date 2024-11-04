@@ -11,10 +11,21 @@ interface FilterSectionProps {
   handleCloseDateClick: (value: string) => void;
   handleDateSubmit: ({ start, end }: { end: string; start: string }) => void;
   region?: string;
+  setDateEnd?: Dispatch<SetStateAction<string | undefined>>;
+  setDateStart?: Dispatch<SetStateAction<string | undefined>>;
   setRegion: Dispatch<SetStateAction<string | undefined>>;
 }
 
-export default function FilterSection({ handleCategoryClick, category, setRegion, handleCloseDateClick, region, handleDateSubmit }: FilterSectionProps) {
+export default function FilterSection({
+  handleCategoryClick,
+  category,
+  setRegion,
+  handleCloseDateClick,
+  region,
+  handleDateSubmit,
+  setDateStart,
+  setDateEnd,
+}: FilterSectionProps) {
   return (
     <div className="scrollbar-hide relative mb-8 mt-4 flex w-full select-none flex-col gap-2 bg-white px-4 py-5 mobile:rounded-lg">
       <CategoryList category={category} handleCategoryClick={handleCategoryClick} />
@@ -24,7 +35,7 @@ export default function FilterSection({ handleCategoryClick, category, setRegion
         <div className="flex items-center gap-2">
           <CloseDateToggle onCloseDateClick={handleCloseDateClick} />
           <RegionDropdown region={region} setRegion={setRegion} />
-          <DateDropdown handleDateSubmit={handleDateSubmit} />
+          <DateDropdown setDateStart={setDateStart} setDateEnd={setDateEnd} handleDateSubmit={handleDateSubmit} />
         </div>
 
         {/* 모임 만들기 버튼 */}
