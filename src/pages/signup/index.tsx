@@ -80,6 +80,10 @@ export default function SignupPage() {
   };
 
   const handleDoubleCheck = async () => {
+    if (nick.length < 3) {
+      Toast('error', '닉네임은 3자 이상이어야 합니다.');
+      return;
+    }
     try {
       const res = await instance.post('/api/auths/check-name', {
         name: nick,
