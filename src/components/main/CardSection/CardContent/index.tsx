@@ -1,45 +1,39 @@
-// import { useState } from 'react';
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import instance from '@/apis/api';
-// import instance from '@/apis/api';
 import DateChip from '@/components/shared/chip/DateChip';
 import { ProgressBar } from '@/components/shared/progress-bar';
+import { Toast } from '@/components/shared/Toast';
 import type { GetGatheringResponse } from '@manchui-api';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface CardContentProps {
   gathering: GetGatheringResponse['data']['gatheringList'][number];
 }
 
-const API_TOKEN =
-  'eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsInVzZXJFbWFpbCI6InRlc3QxQHRlc3QuY29tIiwiaWF0IjoxNzMwNjg4ODM5LCJleHAiOjE3MzA2OTA2Mzl9.KsPQ0cGKyDakU6VZfKWE8P26mfJ_cKMUCTePLzTK9gg';
-
 export default function CardContent({ gathering }: CardContentProps) {
   const [hearted, setHearted] = useState(gathering.hearted);
+  const queryClient = useQueryClient();
 
   const toggleHeart = async () => {
+    const updatedHearted = !hearted;
+    setHearted(updatedHearted);
+    const endpoint = `/api/gatherings/${gathering.gatheringId}/heart`;
+
     try {
-      // 토글 상태를 미리 반영하여 사용자에게 즉각적인 피드백 제공
-      setHearted(!hearted);
+      if (updatedHearted) {
+        await instance.post(endpoint);
+        Toast('success', '찜 목록에 추가되었습니다!');
+      } else {
+        await instance.delete(endpoint);
+        Toast('success', '찜 목록에서 제거되었습니다!');
+      }
 
-      // API 요청
-      await instance.post(
-        `/api/gatherings/${gathering.gatheringId}/heart`,
-        { hearted: !hearted },
-        {
-          headers: {
-            Authorization: `Bearer ${API_TOKEN}`,
-          },
-        },
-      );
-
-      console.log(`hearted: ${!hearted}`);
-    } catch (error) {
-      console.error('API 요청에 실패했습니다:', error);
-
-      // 요청 실패 시 상태를 다시 복구
-      setHearted(!hearted);
+      await queryClient.invalidateQueries({ queryKey: ['main'] });
+    } catch (e) {
+      console.error('API 요청에 실패했습니다:', e);
+      setHearted((prevHearted) => !prevHearted);
     }
   };
 

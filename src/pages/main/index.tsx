@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { getGatheringData } from '@/apis/getGatheringData';
 import CardSection from '@/components/main/CardSection';
@@ -22,7 +22,7 @@ export default function MainPage() {
   const [dateStart, setDateStart] = useState<string | undefined>(undefined);
   const [dateEnd, setDateEnd] = useState<string | undefined>(undefined);
 
-  const { data: mainData } = useQuery({
+  const { data: mainData, refetch } = useQuery({
     queryKey: ['main', { query: keyword, location: region, category, sort: closeDate, startDate: dateStart, endDate: dateEnd }],
     queryFn: () =>
       getGatheringData({
@@ -39,7 +39,6 @@ export default function MainPage() {
   });
 
   console.log(mainData?.data);
-  // console.log(category);
 
   const gatheringData = mainData?.data.gatheringList;
 
@@ -59,6 +58,14 @@ export default function MainPage() {
     setDateStart(start);
     setDateEnd(end);
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+
+    if (token) {
+      refetch().catch(console.error);
+    }
+  }, [refetch]);
 
   return (
     <>
@@ -92,7 +99,7 @@ export const getServerSideProps = async () => {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ['main', {}],
+    queryKey: ['main'],
     queryFn: () => getGatheringData({}),
   });
 

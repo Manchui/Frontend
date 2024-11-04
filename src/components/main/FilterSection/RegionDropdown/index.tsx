@@ -1,6 +1,7 @@
 import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import Dropdown from '@/components/main/Dropdown';
+import { Toast } from '@/components/shared/Toast';
 import { REGION_DATA } from '@/constants/main/contants';
 
 interface RegionDropdownProps {
@@ -14,12 +15,15 @@ export default function RegionDropdown({ setRegion, region }: RegionDropdownProp
   const handleInitClick = () => {
     setRegion(undefined);
     setRegionDropOpen(false);
+
+    Toast('success', '지역 필터가 초기화되었습니다.');
   };
 
   const handleRegionSelect = (value: string) => {
-    // 지역 필터
     setRegion(value);
     setRegionDropOpen(false);
+
+    Toast('success', `${value} 지역이 선택되었습니다.`);
   };
 
   return (

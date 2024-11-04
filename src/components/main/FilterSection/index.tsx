@@ -1,9 +1,10 @@
-import type { Dispatch, SetStateAction } from 'react';
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 import Link from 'next/link';
 import CategoryList from '@/components/main/FilterSection/CategoryList';
 import CloseDateToggle from '@/components/main/FilterSection/CloseDateToggle';
 import DateDropdown from '@/components/main/FilterSection/DateDropdown';
 import RegionDropdown from '@/components/main/FilterSection/RegionDropdown';
+import { Toast } from '@/components/shared/Toast';
 
 interface FilterSectionProps {
   category?: string;
@@ -26,8 +27,23 @@ export default function FilterSection({
   setDateStart,
   setDateEnd,
 }: FilterSectionProps) {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+  const handleCreateButtonClick = () => {
+    if (!isLoggedIn) {
+      Toast('warning', '로그인이 필요합니다.');
+    }
+  };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsLoggedIn(!!localStorage.getItem('accessToken'));
+    }
+  }, []);
+
   return (
     <div className="scrollbar-hide relative mb-8 mt-4 flex w-full select-none flex-col gap-2 bg-white px-4 py-5 mobile:rounded-lg">
+      {/* 카테고리 */}
       <CategoryList category={category} handleCategoryClick={handleCategoryClick} />
 
       {/* 필터 */}
@@ -40,7 +56,8 @@ export default function FilterSection({
 
         {/* 모임 만들기 버튼 */}
         <Link
-          href="/create"
+          href={isLoggedIn ? '/create' : '#'}
+          onClick={handleCreateButtonClick}
           className="rounded-xl bg-blue-800 px-3 py-2 text-13-16-response font-semibold text-white transition-all duration-200 hover:bg-blue-700"
         >
           모임 만들기

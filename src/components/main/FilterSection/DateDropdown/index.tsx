@@ -2,6 +2,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import Dropdown from '@/components/main/Dropdown';
 import Calendar from '@/components/shared/Calendar';
+import { Toast } from '@/components/shared/Toast';
 
 interface DateDropdownProps {
   handleDateSubmit: ({ start, end }: { end: string; start: string }) => void;
@@ -25,6 +26,7 @@ export default function DateDropdown({ handleDateSubmit, setDateStart, setDateEn
     if (startDate && endDate) {
       handleDateSubmit({ start: startDate, end: endDate });
       setIsDateLocked(true);
+      Toast('success', '날짜가 적용되었습니다.');
     }
     setDateDropOpen(false);
   };
@@ -36,6 +38,7 @@ export default function DateDropdown({ handleDateSubmit, setDateStart, setDateEn
       setDateEnd(undefined);
       setDateStart(undefined);
       setIsDateLocked(false);
+      Toast('success', '날짜 선택이 초기화되었습니다.');
     }
   };
 

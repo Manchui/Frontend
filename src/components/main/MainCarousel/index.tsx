@@ -72,10 +72,20 @@ export default function MainCarousel() {
       </Swiper>
 
       {/* Carousel Navigation */}
-      <button ref={prevRef} type="button" onClick={goToPreviousSlide} className="absolute left-0 top-1/2 z-50 mx-4 rounded-full bg-gray-700 p-2 text-white">
+      <button
+        ref={prevRef}
+        type="button"
+        onClick={goToPreviousSlide}
+        className="absolute left-0 top-1/2 z-50 mx-4 hidden rounded-full bg-gray-700 p-2 text-white mobile:block"
+      >
         <Image src="/icons/carousel-left.svg" alt="Previous Button" width={30} height={30} />
       </button>
-      <button ref={nextRef} type="button" onClick={goToNextSlide} className="absolute right-0 top-1/2 z-50 mx-4 rounded-full bg-gray-700 p-2 text-white">
+      <button
+        ref={nextRef}
+        type="button"
+        onClick={goToNextSlide}
+        className="absolute right-0 top-1/2 z-50 mx-4 hidden rounded-full bg-gray-700 p-2 text-white mobile:block"
+      >
         <Image src="/icons/carousel-right.svg" alt="Next Button" width={30} height={30} />
       </button>
 
@@ -85,7 +95,7 @@ export default function MainCarousel() {
         onSwiper={(thumb: SwiperCore) => setThumbsSwiper(thumb)}
         slidesPerView={4}
         spaceBetween={10}
-        className="absolute bottom-20 right-12 float-right tablet:h-[60px] tablet:w-thumb-tablet-responsive pc:h-[60px] pc:w-thumb-pc-responsive"
+        className="absolute bottom-20 right-12 float-right opacity-0 tablet:h-[60px] tablet:w-thumb-tablet-responsive tablet:opacity-100 pc:w-thumb-pc-responsive"
       >
         {images.map((src, i) => (
           <SwiperSlide
