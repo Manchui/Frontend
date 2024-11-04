@@ -7,6 +7,7 @@
 
 import { useState } from 'react';
 import clsx from 'clsx';
+import router from 'next/router';
 import instance from '@/apis/api';
 import { CapacityDropdown } from '@/components/Create/CapacityDropdown';
 import { CategoryDropdown } from '@/components/Create/CategoryDropdown';
@@ -34,12 +35,11 @@ export default function CreatePage() {
   }>({});
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [timeChips, setTimeChips] = useState<TimeChip[]>([...Array.from({ length: 10 }, (_, i) => ({ time: 9 + i, disable: true }))]);
- 
+
   const exampleCurrentDate = new Date();
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const [, setError] = useState('');
   const fields = [
     { value: name, label: '모임 이름' },
     { value: description, label: '모임 설명' },
@@ -108,83 +108,69 @@ export default function CreatePage() {
     setSelectedTime('');
     setTimeChips((prevChips) => prevChips.map((chip) => ({ ...chip, disable: true })));
   };
-     
-  const handleDateSelect = (data: {
-    rangeEnd?: string;
-    rangeStart?: string;
-    selectedDate?: string;
-  }) => {
+
+  const handleDateSelect = (data: { rangeEnd?: string; rangeStart?: string; selectedDate?: string }) => {
     const { selectedDate: dateValue } = data;
 
     if (dateValue) {
       const date = new Date(dateValue);
-      if (!isNaN(date.getTime())) { 
+      if (!isNaN(date.getTime())) {
         setSelectedDates({ selectedDate: date.toISOString() });
-        handleInputChange('날짜')(date.toISOString()); 
-      } 
+        handleInputChange('날짜')(date.toISOString());
+      }
     }
   };
   const handleTimeSelect = (time: string) => {
     setSelectedTime(time);
     handleInputChange('시간')(time);
   };
- 
+
   const handleDateApply = () => {
     if (!selectedDates.selectedDate) return;
 
     const selectedDate = new Date(selectedDates.selectedDate);
     const hoursLater29 = new Date(exampleCurrentDate.getTime() + 29 * 60 * 60 * 1000);
-    
+
     const nextDay = new Date(exampleCurrentDate);
     nextDay.setDate(nextDay.getDate() + 1);
-    
-     // 1. 셀렉된 날짜가 29시간 후보다 큰 경우
-  if (selectedDate > hoursLater29) {
-    setTimeChips((prevChips) => prevChips.map((chip) => ({ ...chip, disable: false })));
-    
-    
-  }
 
-  // 2. 셀렉된 날짜가 29시간 후보다 작은 경우
-  else if(selectedDate.toDateString() < hoursLater29.toDateString()) {
-     Toast('error', '모임 생성은 이틀 뒤부터 가능합니다.');
-    handleDateReset();
-    
-  }
+    // 1. 셀렉된 날짜가 29시간 후보다 큰 경우
+    if (selectedDate > hoursLater29) {
+      setTimeChips((prevChips) => prevChips.map((chip) => ({ ...chip, disable: false })));
+    }
 
-  // 3. 셀렉된 날짜와 29시간 후가 같은 경우
-  else {
-    const currentHour = exampleCurrentDate.getHours();
-    const hoursLater29Hour = hoursLater29.getHours();
-    
-    // 29시간 후의 시간이 9시부터 18시 사이일 때
-    if (hoursLater29Hour >= 9 && hoursLater29Hour < 18) {
-      setTimeChips((prevChips) =>
-        prevChips.map((chip) => ({
-          ...chip,
-          disable: chip.time <= hoursLater29Hour, 
-        }))
-      );
-   
-    }else if (currentHour >= 19 && currentHour < 24) {
-     
+    // 2. 셀렉된 날짜가 29시간 후보다 작은 경우
+    else if (selectedDate.toDateString() < hoursLater29.toDateString()) {
       Toast('error', '모임 생성은 이틀 뒤부터 가능합니다.');
       handleDateReset();
-    }  
-    else if (currentHour >= 0 && currentHour < 9) {
-      
-      setTimeChips((prevChips) => prevChips.map((chip) => ({ ...chip, disable: false })));
-      
     }
-    // 29시간 후의 시간이 18시 이후일 때
-    else if (hoursLater29Hour >= 18) {
-        Toast('error', '모임 생성은 이틀 뒤부터 가능합니다.');
-      handleDateReset();
-    }
-  }
-};
-   
 
+    // 3. 셀렉된 날짜와 29시간 후가 같은 경우
+    else {
+      const currentHour = exampleCurrentDate.getHours();
+      const hoursLater29Hour = hoursLater29.getHours();
+
+      // 29시간 후의 시간이 9시부터 18시 사이일 때
+      if (hoursLater29Hour >= 9 && hoursLater29Hour < 18) {
+        setTimeChips((prevChips) =>
+          prevChips.map((chip) => ({
+            ...chip,
+            disable: chip.time <= hoursLater29Hour,
+          })),
+        );
+      } else if (currentHour >= 19 && currentHour < 24) {
+        Toast('error', '모임 생성은 이틀 뒤부터 가능합니다.');
+        handleDateReset();
+      } else if (currentHour >= 0 && currentHour < 9) {
+        setTimeChips((prevChips) => prevChips.map((chip) => ({ ...chip, disable: false })));
+      }
+      // 29시간 후의 시간이 18시 이후일 때
+      else if (hoursLater29Hour >= 18) {
+        Toast('error', '모임 생성은 이틀 뒤부터 가능합니다.');
+        handleDateReset();
+      }
+    }
+  };
 
   const validateFields = () => {
     const newErrors: { [key: string]: string } = {};
@@ -230,8 +216,8 @@ export default function CreatePage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    const hasErrors = validateFields(); 
+
+    const hasErrors = validateFields();
     if (hasErrors) {
       return;
     }
@@ -266,24 +252,26 @@ export default function CreatePage() {
     // };
 
     try {
-      await instance.post('/api/gathering', data, {
+      const res = await instance.post('/api/gathering', data, {
         headers: {
+          // 'Authorization': localStorage.getItem('accessToken'),
           'Content-Type': 'multipart/form-data',
           // 자동으로 form-data 설정됨
         },
       });
+      Toast('success', res.data.message);
+      void router.push('/main');
     } catch (err: any) {
-      setError(err);
-      Toast('error', '서버연걸실패하였습니다.');
+      Toast('error', err.response.data.message);
     }
   };
 
   return (
     <>
-      <header className=" mt-[60px] flex h-[97px] w-full items-center justify-center bg-blue-800 mobile:mb-10 mobile:h-[118px] tablet:h-[161px]">
+      <header className="mt-[60px] flex h-[97px] w-full items-center justify-center bg-blue-800 mobile:mb-10 mobile:h-[118px] tablet:h-[161px]">
         <h1 className="text-lg font-semibold text-white mobile:font-bold tablet:text-2xl">만취 모임 만들기</h1>
       </header>
-      <div className="mt-5 mb-8 mx-auto flex max-w-[343px] flex-col items-center justify-center px-3 mobile:max-w-[744px] tablet:max-w-[1000px]">
+      <div className="mx-auto mb-8 mt-5 flex max-w-[343px] flex-col items-center justify-center px-3 mobile:max-w-[744px] tablet:max-w-[1000px]">
         <form onSubmit={handleSubmit} className="w-full space-y-6 mobile:space-y-10">
           <GroupNameInput name={name} setName={handleInputChange('모임 이름')} error={errors['모임 이름']} />
 
@@ -369,19 +357,18 @@ export default function CreatePage() {
 
           <ImageUploader setSelectedImage={handleInputChange('이미지')} error={errors['이미지']} />
           <footer className="my-8 flex w-full gap-2">
-          <button
-            type="button"
-            onClick={handleDateReset}
-            className="h-10 w-full rounded-xl border border-blue-800 bg-white text-blue-800 hover:border-blue-400 hover:text-blue-400"
-          >
-            취소
-          </button>
-          <button type="submit" className="h-10 w-full rounded-xl bg-blue-800 text-white hover:bg-blue-700">
-            등록하기
-          </button>
-        </footer>
+            <button
+              type="button"
+              onClick={handleDateReset}
+              className="h-10 w-full rounded-xl border border-blue-800 bg-white text-blue-800 hover:border-blue-400 hover:text-blue-400"
+            >
+              취소
+            </button>
+            <button type="submit" className="h-10 w-full rounded-xl bg-blue-800 text-white hover:bg-blue-700">
+              등록하기
+            </button>
+          </footer>
         </form>
-      
       </div>
     </>
   );
