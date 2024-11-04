@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
@@ -5,9 +6,11 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import router from 'next/router';
 import instance from '@/apis/api';
 import Carousel from '@/components/Carousel';
 import Input from '@/components/shared/Input';
+import { Toast } from '@/components/shared/Toast';
 
 /**
  * 회원가입 페이지
@@ -21,7 +24,7 @@ export default function SignupPage() {
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
   const [isDesktop, setIsDesktop] = useState(false);
-  const [error, setError] = useState('');
+  const [doubleCheck, setDoubleCheck] = useState(false);
 
   // 화면 크기에 따라 레이아웃 변경
   useEffect(() => {
@@ -41,19 +44,55 @@ export default function SignupPage() {
 
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (nick.length < 3 || password.length < 8 || password !== passwordCheck || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!doubleCheck) {
+      Toast('error', '중복 확인을 해주세요.');
+      return;
+    }
+    if (nick.length < 3) {
+      Toast('error', '닉네임은 3자 이상이어야 합니다.');
+      return;
+    }
+    if (password.length < 8) {
+      Toast('error', '비밀번호는 8자 이상이어야 합니다.');
+      return;
+    }
+    if (password !== passwordCheck) {
+      Toast('error', '비밀번호가 일치하지 않습니다.');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      Toast('error', '이메일 형식을 확인해주세요.');
       return;
     }
 
     try {
-      await instance.post('/api/auths/signup', {
+      const res = await instance.post('/api/auths/signup', {
         name: nick,
         email,
         password,
         passwordConfirm: passwordCheck,
       });
+      Toast('success', res.data.message);
+      void router.push('/login');
     } catch (err: any) {
-      setError(err);
+      Toast('error', err.response.data.message);
+    }
+  };
+
+  const handleDoubleCheck = async () => {
+    if (nick.length < 3) {
+      Toast('error', '닉네임은 3자 이상이어야 합니다.');
+      return;
+    }
+    try {
+      const res = await instance.post('/api/auths/check-name', {
+        name: nick,
+      });
+      Toast('success', res.data.message);
+      setDoubleCheck(true);
+    } catch (err: any) {
+      Toast('error', err.response.data.message);
+      setDoubleCheck(false);
     }
   };
 
@@ -68,14 +107,13 @@ export default function SignupPage() {
             <form onSubmit={handleSignup} className="flex w-[500px] flex-col space-y-4">
               <div className="flex">
                 <Input type="text" name="nick" onChange={(e) => setNick(e.target.value)} />
-                <button type="button" className="ml-4 mt-7 h-10 w-24 rounded-xl border bg-blue-800 text-sm text-white hover:bg-blue-700">
+                <button type="button" onClick={handleDoubleCheck} className="ml-4 mt-7 h-10 w-24 rounded-xl border bg-blue-800 text-sm text-white hover:bg-blue-700">
                   중복 확인
                 </button>
               </div>
               <Input type="email" name="id" onChange={(e) => setEmail(e.target.value)} />
               <Input type="password" name="password" onChange={(e) => setPassword(e.target.value)} />
               <Input type="password" name="password_check" passwordToMatch={password} onChange={(e) => setPasswordCheck(e.target.value)} />
-              {error && <p className="mt-1 text-sm text-red-500">회원가입에 실패했습니다. 다시 시도해주세요.</p>}
               <button type="submit" className="mt-4 w-full rounded-xl bg-blue-800 py-2 text-lg text-white hover:bg-blue-700">
                 생성하기
               </button>
@@ -87,7 +125,7 @@ export default function SignupPage() {
               </Link>
             </p>
           </div>
-          <div className="relative flex min-h-screen w-1/2 flex-col items-center justify-center bg-blue-800 hover:bg-blue-700">
+          <div className="relative flex min-h-screen w-1/2 flex-col items-center justify-center bg-blue-800">
             <Carousel />
           </div>
         </div>
@@ -105,7 +143,7 @@ export default function SignupPage() {
           <div className="w-full space-y-4">
             <div className="flex">
               <Input type="text" name="nick" onChange={(e) => setNick(e.target.value)} />
-              <button type="button" className="ml-4 mt-7 h-10 w-24 rounded-xl border bg-blue-800 text-sm text-white hover:bg-blue-700">
+              <button type="button" onClick={handleDoubleCheck} className="ml-4 mt-7 h-10 w-24 rounded-xl border bg-blue-800 text-sm text-white hover:bg-blue-700">
                 중복 확인
               </button>
             </div>
@@ -113,7 +151,6 @@ export default function SignupPage() {
             <Input type="password" name="password" onChange={(e) => setPassword(e.target.value)} />
             <Input type="password" name="password_check" passwordToMatch={password} onChange={(e) => setPasswordCheck(e.target.value)} />
           </div>
-          {error && <p className="mt-1 text-sm text-red-500">회원가입에 실패했습니다. 다시 시도해주세요.</p>}
           <button type="submit" className="mt-4 w-full rounded-xl bg-blue-800 py-2 text-lg text-white hover:bg-blue-700">
             생성하기
           </button>

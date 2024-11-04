@@ -24,7 +24,7 @@ export default function GNB() {
     const axiosUserData = async () => {
       const accessToken: string | null = localStorage.getItem('accessToken');
       if (accessToken) {
-        const userData = await getUserInfo(accessToken);
+        const userData = await getUserInfo();
         if (userData.result) {
           updateUser(userData.res || { email: '', id: '', image: '', name: '' });
           login();
@@ -40,7 +40,8 @@ export default function GNB() {
     };
 
     void axiosUserData();
-  });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (isLoading) {
     return <div>Loading...</div>;
