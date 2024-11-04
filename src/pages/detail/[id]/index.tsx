@@ -83,20 +83,8 @@ export default function DetailPage() {
         </section>
 
         <section className="mt-6 min-h-20 px-4 tablet:mt-9 tablet:px-10 pc:mt-10 pc:px-5">
-          {gatherings.reviewList.length > 0 ? (
-            <>
-              <hr className="border-gray-50" />
-              <article className="flex flex-col items-center pt-2">
-                {gatherings.reviewList.map((review, i) => (
-                  <div key={i} className={`border-b border-dashed border-gray-50 py-4 ${i === gatherings.reviewList.length - 1 ? 'border-b-0' : ''}`}>
-                    <ReviewListCard review={review} />
-                  </div>
-                ))}
-              </article>
-            </>
-          ) : (
-            <div className="mx-auto pb-6 pt-2 text-center text-[#6B7280]">아직 리뷰가 없어요.</div>
-          )}
+          {gatherings.reviewsList && <ReviewListCard reviews={gatherings.reviewsList} />}
+          <div className="mx-auto pb-6 pt-2 text-center text-[#6B7280]">아직 리뷰가 없어요.</div>
         </section>
       </div>
       <FloatingBar id={id} gatherings={gatherings} usersList={gatherings.usersList} maxUsers={gatherings.maxUsers} />

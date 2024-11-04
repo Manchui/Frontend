@@ -4,13 +4,30 @@ export type BaseData = {
   success: boolean;
 };
 
-export type ReviewList = {
+export type ReviewsList = {
+  reviewContentList: ReviewContentList[];
+  reviewCount: number;
+  scoreList: ScoreList[];
+};
+
+export type ScoreList = {
+  '1ScoreCount': number;
+  '2ScoreCount': number;
+  '3ScoreCount': number;
+  '4ScoreCount': number;
+  '5ScoreCount': number;
+  'avgScore': number;
+};
+
+export type ReviewContentList = {
   comment: string;
   createdAt: string;
+  gatheringImage: string;
+  image: string;
+  location: string;
   name: string;
-  profileImagePath: string;
   score: number;
-  userId: string;
+  updatedAt: string;
 };
 
 export type UsersList = {
@@ -38,7 +55,7 @@ export type DetailData = {
   maxUsers: number;
   minUsers: number;
   name: string;
-  reviewList: ReviewList[];
+  reviewsList: ReviewsList;
   updatedAt: string;
   usersList: UsersList[];
 };
