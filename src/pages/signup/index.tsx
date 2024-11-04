@@ -125,7 +125,7 @@ export default function SignupPage() {
               </Link>
             </p>
           </div>
-          <div className="relative flex min-h-screen w-1/2 flex-col items-center justify-center bg-blue-800 hover:bg-blue-700">
+          <div className="relative flex min-h-screen w-1/2 flex-col items-center justify-center bg-blue-800">
             <Carousel />
           </div>
         </div>
