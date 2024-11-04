@@ -14,8 +14,8 @@ export type ReviewList = {
 };
 
 export type UsersList = {
+  name: string;
   profileImagePath: string;
-  userId: string;
 };
 
 export type DetailData = {

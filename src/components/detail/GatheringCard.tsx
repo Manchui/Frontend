@@ -7,6 +7,7 @@ import Tag from '../shared/Tag';
 
 export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
   const gatheringDate = new Date(gatherings.gatheringDate);
+  const dueDate = new Date(gatherings.dueDate);
 
   return (
     <article className="flex flex-col items-center justify-center gap-6 bg-blue-800 py-[22px] tablet:flex-row tablet:pb-7 tablet:pt-6 pc:flex-row pc:pb-[34px] pc:pt-[27px]">
@@ -20,7 +21,7 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
           className="size-full rounded-[18px] border-2 duration-100"
         />
         <div className="absolute right-0 top-0">
-          <Tag Hour={5} Type="detail" />
+          <Tag Hour={dueDate.getHours()} Type="detail" />
         </div>
       </div>
       <div className="h-[240px] w-[343px] rounded-2xl border bg-white py-[20.5px] duration-100 tablet:h-[240px] tablet:w-[360px] pc:h-[270px] pc:w-[486px] pc:py-6">
