@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -11,7 +11,6 @@ import Toggle from '@/components/shared/GNB/Toggle';
 import { userStore } from '@/store/userStore';
 
 export default function GNB() {
-  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const isLoggedIn = userStore((state) => state.isLoggedIn);
   const logout = userStore((state) => state.logout);
@@ -28,23 +27,16 @@ export default function GNB() {
         if (userData.result) {
           updateUser(userData.res || { email: '', id: '', image: '', name: '' });
           login();
-          setIsLoading(false);
         } else {
           logout();
-          setIsLoading(false);
         }
       } else {
         logout();
-        setIsLoading(false);
       }
     };
 
     void axiosUserData();
   }, [login, logout, updateUser]);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <nav className="fixed top-0 z-[9999] flex h-[60px] w-full items-center justify-between border-b border-gray-100 bg-white px-4 tablet:px-6 pc:px-10">

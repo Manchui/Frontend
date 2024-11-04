@@ -26,13 +26,13 @@ export function Button({ variant = 'primary', label, size, ...props }: ButtonPro
     <button
       type="button"
       className={cx(
-        'flex cursor-pointer items-center justify-center rounded-xl px-[30px] py-[10px] text-sm font-semibold duration-200 hover:scale-[1.02] active:scale-[0.9] disabled:scale-100 disabled:cursor-not-allowed md:text-md',
+        'flex cursor-pointer items-center justify-center rounded-xl px-[22px] py-[10px] text-sm font-semibold duration-200 hover:scale-[1.02] active:scale-[0.9] disabled:scale-100 disabled:cursor-not-allowed md:text-md',
         {
           'bg-blue-800 text-white hover:bg-blue-700 disabled:bg-gray-100': variant === 'primary',
           'bg-red-500 text-white hover:bg-red-600 disabled:bg-gray-100': variant === 'danger',
           'border border-blue-800 bg-white text-blue-800 hover:bg-blue-50 disabled:border-gray-400 disabled:text-gray-400': variant === 'white',
           '': size === 'primary',
-          'h-[40px] w-[120px]': size === 'small',
+          'h-[40px] min-w-[120px]': size === 'small',
           'h-[44px] w-[332px]': size === 'large',
         },
       )}

@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import getGatheringData from '@/apis/detail/get-gathering-data';
 import { FloatingBar } from '@/components/detail/FloatingBar';
 import { GatheringCard } from '@/components/detail/GatheringCard';
+import Loading from '@/components/detail/Loading';
 import { ReviewListCard } from '@/components/detail/ReviewListCard';
 import { ProgressBar } from '@/components/shared/progress-bar';
 import Rating from '@/components/shared/Rating';
@@ -35,7 +36,7 @@ export default function DetailPage() {
     void fetchGatherings();
   }, [id]);
 
-  if (!gatherings) return <div>Loading</div>;
+  if (!gatherings) return <Loading />;
 
   // TODO: 스코어를 백엔드에서 계산해서 따로 api를 만들면 좋을 듯
   // TODO: 스코어 계산은 추후에 더 좋은 방법 찾아서 변경

@@ -9,17 +9,21 @@ import type { DetailPageBaseType } from '../FloatingBar';
 
 export default function AttendanceButton({ id }: DetailPageBaseType) {
   const { isOpen, openModal, closeModal } = useModal();
+  const token = localStorage.getItem('accessToken');
 
   const handleGatheringsCancel = async () => {
     try {
-      if (typeof id === 'string') {
-        await submitAttendance(id);
+      if (typeof id !== 'string') {
+        Toast('error', '유효하지 않은 ID입니다.');
+        return;
       }
+      await submitAttendance(id);
+      Toast('success', '참여 완료하였습니다.');
     } catch (e) {
       if (axios.isAxiosError(e)) {
         Toast('error', '문제가 발생했습니다.');
       } else {
-        Toast('error', '참여 예약 중 문제가 발생했습니다.');
+        Toast('error', e instanceof Error ? e.message : '모임 참여 중 문제가 발생했습니다.');
       }
     }
   };
@@ -32,15 +36,17 @@ export default function AttendanceButton({ id }: DetailPageBaseType) {
           {
             label: '확인',
             onClick: () => {
-              void handleGatheringsCancel();
-              closeModal();
+              if (token) {
+                void handleGatheringsCancel();
+                closeModal();
+              }
             },
           },
         ]}
         isOpen={isOpen}
         onClose={closeModal}
       >
-        <div className="mx-6 mt-16">참여 하시겠습니까?</div>
+        <div className="mx-16 mt-16">{token ? '참여 하시겠습니까?' : '로그인이 필요합니다.'}</div>
       </Modal>
     </div>
   );
