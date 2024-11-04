@@ -7,7 +7,7 @@ import { useModal } from '@/hooks/useModal';
 
 import type { DetailPageBaseType } from '../FloatingBar';
 
-export default function AttendanceButton({ id }: DetailPageBaseType) {
+export default function AttendanceButton({ id, gatherings }: DetailPageBaseType) {
   const { isOpen, openModal, closeModal } = useModal();
   const token = localStorage.getItem('accessToken');
 
@@ -34,6 +34,10 @@ export default function AttendanceButton({ id }: DetailPageBaseType) {
       <Modal
         buttons={[
           {
+            label: '취소',
+            onClick: () => closeModal(),
+          },
+          {
             label: '확인',
             onClick: () => {
               if (token) {
@@ -46,7 +50,19 @@ export default function AttendanceButton({ id }: DetailPageBaseType) {
         isOpen={isOpen}
         onClose={closeModal}
       >
-        <div className="mx-16 mt-16">{token ? '참여 하시겠습니까?' : '로그인이 필요합니다.'}</div>
+        <div className="mx-16 mt-10 text-center">
+          {token && gatherings.name ? (
+            <div>
+              <div className="text-xl font-semibold text-amber-500">{gatherings.groupName}</div>
+              <br />
+              모임에 참여 하시겠습니까?
+              <br />
+              언제든 취소할 수 있어요!
+            </div>
+          ) : (
+            '로그인이 필요합니다!'
+          )}
+        </div>
       </Modal>
     </div>
   );

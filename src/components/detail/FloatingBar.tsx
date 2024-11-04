@@ -1,10 +1,11 @@
-import type { UsersList } from '@/types/detail';
+import type { DetailData, UsersList } from '@/types/detail';
 
 import AttendanceButton from './button/AttendanceButton';
 import { CancelButton } from './button/CancelButton';
 import { Button } from '../shared/button';
 
 export interface DetailPageBaseType {
+  gatherings: DetailData;
   id: string | string[] | undefined;
 }
 
@@ -13,7 +14,7 @@ interface FloatingBarProps extends DetailPageBaseType {
   usersList: UsersList[];
 }
 
-export function FloatingBar({ id, usersList, maxUsers }: FloatingBarProps) {
+export function FloatingBar({ gatherings, id, usersList, maxUsers }: FloatingBarProps) {
   const myUserName = localStorage.getItem('userName');
   const findUserId = usersList.find((user) => user.name === myUserName);
   const isDisabled = usersList.length === maxUsers;
@@ -25,11 +26,11 @@ export function FloatingBar({ id, usersList, maxUsers }: FloatingBarProps) {
         <span className="text-sm font-medium text-[#111827]">프로그램을 통해 지친 몸과 마음을 회복해봐요</span>
       </div>
       {findUserId ? (
-        <CancelButton id={id} />
+        <CancelButton gatherings={gatherings} id={id} />
       ) : isDisabled ? (
         <Button label="참여하기" size="primary" variant="primary" disabled />
       ) : (
-        <AttendanceButton id={id} />
+        <AttendanceButton gatherings={gatherings} id={id} />
       )}
     </footer>
   );

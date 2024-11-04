@@ -7,8 +7,10 @@ import { useModal } from '@/hooks/useModal';
 
 import type { DetailPageBaseType } from '../FloatingBar';
 
-export function CancelButton({ id }: DetailPageBaseType) {
+export function CancelButton({ id, gatherings }: DetailPageBaseType) {
   const { isOpen, openModal, closeModal } = useModal();
+  const token = localStorage.getItem('accessToken');
+  const name = localStorage.getItem('name');
 
   const handleGatheringsCancel = async () => {
     try {
@@ -27,21 +29,39 @@ export function CancelButton({ id }: DetailPageBaseType) {
 
   return (
     <div>
-      <Button onClick={openModal} label="참여 취소하기" size="small" variant="white" />
+      <Button onClick={openModal} label={token && name === gatherings.name ? '모임 취소하기' : '참여 취소하기'} size="small" variant="white" />
       <Modal
         buttons={[
           {
+            label: '취소',
+            onClick: () => closeModal(),
+          },
+          {
             label: '확인',
             onClick: () => {
-              void handleGatheringsCancel();
-              closeModal();
+              if (token) {
+                void handleGatheringsCancel();
+                closeModal();
+              }
             },
           },
         ]}
         isOpen={isOpen}
         onClose={closeModal}
       >
-        <div className="mx-16 mt-16">예약을 취소하시겠습니까?</div>
+        <div className="mx-16 mt-10 text-center">
+          {token && name === gatherings.name ? (
+            <div>
+              <div className="text-xl font-semibold text-amber-500">{gatherings.groupName}</div>
+              <br />
+              모임을 취소하시겠습니까?
+              <br />
+              되돌릴 수 없어요 😥
+            </div>
+          ) : (
+            '예약을 취소하시겠습니까?'
+          )}
+        </div>
       </Modal>
     </div>
   );
