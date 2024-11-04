@@ -6,12 +6,12 @@ import RootLayout from '@/components/shared/RootLayout';
 
 export default function Home() {
   const [searchValue, setSearchValue] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('전체'); // 카테고리
+  const [selectedCategory, setSelectedCategory] = useState<string>('전체'); 
 
   const handleCategoryClick = (category: string) => {
-    // 카테고리 클릭
     setSelectedCategory(category);
   };
+
   return (
     <div className="mt-[60px]">
       <RootLayout>
@@ -21,7 +21,6 @@ export default function Home() {
 
           {/* 카테고리 */}
           <FilterSection selectedCategory={selectedCategory} handleCategoryClick={handleCategoryClick} />
-       
         </MainContainer>
       </RootLayout>
     </div>
