@@ -225,7 +225,11 @@ export default function CreatePage() {
     let formattedDateTime = '';
 
     if (selectedDates.selectedDate && selectedTime) {
-      formattedDateTime = `${selectedDates.selectedDate} ${selectedTime}:00`;
+      const dateOnly = selectedDates.selectedDate.split('T')[0];
+      const [hour] = selectedTime.split(':');
+      const formattedHour = hour.padStart(2, '0');
+
+      formattedDateTime = `${dateOnly} ${formattedHour}:00:00`;
     }
 
     data.append('groupName', name || ''); // 텍스트 값
@@ -252,17 +256,27 @@ export default function CreatePage() {
     // };
 
     try {
-      const res = await instance.post('/api/gathering', data, {
+      await instance.post('/api/gatherings', data, {
         headers: {
           // 'Authorization': localStorage.getItem('accessToken'),
           'Content-Type': 'multipart/form-data',
           // 자동으로 form-data 설정됨
         },
       });
-      Toast('success', res.data.message);
-      void router.push('/main');
+      Toast('success', '모임 생성 성공');
+      void router.push('/');
     } catch (err: any) {
-      Toast('error', err.response.data.message);
+      const errorMessage =
+        err.response?.data?.message ||
+        (err.response?.status === 403
+          ? '권한이 없습니다. 다시 로그인해 주세요.'
+          : err.response?.status === 404
+            ? '요청한 리소스를 찾을 수 없습니다.'
+            : err.response?.status >= 500
+              ? '서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.'
+              : err.message || '알 수 없는 오류가 발생했습니다');
+
+      Toast('error', errorMessage);
     }
   };
 

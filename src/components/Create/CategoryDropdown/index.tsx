@@ -7,7 +7,8 @@ type CategoryDropdownProps = {
 };
 
 export function CategoryDropdown({ setSelectedCategory ,error}: CategoryDropdownProps) {
-  const categoryList = Array.from(FILTER_OPTIONS.map((option) => option.label));
+  const categoryList = FILTER_OPTIONS.slice(1).map(option => option.label);
+
 
   return (
     <div>
