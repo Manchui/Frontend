@@ -21,7 +21,8 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
           className="size-full rounded-[18px] border-2 duration-100"
         />
         <div className="absolute right-0 top-0">
-          <Tag Hour={dueDate.getHours()} Type="detail" />
+          {new Date().getDay()}
+          <Tag Hour={dueDate.getHours()} Type="detail" finish={dueDate.getTime() < new Date().getTime() && true} />
         </div>
       </div>
       <div className="h-[240px] w-[343px] rounded-2xl border bg-white py-[20.5px] duration-100 tablet:h-[240px] tablet:w-[360px] pc:h-[270px] pc:w-[486px] pc:py-6">

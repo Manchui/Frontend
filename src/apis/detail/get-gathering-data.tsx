@@ -6,7 +6,7 @@ import instance from '../api';
 
 export default async function getGatheringData(gatheringsId: string) {
   try {
-    const res = await instance.get<BaseData>(`/api/gatherings/${gatheringsId}`);
+    const res = await instance.get<BaseData>(`/api/gatherings/public/${gatheringsId}`);
     return res.data.data;
   } catch (e: unknown) {
     if (axios.isAxiosError(e)) {

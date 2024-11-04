@@ -14,10 +14,7 @@ interface FloatingBarProps extends DetailPageBaseType {
 }
 
 export function FloatingBar({ id, usersList, maxUsers }: FloatingBarProps) {
-  // NOTE: 임시 값
-  const myUserName = 'test11';
-  // const myUserName = localStorage.getItem('userName');
-
+  const myUserName = localStorage.getItem('userName');
   const findUserId = usersList.find((user) => user.name === myUserName);
   const isDisabled = usersList.length === maxUsers;
 
