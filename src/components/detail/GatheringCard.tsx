@@ -34,7 +34,7 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
           <ProgressBar
             maxValue={gatherings.maxUsers}
             mainValue={gatherings.minUsers}
-            value={gatherings.participantUsers}
+            value={gatherings.currentUsers}
             design="details"
             userList={gatherings.usersList}
           />

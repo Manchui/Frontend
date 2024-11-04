@@ -11,16 +11,12 @@ interface UserInfo {
   };
 }
 
-export const getUserInfo = async (accessToken: string) => {
+export const getUserInfo = async () => {
   try {
-    const res = await instance.get<UserInfo>('/api/auths/user', {
-      headers: {
-        Authorization: accessToken,
-      },
-    });
-    return { res:res.data.data, result: true };
+    const res = await instance.get<UserInfo>('/api/auths/user');
+    return { res: res.data.data, result: true };
   } catch (error) {
-    return {error, result: false};
+    return { error, result: false };
   }
 };
 

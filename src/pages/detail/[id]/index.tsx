@@ -1,32 +1,39 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
-import { getGatheringData } from '@/apis/detail/get-gathering-data';
+import { useRouter } from 'next/router';
+import getGatheringData from '@/apis/detail/get-gathering-data';
 import { FloatingBar } from '@/components/detail/FloatingBar';
 import { GatheringCard } from '@/components/detail/GatheringCard';
 import { ReviewListCard } from '@/components/detail/ReviewListCard';
-// import { useRouter } from 'next/router';
 import { ProgressBar } from '@/components/shared/progress-bar';
 import Rating from '@/components/shared/Rating';
+import { Toast } from '@/components/shared/Toast';
 import type { DetailData } from '@/types/detail';
 
 export default function DetailPage() {
   const [gatherings, setGatherings] = useState<DetailData | null>(null);
-
-  const fetchGatherings = async () => {
-    const res: DetailData = await getGatheringData();
-    setGatherings(res);
-  };
+  const router = useRouter();
+  const { id } = router.query;
 
   useEffect(() => {
-    fetchGatherings().catch((e) => {
-      if (axios.isAxiosError(e)) {
-        throw e.response?.data;
-      } else {
-        throw new Error('error');
+    const fetchGatherings = async () => {
+      try {
+        if (typeof id === 'string') {
+          const res = await getGatheringData(id);
+          setGatherings(res);
+        }
+      } catch (e) {
+        if (axios.isAxiosError(e)) {
+          // throw e.response?.data;
+          Toast('error', '문제가 발생했습니다!');
+        } else {
+          throw new Error('error');
+        }
       }
-    });
-  }, []);
+    };
+    void fetchGatherings();
+  }, [id]);
 
   if (!gatherings) return <div>Loading</div>;
 
@@ -40,8 +47,7 @@ export default function DetailPage() {
       </div>
     </div>
   );
-  // const router = useRouter();
-  // const { id } = router.query;
+
   return (
     <main className="pb-[96px] pt-[60px]">
       <GatheringCard gatherings={gatherings} />

@@ -22,6 +22,7 @@ export type DetailData = {
   category: string;
   content: string;
   createdAt: string;
+  currentUsers: number;
   deletedAt: null;
   dueDate: string;
   gatheringDate: string;
@@ -37,7 +38,6 @@ export type DetailData = {
   maxUsers: number;
   minUsers: number;
   name: string;
-  participantUsers: number;
   reviewList: ReviewList[];
   updatedAt: string;
   usersList: UsersList[];

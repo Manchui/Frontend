@@ -10,4 +10,18 @@ const instance = axios.create({
   },
 });
 
+instance.interceptors.request.use(
+  (request) => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('accessToken');
+      if (token) {
+        request.headers.Authorization = `Bearer ${token}`;
+      }
+    }
+    return request;
+  },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+  (_error) => Promise.reject(new Error('Error message')),
+);
+
 export default instance;

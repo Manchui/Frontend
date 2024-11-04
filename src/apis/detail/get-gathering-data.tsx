@@ -1,13 +1,12 @@
-import type { AxiosResponse } from 'axios';
 import axios from 'axios';
-import type { DetailData } from '@/types/detail';
+import type { BaseData } from '@/types/detail';
 
 import instance from '../api';
 
-export const getGatheringData = async () => {
+export default async function getGatheringData(gatheringsId: string) {
   try {
-    const res: AxiosResponse<DetailData> = await instance.get('http://localhost:3001/data');
-    return res.data;
+    const res = await instance.get<BaseData>(`/api/gatherings/${gatheringsId}`);
+    return res.data.data;
   } catch (e: unknown) {
     if (axios.isAxiosError(e)) {
       throw e.response?.data;
@@ -15,4 +14,4 @@ export const getGatheringData = async () => {
       throw new Error('error');
     }
   }
-};
+}
