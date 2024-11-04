@@ -26,7 +26,7 @@ export function Button({ variant = 'primary', label, size, ...props }: ButtonPro
     <button
       type="button"
       className={cx(
-        'flex cursor-pointer items-center justify-center rounded-xl px-[30px] py-[10px] text-sm duration-200 hover:scale-[1.02] active:scale-[0.9] disabled:scale-100 disabled:cursor-not-allowed md:text-base',
+        'flex cursor-pointer items-center justify-center rounded-xl px-[30px] py-[10px] text-sm font-semibold duration-200 hover:scale-[1.02] active:scale-[0.9] disabled:scale-100 disabled:cursor-not-allowed md:text-md',
         {
           'bg-blue-800 text-white hover:bg-blue-700 disabled:bg-gray-100': variant === 'primary',
           'bg-red-500 text-white hover:bg-red-600 disabled:bg-gray-100': variant === 'danger',

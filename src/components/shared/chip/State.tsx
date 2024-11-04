@@ -8,7 +8,7 @@ interface StateProps {
 
 const setting = {
   planed: {
-    style: 'bg-[#FEF5D7] text-yellow-400 border-[#FEF5D7]',
+    style: 'bg-blue-100 text-blue-800 border-blue-100',
     text: '이용 예정',
   },
   completed: {
@@ -16,18 +16,18 @@ const setting = {
     text: '이용 완료',
   },
   confirmed: {
-    style: 'text-yellow-400 border-yellow-300',
+    style: 'bg-blue-800 text-white border-blue-800',
     text: '개설 확정',
   },
   pending: {
-    style: 'text-gray-400',
+    style: 'bg-white text-gray-500 border-gray-100',
     text: '개설 대기',
   },
 };
 
 const ComponentVariants = cva(
   `
-  m-4 flex w-fit rounded-full border p-2 text-xs
+  flex w-fit rounded-full border p-2 text-xs
   `,
   {
     variants: {
