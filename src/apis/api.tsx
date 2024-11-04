@@ -14,18 +14,20 @@ const instance = axios.create({
 // 인터셉터를 이용하여 예외 리스트를 제외하곤 모든 요청에 토큰을 담아 보내도록 설정
 instance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      const excludedUrls = [
-        '/api/auths/signup',
-        '/api/auths/check-name',
-        '/api/auths/signin',
-        '/api/gatherings/public',
-        '/api/reviews/score',
-        '/api/reviews?page',
-      ]; // 예외 URL 리스트
-      if (!excludedUrls.includes(config.url || '')) {
-        config.headers.Authorization = `${token}`; // 나중에 Bearer는 서버에서 따로 빼달라고 해야함
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('accessToken');
+      if (token) {
+        const excludedUrls = [
+          '/api/auths/signup',
+          '/api/auths/check-name',
+          '/api/auths/signin',
+          '/api/gatherings/public',
+          '/api/reviews/score',
+          '/api/reviews?page',
+        ]; // 예외 URL 리스트
+        if (!excludedUrls.includes(config.url || '')) {
+          config.headers.Authorization = `${token}`; // 나중에 Bearer는 서버에서 따로 빼달라고 해야함
+        }
       }
     }
 

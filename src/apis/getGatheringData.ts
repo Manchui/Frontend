@@ -12,9 +12,6 @@ interface GetGatheringDataProps {
   startDate?: string;
 }
 
-const API_TOKEN =
-  'eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsInVzZXJFbWFpbCI6InRlc3QxQHRlc3QuY29tIiwiaWF0IjoxNzMwNjg4ODM5LCJleHAiOjE3MzA2OTA2Mzl9.KsPQ0cGKyDakU6VZfKWE8P26mfJ_cKMUCTePLzTK9gg';
-
 export async function getGatheringData({
   page = 1,
   size = 20,
@@ -49,12 +46,10 @@ export async function getGatheringData({
       params.append('endDate', endDate);
     }
 
-    const res = await instance.get<GetGatheringResponse>('/api/gatherings', {
-      params,
+    const endpoint = typeof window !== 'undefined' && localStorage.getItem('accessToken') ? '/api/gatherings' : '/api/gatherings/public';
 
-      headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
-      },
+    const res = await instance.get<GetGatheringResponse>(endpoint, {
+      params,
     });
 
     return res.data;
