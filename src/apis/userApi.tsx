@@ -14,11 +14,7 @@ interface UserInfo {
 
 export const getUserInfo = async () => {
   try {
-    const res = await instance.get<UserInfo>('/api/auths/user', {
-      headers: {
-        Authorization: localStorage.getItem('accessToken'),
-      },
-    });
+    const res = await instance.get<UserInfo>('/api/auths/user');
     return { res:res.data.data, result: true };
   } catch (error) {
     return {error, result: false};
