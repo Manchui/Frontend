@@ -1,7 +1,8 @@
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -10,6 +11,7 @@ import instance from '@/apis/api';
 import { getUserInfo } from '@/apis/userApi';
 import Carousel from '@/components/Carousel';
 import Input from '@/components/shared/Input';
+import { Toast } from '@/components/shared/Toast';
 import { userStore } from '@/store/userStore';
 
 /**
@@ -22,7 +24,6 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isDesktop, setIsDesktop] = useState(false);
-  const [error, setError] = useState('');
   const router = useRouter();
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -50,22 +51,29 @@ export default function LoginPage() {
     if (password.length < 8 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return;
     }
-
+    let success = false;
     try {
       const res = await instance.post('/api/auths/signin', {
         email,
         password,
       });
       localStorage.setItem('accessToken', res.headers.authorization);
-      const userData = await getUserInfo(res.headers.authorization);
-      if (userData.res) {
-        userUpdate(userData.res);
-      }
+      Toast('success', res.data.message);
       login();
-      void router.push('/');
+      success = true;
     } catch (err: any) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      setError(err.response.data.message);
+      Toast('error', err.response.data.message);
+    }
+    if (success) {
+      try {
+        const userData = await getUserInfo();
+        if (userData.res) {
+          userUpdate(userData.res);
+        }
+        void router.push('/');
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -80,7 +88,6 @@ export default function LoginPage() {
             <form onSubmit={handleLogin} className="flex w-[500px] flex-col space-y-4">
               <Input type="email" name="id" onChange={(e) => setEmail(e.target.value)} />
               <Input type="password" name="password" onChange={(e) => setPassword(e.target.value)} />
-              {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
               <button type="submit" className="mt-4 w-full rounded-xl bg-blue-800 py-2 text-lg text-white hover:bg-blue-700">
                 로그인
               </button>
@@ -111,7 +118,6 @@ export default function LoginPage() {
             <Input type="email" name="id" onChange={(e) => setEmail(e.target.value)} />
             <Input type="password" name="password" onChange={(e) => setPassword(e.target.value)} />
           </div>
-            {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
           <button type="submit" className="mt-4 w-full rounded-xl bg-blue-800 py-2 text-lg text-white hover:bg-blue-700">
             로그인
           </button>
