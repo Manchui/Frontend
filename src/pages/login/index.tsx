@@ -62,7 +62,8 @@ export default function LoginPage() {
       login();
       success = true;
     } catch (err: any) {
-      Toast('error', err.response.data.message);
+      console.log(err);
+      Toast('error', '이메일 또는 비밀번호가 일치하지 않습니다.');
     }
     if (success) {
       try {
