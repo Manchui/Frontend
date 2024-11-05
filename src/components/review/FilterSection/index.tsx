@@ -12,7 +12,7 @@ interface FilterSectionProps {
 
 export default function FilterSection({ handleCategoryClick, selectedCategory }: FilterSectionProps) {
   return (
-    <div className="scrollbar-hide relative mb-8 mt-4 flex w-full select-none flex-col gap-4 bg-white px-4 py-5 mobile:rounded-lg">
+    <div className="scrollbar-hide relative  mt-4 flex w-full select-none flex-col gap-4 bg-white px-4 py-5 mobile:rounded-lg">
       <CategoryList selectedCategory={selectedCategory} handleCategoryClick={handleCategoryClick} />
       {/* 리뷰 별점 */}
       <ReviewRating />
