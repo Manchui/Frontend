@@ -24,13 +24,18 @@ export default function GNB() {
       const accessToken: string | null = localStorage.getItem('accessToken');
       if (accessToken) {
         const userData = await getUserInfo();
+        if (userData.res) {
+          localStorage.setItem('userName', userData.res?.name);
+        }
         if (userData.result) {
           updateUser(userData.res || { email: '', id: '', image: '', name: '' });
           login();
         } else {
+          localStorage.removeItem('userName');
           logout();
         }
       } else {
+        localStorage.removeItem('userName');
         logout();
       }
     };

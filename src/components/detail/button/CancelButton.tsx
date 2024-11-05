@@ -17,6 +17,7 @@ export function CancelButton({ id, gatherings }: DetailPageBaseType) {
       if (typeof id === 'string') {
         await deleteCancellation(id);
         Toast('success', '참여 취소 완료하였습니다.');
+        window.location.reload();
       }
     } catch (e) {
       if (axios.isAxiosError(e)) {

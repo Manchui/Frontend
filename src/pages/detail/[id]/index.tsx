@@ -15,7 +15,12 @@ export default function DetailPage() {
   const { data } = useQuery({
     // NOTE: page,size는 임시값
     queryKey: ['detail', { id, page: 1, size: 10 }],
-    queryFn: () => (typeof id === 'string' ? getGatheringData(id) : undefined),
+    queryFn: () => {
+      if (typeof id === 'string') {
+        return getGatheringData(id);
+      }
+      return null;
+    },
     staleTime: 1000 * 10,
   });
   const gatherings = data;

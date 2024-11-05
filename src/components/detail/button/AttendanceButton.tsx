@@ -19,6 +19,7 @@ export default function AttendanceButton({ id, gatherings }: DetailPageBaseType)
       }
       await submitAttendance(id);
       Toast('success', '참여 완료하였습니다.');
+      window.location.reload();
     } catch (e) {
       if (axios.isAxiosError(e)) {
         Toast('error', '문제가 발생했습니다.');
