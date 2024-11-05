@@ -1,3 +1,4 @@
+/* eslint-disable tailwindcss/no-custom-classname */
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -52,7 +53,7 @@ export default function CardContent({ gathering }: CardContentProps) {
   }, []);
 
   return (
-    <div className="relative flex h-1/2 flex-1 flex-col justify-between p-2 mobile:h-full mobile:w-1/2 mobile:p-4 tablet:h-1/2 tablet:w-full">
+    <div className="border-cardBorder relative flex h-1/2 flex-1 flex-col justify-between rounded-2xl rounded-t-none border border-t-0 p-2 mobile:h-full mobile:w-1/2 mobile:p-4 tablet:h-1/2 tablet:w-full">
       <Link href={`/detail/${gathering.gatheringId}`} className="my-auto flex flex-col gap-1">
         <div className={`mb-2 flex flex-col tablet:mb-0 ${gathering.closed ? 'text-gray-200' : 'text-black'}`}>
           <span className="text-pretty text-16-20-response font-semibold">{gathering.groupName}</span>

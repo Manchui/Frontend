@@ -26,7 +26,7 @@ export default function SearchBar({ keyword, onSearchSubmit }: SearchBarProps) {
   };
 
   return (
-    <form className="flex gap-1 border-b font-medium hover:border-b-blue-800" onSubmit={handleSearchSubmit}>
+    <form className="flex gap-1 border-b font-medium hover:border-b-gray-300" onSubmit={handleSearchSubmit}>
       <label htmlFor="input" className="cursor-pointer">
         <Image src="/icons/main/search.svg" alt="검색창" width={24} height={24} className="tablet:size-8" />
       </label>
