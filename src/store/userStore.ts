@@ -3,6 +3,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 interface User {
+  createdAt: string;
   email: string;
   id: string;
   image: string;
@@ -26,11 +27,12 @@ export const userStore = create<UserStore>()(
         name: '',
         email: '',
         image: '',
+        createdAt: '',
       },
       isLoggedIn: false,
       updateUser: (newUser) => set({ user: newUser }),
       removeUser: () => set({
-        user: { id: '', name: '', email: '', image: '' },
+        user: { id: '', name: '', email: '', image: '', createdAt: '' },
         isLoggedIn: false,
       }),
       login: () => set({ isLoggedIn: true }),

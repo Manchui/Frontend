@@ -2,17 +2,17 @@ import Image from 'next/image';
 import Input from '@/components/shared/Input';
 import Modal from '@/components/shared/Modal';
 import { useModal } from '@/hooks/useModal';
-import type { User } from '@/types/mypage';
+import { userStore } from '@/store/userStore';
 
-export function ProfileCard({ userData }: { userData: User }) {
+export function ProfileCard() {
   const { isOpen, openModal, closeModal } = useModal();
-
+  const userInfo = userStore((state) => state.user);
   return (
     <div className="relative m-auto h-auto w-full rounded-3xl p-2.5 tablet:p-4 pc:p-5">
       <div className="absolute left-[4%] top-[-40%] rounded-full bg-white p-1 phablet:left-[7%] tablet:left-[6%] pc:left-[8.5%]">
         <Image
           className="size-[60px] phablet:size-[70px] md:size-[90px]"
-          src={userData.image}
+          src={userInfo.image}
           alt="프로필 이미지"
           width={70}
           height={70}
@@ -23,10 +23,10 @@ export function ProfileCard({ userData }: { userData: User }) {
         <div className="m-2 size-1/6 phablet:size-1/5 tablet:size-1/6" />
         <div className="flex flex-1 justify-between">
           <div className="flex flex-col gap-1 tablet:gap-2 pc:gap-2">
-            <div className="text-16-20-response font-semibold">{userData.name}</div>
+            <div className="text-16-20-response font-semibold">{userInfo.name}</div>
             <div className="space-y-0.5 text-13-15-response text-gray-400">
-              <div>이메일: {userData.email}</div>
-              <div>가입날짜: {userData.createdAt}</div>
+              <div>이메일: {userInfo.email}</div>
+              <div>가입날짜: {userInfo.createdAt}</div>
             </div>
           </div>
           <div>
@@ -48,7 +48,7 @@ export function ProfileCard({ userData }: { userData: User }) {
           >
             <div className="flex flex-col gap-5 px-6 pt-6">
               <div className="text-2lg font-semibold">프로필 수정하기</div>
-              <Image src={userData.image} alt="프로필 이미지" width={56} height={56} style={{ objectFit: 'cover' }} />
+              <Image src={userInfo.image} alt="프로필 이미지" width={56} height={56} style={{ objectFit: 'cover' }} />
               <Input type="text" name="nick" />
             </div>
           </Modal>

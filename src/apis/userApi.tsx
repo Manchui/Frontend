@@ -5,6 +5,7 @@ import { Toast } from '@/components/shared/Toast';
 
 interface UserInfo {
   data: {
+    createdAt: string;
     email: string;
     id: string;
     image: string;
