@@ -1,5 +1,4 @@
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import CategoryList from '@/components/main/FilterSection/CategoryList';
 import CloseDateToggle from '@/components/main/FilterSection/CloseDateToggle';
