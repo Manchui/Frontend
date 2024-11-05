@@ -2,7 +2,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import Dropdown from '@/components/main/Dropdown';
 import { Toast } from '@/components/shared/Toast';
-import { REGION_DATA } from '@/constants/main/contants';
+import { REGION_DATA } from '@/constants/contants';
 
 interface RegionDropdownProps {
   region?: string;

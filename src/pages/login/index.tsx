@@ -62,7 +62,8 @@ export default function LoginPage() {
       login();
       success = true;
     } catch (err: any) {
-      Toast('error', err.response.data.message);
+      Toast('error', err.res?.data.message);
+      console.log(err);
     }
     if (success) {
       try {

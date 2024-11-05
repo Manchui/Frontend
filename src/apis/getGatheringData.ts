@@ -1,4 +1,5 @@
 import instance from '@/apis/api';
+import { IS_SERVER } from '@/constants/server';
 import type { GetGatheringResponse } from '@manchui-api';
 
 interface GetGatheringDataProps {
@@ -22,32 +23,22 @@ export async function getGatheringData({
   query,
   sort,
 }: GetGatheringDataProps): Promise<GetGatheringResponse> {
+  const params = new URLSearchParams({
+    page: page.toString(),
+    size: size.toString(),
+    ...(sort && { sort }),
+    ...(query && { query }),
+    ...(category && { category }),
+    ...(location && { location }),
+    ...(startDate && { startDate }),
+    ...(endDate && { endDate }),
+  });
+  console.log('page', page);
+  console.log('size', size);
+
+  const endpoint = !IS_SERVER && localStorage.getItem('accessToken') ? '/api/gatherings' : '/api/gatherings/public';
+
   try {
-    const params = new URLSearchParams({
-      page: page.toString(),
-      size: size.toString(),
-    });
-    if (sort) {
-      params.append('sort', sort);
-    }
-    if (query) {
-      params.append('query', query);
-    }
-    if (category) {
-      params.append('category', category);
-    }
-    if (location) {
-      params.append('location', location);
-    }
-    if (startDate) {
-      params.append('startDate', startDate);
-    }
-    if (endDate) {
-      params.append('endDate', endDate);
-    }
-
-    const endpoint = typeof window !== 'undefined' && localStorage.getItem('accessToken') ? '/api/gatherings' : '/api/gatherings/public';
-
     const res = await instance.get<GetGatheringResponse>(endpoint, {
       params,
     });
@@ -55,6 +46,6 @@ export async function getGatheringData({
     return res.data;
   } catch (e) {
     console.error('getGatheringData 함수에서 오류 발생:', e);
-    throw e;
+    throw new Error('모임 데이터를 불러오는데 실패했습니다.');
   }
 }

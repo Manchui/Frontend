@@ -50,7 +50,7 @@ export default function CardContent({ gathering }: CardContentProps) {
         <ProgressBar maxValue={gathering.maxUsers} value={gathering.currentUsers} mainValue={gathering.minUsers} design="basics" closed={gathering.closed} />
       </Link>
       <button type="button" onClick={toggleHeart} className="absolute right-heart-m-right top-heart-m-top tablet:top-heart-t-top">
-        <Image src={gathering.hearted ? '/icons/heart-active-noround.svg' : '/icons/heart-inactive-noround.svg'} alt="찜하기 버튼" width={28} height={28} />
+        <Image src={gathering.hearted ? '/icons/heart-red.svg' : '/icons/heart-outline.svg'} alt="찜하기 버튼" width={28} height={28} />
       </button>
     </div>
   );

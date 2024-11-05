@@ -5,6 +5,7 @@ import CloseDateToggle from '@/components/main/FilterSection/CloseDateToggle';
 import DateDropdown from '@/components/main/FilterSection/DateDropdown';
 import RegionDropdown from '@/components/main/FilterSection/RegionDropdown';
 import { Toast } from '@/components/shared/Toast';
+import { IS_SERVER } from '@/constants/server';
 
 interface FilterSectionProps {
   category?: string;
@@ -36,7 +37,7 @@ export default function FilterSection({
   };
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (!IS_SERVER) {
       setIsLoggedIn(!!localStorage.getItem('accessToken'));
     }
   }, []);

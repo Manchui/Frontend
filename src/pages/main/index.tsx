@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { getGatheringData } from '@/apis/getGatheringData';
 import CardSection from '@/components/main/CardSection';
@@ -7,27 +7,58 @@ import HeaderSection from '@/components/main/HeaderSection';
 import MainCarousel from '@/components/main/MainCarousel';
 import MainContainer from '@/components/main/MainContainer';
 import RootLayout from '@/components/shared/RootLayout';
-import { FILTER_OPTIONS } from '@/constants/main/contants';
-import { dehydrate, keepPreviousData, QueryClient, useQuery } from '@tanstack/react-query';
+import { FILTER_OPTIONS } from '@/constants/contants';
+import useDeviceState from '@/hooks/useDeviceState';
+import useIntersectionObserver from '@/hooks/useIntersectionObserver';
+import type { GetGatheringResponse } from '@manchui-api';
+import { dehydrate, keepPreviousData, QueryClient, useInfiniteQuery } from '@tanstack/react-query';
+
+const PAGE_SIZE_BY_DEVICE = {
+  MOBILE: 3,
+  TABLET: 6,
+  PC: 9,
+};
 
 export default function MainPage() {
   const router = useRouter();
 
-  const [page] = useState<number>(Number(router.query.page) || 1);
   const [keyword, setKeyword] = useState<string | undefined>((router.query.keyword as string | undefined) || undefined);
   const [region, setRegion] = useState<string | undefined>((router.query.category as string | undefined) || undefined);
   const [category, setCategory] = useState<string | undefined>((router.query.category as string | undefined) || FILTER_OPTIONS[0].id);
   const [closeDate, setCloseDate] = useState<string | undefined>(undefined);
-
   const [dateStart, setDateStart] = useState<string | undefined>(undefined);
   const [dateEnd, setDateEnd] = useState<string | undefined>(undefined);
 
-  const { data: mainData, refetch } = useQuery({
-    queryKey: ['main', { query: keyword, location: region, category, sort: closeDate, startDate: dateStart, endDate: dateEnd }],
-    queryFn: () =>
+  const sentinelRef = useRef<HTMLDivElement>(null);
+  const isIntersecting = useIntersectionObserver(sentinelRef);
+
+  const deviceState = useDeviceState();
+
+  const {
+    data: mainData,
+    refetch,
+    isLoading,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery<GetGatheringResponse>({
+    queryKey: [
+      'main',
+      {
+        size: PAGE_SIZE_BY_DEVICE[deviceState],
+        query: keyword,
+        location: region,
+        category,
+        sort: closeDate,
+        startDate: dateStart,
+        endDate: dateEnd,
+      },
+    ],
+    queryFn: ({ pageParam = 0 }) =>
       getGatheringData({
-        page,
-        size: 10,
+        page: (pageParam as number) + 1,
+        size: PAGE_SIZE_BY_DEVICE[deviceState],
         query: keyword,
         location: region,
         startDate: dateStart,
@@ -35,12 +66,22 @@ export default function MainPage() {
         sort: closeDate,
         category,
       }),
+    getNextPageParam: (last) => {
+      console.log('last?.data.totalPage', last?.data.totalPage);
+      console.log('last?.data.page', last?.data.page);
+      if (last?.data.totalPage <= last?.data.page) {
+        return undefined;
+      }
+      return last.data.page + 1;
+    },
+    initialPageParam: 0,
     placeholderData: keepPreviousData,
+    refetchOnWindowFocus: false,
   });
 
-  console.log(mainData?.data);
-
-  const gatheringData = mainData?.data.gatheringList;
+  console.log(mainData?.pageParams); // 1
+  console.log(mainData?.pages.map((page) => page.data));
+  console.log('isIntersecting', isIntersecting);
 
   const handleCategoryClick = (selectedCategory: string) => {
     setCategory(selectedCategory);
@@ -58,6 +99,12 @@ export default function MainPage() {
     setDateStart(start);
     setDateEnd(end);
   };
+
+  useEffect(() => {
+    if (isIntersecting && hasNextPage && !isFetchingNextPage) {
+      void fetchNextPage();
+    }
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage, isIntersecting]);
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
@@ -87,8 +134,9 @@ export default function MainPage() {
           />
           {/* 카드 */}
           <div className="mx-auto grid w-full select-none grid-cols-1 grid-rows-3 gap-6 px-4 mobile:p-0 tablet:grid-cols-3">
-            {gatheringData?.map((gathering) => <CardSection key={gathering.gatheringId} gathering={gathering} />)}
+            {mainData?.pages.map((page) => page.data.gatheringList.map((gathering) => <CardSection key={gathering.gatheringId} gathering={gathering} />))}
           </div>
+          {!isError && <div ref={sentinelRef} className="h-20 w-full" />}
         </MainContainer>
       </RootLayout>
     </>

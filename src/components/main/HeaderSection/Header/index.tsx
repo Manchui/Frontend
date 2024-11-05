@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { FILTER_OPTIONS } from '@/constants/main/contants';
+import { FILTER_OPTIONS } from '@/constants/contants';
 
 interface HeaderProps {
   category?: string;
