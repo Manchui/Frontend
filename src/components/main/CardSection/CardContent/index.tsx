@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import instance from '@/apis/api';
 import DateChip from '@/components/shared/chip/DateChip';
 import { ProgressBar } from '@/components/shared/progress-bar';
 import { Toast } from '@/components/shared/Toast';
+import { IS_SERVER } from '@/constants/server';
 import type { GetGatheringResponse } from '@manchui-api';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -14,9 +15,16 @@ interface CardContentProps {
 
 export default function CardContent({ gathering }: CardContentProps) {
   const [hearted, setHearted] = useState(gathering.hearted);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
   const queryClient = useQueryClient();
 
   const toggleHeart = async () => {
+    if (!isLoggedIn) {
+      Toast('warning', '로그인이 필요합니다.');
+      return;
+    }
+
     const updatedHearted = !hearted;
     setHearted(updatedHearted);
     const endpoint = `/api/gatherings/${gathering.gatheringId}/heart`;
@@ -36,6 +44,12 @@ export default function CardContent({ gathering }: CardContentProps) {
       setHearted((prevHearted) => !prevHearted);
     }
   };
+
+  useEffect(() => {
+    if (!IS_SERVER) {
+      setIsLoggedIn(!!localStorage.getItem('accessToken'));
+    }
+  }, []);
 
   return (
     <div className="relative flex h-1/2 flex-1 flex-col justify-between p-2 mobile:h-full mobile:w-1/2 mobile:p-4 tablet:h-1/2 tablet:w-full">

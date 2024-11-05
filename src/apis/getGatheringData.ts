@@ -33,8 +33,6 @@ export async function getGatheringData({
     ...(startDate && { startDate }),
     ...(endDate && { endDate }),
   });
-  console.log('page', page);
-  console.log('size', size);
 
   const endpoint = !IS_SERVER && localStorage.getItem('accessToken') ? '/api/gatherings' : '/api/gatherings/public';
 

@@ -67,8 +67,6 @@ export default function MainPage() {
         category,
       }),
     getNextPageParam: (last) => {
-      console.log('last?.data.totalPage', last?.data.totalPage);
-      console.log('last?.data.page', last?.data.page);
       if (last?.data.totalPage <= last?.data.page) {
         return undefined;
       }
@@ -78,10 +76,6 @@ export default function MainPage() {
     placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
   });
-
-  console.log(mainData?.pageParams); // 1
-  console.log(mainData?.pages.map((page) => page.data));
-  console.log('isIntersecting', isIntersecting);
 
   const handleCategoryClick = (selectedCategory: string) => {
     setCategory(selectedCategory);

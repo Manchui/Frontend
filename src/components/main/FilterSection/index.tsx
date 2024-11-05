@@ -1,5 +1,6 @@
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import CategoryList from '@/components/main/FilterSection/CategoryList';
 import CloseDateToggle from '@/components/main/FilterSection/CloseDateToggle';
 import DateDropdown from '@/components/main/FilterSection/DateDropdown';
@@ -28,10 +29,13 @@ export default function FilterSection({
   setDateStart,
   setDateEnd,
 }: FilterSectionProps) {
+  const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   const handleCreateButtonClick = () => {
-    if (!isLoggedIn) {
+    if (isLoggedIn) {
+      void router.push('/create');
+    } else {
       Toast('warning', '로그인이 필요합니다.');
     }
   };
@@ -56,13 +60,13 @@ export default function FilterSection({
         </div>
 
         {/* 모임 만들기 버튼 */}
-        <Link
-          href={isLoggedIn ? '/create' : '#'}
+        <button
+          type="button"
           onClick={handleCreateButtonClick}
           className="rounded-xl bg-blue-800 px-3 py-2 text-13-16-response font-semibold text-white transition-all duration-200 hover:bg-blue-700"
         >
           모임 만들기
-        </Link>
+        </button>
       </div>
     </div>
   );
