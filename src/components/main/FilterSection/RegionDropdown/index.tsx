@@ -1,26 +1,42 @@
+import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import Dropdown from '@/components/main/Dropdown';
-import { REGION_DATA } from '@/constants/main/contants';
+import { Toast } from '@/components/shared/Toast';
+import { REGION_DATA } from '@/constants/contants';
 
-export default function RegionDropdown() {
+interface RegionDropdownProps {
+  region?: string;
+  setRegion: Dispatch<SetStateAction<string | undefined>>;
+}
+
+export default function RegionDropdown({ setRegion, region }: RegionDropdownProps) {
   const [regionDropOpen, setRegionDropOpen] = useState(false);
 
-  // const handleRegionSelect = (region: string) => {
-  //   // 지역 필터
-  //   console.log('선택된 지역:', region);
-  //   setRegionDropOpen(false);
-  // };
+  const handleInitClick = () => {
+    setRegion(undefined);
+    setRegionDropOpen(false);
+
+    Toast('success', '지역 필터가 초기화되었습니다.');
+  };
+
+  const handleRegionSelect = (value: string) => {
+    setRegion(value);
+    setRegionDropOpen(false);
+
+    Toast('success', `${value} 지역이 선택되었습니다.`);
+  };
 
   return (
-    <Dropdown dropOpen={regionDropOpen} isOpen={regionDropOpen} setIsOpen={setRegionDropOpen} buttonLabel="지역" className="left-0">
-      <ul className={`max-h-48 w-24 overflow-y-auto rounded-xl ${regionDropOpen ? 'animate-dropdown-open' : 'animate-dropdown-close'}`}>
-        {REGION_DATA.map((region) => (
-          <li
-            key={region}
-            // onClick={() => handleRegionSelect(region)}
-            className="cursor-pointer p-2 text-13-15-response font-semibold text-gray-900 hover:bg-gray-50"
-          >
-            {region}
+    <Dropdown value={region} dropOpen={regionDropOpen} isOpen={regionDropOpen} setIsOpen={setRegionDropOpen} buttonLabel={region ?? '지역'} className="left-0">
+      <ul
+        className={`max-h-48 w-24 cursor-pointer overflow-y-auto rounded-xl text-13-15-response font-semibold text-gray-900 ${regionDropOpen ? 'animate-dropdown-open' : 'animate-dropdown-close'}`}
+      >
+        <li onClick={handleInitClick} className="p-2 hover:bg-gray-50">
+          전체
+        </li>
+        {REGION_DATA.map((value) => (
+          <li key={value} onClick={() => handleRegionSelect(value)} className="p-2 hover:bg-gray-50">
+            {value}
           </li>
         ))}
       </ul>

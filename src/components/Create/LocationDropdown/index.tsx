@@ -1,5 +1,5 @@
 import LongDropdown from '@/components/shared/Dropdown/LongDropdown';
-import { REGION_DATA } from '@/constants/main/contants';
+import { REGION_DATA } from '@/constants/contants';
 
 type LocationDropdownProps = {
   error: string;

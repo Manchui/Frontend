@@ -1,18 +1,17 @@
-import type { Dispatch, SetStateAction } from 'react';
 import Header from '@/components/main/HeaderSection/Header';
 import SearchBar from '@/components/main/HeaderSection/SearchBar';
 
 interface HeaderSectionProps {
-  searchValue: string;
-  selectedCategory: string;
-  setSearchValue: Dispatch<SetStateAction<string>>;
+  category?: string;
+  handleSearchSubmit: (submitValue: string) => void;
+  keyword?: string;
 }
 
-export default function HeaderSection({ searchValue, setSearchValue, selectedCategory }: HeaderSectionProps) {
+export default function HeaderSection({ keyword, category, handleSearchSubmit }: HeaderSectionProps) {
   return (
     <div className="flex w-full items-center justify-around text-title-response font-bold mobile:justify-between">
-      <Header selectedCategory={selectedCategory} />
-      <SearchBar searchValue={searchValue} setSearchValue={setSearchValue} />
+      <Header category={category} />
+      <SearchBar keyword={keyword} onSearchSubmit={handleSearchSubmit} />
     </div>
   );
 }

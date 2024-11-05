@@ -6,6 +6,7 @@ const today = new Date();
 
 interface RenderCalendarProps {
   currentDate: Date;
+  isDateLocked?: boolean;
   onDateSelect: (date: string) => void;
   rangeEnd: string | null;
   rangeStart: string | null;
@@ -25,7 +26,7 @@ interface RenderCalendarProps {
  * @param {(date: string) => void} onDateSelect - 날짜 선택 시 호출되는 콜백 함수
  */
 
-export default function RenderCalendar({ currentDate, onDateSelect, selectedDate, rangeStart, rangeEnd, selectionType }: RenderCalendarProps) {
+export default function RenderCalendar({ currentDate, onDateSelect, selectedDate, rangeStart, rangeEnd, selectionType, isDateLocked }: RenderCalendarProps) {
   const [hoverDate, setHoverDate] = useState<string | null>(null);
 
   const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate(); // 현재 달의 마지막 날
@@ -81,6 +82,7 @@ export default function RenderCalendar({ currentDate, onDateSelect, selectedDate
       isPastDate && 'pointer-events-none',
       textColor,
       hoverClasses,
+      isDateLocked ? 'cursor-default' : 'cursor-pointer',
     );
 
     return (
