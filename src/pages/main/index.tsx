@@ -37,7 +37,7 @@ export default function MainPage() {
   const {
     data: mainData,
     refetch,
-    isLoading,
+    // isLoading,
     isError,
     fetchNextPage,
     hasNextPage,
