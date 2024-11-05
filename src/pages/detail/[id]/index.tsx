@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import getGatheringData from '@/apis/detail/get-gathering-data';
@@ -9,32 +8,19 @@ import Loading from '@/components/detail/Loading';
 import { ReviewListCard } from '@/components/detail/ReviewListCard';
 import { ProgressBar } from '@/components/shared/progress-bar';
 import Rating from '@/components/shared/Rating';
-import { Toast } from '@/components/shared/Toast';
-import type { DetailData } from '@/types/detail';
+import { useQuery } from '@tanstack/react-query';
 
 export default function DetailPage() {
-  const [gatherings, setGatherings] = useState<DetailData | null>(null);
+  const [isButton, setIsButton] = useState(false);
   const router = useRouter();
   const { id } = router.query;
-
-  useEffect(() => {
-    const fetchGatherings = async () => {
-      try {
-        if (typeof id === 'string') {
-          const res = await getGatheringData(id);
-          setGatherings(res);
-        }
-      } catch (e) {
-        if (axios.isAxiosError(e)) {
-          // throw e.response?.data;
-          Toast('error', '문제가 발생했습니다!');
-        } else {
-          throw new Error('error');
-        }
-      }
-    };
-    void fetchGatherings();
-  }, [id]);
+  const { data } = useQuery({
+    // NOTE: page,size는 임시값
+    queryKey: ['detail', { id, page: 1, size: 10 }],
+    queryFn: () => (typeof id === 'string' ? getGatheringData(id) : undefined),
+    staleTime: 1000 * 10,
+  });
+  const gatherings = data;
 
   if (!gatherings) return <Loading />;
 
@@ -87,7 +73,14 @@ export default function DetailPage() {
           <div className="mx-auto pb-6 pt-2 text-center text-[#6B7280]">아직 리뷰가 없어요.</div>
         </section>
       </div>
-      <FloatingBar id={id} gatherings={gatherings} usersList={gatherings.usersList} maxUsers={gatherings.maxUsers} />
+      <FloatingBar
+        id={id}
+        isButton={isButton}
+        setIsButton={setIsButton}
+        gatherings={gatherings}
+        usersList={gatherings.usersList}
+        maxUsers={gatherings.maxUsers}
+      />
     </main>
   );
 }

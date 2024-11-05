@@ -59,7 +59,13 @@ export function CancelButton({ id, gatherings }: DetailPageBaseType) {
               되돌릴 수 없어요 😥
             </div>
           ) : (
-            '예약을 취소하시겠습니까?'
+            <div>
+              <div className="text-xl font-semibold text-amber-500">{gatherings.groupName}</div>
+              <br />
+              예약을 취소하시겠습니까?
+              <br />
+              다시 예약 할 수 있어요!
+            </div>
           )}
         </div>
       </Modal>
