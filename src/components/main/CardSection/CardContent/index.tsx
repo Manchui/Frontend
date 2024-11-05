@@ -39,7 +39,7 @@ export default function CardContent({ gathering }: CardContentProps) {
 
   return (
     <div className="relative flex h-1/2 flex-1 flex-col justify-between p-2 mobile:h-full mobile:w-1/2 mobile:p-4 tablet:h-1/2 tablet:w-full">
-      <Link href={`/main/${gathering.gatheringId}`} className="my-auto flex flex-col gap-1">
+      <Link href={`/detail/${gathering.gatheringId}`} className="my-auto flex flex-col gap-1">
         <div className={`mb-2 flex flex-col tablet:mb-0 ${gathering.closed ? 'text-gray-200' : 'text-black'}`}>
           <span className="text-pretty text-16-20-response font-semibold">{gathering.groupName}</span>
           <span className={`text-sub-response font-medium text-gray-400 mobile:font-semibold ${gathering.closed && '!text-gray-200'}`}>

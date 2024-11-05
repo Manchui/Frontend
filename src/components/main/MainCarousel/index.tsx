@@ -4,6 +4,7 @@ import 'swiper/css/bundle';
 
 import { useRef, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import type SwiperCore from 'swiper';
 import { Autoplay, EffectCreative, Navigation, Pagination, Thumbs, Virtual } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -20,24 +21,20 @@ export default function MainCarousel() {
 
   const { data } = useQuery({
     queryKey: ['main'],
-    queryFn: () =>
-      getGatheringData({
-        page: 1,
-        size: 8,
-      }),
+    queryFn: () => getGatheringData({ page: 1, size: 8 }),
   });
 
-  const images = data?.data?.gatheringList.map((gathering) => gathering.gatheringImage) || [];
+  const gatherings = data?.data.gatheringList || [];
 
   const goToPreviousSlide = () => {
     if (swiperInstance) {
-      swiperInstance.slideTo(swiperIndex === 0 ? images.length - 1 : swiperIndex - 1, 0);
+      swiperInstance.slideTo(swiperIndex === 0 ? gatherings.length - 1 : swiperIndex - 1, 0);
     }
   };
 
   const goToNextSlide = () => {
     if (swiperInstance) {
-      swiperInstance.slideTo(swiperIndex === images.length - 1 ? 0 : swiperIndex + 1, 0);
+      swiperInstance.slideTo(swiperIndex === gatherings.length - 1 ? 0 : swiperIndex + 1, 0);
     }
   };
 
@@ -63,9 +60,29 @@ export default function MainCarousel() {
         autoplay={{ delay: 3000, disableOnInteraction: false, waitForTransition: true, pauseOnMouseEnter: true }}
         className="h-carousel-mobile-responsive tablet:h-carousel-tablet-responsive"
       >
-        {images.map((src, i) => (
-          <SwiperSlide key={i} className="absolute z-0">
-            <Image src={src} alt="Carousel image" fill sizes="100vw" className="object-cover" loading="eager" priority />
+        {gatherings.map((gathering) => (
+          <SwiperSlide key={gathering.gatheringId} className="relative">
+            <Image src={gathering.gatheringImage} alt={gathering.name} fill sizes="100vw" className="object-cover" loading="eager" priority />
+            <div className="bg-bannerGradient absolute inset-0" />
+            <div className="absolute bottom-0 left-0 p-6 text-white tablet:ml-6 tablet:p-6">
+              <span className="text-18-32-response font-bold">{gathering.name}</span>
+              <div className="flex flex-col gap-1 font-medium">
+                <div className="text-10-24-response flex gap-1">
+                  <span>{gathering.groupName}</span>
+                  <span>|</span>
+                  <span>
+                    인원 {gathering.currentUsers}/{gathering.maxUsers}
+                  </span>
+                </div>
+                <Link
+                  href={`/detail/${gathering.gatheringId}`}
+                  className="flex w-fit items-center rounded-md bg-white/40 px-2 py-1 text-sub-response mobile:px-4 mobile:py-2"
+                >
+                  자세히 보기
+                  <Image src="/icons/main/banner-btn.svg" alt="자세히 보기" width={24} height={24} className="ml-2" />
+                </Link>
+              </div>
+            </div>
           </SwiperSlide>
         ))}
         <div className="swiper-pagination flex !w-[95%] justify-end mobile:!hidden" />
@@ -97,13 +114,13 @@ export default function MainCarousel() {
         spaceBetween={10}
         className="absolute bottom-20 right-12 float-right opacity-0 tablet:h-[60px] tablet:w-thumb-tablet-responsive tablet:opacity-100 pc:w-thumb-pc-responsive"
       >
-        {images.map((src, i) => (
+        {gatherings.map((gathering, i) => (
           <SwiperSlide
-            key={i}
+            key={gathering.gatheringId}
             onClick={() => swiperInstance?.slideTo(i)}
             className={`cursor-pointer rounded-lg border-2 ${swiperIndex === i ? 'border-white' : 'border-transparent'}`}
           >
-            <Image src={src} alt={`Thumbnail ${i}`} fill sizes="100vw" loading="lazy" className="rounded-lg object-cover" />
+            <Image src={gathering.gatheringImage} alt={`Thumbnail ${i}`} fill sizes="100vw" loading="lazy" className="rounded-lg object-cover" />
           </SwiperSlide>
         ))}
       </Swiper>
