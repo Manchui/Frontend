@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import getGatheringData from '@/apis/detail/get-gathering-data';
@@ -11,7 +10,6 @@ import Rating from '@/components/shared/Rating';
 import { useQuery } from '@tanstack/react-query';
 
 export default function DetailPage() {
-  const [isButton, setIsButton] = useState(false);
   const router = useRouter();
   const { id } = router.query;
   const { data } = useQuery({
@@ -73,14 +71,7 @@ export default function DetailPage() {
           <div className="mx-auto pb-6 pt-2 text-center text-[#6B7280]">아직 리뷰가 없어요.</div>
         </section>
       </div>
-      <FloatingBar
-        id={id}
-        isButton={isButton}
-        setIsButton={setIsButton}
-        gatherings={gatherings}
-        usersList={gatherings.usersList}
-        maxUsers={gatherings.maxUsers}
-      />
+      <FloatingBar id={id} gatherings={gatherings} usersList={gatherings.usersList} maxUsers={gatherings.maxUsers} />
     </main>
   );
 }

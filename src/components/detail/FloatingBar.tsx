@@ -10,13 +10,11 @@ export interface DetailPageBaseType {
 }
 
 interface FloatingBarProps extends DetailPageBaseType {
-  isButton: boolean;
   maxUsers: number;
-  setIsButton: React.Dispatch<React.SetStateAction<boolean>>;
   usersList: UsersList[];
 }
 
-export function FloatingBar({ gatherings, id, usersList, maxUsers, isButton, setIsButton }: FloatingBarProps) {
+export function FloatingBar({ gatherings, id, usersList, maxUsers }: FloatingBarProps) {
   const myUserName = localStorage.getItem('userName');
   const findUserId = usersList.find((user) => user.name === myUserName);
   const isDisabled = usersList.length === maxUsers;
