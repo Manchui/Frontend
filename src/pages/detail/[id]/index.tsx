@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import getGatheringData from '@/apis/detail/get-gathering-data';
 import { FloatingBar } from '@/components/detail/FloatingBar';
 import { GatheringCard } from '@/components/detail/GatheringCard';
-import Loading from '@/components/detail/Loading';
+import Loading from '@/components/detail/loading/Loading';
 import { ReviewListCard } from '@/components/detail/ReviewListCard';
 import { ProgressBar } from '@/components/shared/progress-bar';
 import Rating from '@/components/shared/Rating';
@@ -12,7 +12,7 @@ import { useQuery } from '@tanstack/react-query';
 export default function DetailPage() {
   const router = useRouter();
   const { id } = router.query;
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     // NOTE: page,size는 임시값
     queryKey: ['detail', { id, page: 1, size: 10 }],
     queryFn: () => {
@@ -25,6 +25,7 @@ export default function DetailPage() {
   });
   const gatherings = data;
 
+  if (isLoading) return <Loading />;
   if (!gatherings) return <Loading />;
 
   // TODO: 스코어를 백엔드에서 계산해서 따로 api를 만들면 좋을 듯
