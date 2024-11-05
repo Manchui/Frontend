@@ -14,7 +14,7 @@ export function CancelButton({ id, gatherings }: DetailPageBaseType) {
 
   const handleGatheringsCancel = async () => {
     try {
-      if (typeof id === 'string') {
+      if (typeof id === 'string' || typeof id === 'number') {
         await deleteCancellation(id);
         Toast('success', '참여 취소 완료하였습니다.');
         window.location.reload();
@@ -30,7 +30,7 @@ export function CancelButton({ id, gatherings }: DetailPageBaseType) {
 
   return (
     <div>
-      <Button onClick={openModal} label={token && name === gatherings.name ? '모임 취소하기' : '참여 취소하기'} size="small" variant="white" />
+      <Button onClick={openModal} label={token && name === gatherings.groupName ? '모임 취소하기' : '참여 취소하기'} size="small" variant="white" />
       <Modal
         buttons={[
           {
@@ -51,7 +51,7 @@ export function CancelButton({ id, gatherings }: DetailPageBaseType) {
         onClose={closeModal}
       >
         <div className="mx-16 mt-10 text-center">
-          {token && name === gatherings.name ? (
+          {token && name === gatherings.groupName ? (
             <div>
               <div className="text-xl font-semibold text-amber-500">{gatherings.groupName}</div>
               <br />

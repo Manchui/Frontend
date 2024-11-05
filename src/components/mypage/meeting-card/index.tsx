@@ -1,12 +1,11 @@
 import Image from 'next/image';
-import { Button } from '@/components/shared/button';
+import { CancelButton } from '@/components/detail/button/CancelButton';
 import State from '@/components/shared/chip/State';
 import type { GatheringList } from '@/types/mypage';
 
 export function MeetingCard({ MeetingData }: { MeetingData: GatheringList }) {
   const dateObj = new Date(MeetingData.gatheringDate);
   const addCss = MeetingData.groupName.length > 12 && 'w-52';
-
   return (
     <div className="border-b-2 border-dashed border-gray-50 py-1">
       <article className="m-3 flex justify-center rounded-3xl p-2 tablet:justify-start pc:justify-start">
@@ -35,7 +34,7 @@ export function MeetingCard({ MeetingData }: { MeetingData: GatheringList }) {
               </div>
               <div className="flex select-none gap-3 text-md font-medium text-[#374151]">
                 <span>
-                  {`${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일`} · {`${dateObj.getHours()}:${dateObj.getMinutes()}`}
+                  {`${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일`} · {`${dateObj.getHours()}:00`}
                 </span>
                 <span className="flex gap-1">
                   <Image src="/icons/person-black.svg" alt="icon" width={16} height={16} />
@@ -43,7 +42,7 @@ export function MeetingCard({ MeetingData }: { MeetingData: GatheringList }) {
                 </span>
               </div>
             </div>
-            <Button label="예약 취소하기" size="primary" variant="white" />
+            <CancelButton gatherings={MeetingData} id={MeetingData.gatheringId} />
           </div>
         </div>
       </article>
