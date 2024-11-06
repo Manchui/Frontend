@@ -8,7 +8,7 @@ import HeaderSection from '@/components/review/HeaderSection';
 import MainHeader from '@/components/review/MainHeader';
 import ReviewCardList from '@/components/review/ReviewCardList';
 import ReviewContainer from '@/components/review/ReviewContainer';
-import Pagination from '@/components/shared/pagination';
+import Pagination from '@/components/shared/Pagination';
 import RootLayout from '@/components/shared/RootLayout';
 import { FILTER_OPTIONS } from '@/constants/contants';
 import useGetReviewData from '@/hooks/useGetReviewData';

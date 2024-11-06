@@ -6,7 +6,7 @@ import BookmarkCardList from '@/components/bookmark/BookmarkCardList';
 import BookmarkContainer from '@/components/bookmark/BookmarkContainer';
 import BookmarkFilter from '@/components/bookmark/BookmarkFilter';
 import BookmarkHeader from '@/components/bookmark/BookmarkHeader';
-import Pagination from '@/components/shared/pagination';
+import Pagination from '@/components/shared/Pagination';
 import RootLayout from '@/components/shared/RootLayout';
 import { FILTER_OPTIONS } from '@/constants/contants';
 import useDeviceState from '@/hooks/useDeviceState';

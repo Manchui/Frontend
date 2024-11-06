@@ -1,4 +1,4 @@
-import { NextButton, PageList, PrevButton } from './Button';
+import { NextButton, PageList, PrevButton } from '@/components/shared/Pagination/Button';
 
 export default function Pagination({ page, totalPage, handlePageChange }: { handlePageChange: (page: number) => void; page: number; totalPage: number }) {
   return (
