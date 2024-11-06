@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import Rating from '@/components/shared/Rating';
 import type { GetReviewResponse } from '@manchui-api';
 
@@ -44,19 +45,26 @@ export function ReviewCard({ review }: ReviewCardSProps) {
 
   return (
     <div className="w-[280px] flex-col items-start gap-4 tablet:flex tablet:w-full tablet:flex-row">
-      
-      {review.gatheringImage ? (
-        <Image
-          alt="testImage"
-          src={review.gatheringImage}
-          width={280}
-          height={156}
-          style={{ width: '280px', height: '156px', objectFit: 'cover' }}
-          className="relative mx-auto flex-shrink-0 overflow-hidden rounded-lg"
-        />
-      ) : (
-        <div className="relative mx-auto h-[156px] w-[280px] flex-shrink-0 overflow-hidden rounded-lg bg-gray-200" />
-      )}
+   <div className="min-w-[280px] w-[280px] h-[156px] overflow-hidden rounded-lg">
+  {review.gatheringImage ? (
+    <Link href={`/detail/${review.gatheringId}`} >
+      <Image
+        alt="testImage"
+        src={review.gatheringImage}
+        width={280}
+        height={156}
+  
+        className="transition-transform duration-300 ease-in-out transform hover:scale-110  size-full object-cover  "
+      />
+    </Link>
+  ) : (
+    <div className="relative flex-shrink-0 overflow-hidden rounded-lg bg-gray-200" />
+
+  )}
+</div>
+
+
+
       <div className="flex flex-grow flex-col items-start justify-start gap-2 border-b-2 border-dashed border-gray-50 pt-4 tablet:min-h-[156px] tablet:pt-0">
         <Rating score={review.score} />
         <div className="flex w-full flex-col items-start">
