@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import router from 'next/router';
@@ -11,6 +11,7 @@ import instance from '@/apis/api';
 import Carousel from '@/components/loginLogout/Carousel';
 import Input from '@/components/shared/Input';
 import { Toast } from '@/components/shared/Toast';
+import { userStore } from '@/store/userStore';
 
 /**
  * 회원가입 페이지
@@ -24,6 +25,15 @@ export default function SignupPage() {
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
   const [doubleCheck, setDoubleCheck] = useState(false);
+  const isLoggedIn = userStore((state) => state.isLoggedIn);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      // 로그인 상태라면 로그인 페이지로 접근 불가
+      void router.push('/'); // 예시로 대시보드 페이지로 리디렉션
+      Toast('success', '이미 로그인 중입니다.');
+    }
+  }, [isLoggedIn]);
 
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
