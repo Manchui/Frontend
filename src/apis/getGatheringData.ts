@@ -34,7 +34,7 @@ export async function getGatheringData({
     ...(endDate && { endDate }),
   });
 
-  const endpoint = !IS_SERVER && localStorage.getItem('accessToken') ? '/api/gatherings' : '/api/gatherings/public';
+  const endpoint = !IS_SERVER && localStorage.getItem('accessToken') ? '/api/gatherings/public' : '/api/gatherings/public';
 
   try {
     const res = await instance.get<GetGatheringResponse>(endpoint, {

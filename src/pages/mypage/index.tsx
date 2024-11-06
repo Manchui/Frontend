@@ -28,7 +28,13 @@ export default function MyPage() {
   });
   const participatedList = data?.participatedGatheringList;
 
-  if (isError) return <Loading />;
+  if (isError)
+    return (
+      <>
+        <Loading />
+        <div className="text-center">다시 시도하세요!</div>
+      </>
+    );
 
   return (
     <div>
