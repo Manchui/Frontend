@@ -1,74 +1,110 @@
 /* eslint-disable tailwindcss/no-custom-classname */
+import { useState } from 'react';
+import { getBookmarkData } from '@/apis/getBookmarkData';
 import BookmarkBanner from '@/components/bookmark/BookmarkBanner';
 import BookmarkCardList from '@/components/bookmark/BookmarkCardList';
 import BookmarkContainer from '@/components/bookmark/BookmarkContainer';
 import BookmarkFilter from '@/components/bookmark/BookmarkFilter';
 import BookmarkHeader from '@/components/bookmark/BookmarkHeader';
+import Pagination from '@/components/shared/Pagination';
 import RootLayout from '@/components/shared/RootLayout';
-import type { GetGatheringResponse } from '@manchui-api';
+import { FILTER_OPTIONS } from '@/constants/contants';
+import useDeviceState from '@/hooks/useDeviceState';
+import useGetBookmarkData from '@/hooks/useGetBookmarkData';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 
-const data: GetGatheringResponse['data'] = {
-  gatheringCount: 2,
-  gatheringList: [
-    {
-      category: '전체',
-      closed: false,
-      createdAt: '2024-01-01T12:00:00Z',
-      currentUsers: 5,
-      deletedAt: null,
-      dueDate: '2024-02-01T12:00:00Z',
-      gatheringDate: '2024-01-15T15:00:00Z',
-      gatheringId: 1,
-      gatheringImage: 'https://ryungbucket.s3.ap-northeast-2.amazonaws.com/b4e5d864-2daa-4b82-8d1c-9c75dd34b651.png',
-      groupName: '개발자 모임',
-      hearted: true,
-      location: '을지로 3가',
-      maxUsers: 10,
-      minUsers: 2,
-      name: '첫번째 모임',
-      opened: true,
-      profileImage: 'https://ryungbucket.s3.ap-northeast-2.amazonaws.com/b4e5d864-2daa-4b82-8d1c-9c75dd34b651.png',
-      updatedAt: '2024-01-10T10:00:00Z',
-    },
-    {
-      category: '전체',
-      closed: true,
-      createdAt: '2024-01-05T14:30:00Z',
-      currentUsers: 8,
-      deletedAt: null,
-      dueDate: '2024-02-10T12:00:00Z',
-      gatheringDate: '2024-02-01T18:00:00Z',
-      gatheringId: 2,
-      gatheringImage: 'https://ryungbucket.s3.ap-northeast-2.amazonaws.com/b4e5d864-2daa-4b82-8d1c-9c75dd34b651.png',
-      groupName: '디자인 토크',
-      hearted: false,
-      location: '을지로 3가',
-      maxUsers: 20,
-      minUsers: 5,
-      name: '디자인 워크샵',
-      opened: false,
-      profileImage: 'https://ryungbucket.s3.ap-northeast-2.amazonaws.com/b4e5d864-2daa-4b82-8d1c-9c75dd34b651.png',
-      updatedAt: '2024-01-15T10:00:00Z',
-    },
-  ],
-  page: 1,
-  pageSize: 10,
-  totalPage: 2,
+const PAGE_SIZE_BY_DEVICE = {
+  MOBILE: 2,
+  TABLET: 4,
+  PC: 6,
 };
 
 export default function BookmarkPage() {
+  const [page, setPage] = useState(1);
+  const [keyword, setKeyword] = useState<string | undefined>(undefined);
+  const [location, setLocation] = useState<string | undefined>(undefined);
+  const [category, setCategory] = useState<string | undefined>(FILTER_OPTIONS[0].id);
+  const [closeDate, setCloseDate] = useState<string | undefined>(undefined);
+  const [dateStart, setDateStart] = useState<string | undefined>(undefined);
+  const [dateEnd, setDateEnd] = useState<string | undefined>(undefined);
+
+  const deviceState = useDeviceState();
+
+  const {
+    data: bookmark,
+    isLoading,
+    isError,
+  } = useGetBookmarkData({
+    page,
+    size: PAGE_SIZE_BY_DEVICE[deviceState],
+    query: keyword,
+    location,
+    category,
+    sort: closeDate,
+    startDate: dateStart,
+    endDate: dateEnd,
+  });
+
+  const data = bookmark?.data;
+
+  const handlePageChange = (pageValue: number) => {
+    setPage(pageValue);
+  };
+
+  const handleCategoryClick = (selectedCategory: string) => {
+    setCategory(selectedCategory);
+  };
+
+  const handleSearchSubmit = (submitValue: string) => {
+    setKeyword(submitValue);
+  };
+
+  const handleCloseDateClick = (value: string) => {
+    setCloseDate(value);
+  };
+
+  const handleDateSubmit = ({ start, end }: { end: string; start: string }) => {
+    setDateStart(start);
+    setDateEnd(end);
+  };
+
   return (
     <>
       <BookmarkBanner />
       <RootLayout>
         <BookmarkContainer>
-          <BookmarkHeader />
+          <BookmarkHeader data={bookmark?.data} handleSearchSubmit={handleSearchSubmit} />
           <div className="w-full bg-white">
-            <BookmarkFilter />
-            <BookmarkCardList data={data} />
+            <BookmarkFilter
+              location={location}
+              category={category}
+              setDateEnd={setDateEnd}
+              setLocation={setLocation}
+              setDateStart={setDateStart}
+              handleDateSubmit={handleDateSubmit}
+              handleCategoryClick={handleCategoryClick}
+              handleCloseDateClick={handleCloseDateClick}
+            />
+            <BookmarkCardList data={bookmark?.data} isLoading={isLoading} isError={isError} skeletonCount={PAGE_SIZE_BY_DEVICE[deviceState]} />
+            {!isLoading && !isError && <Pagination page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} handlePageChange={handlePageChange} />}
           </div>
         </BookmarkContainer>
       </RootLayout>
     </>
   );
 }
+
+export const getServerSideProps = async () => {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ['bookmark', 1, 9],
+    queryFn: () => getBookmarkData({ page: 1, size: 9 }),
+  });
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+};

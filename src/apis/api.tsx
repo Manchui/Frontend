@@ -18,14 +18,7 @@ instance.interceptors.request.use(
     if (!IS_SERVER) {
       const token = localStorage.getItem('accessToken');
       if (token) {
-        const excludedUrls = [
-          '/api/auths/signup',
-          '/api/auths/check-name',
-          '/api/auths/signin',
-          '/api/gatherings/public',
-          '/api/reviews/score',
-          '/api/reviews?page',
-        ]; // 예외 URL 리스트
+        const excludedUrls = ['/api/auths/signup', '/api/auths/check-name', '/api/auths/signin', '/api/reviews/score', '/api/reviews?page']; // 예외 URL 리스트
         if (!excludedUrls.includes(config.url || '')) {
           config.headers.Authorization = `${token}`; // 나중에 Bearer는 서버에서 따로 빼달라고 해야함
         }
