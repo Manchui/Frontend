@@ -1,5 +1,5 @@
 import CategoryItems from '@/components/review/FilterSection/CategoryList/CategoryItems';
-import { FILTER_OPTIONS } from '@/constants/main/contants';
+import { FILTER_OPTIONS } from '@/constants/contants';
 
 interface CategoryListProps {
   handleCategoryClick: (category: string) => void;

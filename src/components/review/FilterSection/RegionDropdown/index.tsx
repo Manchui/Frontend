@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Dropdown from '@/components/main/Dropdown';
-import { REGION_DATA } from '@/constants/main/contants';
+import { REGION_DATA } from '@/constants/contants';
 
 export default function RegionDropdown() {
   const [regionDropOpen, setRegionDropOpen] = useState(false);

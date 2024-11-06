@@ -12,7 +12,7 @@ export function DetailsStyle({ maxValue, mainValue = 0, value, location, userLis
       ? userList
       : Array.from({ length: imgLength }, (_, index) => ({
           userId: `abcd-${index + 1}`,
-          profileImagePath: '/images/together-findpage-default.png',
+          profileImagePath: '/icons/person-rounded.png',
         }));
 
   return (
@@ -28,7 +28,7 @@ export function DetailsStyle({ maxValue, mainValue = 0, value, location, userLis
               {testData.length > 5 ? (
                 <>
                   {testData.slice(0, 4).map((img, i) => (
-                    <Image src={img.profileImagePath} key={i} alt="유저이미지" className="rounded-full bg-gray-200" width={29} height={29} />
+                    <Image src={img.profileImagePath || '/icons/person-rounded.png'} key={i} alt="유저이미지" className="rounded-full" width={29} height={29} />
                   ))}
                   <div className="relative flex size-[29px] items-center justify-center rounded-full bg-[#F3F4F3]">
                     <span className="absolute text-sm font-semibold">+{testData.length - 4}</span>
@@ -36,7 +36,7 @@ export function DetailsStyle({ maxValue, mainValue = 0, value, location, userLis
                 </>
               ) : (
                 testData.map((img, i) => (
-                  <Image src={img.profileImagePath} key={i} alt="유저이미지" className="rounded-full bg-gray-200" width={29} height={29} />
+                  <Image src={img.profileImagePath || '/icons/person-rounded.png'} key={i} alt="유저이미지" className="rounded-full" width={29} height={29} />
                 ))
               )}
             </div>
