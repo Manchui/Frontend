@@ -8,11 +8,12 @@ export type Gatherings = {
   gatheringCount: number;
   page: number;
   pageSize: number;
-  participatedGatheringList: ParticipatedGatheringList;
+  participatedGatheringList?: List;
   totalPage: number;
+  writtenGatheringList?: List;
 };
 
-export type ParticipatedGatheringList = {
+export type List = {
   content: [];
   empty: boolean;
   first: boolean;
@@ -38,12 +39,13 @@ export type GatheringList = {
   groupName: string;
   isCanceled: boolean;
   isClosed: boolean;
-  isDeleted: boolean | null;
+  isDeleted?: boolean | null;
   isOpened: boolean;
   location: string;
   maxUsers: number;
+  name?: string;
   participantUsers: number;
-  updatedAt: string;
+  updatedAt?: string;
 };
 
 export type Pageable = {

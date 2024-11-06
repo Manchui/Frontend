@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import { CancelButton } from '@/components/detail/button/CancelButton';
 import State from '@/components/shared/chip/State';
 import type { GatheringList } from '@/types/mypage';
@@ -8,11 +7,10 @@ export function MeetingCard({ MeetingData }: { MeetingData: GatheringList }) {
   const dateObj = new Date(MeetingData.gatheringDate);
   const addCss = MeetingData.groupName.length > 12 && 'w-52';
 
-  console.log('MeetingData.gatheringDate: ', MeetingData.gatheringDate);
   return (
     <div className="border-b-2 border-dashed border-gray-50 py-1">
       <article className="m-3 flex justify-center rounded-3xl p-2 tablet:justify-start pc:justify-start">
-        <Link href={`/detail/${MeetingData.gatheringId}`} className="group flex flex-col justify-center gap-4 phablet:items-start tablet:flex-row pc:flex-row">
+        <div className="group flex flex-col justify-center gap-4 phablet:items-start tablet:flex-row pc:flex-row">
           <div className="max-w-[280px] select-none overflow-hidden rounded-lg">
             <Image
               className="h-[156px] w-[311px] transform bg-slate-400 object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
@@ -24,7 +22,7 @@ export function MeetingCard({ MeetingData }: { MeetingData: GatheringList }) {
               style={{ objectFit: 'cover' }}
             />
           </div>
-          <div>
+          <div className="flex h-[156px] flex-col justify-between">
             <div className="flex select-none gap-2">
               <State stateProp={MeetingData.isClosed ? 'completed' : 'planed'} />
               <State stateProp={MeetingData.isOpened ? 'confirmed' : 'pending'} />
@@ -47,7 +45,7 @@ export function MeetingCard({ MeetingData }: { MeetingData: GatheringList }) {
             </div>
             <CancelButton gatherings={MeetingData} id={MeetingData.gatheringId} />
           </div>
-        </Link>
+        </div>
       </article>
     </div>
   );

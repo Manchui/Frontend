@@ -7,11 +7,7 @@ interface MyPageCategoryListProps {
 }
 
 // NOTE: URL 적는 걸로 생각하며 작성
-const categories: { [key: string]: string } = {
-  '나의 모임': 'MeetingData',
-  '나의 리뷰': 'MyGatherData',
-  '내가 만든 모임': 'MyMakeData',
-};
+const categories: string[] = ['나의 모임', '나의 리뷰', '내가 만든 모임'];
 
 export default function MyPageCategoryList({ category, setCategory }: MyPageCategoryListProps) {
   const router = useRouter();
@@ -20,6 +16,7 @@ export default function MyPageCategoryList({ category, setCategory }: MyPageCate
   const handleCategoryChange = (categoryId: string) => {
     if (category !== categoryId) {
       setCategory(categoryId);
+      localStorage.setItem('my-category', categoryId);
       void router.push(`/mypage?category=${categoryId}`, undefined, { shallow: true });
     }
   };
@@ -30,7 +27,7 @@ export default function MyPageCategoryList({ category, setCategory }: MyPageCate
 
   return (
     <div className="flex select-none items-center justify-between text-sub-response font-semibold">
-      {Object.keys(categories).map((item) => (
+      {categories.map((item) => (
         <button
           key={item}
           onClick={() => {
