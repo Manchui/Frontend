@@ -5,6 +5,7 @@ const colors = {
   ocean: '#3369FF',
   background: '#F9FAFB',
   full: '#F5BF08',
+  cardBorder: '#f3f4f6',
   primary: {
     50: '#FEF5D7',
     100: '#FCE9A6',

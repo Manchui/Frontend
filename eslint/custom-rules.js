@@ -10,7 +10,7 @@ module.exports = {
 
     'jsx-a11y/no-static-element-interactions': 'off', // div에 onClick 이벤트 사용을 허용합니다.
 
-    'no-console': 'warn', // console.log(), console.warn(), console.error()를 사용할 때 경고를 표시합니다.
+    'no-console': 'off', // console.log(), console.warn(), console.error()를 사용할 때 경고를 표시합니다.
 
     'no-var': 'error', // var 키워드를 사용하면 경고를 표시합니다.
 

@@ -1,5 +1,5 @@
 import LongDropdown from '@/components/shared/Dropdown/LongDropdown';
-import { FILTER_OPTIONS } from '@/constants/main/contants';
+import { FILTER_OPTIONS } from '@/constants/contants';
 
 type CategoryDropdownProps = {
   error: string;
