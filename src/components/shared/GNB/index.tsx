@@ -46,7 +46,6 @@ export default function GNB() {
         logout();
       }
     };
-
     void axiosUserData();
   }, [login, logout, updateUser]);
 
