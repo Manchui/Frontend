@@ -7,7 +7,6 @@ import instance from '../api';
 export default async function deleteCancellation(gatheringsId: string | number) {
   try {
     const res = await instance.delete<BaseData>(`/api/gatherings/${gatheringsId}/cancel`);
-    console.log('api gatheringsId: ', gatheringsId);
     return res.data.data;
   } catch (e) {
     if (axios.isAxiosError(e)) {

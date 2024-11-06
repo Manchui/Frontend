@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import getGatheringData from '@/apis/detail/get-gathering-data';
@@ -12,11 +13,13 @@ import { useQuery } from '@tanstack/react-query';
 export default function DetailPage() {
   const router = useRouter();
   const { id } = router.query;
+  const [isId, setIsId] = useState('');
   const { data, isLoading } = useQuery({
     // NOTE: page,size는 임시값
     queryKey: ['detail', { id, page: 1, size: 10 }],
     queryFn: () => {
       if (typeof id === 'string') {
+        setIsId(id);
         return getGatheringData(id);
       }
       return null;
@@ -77,7 +80,7 @@ export default function DetailPage() {
           <div className="mx-auto pb-6 pt-2 text-center text-[#6B7280]">아직 리뷰가 없어요.</div>
         </section>
       </div>
-      <FloatingBar id={id} gatherings={gatherings} usersList={gatherings.usersList} maxUsers={gatherings.maxUsers} />
+      <FloatingBar id={isId} gatherings={gatherings} usersList={gatherings.usersList} maxUsers={gatherings.maxUsers} />
     </main>
   );
 }

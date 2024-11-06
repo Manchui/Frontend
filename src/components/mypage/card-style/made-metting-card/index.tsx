@@ -1,9 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { CancelButton } from '@/components/detail/button/CancelButton';
 import { Button } from '@/components/shared/button';
 import type { GatheringList } from '@/types/mypage';
-
-import CancelButton from '../button/CancelButton';
 
 export function MadeMeetingCard({ MeetingData }: { MeetingData: GatheringList }) {
   const dateObj = new Date(MeetingData.gatheringDate);
@@ -42,9 +41,9 @@ export function MadeMeetingCard({ MeetingData }: { MeetingData: GatheringList })
               </div>
             </div>
             <div className="flex gap-2">
-              <CancelButton id={MeetingData.gatheringId} />
+              <CancelButton id={MeetingData.gatheringId} gatherings={MeetingData} />
               <Link href={`/detail/${MeetingData.gatheringId}`}>
-                <Button label="자세히 보기" size="primary" variant="primary" />
+                <Button label="자세히 보기" size="small" variant="primary" />
               </Link>
             </div>
           </div>

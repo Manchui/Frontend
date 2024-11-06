@@ -1,7 +1,8 @@
 import Image from 'next/image';
-import { CancelButton } from '@/components/detail/button/CancelButton';
 import State from '@/components/shared/chip/State';
 import type { GatheringList } from '@/types/mypage';
+
+import CancelButton from '../button/CancelButton';
 
 export function MeetingCard({ MeetingData }: { MeetingData: GatheringList }) {
   const dateObj = new Date(MeetingData.gatheringDate);
@@ -43,7 +44,7 @@ export function MeetingCard({ MeetingData }: { MeetingData: GatheringList }) {
                 </span>
               </div>
             </div>
-            <CancelButton gatherings={MeetingData} id={MeetingData.gatheringId} />
+            <CancelButton data={MeetingData} />
           </div>
         </div>
       </article>
