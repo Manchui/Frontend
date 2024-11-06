@@ -31,7 +31,7 @@ export function ProfileCard() {
       remove();
     }
   }, [isLoggedIn, remove]);
-  
+
   const handleEdit = async () => {
     if (nick.length < 3) {
       Toast('error', '닉네임을 입력해주세요.');
@@ -105,7 +105,7 @@ export function ProfileCard() {
               </div>
 
               <Input type="text" name="nick" onChange={(e) => setNick(e.target.value)} />
-              <input id="imageInput" type="file" accept="image/*" onChange={handleImageChange} />
+              <input id="imageInput" type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
             </div>
           </Modal>
         </div>
