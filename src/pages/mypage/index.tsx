@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { CardComponents } from '@/components/mypage/card-style';
 import MyPageCategoryList from '@/components/mypage/categori/CategoriList';
+import ReviewCategory from '@/components/mypage/categori/ReviewCategory';
 import { ProfileCard } from '@/components/mypage/profile-card';
 import RootLayout from '@/components/shared/RootLayout';
 import type { User } from '@/types/mypage';
@@ -16,6 +17,7 @@ const Data: User = {
 
 export default function MyPage() {
   const [category, setCategory] = useState('');
+  const [review, setReview] = useState('');
 
   return (
     <div>
@@ -27,6 +29,7 @@ export default function MyPage() {
           <ProfileCard userData={Data} />
           <div className="flex flex-col">
             <MyPageCategoryList category={category} setCategory={setCategory} />
+            {localStorage.getItem('my-category') === '나의 리뷰' && <ReviewCategory category={category} review={review} setReview={setReview} />}
             <CardComponents category={category} />
           </div>
         </div>

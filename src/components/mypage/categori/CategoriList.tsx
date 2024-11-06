@@ -1,12 +1,10 @@
-import type { SetStateAction } from 'react';
 import { useRouter } from 'next/router';
 
 interface MyPageCategoryListProps {
   category: string;
-  setCategory: React.Dispatch<SetStateAction<string>>;
+  setCategory: (newCategory: string) => void;
 }
 
-// NOTE: URL 적는 걸로 생각하며 작성
 const categories: string[] = ['나의 모임', '나의 리뷰', '내가 만든 모임'];
 
 export default function MyPageCategoryList({ category, setCategory }: MyPageCategoryListProps) {
@@ -21,10 +19,9 @@ export default function MyPageCategoryList({ category, setCategory }: MyPageCate
     }
   };
 
-  // NOTE: 카테고리 선택시 임시 스타일(변경 예정)
   const getButtonClass = (categoryId: string) =>
     categoryId === query.category ? 'flex-1 py-1.5 border-b-2 border-blue-800' : 'flex-1 hover:text-gray-500 text-blue-400 py-1.5 border-blue-100';
-
+  console.log('query: ', query);
   return (
     <div className="flex select-none items-center justify-between text-sub-response font-semibold">
       {categories.map((item) => (
