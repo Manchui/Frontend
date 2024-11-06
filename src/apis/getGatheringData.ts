@@ -1,18 +1,10 @@
 import instance from '@/apis/api';
-import { IS_SERVER } from '@/constants/server';
 import type { GetGatheringRequest, GetGatheringResponse } from '@manchui-api';
 
-export async function getGatheringData({
-  page = 1,
-  size = 20,
-  category,
-  location,
-  startDate,
-  endDate,
-  query,
-  sort,
-}: GetGatheringRequest): Promise<GetGatheringResponse> {
-  const params = new URLSearchParams({
+export async function getGatheringData(request: GetGatheringRequest): Promise<GetGatheringResponse> {
+  const { page, size, sort, query, category, location, startDate, endDate } = request;
+
+  const params = {
     page: page.toString(),
     size: size.toString(),
     ...(sort && { sort }),
@@ -21,12 +13,10 @@ export async function getGatheringData({
     ...(location && { location }),
     ...(startDate && { startDate }),
     ...(endDate && { endDate }),
-  });
-
-  const endpoint = !IS_SERVER && localStorage.getItem('accessToken') ? '/api/gatherings/public' : '/api/gatherings/public';
+  };
 
   try {
-    const res = await instance.get<GetGatheringResponse>(endpoint, {
+    const res = await instance.get<GetGatheringResponse>('/api/gatherings/public', {
       params,
     });
 
