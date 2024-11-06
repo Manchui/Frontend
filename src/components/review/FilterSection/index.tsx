@@ -1,9 +1,7 @@
-/* eslint-disable react/no-unused-prop-types */
 import { type Dispatch, type SetStateAction } from 'react';
-import CloseDateToggle from '@/components/main/FilterSection/CloseDateToggle';
-import CategoryList from '@/components/review/FilterSection/CategoryList';
+import CategoryList from '@/components/main/FilterSection/CategoryList';
+import RegionDropdown from '@/components/main/FilterSection/RegionDropdown';
 import DateDropdown from '@/components/review/FilterSection/DateDropdown';
-import RegionDropdown from '@/components/review/FilterSection/RegionDropdown';
 
 import SortToggle from './SortToggle';
 

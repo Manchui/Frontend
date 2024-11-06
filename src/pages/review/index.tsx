@@ -3,11 +3,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { getReviewData } from '@/apis/getReviewData';
+import BookmarkContainer from '@/components/bookmark/BookmarkContainer';
+import HeaderSection from '@/components/main/HeaderSection';
 import FilterSection from '@/components/review/FilterSection';
-import HeaderSection from '@/components/review/HeaderSection';
 import MainHeader from '@/components/review/MainHeader';
 import ReviewCardList from '@/components/review/ReviewCardList';
-import ReviewContainer from '@/components/review/ReviewContainer';
 import Pagination from '@/components/shared/pagination';
 import RootLayout from '@/components/shared/RootLayout';
 import { FILTER_OPTIONS } from '@/constants/contants';
@@ -62,7 +62,7 @@ export default function ReviewPage() {
     <div className="mt-[60px]">
       <MainHeader />
       <RootLayout>
-        <ReviewContainer>
+        <BookmarkContainer>
           {/* Header (타이틀, 검색창) */}
           <HeaderSection keyword={keyword} category={category} handleSearchSubmit={handleSearchSubmit} />
           {/* 카테고리 */}
@@ -84,7 +84,7 @@ export default function ReviewPage() {
               <Pagination page={reviewData?.data.page ?? 0} totalPage={reviewData?.data.totalPage ?? 0} handlePageChange={handlePageChange} />
             </div>
           )}
-        </ReviewContainer>
+        </BookmarkContainer>
       </RootLayout>
     </div>
   );

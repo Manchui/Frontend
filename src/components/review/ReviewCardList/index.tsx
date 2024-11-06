@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+// 스켈레톤 나중에 추가
 import { MessageWithLink } from '@/components/main/CardSection';
 import type { GetReviewResponse } from '@manchui-api';
 
