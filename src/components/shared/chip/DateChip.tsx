@@ -16,8 +16,11 @@ const setting = 'rounded text-xs mobile:text-xs py-1 px-2 mr-2 font-medium';
  */
 
 export default function DateChip({ dateTime, closed }: DateProps) {
-  const dateTimes = dateTime.toISOString();
-  const [month, day, time, today] = [dateTimes.slice(5, 7), dateTimes.slice(8, 10), dateTimes.slice(11, 16), new Date()];
+  const dateTimes = new Date(dateTime);
+  const month = (dateTimes.getMonth() + 1).toString().padStart(2, '0');
+  const day = dateTimes.getDate().toString().padStart(2, '0');
+  const time = dateTimes.toTimeString().slice(0, 5);
+  const today = new Date();
 
   const end = today.getTime() >= dateTime.getTime();
 

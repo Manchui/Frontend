@@ -17,6 +17,11 @@ export default function App({ Component, pageProps }: AppProps) {
         defaultOptions: {
           queries: {
             staleTime: 60 * 1000,
+            gcTime: 3 * 60 * 1000,
+            retry: 1,
+          },
+          mutations: {
+            retry: 1,
           },
         },
       }),
