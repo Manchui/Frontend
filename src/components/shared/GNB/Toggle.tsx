@@ -25,9 +25,8 @@ export default function Toggle({ userData }: ToggleProps) {
     }, 300);
   };
 
-  // 나중에 로그아웃 API 연결 시, async await 추가
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
   };
 
   return (

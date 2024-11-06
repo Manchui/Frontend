@@ -26,10 +26,9 @@ export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
     setIsOpen(!isOpen);
   }
 
-  // 나중에 로그아웃 API 연결 시, async await 추가
-  const handleLogout = () => {
+  const handleLogout = async () => {
     if (isLoggedIn) {
-      logout();  
+      await logout();  
     }
   };
 
