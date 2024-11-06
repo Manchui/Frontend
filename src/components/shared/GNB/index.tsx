@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { getUserInfo } from '@/apis/userApi';
 import Drawer from '@/components/Drawer';
 import Toggle from '@/components/shared/GNB/Toggle';
+import { formatDate } from '@/libs/formatDate';
 import { userStore } from '@/store/userStore';
 
 export default function GNB() {
@@ -28,7 +29,13 @@ export default function GNB() {
           localStorage.setItem('userName', userData.res?.name);
         }
         if (userData.result) {
-          updateUser(userData.res || { email: '', id: '', image: '', name: '' });
+          updateUser({
+            email: userData.res?.email || '',
+            id: userData.res?.id || '',
+            image: '/images/together-findpage-large.png',
+            name: userData.res?.name || '',
+            createdAt: formatDate(userData.res?.createdAt || '') || '',
+          });
           login();
         } else {
           localStorage.removeItem('userName');
@@ -39,7 +46,6 @@ export default function GNB() {
         logout();
       }
     };
-
     void axiosUserData();
   }, [login, logout, updateUser]);
 

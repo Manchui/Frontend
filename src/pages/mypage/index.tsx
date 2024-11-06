@@ -3,16 +3,8 @@ import { useRouter } from 'next/router';
 import { MeetingCard } from '@/components/mypage/meeting-card';
 import { ProfileCard } from '@/components/mypage/profile-card';
 import RootLayout from '@/components/shared/RootLayout';
-import type { Gatherings, User } from '@/types/mypage';
+import type { Gatherings } from '@/types/mypage';
 
-// TODO: 프로필 데이터
-const Data: User = {
-  id: 'UUID',
-  email: 'aaaa@gmail.com',
-  name: 'hhihih',
-  image: '/images/together-findpage-large.png',
-  createdAt: '2020-10-10',
-};
 // TODO: 나의 모임 목록 카드 데이터 0
 const MeetingData: Gatherings = {
   gatheringCount: 2,
@@ -153,7 +145,7 @@ export default function MyPage() {
       </div>
       <RootLayout>
         <div className="m-auto flex flex-col gap-8 px-4 duration-100 tablet:gap-10 pc:gap-14">
-          <ProfileCard userData={Data} />
+          <ProfileCard />
           <div className="flex flex-col">
             <div className="flex select-none items-center justify-between text-sub-response font-semibold">
               {Object.keys(categories).map((item) => (

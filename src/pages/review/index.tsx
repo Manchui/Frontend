@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { getReviewData } from '@/apis/getReviewData';
 import FilterSection from '@/components/review/FilterSection';
 import HeaderSection from '@/components/review/HeaderSection';
-import MainHeader from '@/components/review/HeaderSection/MainHeader';
+import MainHeader from '@/components/review/MainHeader';
 import { ReviewCard } from '@/components/review/ReviewCard';
 import MainContainer from '@/components/review/ReviewContainer';
 import Pagination from '@/components/shared/pagination';

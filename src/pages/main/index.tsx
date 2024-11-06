@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/router';
 import { getGatheringData } from '@/apis/getGatheringData';
-import CardSection from '@/components/main/CardSection';
+import CardSection, { CardSkeleton } from '@/components/main/CardSection';
 import FilterSection from '@/components/main/FilterSection';
 import HeaderSection from '@/components/main/HeaderSection';
 import MainCarousel from '@/components/main/MainCarousel';
@@ -10,8 +9,9 @@ import RootLayout from '@/components/shared/RootLayout';
 import { FILTER_OPTIONS } from '@/constants/contants';
 import useDeviceState from '@/hooks/useDeviceState';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
+import { userStore } from '@/store/userStore';
 import type { GetGatheringResponse } from '@manchui-api';
-import { dehydrate, keepPreviousData, QueryClient, useInfiniteQuery } from '@tanstack/react-query';
+import { dehydrate, keepPreviousData, QueryClient, useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 
 const PAGE_SIZE_BY_DEVICE = {
   MOBILE: 3,
@@ -20,11 +20,9 @@ const PAGE_SIZE_BY_DEVICE = {
 };
 
 export default function MainPage() {
-  const router = useRouter();
-
-  const [keyword, setKeyword] = useState<string | undefined>((router.query.keyword as string | undefined) || undefined);
-  const [region, setRegion] = useState<string | undefined>((router.query.category as string | undefined) || undefined);
-  const [category, setCategory] = useState<string | undefined>((router.query.category as string | undefined) || FILTER_OPTIONS[0].id);
+  const [keyword, setKeyword] = useState<string | undefined>(undefined);
+  const [location, setLocation] = useState<string | undefined>(undefined);
+  const [category, setCategory] = useState<string | undefined>(FILTER_OPTIONS[0].id);
   const [closeDate, setCloseDate] = useState<string | undefined>(undefined);
   const [dateStart, setDateStart] = useState<string | undefined>(undefined);
   const [dateEnd, setDateEnd] = useState<string | undefined>(undefined);
@@ -34,47 +32,47 @@ export default function MainPage() {
 
   const deviceState = useDeviceState();
 
+  const isLoggedIn = userStore((state) => state.isLoggedIn);
+  const queryClient = useQueryClient();
+
   const {
-    data: mainData,
-    refetch,
-    // isLoading,
-    isError,
-    fetchNextPage,
+    isLoading,
+    // isError,
     hasNextPage,
-    isFetchingNextPage,
+    fetchNextPage,
+    data: mainData,
   } = useInfiniteQuery<GetGatheringResponse>({
     queryKey: [
       'main',
       {
         size: PAGE_SIZE_BY_DEVICE[deviceState],
         query: keyword,
-        location: region,
+        location,
         category,
         sort: closeDate,
         startDate: dateStart,
         endDate: dateEnd,
       },
     ],
-    queryFn: ({ pageParam = 0 }) =>
+    queryFn: ({ pageParam }) =>
       getGatheringData({
-        page: (pageParam as number) + 1,
+        page: pageParam as number,
         size: PAGE_SIZE_BY_DEVICE[deviceState],
         query: keyword,
-        location: region,
+        location,
         startDate: dateStart,
         endDate: dateEnd,
         sort: closeDate,
         category,
       }),
     getNextPageParam: (last) => {
-      if (last?.data.totalPage <= last?.data.page) {
-        return undefined;
+      if (last?.data.totalPage > last?.data.page) {
+        return last.data.page + 1;
       }
-      return last.data.page + 1;
+      return undefined;
     },
-    initialPageParam: 0,
+    initialPageParam: 1,
     placeholderData: keepPreviousData,
-    refetchOnWindowFocus: false,
   });
 
   const handleCategoryClick = (selectedCategory: string) => {
@@ -95,18 +93,19 @@ export default function MainPage() {
   };
 
   useEffect(() => {
-    if (isIntersecting && hasNextPage && !isFetchingNextPage) {
-      void fetchNextPage();
+    if (isLoggedIn) {
+      void queryClient.invalidateQueries({ queryKey: ['main'] });
     }
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage, isIntersecting]);
+  }, [isLoggedIn, queryClient]);
 
-  useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-
-    if (token) {
-      refetch().catch(console.error);
-    }
-  }, [refetch]);
+  useEffect(
+    function handleScrollFetch() {
+      if (isIntersecting && hasNextPage) {
+        void fetchNextPage();
+      }
+    },
+    [isIntersecting, hasNextPage, fetchNextPage],
+  );
 
   return (
     <>
@@ -117,9 +116,9 @@ export default function MainPage() {
           <HeaderSection keyword={keyword} category={category} handleSearchSubmit={handleSearchSubmit} />
           {/* 카테고리 */}
           <FilterSection
-            region={region}
+            location={location}
             category={category}
-            setRegion={setRegion}
+            setLocation={setLocation}
             setDateEnd={setDateEnd}
             setDateStart={setDateStart}
             handleDateSubmit={handleDateSubmit}
@@ -128,9 +127,11 @@ export default function MainPage() {
           />
           {/* 카드 */}
           <div className="mx-auto grid w-full select-none grid-cols-1 grid-rows-3 gap-6 px-4 mobile:p-0 tablet:grid-cols-3">
-            {mainData?.pages.map((page) => page.data.gatheringList.map((gathering) => <CardSection key={gathering.gatheringId} gathering={gathering} />))}
+            {isLoading
+              ? Array.from({ length: PAGE_SIZE_BY_DEVICE[deviceState] }).map((_, idx) => <CardSkeleton key={idx} />)
+              : mainData?.pages.map((page) => page.data.gatheringList.map((gathering) => <CardSection key={gathering.gatheringId} gathering={gathering} />))}
           </div>
-          {!isError && <div ref={sentinelRef} className="h-20 w-full" />}
+          <div ref={sentinelRef} className="h-20 w-full flex-shrink-0 opacity-0" />
         </MainContainer>
       </RootLayout>
     </>
@@ -142,7 +143,7 @@ export const getServerSideProps = async () => {
 
   await queryClient.prefetchQuery({
     queryKey: ['main'],
-    queryFn: () => getGatheringData({}),
+    queryFn: () => getGatheringData({ page: 1, size: 9 }),
   });
 
   return {

@@ -52,3 +52,9 @@
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+@layer components {
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+}

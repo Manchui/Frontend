@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Rating from '@/components/shared/Rating';
-import { ReviewContentList } from '@/types/detail';
 import type { GetReviewResponse } from '@manchui-api';
 
 import MoreButton from './MoreButton';
