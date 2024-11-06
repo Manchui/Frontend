@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import axios from 'axios';
 import instance from '@/apis/api';
 import { Toast } from '@/components/shared/Toast';
 import { userStore } from '@/store/userStore';
@@ -59,7 +58,9 @@ export const editUserInfo = async (nick: string, image: string) => {
   formData.append('name', nick); // FormData에 닉네임 추가
   if (image.includes('blob')) {
     const fileFromBlob = await convertBlobUrlToFile(image, 'profile-image.png');
-    formData.append('image', fileFromBlob);
+    if (fileFromBlob) {
+      formData.append('image', fileFromBlob);
+    }
   }
   // else if (!image.includes('blob')) {
   //   const fileFromUrl = await convertBlobUrlToFile2(image);
@@ -80,7 +81,7 @@ export const editUserInfo = async (nick: string, image: string) => {
     return { res: res.data, result: true };
   } catch (error) {
     console.error('요청 중 오류 발생:', error);
-    // return error;
+    return error;
   }
 };
 
