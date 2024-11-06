@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { getGatheringData } from '@/apis/getGatheringData';
-import CardSection, { CardSkeleton } from '@/components/main/CardSection';
+import CardSection, { CardSkeleton, MessageWithLink } from '@/components/main/CardSection';
 import FilterSection from '@/components/main/FilterSection';
 import HeaderSection from '@/components/main/HeaderSection';
 import MainCarousel from '@/components/main/MainCarousel';
@@ -8,10 +8,10 @@ import MainContainer from '@/components/main/MainContainer';
 import RootLayout from '@/components/shared/RootLayout';
 import { FILTER_OPTIONS } from '@/constants/contants';
 import useDeviceState from '@/hooks/useDeviceState';
+import useGetGatheringData from '@/hooks/useGetGatheringData';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { userStore } from '@/store/userStore';
-import type { GetGatheringResponse } from '@manchui-api';
-import { dehydrate, keepPreviousData, QueryClient, useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
+import { dehydrate, QueryClient, useQueryClient } from '@tanstack/react-query';
 
 const PAGE_SIZE_BY_DEVICE = {
   MOBILE: 3,
@@ -36,61 +36,38 @@ export default function MainPage() {
   const queryClient = useQueryClient();
 
   const {
+    data: mainData,
     isLoading,
-    // isError,
+    isError,
     hasNextPage,
     fetchNextPage,
-    data: mainData,
-  } = useInfiniteQuery<GetGatheringResponse>({
-    queryKey: [
-      'main',
-      {
-        size: PAGE_SIZE_BY_DEVICE[deviceState],
-        query: keyword,
-        location,
-        category,
-        sort: closeDate,
-        startDate: dateStart,
-        endDate: dateEnd,
-      },
-    ],
-    queryFn: ({ pageParam }) =>
-      getGatheringData({
-        page: pageParam as number,
-        size: PAGE_SIZE_BY_DEVICE[deviceState],
-        query: keyword,
-        location,
-        startDate: dateStart,
-        endDate: dateEnd,
-        sort: closeDate,
-        category,
-      }),
-    getNextPageParam: (last) => {
-      if (last?.data.totalPage > last?.data.page) {
-        return last.data.page + 1;
-      }
-      return undefined;
-    },
-    initialPageParam: 1,
-    placeholderData: keepPreviousData,
+  } = useGetGatheringData({
+    page: 1,
+    size: PAGE_SIZE_BY_DEVICE[deviceState],
+    query: keyword,
+    location,
+    category,
+    sort: closeDate,
+    startDate: dateStart,
+    endDate: dateEnd,
   });
 
-  const handleCategoryClick = (selectedCategory: string) => {
+  const handleCategoryClick = useCallback((selectedCategory: string) => {
     setCategory(selectedCategory);
-  };
+  }, []);
 
-  const handleSearchSubmit = (submitValue: string) => {
+  const handleSearchSubmit = useCallback((submitValue: string) => {
     setKeyword(submitValue);
-  };
+  }, []);
 
-  const handleCloseDateClick = (value: string) => {
+  const handleCloseDateClick = useCallback((value: string) => {
     setCloseDate(value);
-  };
+  }, []);
 
-  const handleDateSubmit = ({ start, end }: { end: string; start: string }) => {
+  const handleDateSubmit = useCallback(({ start, end }: { end: string; start: string }) => {
     setDateStart(start);
     setDateEnd(end);
-  };
+  }, []);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -126,12 +103,16 @@ export default function MainPage() {
             handleCloseDateClick={handleCloseDateClick}
           />
           {/* 카드 */}
-          <div className="mx-auto grid w-full select-none grid-cols-1 grid-rows-3 gap-6 px-4 mobile:p-0 tablet:grid-cols-3">
+          <div className="mx-auto grid w-full select-none grid-cols-1 gap-6 px-4 mobile:p-0 tablet:grid-cols-3">
             {isLoading
               ? Array.from({ length: PAGE_SIZE_BY_DEVICE[deviceState] }).map((_, idx) => <CardSkeleton key={idx} />)
               : mainData?.pages.map((page) => page.data.gatheringList.map((gathering) => <CardSection key={gathering.gatheringId} gathering={gathering} />))}
+            {mainData?.pages[0].data.gatheringCount === 0 && (
+              <MessageWithLink onClick={() => handleCategoryClick('')} message="해당 카테고리 모임이 없습니다." buttonText="다른 카테고리를 둘러볼까요?" />
+            )}
+            {isError && <MessageWithLink message="에러가 발생하였습니다." buttonText="다시 시도하기" onClick={() => window.location.reload()} />}
           </div>
-          <div ref={sentinelRef} className="h-20 w-full flex-shrink-0 opacity-0" />
+          <div ref={sentinelRef} className="h-96 w-full flex-shrink-0 opacity-0" />
         </MainContainer>
       </RootLayout>
     </>

@@ -1,13 +1,25 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { CardComponents } from '@/components/mypage/card-style';
 import MyPageCategoryList from '@/components/mypage/category/CategoryList';
 import ReviewCategory from '@/components/mypage/category/ReviewCategory';
 import { ProfileCard } from '@/components/mypage/profile-card';
 import RootLayout from '@/components/shared/RootLayout';
+import { Toast } from '@/components/shared/Toast';
+import { userStore } from '@/store/userStore';
 
 export default function MyPage() {
+  const router = useRouter();
   const [category, setCategory] = useState('');
   const [review, setReview] = useState('');
+  const isLoggedIn = userStore((state) => state.isLoggedIn);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      void router.push('/login');
+      Toast('success', '로그인을 해주세요.');
+    }
+  }, [isLoggedIn, router]);
 
   return (
     <div>

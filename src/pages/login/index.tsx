@@ -3,7 +3,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import { useState } from 'react';
+
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -29,7 +30,16 @@ export default function LoginPage() {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   const login = userStore((state) => state.login);
   const userUpdate = userStore((state) => state.updateUser);
+  const isLoggedIn = userStore((state) => state.isLoggedIn);
 
+  useEffect(() => {
+    if (isLoggedIn) {
+      // 로그인 상태라면 로그인 페이지로 접근 불가
+      void router.push('/'); // 예시로 대시보드 페이지로 리디렉션
+      Toast('success', '이미 로그인 중입니다.');
+    }
+  }, [isLoggedIn, router]);
+  
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (password.length < 8 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -46,8 +56,7 @@ export default function LoginPage() {
       login();
       success = true;
     } catch (err: any) {
-      Toast('error', err.res?.data.message);
-      console.log(err);
+      Toast('error', err.response.data.message);
     }
     if (success) {
       try {
@@ -62,7 +71,7 @@ export default function LoginPage() {
             createdAt: formatDate(userData.res?.createdAt) || '',
           });
         }
-        void router.push('/');
+        void router.replace('/');
       } catch (error) {
         console.log(error);
       }

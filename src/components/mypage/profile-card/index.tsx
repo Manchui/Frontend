@@ -1,12 +1,55 @@
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { editUserInfo } from '@/apis/userApi';
 import Input from '@/components/shared/Input';
 import Modal from '@/components/shared/Modal';
+import { Toast } from '@/components/shared/Toast';
 import { useModal } from '@/hooks/useModal';
 import { userStore } from '@/store/userStore';
 
 export function ProfileCard() {
   const { isOpen, openModal, closeModal } = useModal();
+  const [nick, setNick] = useState('');
   const userInfo = userStore((state) => state.user);
+  const isLoggedIn = userStore((state) => state.isLoggedIn);
+  const remove = userStore((state) => state.removeUser);
+  const [imagePreview, setImagePreview] = useState('');
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files || null;
+    if (!files) return;
+    const file = files[0]; // 파일 선택
+    if (file) {
+      // 파일을 URL로 변환하여 미리보기로 사용
+      const previewUrl = URL.createObjectURL(file);
+      console.log(typeof previewUrl);
+      setImagePreview(previewUrl); // 상태 업데이트
+    }
+  };
+  useEffect(() => {
+    if (!isLoggedIn) {
+      remove();
+    }
+  }, [isLoggedIn, remove]);
+  
+  const handleEdit = async () => {
+    if (nick.length < 3) {
+      Toast('error', '닉네임을 입력해주세요.');
+      return;
+    }
+    if (!imagePreview) {
+      Toast('error', '이미지를 선택해주세요.');
+      return;
+    }
+    console.log(imagePreview);
+    await editUserInfo(nick, imagePreview || userInfo.image);
+  };
+
+  const handleImageClick = () => {
+    // 이미지 클릭 시 파일 input을 클릭
+    document.getElementById('imageInput')?.click();
+  };
+
   return (
     <div className="relative m-auto h-auto w-full rounded-3xl p-2.5 tablet:p-4 pc:p-5">
       <div className="absolute left-[4%] top-[-40%] rounded-full bg-white p-1 phablet:left-[7%] tablet:left-[6%] pc:left-[8.5%]">
@@ -41,15 +84,28 @@ export function ProfileCard() {
           <Modal
             buttons={[
               { label: '취소', onClick: () => closeModal },
-              { label: '수정하기', onClick: () => closeModal },
+              {
+                label: '수정하기',
+                onClick: () => {
+                  void handleEdit();
+                },
+              },
             ]}
             isOpen={isOpen}
             onClose={closeModal}
           >
             <div className="flex flex-col gap-5 px-6 pt-6">
               <div className="text-2lg font-semibold">프로필 수정하기</div>
-              <Image src={userInfo.image} alt="프로필 이미지" width={56} height={56} style={{ objectFit: 'cover' }} />
-              <Input type="text" name="nick" />
+              <div onClick={handleImageClick} className="cursor-pointer">
+                {imagePreview ? (
+                  <Image src={imagePreview} alt="프로필 이미지" width={56} height={56} style={{ objectFit: 'cover' }} />
+                ) : (
+                  <Image src={userInfo.image} alt="프로필 이미지" width={56} height={56} style={{ objectFit: 'cover' }} />
+                )}
+              </div>
+
+              <Input type="text" name="nick" onChange={(e) => setNick(e.target.value)} />
+              <input id="imageInput" type="file" accept="image/*" onChange={handleImageChange} />
             </div>
           </Modal>
         </div>
