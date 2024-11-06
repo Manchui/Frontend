@@ -11,6 +11,7 @@ const typography = {
     'title-response': 'clamp(1.25rem, 0.7955rem + 1.9394vw, 2.25rem)',
     'sub-response': 'clamp(0.8125rem, 0.7651rem + 0.2299vw, 0.9375rem)',
     'full-response': 'clamp(2.8125rem, 2.4864rem + 1.6304vw, 3.75rem)',
+    'bookmark-title': 'clamp(0.8125rem, 0.3807rem + 2.1591vw, 2rem)',
     '10-24-response': 'clamp(0.625rem, 0.2273rem + 1.697vw, 1.5rem)',
     '13-15-response': 'clamp(0.8125rem, 0.7672rem + 0.2198vw, 0.9375rem)',
     '13-16-response': 'clamp(0.8125rem, 0.7443rem + 0.3409vw, 1rem)',

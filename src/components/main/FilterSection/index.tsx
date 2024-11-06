@@ -12,18 +12,18 @@ interface FilterSectionProps {
   handleCategoryClick: (category: string) => void;
   handleCloseDateClick: (value: string) => void;
   handleDateSubmit: ({ start, end }: { end: string; start: string }) => void;
-  region?: string;
+  location?: string;
   setDateEnd?: Dispatch<SetStateAction<string | undefined>>;
   setDateStart?: Dispatch<SetStateAction<string | undefined>>;
-  setRegion: Dispatch<SetStateAction<string | undefined>>;
+  setLocation: Dispatch<SetStateAction<string | undefined>>;
 }
 
 export default function FilterSection({
   handleCategoryClick,
   category,
-  setRegion,
+  setLocation,
   handleCloseDateClick,
-  region,
+  location,
   handleDateSubmit,
   setDateStart,
   setDateEnd,
@@ -54,7 +54,7 @@ export default function FilterSection({
       <div className="flex select-none items-center justify-between">
         <div className="flex items-center gap-2">
           <CloseDateToggle onCloseDateClick={handleCloseDateClick} />
-          <RegionDropdown region={region} setRegion={setRegion} />
+          <RegionDropdown location={location} setLocation={setLocation} />
           <DateDropdown setDateStart={setDateStart} setDateEnd={setDateEnd} handleDateSubmit={handleDateSubmit} />
         </div>
 

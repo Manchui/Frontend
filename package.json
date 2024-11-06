@@ -15,6 +15,7 @@
     "dev:db": "json-server src/data/main.json --port=8888"
   },
   "dependencies": {
+    "@svgr/webpack": "^8.1.0",
     "@tanstack/react-query": "^5.59.16",
     "@tanstack/react-query-devtools": "^5.59.16",
     "axios": "^1.7.7",

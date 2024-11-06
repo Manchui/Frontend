@@ -8,7 +8,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import router from 'next/router';
 import instance from '@/apis/api';
-import Carousel from '@/components/Carousel';
+import Carousel from '@/components/loginLogout/Carousel';
 import Input from '@/components/shared/Input';
 import { Toast } from '@/components/shared/Toast';
 
