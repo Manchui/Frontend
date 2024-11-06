@@ -44,6 +44,7 @@ export function ReviewCard({ review }: ReviewCardSProps) {
 
   return (
     <div className="w-[280px] flex-col items-start gap-4 tablet:flex tablet:w-full tablet:flex-row">
+      
       {review.gatheringImage ? (
         <Image
           alt="testImage"

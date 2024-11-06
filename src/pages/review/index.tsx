@@ -1,76 +1,50 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-shadow */
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { getReviewData } from '@/apis/getReviewData';
 import FilterSection from '@/components/review/FilterSection';
 import HeaderSection from '@/components/review/HeaderSection';
 import MainHeader from '@/components/review/MainHeader';
-import { ReviewCard } from '@/components/review/ReviewCard';
-import MainContainer from '@/components/review/ReviewContainer';
+import ReviewCardList from '@/components/review/ReviewCardList';
+import ReviewContainer from '@/components/review/ReviewContainer';
 import Pagination from '@/components/shared/pagination';
 import RootLayout from '@/components/shared/RootLayout';
 import { FILTER_OPTIONS } from '@/constants/contants';
-import type { GetReviewResponse } from '@manchui-api';
-import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
-
-type ReviewType = {
-  ImagePath: string;
-  comment: string;
-  createdAt: string;
-  gatheringLocation: string;
-  gatheringName: string;
-  name: string;
-  profileImagePath: string;
-  score: number;
-  userId: string;
-};
+import useGetReviewData from '@/hooks/useGetReviewData';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 
 export default function ReviewPage() {
   const router = useRouter();
-  const [keyword, setKeyword] = useState<string | undefined>((router.query.keyword as string | undefined) || undefined);
-  const [region, setRegion] = useState<string | undefined>((router.query.category as string | undefined) || undefined);
-  const [category, setCategory] = useState<string | undefined>((router.query.category as string | undefined) || FILTER_OPTIONS[0].id);
+  const [page, setPage] = useState(1);
+  const [keyword, setKeyword] = useState<string | undefined>(undefined);
+  const [location, setLocation] = useState<string | undefined>(undefined);
+  const [category, setCategory] = useState<string | undefined>(FILTER_OPTIONS[0].id);
   const [closeDate, setCloseDate] = useState<string | undefined>(undefined);
   const [dateStart, setDateStart] = useState<string | undefined>(undefined);
   const [dateEnd, setDateEnd] = useState<string | undefined>(undefined);
 
-  const [, setData] = useState<ReviewType[]>([]);
-  const [page, setPage] = useState(0);
   const [pagesize] = useState(10);
-  const [totalPage, setTotalPage] = useState(0);
 
   const {
     data: reviewData,
-
+    isLoading,
+    isError,
     // isLoading,
-  } = useQuery<GetReviewResponse>({
-    queryKey: [
-      'review',
-      {
-        size: pagesize,
-        query: keyword,
-        location: region,
-        category,
-        sort: closeDate,
-        startDate: dateStart,
-        endDate: dateEnd,
-      },
-    ],
-    queryFn: ({ pageParam = 0 }) =>
-      getReviewData({
-        page: (pageParam as number) + 1,
-        size: pagesize,
-        query: keyword,
-        location: region,
-        startDate: dateStart,
-        endDate: dateEnd,
-        sort: closeDate,
-        category,
-      }),
+  } = useGetReviewData({
+    page,
+    size: pagesize,
+    query: keyword,
+    location,
+    category,
+    sort: closeDate,
+    startDate: dateStart,
+    endDate: dateEnd,
   });
 
+  const handlePageChange = (pageValue: number) => {
+    setPage(pageValue);
+  };
   const handleCategoryClick = (selectedCategory: string) => {
     setCategory(selectedCategory);
   };
@@ -88,54 +62,47 @@ export default function ReviewPage() {
     setDateEnd(end);
   };
 
-  // const fetchData = (page: number, size: number) => {
-  //   const start = page * size;
-  //   const end = start + size;
-  //   const slicedData = mockData.slice(start, end);
-
-  //   setData(slicedData);
-  //   setTotalPage(Math.ceil(mockData.length / size));
-  // };
-
-  // useEffect(() => {
-  //   fetchData(page, pagesize);
-  // }, [page, pagesize]);
-
   return (
     <div className="mt-[60px]">
       <MainHeader />
       <RootLayout>
-        <MainContainer>
+        <ReviewContainer>
           {/* Header (타이틀, 검색창) */}
           <HeaderSection keyword={keyword} category={category} handleSearchSubmit={handleSearchSubmit} />
-
           {/* 카테고리 */}
           <FilterSection
-            region={region}
+            location={location}
             category={category}
-            setRegion={setRegion}
             setDateEnd={setDateEnd}
+            setLocation={setLocation}
             setDateStart={setDateStart}
             handleDateSubmit={handleDateSubmit}
             handleCategoryClick={handleCategoryClick}
             handleCloseDateClick={handleCloseDateClick}
           />
           {/* 카드 */}
-          <section className="mt-0 flex w-full flex-col items-center gap-6 bg-white px-4 pb-6 pt-1 mobile:rounded-lg tablet:items-start">
-            {reviewData?.data.reviewContentList.map((reviewContent) => <ReviewCard key={reviewContent.reviewId} review={reviewContent} />)}
-
-            <div className="flex self-center">
-              <Pagination
-                page={page}
-                totalPage={totalPage}
-                setPage={setPage}
-                // 임시
-              />
+          <ReviewCardList data={reviewData?.data} isLoading={isLoading} isError={isError} />
+          {!isLoading && !isError && (
+            <div className="bg-white w-full">
+              <Pagination page={reviewData?.data.page ?? 0} totalPage={reviewData?.data.totalPage ?? 0} handlePageChange={handlePageChange} />
             </div>
-            {!reviewData && <div className="h-20 w-full">작성된 리뷰가 없습니다.</div>}
-          </section>
-        </MainContainer>
+          )}
+        </ReviewContainer>
       </RootLayout>
     </div>
   );
 }
+export const getServerSideProps = async () => {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ['review', 1, 9],
+    queryFn: () => getReviewData({ page: 1, size: 10 }),
+  });
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+};

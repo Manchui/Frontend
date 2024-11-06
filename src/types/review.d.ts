@@ -32,4 +32,17 @@ declare module '@manchui-api' {
     message: string;
     success: boolean;
   };
+  
+  export type GetReviewRequest= {
+    category?: string;
+    endDate?: string;
+    location?: string;
+    page: number;
+    query?: string;
+    size: number;
+    sort?: string;
+    startDate?: string;
+  };
 }
+
+
