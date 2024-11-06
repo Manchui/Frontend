@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { MeetingCard } from '@/components/mypage/meeting-card';
 import { ProfileCard } from '@/components/mypage/profile-card';
 import RootLayout from '@/components/shared/RootLayout';
+import { Toast } from '@/components/shared/Toast';
+import { userStore } from '@/store/userStore';
 import type { Gatherings } from '@/types/mypage';
 
 // TODO: 나의 모임 목록 카드 데이터 0
@@ -112,6 +114,14 @@ export default function MyPage() {
   const [date, setDate] = useState(MeetingData);
   const [category, setCategory] = useState('');
   const { query } = router;
+  const isLoggedIn = userStore((state) => state.isLoggedIn);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      void router.push('/login');
+      Toast('success', '로그인을 해주세요.');
+    }
+  }, [isLoggedIn, router]);
 
   // NOTE: URL 적는 걸로 생각하며 작성
   const categories: { [key: string]: Gatherings } = {
