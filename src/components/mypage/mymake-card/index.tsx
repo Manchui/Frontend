@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { Button } from '@/components/shared/button';
-import State from '@/components/shared/chip/State';
 import type { GatheringList } from '@/types/mypage';
 
 export function MyMakeCard({ MeetingData }: { MeetingData: GatheringList }) {
