@@ -1,30 +1,32 @@
 /* eslint-disable tailwindcss/no-custom-classname */
-import type { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
+import { type ChangeEvent, type FormEvent, useState } from 'react';
 import Image from 'next/image';
 
 interface SearchBarProps {
-  searchValue: string;
-  setSearchValue: Dispatch<SetStateAction<string>>;
+  keyword?: string;
+  onSearchSubmit: (submitValue: string) => void;
 }
 
-export default function SearchBar({ searchValue, setSearchValue }: SearchBarProps) {
+export default function SearchBar({ keyword, onSearchSubmit }: SearchBarProps) {
+  const [searchValue, setSearchValue] = useState<string | undefined>(keyword || '');
+
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    // 검색값 변화 확인
     setSearchValue(e.target.value);
-    // console.log('searchValue', searchValue);
+
+    // 검색값 없으면 refetch
+    if (!e.target.value) onSearchSubmit(e.target.value);
   };
 
   const handleSearchSubmit = (e: FormEvent) => {
-    // 검색값 제출
     e.preventDefault();
-    if (searchValue !== '') {
-      // console.log('제출성공');
-      setSearchValue('');
+
+    if (searchValue && searchValue !== '') {
+      onSearchSubmit(searchValue);
     }
   };
 
   return (
-    <form className="flex gap-1 border-b font-medium hover:border-b-blue-800" onSubmit={handleSearchSubmit}>
+    <form className="flex gap-1 border-b font-medium hover:border-b-gray-300" onSubmit={handleSearchSubmit}>
       <label htmlFor="input" className="cursor-pointer">
         <Image src="/icons/main/search.svg" alt="검색창" width={24} height={24} className="tablet:size-8" />
       </label>

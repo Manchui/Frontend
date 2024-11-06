@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -12,7 +12,6 @@ import { formatDate } from '@/libs/formatDate';
 import { userStore } from '@/store/userStore';
 
 export default function GNB() {
-  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const isLoggedIn = userStore((state) => state.isLoggedIn);
   const logout = userStore((state) => state.logout);
@@ -26,6 +25,9 @@ export default function GNB() {
       const accessToken: string | null = localStorage.getItem('accessToken');
       if (accessToken) {
         const userData = await getUserInfo();
+        if (userData.res) {
+          localStorage.setItem('userName', userData.res?.name);
+        }
         if (userData.result) {
           updateUser({
             email: userData.res?.email || '',
@@ -35,24 +37,17 @@ export default function GNB() {
             createdAt: formatDate(userData.res?.createdAt || '') || '',
           });
           login();
-          setIsLoading(false);
         } else {
+          localStorage.removeItem('userName');
           logout();
-          setIsLoading(false);
         }
       } else {
+        localStorage.removeItem('userName');
         logout();
-        setIsLoading(false);
       }
     };
-
     void axiosUserData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  }, [login, logout, updateUser]);
 
   return (
     <nav className="fixed top-0 z-[9999] flex h-[60px] w-full items-center justify-between border-b border-gray-100 bg-white px-4 tablet:px-6 pc:px-10">

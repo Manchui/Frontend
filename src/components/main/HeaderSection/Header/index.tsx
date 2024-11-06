@@ -1,16 +1,16 @@
 import Image from 'next/image';
-import { FILTER_OPTIONS } from '@/constants/main/contants';
+import { FILTER_OPTIONS } from '@/constants/contants';
 
 interface HeaderProps {
-  selectedCategory: string;
+  category?: string;
 }
 
-export default function Header({ selectedCategory }: HeaderProps) {
+export default function Header({ category }: HeaderProps) {
   return (
     <div className="flex items-center gap-1">
       {FILTER_OPTIONS.map(
         (option) =>
-          selectedCategory === option.label && (
+          (category ?? '') === option.id && (
             <Image
               key={option.id}
               src={option.icon}
@@ -21,7 +21,7 @@ export default function Header({ selectedCategory }: HeaderProps) {
             />
           ),
       )}
-      <h2>{selectedCategory}</h2>
+      <h2>{category || '전체'}</h2>
     </div>
   );
 }

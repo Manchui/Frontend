@@ -1,34 +1,32 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
 import Image from 'next/image';
-import { getGatheringData } from '@/apis/detail/get-gathering-data';
+import { useRouter } from 'next/router';
+import getGatheringData from '@/apis/detail/get-gathering-data';
 import { FloatingBar } from '@/components/detail/FloatingBar';
 import { GatheringCard } from '@/components/detail/GatheringCard';
+import Loading from '@/components/detail/loading/Loading';
 import { ReviewListCard } from '@/components/detail/ReviewListCard';
-// import { useRouter } from 'next/router';
 import { ProgressBar } from '@/components/shared/progress-bar';
 import Rating from '@/components/shared/Rating';
-import type { DetailData } from '@/types/detail';
+import { useQuery } from '@tanstack/react-query';
 
 export default function DetailPage() {
-  const [gatherings, setGatherings] = useState<DetailData | null>(null);
-
-  const fetchGatherings = async () => {
-    const res: DetailData = await getGatheringData();
-    setGatherings(res);
-  };
-
-  useEffect(() => {
-    fetchGatherings().catch((e) => {
-      if (axios.isAxiosError(e)) {
-        throw e.response?.data;
-      } else {
-        throw new Error('error');
+  const router = useRouter();
+  const { id } = router.query;
+  const { data, isLoading } = useQuery({
+    // NOTE: page,size는 임시값
+    queryKey: ['detail', { id, page: 1, size: 10 }],
+    queryFn: () => {
+      if (typeof id === 'string') {
+        return getGatheringData(id);
       }
-    });
-  }, []);
+      return null;
+    },
+    staleTime: 1000 * 10,
+  });
+  const gatherings = data;
 
-  if (!gatherings) return <div>Loading</div>;
+  if (isLoading) return <Loading />;
+  if (!gatherings) return <Loading />;
 
   // TODO: 스코어를 백엔드에서 계산해서 따로 api를 만들면 좋을 듯
   // TODO: 스코어 계산은 추후에 더 좋은 방법 찾아서 변경
@@ -40,8 +38,7 @@ export default function DetailPage() {
       </div>
     </div>
   );
-  // const router = useRouter();
-  // const { id } = router.query;
+
   return (
     <main className="pb-[96px] pt-[60px]">
       <GatheringCard gatherings={gatherings} />
@@ -76,23 +73,11 @@ export default function DetailPage() {
         </section>
 
         <section className="mt-6 min-h-20 px-4 tablet:mt-9 tablet:px-10 pc:mt-10 pc:px-5">
-          {gatherings.reviewList.length > 0 ? (
-            <>
-              <hr className="border-gray-50" />
-              <article className="flex flex-col items-center pt-2">
-                {gatherings.reviewList.map((review, i) => (
-                  <div key={i} className={`border-b border-dashed border-gray-50 py-4 ${i === gatherings.reviewList.length - 1 ? 'border-b-0' : ''}`}>
-                    <ReviewListCard review={review} />
-                  </div>
-                ))}
-              </article>
-            </>
-          ) : (
-            <div className="mx-auto pb-6 pt-2 text-center text-[#6B7280]">아직 리뷰가 없어요.</div>
-          )}
+          {gatherings.reviewsList && <ReviewListCard reviews={gatherings.reviewsList} />}
+          <div className="mx-auto pb-6 pt-2 text-center text-[#6B7280]">아직 리뷰가 없어요.</div>
         </section>
       </div>
-      <FloatingBar usersList={gatherings.usersList} maxUsers={gatherings.maxUsers} />
+      <FloatingBar id={id} gatherings={gatherings} usersList={gatherings.usersList} maxUsers={gatherings.maxUsers} />
     </main>
   );
 }

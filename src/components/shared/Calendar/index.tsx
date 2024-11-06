@@ -1,11 +1,14 @@
 /* eslint-disable tailwindcss/no-custom-classname */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
 import RenderCalendar from '@/components/shared/Calendar/RenderCalendar';
 
 interface CalendarProps {
+  isDateLocked?: boolean;
   onDateChange: (data: { rangeEnd?: string; rangeStart?: string; selectedDate?: string }) => void;
+  prevRangeEnd?: string | null;
+  prevRangeStart?: string | null;
   selectionType: 'single' | 'range';
 }
 
@@ -16,7 +19,7 @@ interface CalendarProps {
  * @param {onDateChange} (data: { selectedDate?: string; rangeStart?: string; rangeEnd?: string }) => void - 선택한 날짜를 전달하는 콜백 함수
  */
 
-export default function Calendar({ selectionType, onDateChange }: CalendarProps) {
+export default function Calendar({ selectionType, onDateChange, prevRangeStart, prevRangeEnd, isDateLocked }: CalendarProps) {
   const [dropOpen, setDropOpen] = useState<boolean>(false);
   const [rangeEnd, setRangeEnd] = useState<string | null>(null);
   const [rangeStart, setRangeStart] = useState<string | null>(null);
@@ -26,6 +29,8 @@ export default function Calendar({ selectionType, onDateChange }: CalendarProps)
   const years = Array.from({ length: 10 }, (_, i) => currentDate.getFullYear() - 4 + i);
 
   const handleDateSelection = (date: string) => {
+    if (isDateLocked) return;
+
     if (selectionType === 'single') {
       // 단일 날짜 선택 모드
       if (selectedDate === date) {
@@ -60,11 +65,16 @@ export default function Calendar({ selectionType, onDateChange }: CalendarProps)
     setCurrentDate(new Date(currentDate.getFullYear(), direction === 'prev' ? currentDate.getMonth() - 1 : currentDate.getMonth() + 1, 1));
   };
 
+  useEffect(() => {
+    if (prevRangeStart) setRangeStart(prevRangeStart);
+    if (prevRangeEnd) setRangeEnd(prevRangeEnd);
+  }, [prevRangeStart, prevRangeEnd]);
+
   return (
     <div className="mx-auto size-[250px]">
       <div className="flex items-center justify-between">
         <div className="relative flex w-full items-center justify-between">
-          <span onClick={() => setDropOpen(!dropOpen)} className="text-13-15-response flex cursor-pointer items-center gap-1 font-semibold text-gray-700">
+          <span onClick={() => setDropOpen(!dropOpen)} className="flex cursor-pointer items-center gap-1 text-13-15-response font-semibold text-gray-700">
             {currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월{' '}
             <Image src="./icons/down-arrow.svg" alt="down arrow" width={18} height={18} className={`duration-300 ${dropOpen ? 'rotate-180' : 'rotate-0'}`} />
           </span>
@@ -110,6 +120,7 @@ export default function Calendar({ selectionType, onDateChange }: CalendarProps)
           rangeStart={rangeStart}
           currentDate={currentDate}
           selectedDate={selectedDate}
+          isDateLocked={isDateLocked}
           selectionType={selectionType}
           onDateSelect={handleDateSelection}
         />
