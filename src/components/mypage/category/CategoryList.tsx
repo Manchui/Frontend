@@ -21,7 +21,7 @@ export default function MyPageCategoryList({ category, setCategory }: MyPageCate
 
   const getButtonClass = (categoryId: string) =>
     categoryId === query.category ? 'flex-1 py-1.5 border-b-2 border-blue-800' : 'flex-1 hover:text-gray-500 text-blue-400 py-1.5 border-blue-100';
-  console.log('query: ', query);
+
   return (
     <div className="flex select-none items-center justify-between text-sub-response font-semibold">
       {categories.map((item) => (

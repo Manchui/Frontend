@@ -20,7 +20,6 @@ export default function ReviewCategory({ category, review, setReview }: ReviewCa
     }
   };
 
-  console.log('review: ', review);
   const getButtonClass = (categoryId: string) => {
     if (query.category === '나의 리뷰') {
       if (categoryId === '작성 가능한 리뷰' && query.reviewCategory !== '작성한 리뷰') {

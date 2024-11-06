@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { CardComponents } from '@/components/mypage/card-style';
-import MyPageCategoryList from '@/components/mypage/categori/CategoriList';
-import ReviewCategory from '@/components/mypage/categori/ReviewCategory';
+import MyPageCategoryList from '@/components/mypage/category/CategoryList';
+import ReviewCategory from '@/components/mypage/category/ReviewCategory';
 import { ProfileCard } from '@/components/mypage/profile-card';
 import RootLayout from '@/components/shared/RootLayout';
 
@@ -20,7 +20,7 @@ export default function MyPage() {
           <div className="flex flex-col">
             <MyPageCategoryList category={category} setCategory={setCategory} />
             {category === '나의 리뷰' && <ReviewCategory category={category} review={review} setReview={setReview} />}
-            <CardComponents category={category} />
+            <CardComponents review={review} category={category} />
           </div>
         </div>
       </RootLayout>
