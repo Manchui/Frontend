@@ -6,10 +6,10 @@ import { useQuery } from '@tanstack/react-query';
 
 import { MeetingCard } from './meeting-card';
 import ReviewCategory from '../category/ReviewCategory';
-import MyReviewCategory from '../my-review-list';
+import MyReviewList from '../my-review-list';
 
 export function CardComponents({ category }: { category: string }) {
-  const [review, setReview] = useState('');
+  const [review, setReview] = useState('작성 가능한 리뷰');
 
   const { data, isError, isLoading } = useQuery({
     // NOTE: page,size는 임시값
@@ -40,8 +40,12 @@ export function CardComponents({ category }: { category: string }) {
   return (
     <>
       {participatedList && <MeetingCard category={category} MeetingData={participatedList} />}
-      {category === '나의 리뷰' && <ReviewCategory category={category} review={review} setReview={setReview} />}
-      {category === '나의 리뷰' && <MyReviewCategory category={category} review={review} />}
+      {category === '나의 리뷰' && (
+        <>
+          <ReviewCategory category={category} review={review} setReview={setReview} />
+          <MyReviewList category={category} review={review} />
+        </>
+      )}
       {writtenGatheringList && <MeetingCard category={category} MeetingData={writtenGatheringList} />}
     </>
   );

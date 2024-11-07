@@ -1,24 +1,18 @@
 import getMyReviewable from '@/apis/mypage/get-mypage-reviewable';
+import getMyReviews from '@/apis/mypage/get-mypage-reviews';
 import Loading from '@/components/detail/loading/Loading';
 import { useQuery } from '@tanstack/react-query';
 
+import { MeetingCard } from '../card-style/meeting-card';
 import { ReviewableCard } from '../card-style/reviewable-card';
 
 export default function MyReviewList({ category, review }: { category: string; review: string }) {
   const { data, isError, isLoading } = useQuery({
     // NOTE: page,size는 임시값
-    queryKey: ['mypage', category],
+    queryKey: ['mypage', category, review],
     queryFn: () => {
-      if (
-        (category === '나의 리뷰' && review === '작성 가능한 리뷰') ||
-        (localStorage.getItem('my-category') === '나의 리뷰' && localStorage.getItem('my-review') === '작성 가능한 리뷰')
-      )
-        return getMyReviewable();
-      //   if (
-      //     (category === '나의 리뷰' && review === '작성한 리뷰') ||
-      //     (localStorage.getItem('my-category') === '나의 리뷰' && localStorage.getItem('my-review') === '작성한 리뷰')
-      //   )
-      //     return getMyReviews();
+      if (category === '나의 리뷰' && review === '작성 가능한 리뷰') return getMyReviewable();
+      // if (category === '나의 리뷰' && review === '작성한 리뷰') return getMyReviews();
       return null;
     },
     staleTime: 1000 * 10,
@@ -36,8 +30,9 @@ export default function MyReviewList({ category, review }: { category: string; r
   }
 
   return (
-    <div className="grid grid-cols-1 px-1 phablet:grid-cols-2 tablet:grid-cols-1 pc:grid-cols-1">
-      <div> {reviewableList?.content.map((list, i) => <ReviewableCard key={i} review={list} />)}</div>
+    <div>
+      {/* <div> {reviewableList?.content.map((list, i) => <ReviewableCard key={i} review={list} />)}</div> */}
+      <div> {reviewableList && <MeetingCard MeetingData={reviewableList} category={review} />}</div>
     </div>
   );
 }

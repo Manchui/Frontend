@@ -7,7 +7,7 @@ import instance from '../api';
 // NOTE: 리뷰 작성 가능한 모임 목록 조회
 export default async function getMyReviewable() {
   try {
-    const res = await instance.get<MyPageBaseData>('/api/users/reviewable/list?page=1&size=10');
+    const res = await instance.get<MyPageBaseData>('/api/users/reviewable/list?page=0&szie=10');
     return res.data.data;
   } catch (e: unknown) {
     if (axios.isAxiosError(e)) {

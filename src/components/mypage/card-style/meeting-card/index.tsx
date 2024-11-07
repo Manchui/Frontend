@@ -9,7 +9,7 @@ import MyPageCancelButton from '../button/CancelButton';
 
 export function MeetingCard({ MeetingData, category }: { MeetingData: List; category: string }) {
   return (
-    <div>
+    <div className="grid grid-cols-1 px-1 phablet:grid-cols-2 tablet:grid-cols-1 pc:grid-cols-1">
       {MeetingData.content.map((list, i) => {
         const dateObj = new Date(list.gatheringDate);
         const addCss = list.groupName.length > 12 && 'w-52';
@@ -31,8 +31,7 @@ export function MeetingCard({ MeetingData, category }: { MeetingData: List; cate
                     />
                   </div>
 
-                  <div className="flex h-[156px] flex-col justify-between">
-                    {/* mage 카드에는 없음요 */}
+                  <div className="flex flex-col justify-between tablet:h-[156px]">
                     {category === '나의 모임' && (
                       <div className="flex select-none gap-2">
                         <State stateProp={list.isClosed ? 'completed' : 'planed'} />
@@ -55,9 +54,7 @@ export function MeetingCard({ MeetingData, category }: { MeetingData: List; cate
                         </span>
                       </div>
                     </div>
-                    {/* mage 카드에는 없음요 */}
                     {category === '나의 모임' && <MyPageCancelButton data={list} />}
-                    {/* mage 카드에만 있음 */}
                     {category === '내가 만든 모임' && (
                       <div className="flex gap-2">
                         <CancelButton id={list.gatheringId} gatherings={list} />
@@ -66,6 +63,7 @@ export function MeetingCard({ MeetingData, category }: { MeetingData: List; cate
                         </Link>
                       </div>
                     )}
+                    {category === '작성 가능한 리뷰' && <button type="button">리뷰 작성하기</button>}
                   </div>
                 </div>
               </article>
