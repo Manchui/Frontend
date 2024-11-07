@@ -80,7 +80,7 @@ export default function Calendar({ selectionType, onDateChange, prevRangeStart, 
           </span>
           {dropOpen && (
             <ul
-              className={`absolute top-full z-10 max-h-48 w-24 overflow-y-auto rounded-xl bg-white drop-shadow-2xl ${
+              className={`absolute top-full z-50 max-h-48 w-24 overflow-y-auto rounded-xl bg-white drop-shadow-2xl ${
                 dropOpen ? 'animate-dropdown-open' : 'animate-dropdown-close'
               }`}
             >

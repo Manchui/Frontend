@@ -34,7 +34,7 @@ export default function CardImage({ gathering }: CardImageProps) {
         className="transform rounded-t-2xl object-cover transition-transform duration-300 ease-in-out group-hover:scale-110 mobile:rounded-l-2xl mobile:rounded-tr-none tablet:rounded-t-2xl tablet:rounded-bl-none"
       />
       {(currentUsers >= maxUsers || closed) && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-80">
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-70">
           <span className={`text-full-response font-bold text-full ${bagelFatOne.className}`}>{closed ? 'CLOSED' : 'FULL'}</span>
         </div>
       )}

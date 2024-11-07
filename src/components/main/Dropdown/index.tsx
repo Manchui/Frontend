@@ -42,7 +42,7 @@ export default function Dropdown({ buttonLabel, children, isOpen, setIsOpen, cla
       <button
         type="button"
         onClick={toggleDropdown}
-        className={`flex items-center rounded-lg border border-gray-100 px-4 py-2 text-13-16-response font-semibold text-gray-900 mobile:gap-1 ${dropOpen && 'bg-blue-800 text-white'} ${value && 'bg-blue-800 text-white'}`}
+        className={`flex items-center rounded-lg border border-gray-100 p-2 tablet:px-4 text-13-16-response font-semibold text-gray-900 mobile:gap-1 ${dropOpen && 'bg-blue-800 text-white'} ${value && 'bg-blue-800 text-white'}`}
       >
         {buttonLabel}
         <Image

@@ -4,7 +4,7 @@ import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 
 const useGetGatheringData = (request: GetGatheringRequest) =>
   useInfiniteQuery<GetGatheringResponse>({
-    queryKey: ['main', request.page, request.size, request.sort, request.query, request.location, request.endDate, request.category, request.startDate],
+    queryKey: ['main', request],
     queryFn: ({ pageParam = request.page }) => getGatheringData({ ...request, page: pageParam as number }),
     getNextPageParam: (last) => {
       if (last?.data.totalPage > last?.data.page) {

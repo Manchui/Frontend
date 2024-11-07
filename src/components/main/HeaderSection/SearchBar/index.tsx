@@ -1,29 +1,43 @@
 /* eslint-disable tailwindcss/no-custom-classname */
-import { type ChangeEvent, type FormEvent, useState } from 'react';
+import type { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 
 interface SearchBarProps {
   keyword?: string;
   onSearchSubmit: (submitValue: string) => void;
+  setPage?: Dispatch<SetStateAction<number>>;
 }
 
-export default function SearchBar({ keyword, onSearchSubmit }: SearchBarProps) {
+export default function SearchBar({ keyword, onSearchSubmit, setPage }: SearchBarProps) {
   const [searchValue, setSearchValue] = useState<string | undefined>(keyword || '');
 
-  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
+  const handleSearchChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const { value } = e.target;
+      setSearchValue(value);
 
-    // 검색값 없으면 refetch
-    if (!e.target.value) onSearchSubmit(e.target.value);
-  };
+      // 검색어가 비어 있으면 refetch
+      if (!value) onSearchSubmit(value);
+    },
+    [onSearchSubmit],
+  );
 
-  const handleSearchSubmit = (e: FormEvent) => {
-    e.preventDefault();
+  const handleSearchSubmit = useCallback(
+    (e: FormEvent) => {
+      e.preventDefault();
 
-    if (searchValue && searchValue !== '') {
-      onSearchSubmit(searchValue);
-    }
-  };
+      if (searchValue && searchValue !== '') {
+        onSearchSubmit(searchValue);
+        if (setPage) setPage(1);
+      }
+    },
+    [onSearchSubmit, searchValue, setPage],
+  );
+
+  useEffect(() => {
+    if (keyword !== undefined) setSearchValue(keyword);
+  }, [keyword]);
 
   return (
     <form className="flex gap-1 border-b font-medium hover:border-b-gray-300" onSubmit={handleSearchSubmit}>

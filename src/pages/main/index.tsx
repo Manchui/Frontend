@@ -1,4 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+/* eslint-disable tailwindcss/no-custom-classname */
+import { useEffect, useRef, useState } from 'react';
+import Lottie from 'lottie-react';
 import { getGatheringData } from '@/apis/getGatheringData';
 import CardSection, { CardSkeleton, MessageWithLink } from '@/components/main/CardSection';
 import FilterSection from '@/components/main/FilterSection';
@@ -12,6 +14,8 @@ import useGetGatheringData from '@/hooks/useGetGatheringData';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { userStore } from '@/store/userStore';
 import { dehydrate, QueryClient, useQueryClient } from '@tanstack/react-query';
+
+import Empty from 'public/lottie/empty.json';
 
 const PAGE_SIZE_BY_DEVICE = {
   MOBILE: 3,
@@ -52,22 +56,26 @@ export default function MainPage() {
     endDate: dateEnd,
   });
 
-  const handleCategoryClick = useCallback((selectedCategory: string) => {
-    setCategory(selectedCategory);
-  }, []);
+  const noData = mainData?.pages[0].data.gatheringCount === 0;
 
-  const handleSearchSubmit = useCallback((submitValue: string) => {
+  const handleCategoryClick = (selectedCategory: string) => {
+    if (selectedCategory !== category) {
+      setCategory(selectedCategory);
+    }
+  };
+
+  const handleSearchSubmit = (submitValue: string) => {
     setKeyword(submitValue);
-  }, []);
+  };
 
-  const handleCloseDateClick = useCallback((value: string) => {
+  const handleCloseDateClick = (value: string) => {
     setCloseDate(value);
-  }, []);
+  };
 
-  const handleDateSubmit = useCallback(({ start, end }: { end: string; start: string }) => {
+  const handleDateSubmit = ({ start, end }: { end: string; start: string }) => {
     setDateStart(start);
     setDateEnd(end);
-  }, []);
+  };
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -77,16 +85,14 @@ export default function MainPage() {
 
   useEffect(
     function handleScrollFetch() {
-      if (isIntersecting && hasNextPage) {
-        void fetchNextPage();
-      }
+      if (isIntersecting && hasNextPage) void fetchNextPage();
     },
     [isIntersecting, hasNextPage, fetchNextPage],
   );
 
   return (
     <>
-      <MainCarousel />
+      <MainCarousel isError={isError} />
       <RootLayout>
         <MainContainer>
           {/* Header (타이틀, 검색창) */}
@@ -103,16 +109,19 @@ export default function MainPage() {
             handleCloseDateClick={handleCloseDateClick}
           />
           {/* 카드 */}
-          <div className="mx-auto grid w-full select-none grid-cols-1 gap-6 px-4 mobile:p-0 tablet:grid-cols-3">
+          <div className="mx-auto grid min-h-[200px] w-full select-none grid-cols-1 gap-6 px-4 mobile:p-0 tablet:grid-cols-3">
             {isLoading
               ? Array.from({ length: PAGE_SIZE_BY_DEVICE[deviceState] }).map((_, idx) => <CardSkeleton key={idx} />)
               : mainData?.pages.map((page) => page.data.gatheringList.map((gathering) => <CardSection key={gathering.gatheringId} gathering={gathering} />))}
-            {mainData?.pages[0].data.gatheringCount === 0 && (
-              <MessageWithLink onClick={() => handleCategoryClick('')} message="해당 카테고리 모임이 없습니다." buttonText="다른 카테고리를 둘러볼까요?" />
+            {noData && (
+              <div className="absolute left-1/2 w-full -translate-x-1/2">
+                <Lottie animationData={Empty} className="h-empty fill-background" />
+                <MessageWithLink onClick={() => handleCategoryClick('')} message="아직 등록된 모임이 없어요" buttonText="더 둘러보기" />
+              </div>
             )}
             {isError && <MessageWithLink message="에러가 발생하였습니다." buttonText="다시 시도하기" onClick={() => window.location.reload()} />}
           </div>
-          <div ref={sentinelRef} className="h-96 w-full flex-shrink-0 opacity-0" />
+          {!isError && <div ref={sentinelRef} className="h-28 w-full flex-shrink-0 opacity-0" />}
         </MainContainer>
       </RootLayout>
     </>
@@ -124,7 +133,7 @@ export const getServerSideProps = async () => {
 
   await queryClient.prefetchQuery({
     queryKey: ['main'],
-    queryFn: () => getGatheringData({ page: 1, size: 9 }),
+    queryFn: () => getGatheringData({ page: 1, size: PAGE_SIZE_BY_DEVICE.PC }),
   });
 
   return {
