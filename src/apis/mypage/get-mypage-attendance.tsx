@@ -1,14 +1,14 @@
 import axios from 'axios';
 import { Toast } from '@/components/shared/Toast';
-import type { BaseData } from '@/types/detail';
+import type { MyPageBaseData } from '@/types/mypage';
 
 import instance from '../api';
 
-export default async function deleteCancellation(gatheringsId: string | number) {
+export default async function getMyAttendance() {
   try {
-    const res = await instance.delete<BaseData>(`/api/gatherings/${gatheringsId}/cancel`);
+    const res = await instance.get<MyPageBaseData>('/api/users/gatherings/attendance?page=0&size=10');
     return res.data.data;
-  } catch (e) {
+  } catch (e: unknown) {
     if (axios.isAxiosError(e)) {
       throw e.response?.data;
     } else {

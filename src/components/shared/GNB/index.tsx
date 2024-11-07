@@ -32,17 +32,19 @@ export default function GNB() {
           updateUser({
             email: userData.res?.email || '',
             id: userData.res?.id || '',
-            image: '/images/together-findpage-large.png',
+            image: userData.res?.image || '/images/together-findpage-large.png',
             name: userData.res?.name || '',
             createdAt: formatDate(userData.res?.createdAt || '') || '',
           });
           login();
         } else {
           localStorage.removeItem('userName');
+          localStorage.removeItem('my-category');
           logout();
         }
       } else {
         localStorage.removeItem('userName');
+        localStorage.removeItem('my-category');
         logout();
       }
     };

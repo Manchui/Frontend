@@ -1,14 +1,15 @@
 import axios from 'axios';
 import { Toast } from '@/components/shared/Toast';
-import type { BaseData } from '@/types/detail';
+import type { MyPageBaseData } from '@/types/mypage';
 
 import instance from '../api';
 
-export default async function deleteCancellation(gatheringsId: string | number) {
+// NOTE: 내가 작성한 후기 목록
+export default async function getMyReviews() {
   try {
-    const res = await instance.delete<BaseData>(`/api/gatherings/${gatheringsId}/cancel`);
+    const res = await instance.get<MyPageBaseData>('/api/users/reviews?page=0&size=10');
     return res.data.data;
-  } catch (e) {
+  } catch (e: unknown) {
     if (axios.isAxiosError(e)) {
       throw e.response?.data;
     } else {

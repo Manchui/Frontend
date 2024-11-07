@@ -1,12 +1,13 @@
 import type { DetailData, UsersList } from '@/types/detail';
+import type { GatheringList } from '@/types/mypage';
 
 import AttendanceButton from './button/AttendanceButton';
 import { CancelButton } from './button/CancelButton';
 import { Button } from '../shared/button';
 
 export interface DetailPageBaseType {
-  gatherings: DetailData;
-  id: string | string[] | undefined;
+  gatherings: DetailData | GatheringList;
+  id: string | number;
 }
 
 interface FloatingBarProps extends DetailPageBaseType {

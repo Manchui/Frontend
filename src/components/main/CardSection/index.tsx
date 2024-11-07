@@ -30,7 +30,7 @@ export function CardSkeleton() {
 
 export function MessageWithLink({ message, buttonText, link, onClick }: { buttonText: string; link?: string; message: string; onClick?: () => void }) {
   return (
-    <div className="absolute left-1/2 mt-10 flex -translate-x-1/2 flex-col items-center gap-4 text-pretty text-16-20-response font-bold">
+    <div className="absolute left-1/2 mt-10 flex -translate-x-1/2 flex-col items-center gap-4 text-pretty text-16-20-response font-bold z-10">
       <span>{message}</span>
       {link ? (
         <Link href={link} className="flex w-fit items-center rounded-md bg-blue-800 px-4 py-2 text-sub-response text-white">
