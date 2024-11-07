@@ -39,7 +39,7 @@ export default function LoginPage() {
       Toast('success', '이미 로그인 중입니다.');
     }
   }, [isLoggedIn, router]);
-  
+
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (password.length < 8 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -61,8 +61,9 @@ export default function LoginPage() {
     if (success) {
       try {
         const userData = await getUserInfo();
-        console.log(userData.res);
         if (userData.res) {
+          localStorage.setItem('userName', userData.res?.name);
+
           userUpdate({
             email: userData.res?.email || '',
             id: userData.res?.id || '',

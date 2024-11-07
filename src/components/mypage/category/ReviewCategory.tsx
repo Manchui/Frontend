@@ -15,7 +15,6 @@ export default function ReviewCategory({ category, review, setReview }: ReviewCa
   const handleCategoryChange = (categoryId: string) => {
     if (review !== categoryId) {
       setReview(categoryId);
-      localStorage.setItem('my-review', categoryId);
       void router.push(`/mypage?category=${category}&reviewCategory=${categoryId}`, undefined, { shallow: true });
     }
   };
