@@ -38,10 +38,11 @@ export default function FilterSection({
         <div className="flex items-center gap-2">
           <RegionDropdown location={location} setLocation={setLocation} />
           <DateDropdown setDateStart={setDateStart} setDateEnd={setDateEnd} handleDateSubmit={handleDateSubmit} />
-          <SortToggle sort={sort} setSort={setSort} />
+       
         </div>
-
-        {/* 모임 만들기 버튼 */}
+         {/* 정렬 버튼 */}
+   <SortToggle sort={sort} setSort={setSort} />
+       
       </div>
     </div>
   );
