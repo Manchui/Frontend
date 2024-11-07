@@ -4,10 +4,9 @@ import getMyGathering from '@/apis/mypage/get-mypage-gathring';
 import Loading from '@/components/detail/loading/Loading';
 import { useQuery } from '@tanstack/react-query';
 
-import { MadeMeetingCard } from './made-metting-card';
 import { MeetingCard } from './meeting-card';
 import ReviewCategory from '../category/ReviewCategory';
-import MyReviewCategory from '../my-review-category';
+import MyReviewCategory from '../my-review-list';
 
 export function CardComponents({ category }: { category: string }) {
   const [review, setReview] = useState('');
@@ -40,12 +39,10 @@ export function CardComponents({ category }: { category: string }) {
 
   return (
     <>
+      {participatedList && <MeetingCard category={category} MeetingData={participatedList} />}
       {category === '나의 리뷰' && <ReviewCategory category={category} review={review} setReview={setReview} />}
-      <div className="grid grid-cols-1 px-1 phablet:grid-cols-2 tablet:grid-cols-1 pc:grid-cols-1">
-        {participatedList?.content.map((list, i) => <MeetingCard key={i} MeetingData={list} />)}
-        {writtenGatheringList?.content.map((list, i) => <MadeMeetingCard key={i} MeetingData={list} />)}
-        {category === '나의 리뷰' && <MyReviewCategory category={category} review={review} />}
-      </div>
+      {category === '나의 리뷰' && <MyReviewCategory category={category} review={review} />}
+      {writtenGatheringList && <MeetingCard category={category} MeetingData={writtenGatheringList} />}
     </>
   );
 }

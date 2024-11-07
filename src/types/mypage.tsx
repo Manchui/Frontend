@@ -15,7 +15,7 @@ export type Gatherings = {
 };
 
 export type List = {
-  content: [];
+  content: GatheringList[];
   empty: boolean;
   first: boolean;
   last: boolean;

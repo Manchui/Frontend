@@ -6,7 +6,7 @@ import { useModal } from '@/hooks/useModal';
 import type { GatheringList } from '@/types/mypage';
 import { useMutation } from '@tanstack/react-query';
 
-export default function CancelButton({ data }: { data: GatheringList }) {
+export default function MyPageCancelButton({ data }: { data: GatheringList }) {
   const { isOpen, openModal, closeModal } = useModal();
   const myCategory = localStorage.getItem('my-category');
   const mutation = useMutation({
