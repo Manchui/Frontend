@@ -1,5 +1,6 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 import { useState } from 'react';
+import Lottie from 'lottie-react';
 import { getBookmarkData } from '@/apis/getBookmarkData';
 import BookmarkBanner from '@/components/bookmark/BookmarkBanner';
 import BookmarkCardList from '@/components/bookmark/BookmarkCardList';
@@ -12,6 +13,8 @@ import { FILTER_OPTIONS } from '@/constants/contants';
 import useDeviceState from '@/hooks/useDeviceState';
 import useGetBookmarkData from '@/hooks/useGetBookmarkData';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
+
+import Error from 'public/lottie/error.json';
 
 const PAGE_SIZE_BY_DEVICE = {
   MOBILE: 2,
@@ -70,7 +73,13 @@ export default function BookmarkPage() {
 
   return (
     <>
-      <BookmarkBanner />
+      {isError ? (
+        <div className="mt-[60px] h-bookmark-banner">
+          <Lottie animationData={Error} className="size-full border-b-2 border-cardBorder bg-background" />
+        </div>
+      ) : (
+        <BookmarkBanner />
+      )}
       <RootLayout>
         <BookmarkContainer>
           <BookmarkHeader data={bookmark?.data} setPage={setPage} handleSearchSubmit={handleSearchSubmit} />

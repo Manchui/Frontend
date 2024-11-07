@@ -1,4 +1,5 @@
 /* eslint-disable tailwindcss/no-custom-classname */
+import { Gugi } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
 import CardContent from '@/components/main/CardSection/CardContent';
@@ -8,6 +9,8 @@ import type { GetGatheringResponse } from '@manchui-api';
 interface CardSectionProps {
   gathering: GetGatheringResponse['data']['gatheringList'][number];
 }
+
+const gugi = Gugi({ weight: '400', subsets: ['latin'] });
 
 export default function CardSection({ gathering }: CardSectionProps) {
   return (
@@ -28,17 +31,17 @@ export function CardSkeleton() {
   );
 }
 
-export function MessageWithLink({ message, buttonText, link, onClick }: { buttonText: string; link?: string; message: string; onClick?: () => void }) {
+export function MessageWithLink({ message, buttonText, link, onClick }: { buttonText: string; link?: string; message?: string; onClick?: () => void }) {
   return (
-    <div className="absolute left-1/2 mt-10 flex -translate-x-1/2 flex-col items-center gap-4 text-pretty text-16-20-response font-bold">
-      <span>{message}</span>
+    <div className="flex flex-col items-center gap-4 text-pretty text-bookmark-title font-bold">
+      <span className={`${gugi.className}`}>{message}</span>
       {link ? (
         <Link href={link} className="flex w-fit items-center rounded-md bg-blue-800 px-4 py-2 text-sub-response text-white">
           {buttonText}
           <Image src="/icons/main/banner-btn.svg" alt={`${message} 버튼`} width={24} height={24} />
         </Link>
       ) : (
-        <button type="button" onClick={onClick} className="flex w-fit items-center rounded-md bg-blue-800 px-4 py-2 text-sub-response text-white">
+        <button type="button" onClick={onClick} className="flex w-fit items-center rounded-md bg-blue-800 px-4 py-2 text-10-24-response text-white">
           {buttonText}
           <Image src="/icons/main/banner-btn.svg" alt={`${message} 버튼`} width={24} height={24} />
         </button>
