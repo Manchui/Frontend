@@ -21,6 +21,7 @@ export default function MyReviewList({ category, review }: { category: string; r
   });
 
   const reviewableList = data?.reviewableList;
+  console.log('reviewableList: ', reviewableList);
 
   if (isLoading) return <Loading />;
   if (isError) return <div>Error</div>;
@@ -34,8 +35,8 @@ export default function MyReviewList({ category, review }: { category: string; r
 
   return (
     <div>
-      {/* <div> {reviewableList?.content.map((list, i) => <ReviewableCard key={i} review={list} />)}</div> */}
-      {reviewableList && <MeetingCard MeetingData={reviewableList} category={review} />}
+      {reviewableList && isReview ? <MeetingCard MeetingData={reviewableList} category={review} /> : ''}
+      {reviewableList && !isReview ? <ReviewableCard MeetingData={reviewableList} /> : ''}
     </div>
   );
 }

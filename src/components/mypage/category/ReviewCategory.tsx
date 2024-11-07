@@ -30,7 +30,7 @@ export default function ReviewCategory({ category, review, setReview }: ReviewCa
   };
 
   return (
-    <div className="mx-4 my-6 flex gap-4">
+    <div className="mx-4 mt-6 flex gap-4">
       {reviewCategory.map((item) => (
         <button
           onClick={() => {

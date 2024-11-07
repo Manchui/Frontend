@@ -12,11 +12,17 @@ export function CardComponents({ category }: { category: string }) {
   const [review, setReview] = useState('작성 가능한 리뷰');
 
   const { data, isError, isLoading } = useQuery({
-    // NOTE: page,size는 임시값
+    // NOTE: page, size는 임시값
     queryKey: ['mypage', category],
     queryFn: () => {
-      if (category === '나의 모임') return getMyAttendance();
-      if (category === '내가 만든 모임') return getMyGathering();
+      if (category === '나의 모임') {
+        setReview('작성 가능한 리뷰');
+        return getMyAttendance();
+      }
+      if (category === '내가 만든 모임') {
+        setReview('작성 가능한 리뷰');
+        return getMyGathering();
+      }
       return null;
     },
     staleTime: 1000 * 10,
