@@ -9,6 +9,7 @@ export type Gatherings = {
   page: number;
   pageSize: number;
   participatedGatheringList?: List;
+  reviewableList?: List;
   totalPage: number;
   writtenGatheringList?: List;
 };
