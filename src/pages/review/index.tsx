@@ -41,6 +41,7 @@ export default function ReviewPage() {
     startDate: dateStart,
     endDate: dateEnd,
   });
+  console.log('reviewData data:', reviewData);
 
   const handlePageChange = (pageValue: number) => {
     setPage(pageValue);
