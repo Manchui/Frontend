@@ -31,7 +31,7 @@ export function ProfileCard() {
       remove();
     }
   }, [isLoggedIn, remove]);
-  
+
   const handleEdit = async () => {
     if (nick.length < 3) {
       Toast('error', '닉네임을 입력해주세요.');
@@ -54,7 +54,7 @@ export function ProfileCard() {
     <div className="relative m-auto h-auto w-full rounded-3xl p-2.5 tablet:p-4 pc:p-5">
       <div className="absolute left-[4%] top-[-40%] rounded-full bg-white p-1 phablet:left-[7%] tablet:left-[6%] pc:left-[8.5%]">
         <Image
-          className="size-[60px] phablet:size-[70px] md:size-[90px]"
+          className="size-[60px] rounded-full phablet:size-[70px] md:size-[90px]"
           src={userInfo.image}
           alt="프로필 이미지"
           width={70}
@@ -96,11 +96,11 @@ export function ProfileCard() {
           >
             <div className="flex flex-col gap-5 px-6 pt-6">
               <div className="text-2lg font-semibold">프로필 수정하기</div>
-              <div onClick={handleImageClick} className="cursor-pointer">
+              <div onClick={handleImageClick} className="relative size-14 cursor-pointer">
                 {imagePreview ? (
-                  <Image src={imagePreview} alt="프로필 이미지" width={56} height={56} style={{ objectFit: 'cover' }} />
+                  <Image src={imagePreview} alt="프로필 이미지" fill style={{ objectFit: 'cover' }} className="rounded-full" />
                 ) : (
-                  <Image src={userInfo.image} alt="프로필 이미지" width={56} height={56} style={{ objectFit: 'cover' }} />
+                  <Image src={userInfo.image} alt="프로필 이미지" fill style={{ objectFit: 'cover' }} className="rounded-full" />
                 )}
               </div>
 

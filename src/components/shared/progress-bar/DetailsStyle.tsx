@@ -36,7 +36,9 @@ export function DetailsStyle({ maxValue, mainValue = 0, value, location, userLis
                 </>
               ) : (
                 testData.map((img, i) => (
-                  <Image src={img.profileImagePath || '/icons/person-rounded.png'} key={i} alt="유저이미지" className="rounded-full" width={29} height={29} />
+                  <div key={i} className="relative size-7">
+                    <Image src={img.profileImagePath || '/icons/person-rounded.png'} alt="유저이미지" className="rounded-full" fill />
+                  </div>
                 ))
               )}
             </div>

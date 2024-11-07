@@ -44,8 +44,9 @@ export function CancelButton({ id, gatherings }: DetailPageBaseType) {
             label: '확인',
             onClick: () => {
               if (name === gatherings.name && token) {
-                mutation.mutate();
                 closeModal();
+              } else {
+                mutation.mutate();
               }
             },
           },
