@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import { editUserInfo } from '@/apis/userApi';
 import Input from '@/components/shared/Input';
@@ -11,8 +11,7 @@ export function ProfileCard() {
   const { isOpen, openModal, closeModal } = useModal();
   const [nick, setNick] = useState('');
   const userInfo = userStore((state) => state.user);
-  const isLoggedIn = userStore((state) => state.isLoggedIn);
-  const remove = userStore((state) => state.removeUser);
+
   const [imagePreview, setImagePreview] = useState('');
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,15 +21,9 @@ export function ProfileCard() {
     if (file) {
       // 파일을 URL로 변환하여 미리보기로 사용
       const previewUrl = URL.createObjectURL(file);
-      console.log(typeof previewUrl);
       setImagePreview(previewUrl); // 상태 업데이트
     }
   };
-  useEffect(() => {
-    if (!isLoggedIn) {
-      remove();
-    }
-  }, [isLoggedIn, remove]);
 
   const handleEdit = async () => {
     if (nick.length < 3) {
@@ -41,7 +34,6 @@ export function ProfileCard() {
       Toast('error', '이미지를 선택해주세요.');
       return;
     }
-    console.log(imagePreview);
     await editUserInfo(nick, imagePreview || userInfo.image);
   };
 

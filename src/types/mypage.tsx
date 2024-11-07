@@ -88,3 +88,13 @@ export type ReviewableList = {
   score: number;
   updatedAt: string;
 };
+
+export type Reviews = {
+  data: {
+    comment: string;
+    gatheringId: number;
+    score: number;
+  };
+  message: string;
+  success: boolean;
+};

@@ -6,6 +6,7 @@ import State from '@/components/shared/chip/State';
 import type { List } from '@/types/mypage';
 
 import MyPageCancelButton from '../button/CancelButton';
+import ReviewButton from '../button/ReviewButton';
 
 export function MeetingCard({ MeetingData, category }: { MeetingData: List; category: string }) {
   return (
@@ -38,22 +39,24 @@ export function MeetingCard({ MeetingData, category }: { MeetingData: List; cate
                         <State stateProp={list.isOpened ? 'confirmed' : 'pending'} />
                       </div>
                     )}
-                    <div className="mb-[18px] mt-3">
-                      <div className="flex items-center gap-2">
-                        <div className={`truncate text-2lg font-semibold tablet:w-auto pc:w-auto ${addCss}`}>{list.groupName}</div>
-                        <span className="text-2lg font-semibold">|</span>
-                        <span className="text-md font-medium text-blue-700">{list.location}</span>
+                    <Link href={`/detail/${list.gatheringId}`} className="cursor-pointer">
+                      <div className="mb-[18px] mt-3">
+                        <div className="flex items-center gap-2">
+                          <div className={`truncate text-2lg font-semibold tablet:w-auto pc:w-auto ${addCss}`}>{list.groupName}</div>
+                          <span className="text-2lg font-semibold">|</span>
+                          <span className="text-md font-medium text-blue-700">{list.location}</span>
+                        </div>
+                        <div className="flex select-none gap-3 text-md font-medium text-[#374151]">
+                          <span>
+                            {`${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일`} · {`${dateObj.getHours()}:00`}
+                          </span>
+                          <span className="flex gap-1">
+                            <Image src="/icons/person-black.svg" alt="icon" width={16} height={16} />
+                            {list.participantUsers}/{list.maxUsers}
+                          </span>
+                        </div>
                       </div>
-                      <div className="flex select-none gap-3 text-md font-medium text-[#374151]">
-                        <span>
-                          {`${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일`} · {`${dateObj.getHours()}:00`}
-                        </span>
-                        <span className="flex gap-1">
-                          <Image src="/icons/person-black.svg" alt="icon" width={16} height={16} />
-                          {list.participantUsers}/{list.maxUsers}
-                        </span>
-                      </div>
-                    </div>
+                    </Link>
                     {category === '나의 모임' && <MyPageCancelButton data={list} />}
                     {category === '내가 만든 모임' && (
                       <div className="flex gap-2">
@@ -63,7 +66,7 @@ export function MeetingCard({ MeetingData, category }: { MeetingData: List; cate
                         </Link>
                       </div>
                     )}
-                    {category === '작성 가능한 리뷰' && <button type="button">리뷰 작성하기</button>}
+                    {category === '작성 가능한 리뷰' && <ReviewButton data={list} />}
                   </div>
                 </div>
               </article>
