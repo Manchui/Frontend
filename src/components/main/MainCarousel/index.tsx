@@ -3,16 +3,13 @@ import 'swiper/css';
 import 'swiper/css/bundle';
 
 import React, { useRef, useState } from 'react';
-import { Gugi } from 'next/font/google';
 import Image from 'next/image';
-import Link from 'next/link';
 import type SwiperCore from 'swiper';
 import { Autoplay, EffectCreative, Navigation, Pagination, Thumbs } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { getGatheringData } from '@/apis/getGatheringData';
+import CarouselContent from '@/components/main/MainCarousel/CarouselContent';
 import { useQuery } from '@tanstack/react-query';
-
-const gugi = Gugi({ weight: '400', subsets: ['latin'] });
 
 function MainCarousel() {
   const [swiperIndex, setSwiperIndex] = useState(0);
@@ -68,35 +65,7 @@ function MainCarousel() {
         >
           {gatherings.map((gathering, i) => (
             <SwiperSlide key={gathering.gatheringId} className="relative">
-              <Image
-                src={gathering.gatheringImage}
-                alt={gathering.name}
-                fill
-                sizes="100vw"
-                className="object-cover"
-                loading={i === 0 ? 'eager' : 'lazy'}
-                priority={i === 0}
-              />
-              <div className="absolute inset-0 bg-bannerGradient" />
-              <div className="absolute bottom-0 left-0 p-6 text-white tablet:ml-6 tablet:p-6">
-                <span className={`text-18-32-response font-bold ${gugi.className}`}>{gathering.name}</span>
-                <div className="flex flex-col gap-1 font-bold">
-                  <div className="flex gap-1 text-title-response">
-                    <span className={`${gugi.className}`}>{gathering.groupName}</span>
-                    <span className={`${gugi.className}`}>|</span>
-                    <span className={`${gugi.className}`}>
-                      인원 {gathering.currentUsers}/{gathering.maxUsers}
-                    </span>
-                  </div>
-                  <Link
-                    href={`/detail/${gathering.gatheringId}`}
-                    className="flex w-fit items-center rounded-md bg-white/40 py-1 pl-2 text-sub-response mobile:py-2 mobile:pl-4"
-                  >
-                    지금 인기 있는 모임을 만나보세요
-                    <Image src="/icons/main/banner-btn.svg" alt="자세히 보기" width={24} height={24} className="ml-2" />
-                  </Link>
-                </div>
-              </div>
+              <CarouselContent gathering={gathering} i={i} />
             </SwiperSlide>
           ))}
           <div className="swiper-pagination flex !w-[95%] justify-end mobile:!hidden" />
@@ -138,7 +107,7 @@ function MainCarousel() {
           >
             <Image
               src={gathering.gatheringImage}
-              alt={`Thumbnail ${i}`}
+              alt={`${gathering.groupName} Thumbnail`}
               fill
               sizes="100vw"
               loading={i === 0 ? 'eager' : 'lazy'}

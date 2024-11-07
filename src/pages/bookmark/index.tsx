@@ -20,7 +20,7 @@ const PAGE_SIZE_BY_DEVICE = {
 };
 
 export default function BookmarkPage() {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState<number>(1);
   const [keyword, setKeyword] = useState<string | undefined>(undefined);
   const [location, setLocation] = useState<string | undefined>(undefined);
   const [category, setCategory] = useState<string | undefined>(FILTER_OPTIONS[0].id);
@@ -73,8 +73,8 @@ export default function BookmarkPage() {
       <BookmarkBanner />
       <RootLayout>
         <BookmarkContainer>
-          <BookmarkHeader data={bookmark?.data} handleSearchSubmit={handleSearchSubmit} />
-          <div className="w-full bg-white">
+          <BookmarkHeader data={bookmark?.data} setPage={setPage} handleSearchSubmit={handleSearchSubmit} />
+          <div className="min-h-screen w-full bg-white">
             <BookmarkFilter
               location={location}
               category={category}
@@ -85,8 +85,16 @@ export default function BookmarkPage() {
               handleCategoryClick={handleCategoryClick}
               handleCloseDateClick={handleCloseDateClick}
             />
-            <BookmarkCardList data={bookmark?.data} isLoading={isLoading} isError={isError} skeletonCount={PAGE_SIZE_BY_DEVICE[deviceState]} />
-            {!isLoading && !isError && <PaginationBtn page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} handlePageChange={handlePageChange} />}
+            <BookmarkCardList
+              data={bookmark?.data}
+              isLoading={isLoading}
+              isError={isError}
+              skeletonCount={PAGE_SIZE_BY_DEVICE[deviceState]}
+              handleCategoryClick={handleCategoryClick}
+            />
+            {!isLoading && !isError && bookmark?.data.gatheringCount !== 0 && (
+              <PaginationBtn page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} handlePageChange={handlePageChange} />
+            )}
           </div>
         </BookmarkContainer>
       </RootLayout>

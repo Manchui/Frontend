@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getGatheringData } from '@/apis/getGatheringData';
 import CardSection, { CardSkeleton, MessageWithLink } from '@/components/main/CardSection';
 import FilterSection from '@/components/main/FilterSection';
@@ -52,22 +52,24 @@ export default function MainPage() {
     endDate: dateEnd,
   });
 
-  const handleCategoryClick = useCallback((selectedCategory: string) => {
-    setCategory(selectedCategory);
-  }, []);
+  const handleCategoryClick = (selectedCategory: string) => {
+    if (selectedCategory !== category) {
+      setCategory(selectedCategory);
+    }
+  };
 
-  const handleSearchSubmit = useCallback((submitValue: string) => {
+  const handleSearchSubmit = (submitValue: string) => {
     setKeyword(submitValue);
-  }, []);
+  };
 
-  const handleCloseDateClick = useCallback((value: string) => {
+  const handleCloseDateClick = (value: string) => {
     setCloseDate(value);
-  }, []);
+  };
 
-  const handleDateSubmit = useCallback(({ start, end }: { end: string; start: string }) => {
+  const handleDateSubmit = ({ start, end }: { end: string; start: string }) => {
     setDateStart(start);
     setDateEnd(end);
-  }, []);
+  };
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -77,9 +79,7 @@ export default function MainPage() {
 
   useEffect(
     function handleScrollFetch() {
-      if (isIntersecting && hasNextPage) {
-        void fetchNextPage();
-      }
+      if (isIntersecting && hasNextPage) void fetchNextPage();
     },
     [isIntersecting, hasNextPage, fetchNextPage],
   );
@@ -103,7 +103,7 @@ export default function MainPage() {
             handleCloseDateClick={handleCloseDateClick}
           />
           {/* 카드 */}
-          <div className="mx-auto grid w-full select-none grid-cols-1 gap-6 px-4 mobile:p-0 tablet:grid-cols-3">
+          <div className="mx-auto grid min-h-[370px] w-full select-none grid-cols-1 gap-6 px-4 mobile:p-0 tablet:grid-cols-3">
             {isLoading
               ? Array.from({ length: PAGE_SIZE_BY_DEVICE[deviceState] }).map((_, idx) => <CardSkeleton key={idx} />)
               : mainData?.pages.map((page) => page.data.gatheringList.map((gathering) => <CardSection key={gathering.gatheringId} gathering={gathering} />))}
@@ -112,7 +112,7 @@ export default function MainPage() {
             )}
             {isError && <MessageWithLink message="에러가 발생하였습니다." buttonText="다시 시도하기" onClick={() => window.location.reload()} />}
           </div>
-          <div ref={sentinelRef} className="h-96 w-full flex-shrink-0 opacity-0" />
+          <div ref={sentinelRef} className="h-28 w-full flex-shrink-0 opacity-0" />
         </MainContainer>
       </RootLayout>
     </>
@@ -124,7 +124,7 @@ export const getServerSideProps = async () => {
 
   await queryClient.prefetchQuery({
     queryKey: ['main'],
-    queryFn: () => getGatheringData({ page: 1, size: 9 }),
+    queryFn: () => getGatheringData({ page: 1, size: PAGE_SIZE_BY_DEVICE.PC }),
   });
 
   return {
