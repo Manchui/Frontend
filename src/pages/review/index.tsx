@@ -8,7 +8,7 @@ import HeaderSection from '@/components/review/HeaderSection';
 import MainHeader from '@/components/review/MainHeader';
 import ReviewCardList from '@/components/review/ReviewCardList';
 import ReviewContainer from '@/components/review/ReviewContainer';
-import Pagination from '@/components/shared/Pagination';
+import PaginationBtn from '@/components/shared/PaginationBtn';
 import RootLayout from '@/components/shared/RootLayout';
 import { FILTER_OPTIONS } from '@/constants/contants';
 import useGetReviewData from '@/hooks/useGetReviewData';
@@ -83,8 +83,8 @@ export default function ReviewPage() {
           {/* 카드 */}
           <ReviewCardList data={reviewData?.data} isLoading={isLoading} isError={isError} />
           {!isLoading && !isError && (
-            <div className="bg-white w-full">
-              <Pagination page={reviewData?.data.page ?? 0} totalPage={reviewData?.data.totalPage ?? 0} handlePageChange={handlePageChange} />
+            <div className="w-full bg-white">
+              <PaginationBtn page={reviewData?.data.page ?? 0} totalPage={reviewData?.data.totalPage ?? 0} handlePageChange={handlePageChange} />
             </div>
           )}
         </ReviewContainer>
