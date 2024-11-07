@@ -6,7 +6,7 @@ import BookmarkCardList from '@/components/bookmark/BookmarkCardList';
 import BookmarkContainer from '@/components/bookmark/BookmarkContainer';
 import BookmarkFilter from '@/components/bookmark/BookmarkFilter';
 import BookmarkHeader from '@/components/bookmark/BookmarkHeader';
-import Pagination from '@/components/shared/Pagination';
+import PaginationBtn from '@/components/shared/PaginationBtn';
 import RootLayout from '@/components/shared/RootLayout';
 import { FILTER_OPTIONS } from '@/constants/contants';
 import useDeviceState from '@/hooks/useDeviceState';
@@ -86,7 +86,7 @@ export default function BookmarkPage() {
               handleCloseDateClick={handleCloseDateClick}
             />
             <BookmarkCardList data={bookmark?.data} isLoading={isLoading} isError={isError} skeletonCount={PAGE_SIZE_BY_DEVICE[deviceState]} />
-            {!isLoading && !isError && <Pagination page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} handlePageChange={handlePageChange} />}
+            {!isLoading && !isError && <PaginationBtn page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} handlePageChange={handlePageChange} />}
           </div>
         </BookmarkContainer>
       </RootLayout>
