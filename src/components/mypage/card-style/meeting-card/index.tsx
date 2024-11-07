@@ -1,3 +1,4 @@
+// import { Bagel_Fat_One } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CancelButton } from '@/components/detail/button/CancelButton';
@@ -9,6 +10,8 @@ import MyPageCancelButton from '../button/CancelButton';
 import ReviewButton from '../button/ReviewButton';
 
 export function MeetingCard({ MeetingData, category }: { MeetingData: List; category: string }) {
+  // const bagelFatOne = Bagel_Fat_One({ weight: '400', subsets: ['latin'] });
+
   return (
     <div className="grid grid-cols-1 px-1 pt-6 phablet:grid-cols-2 tablet:grid-cols-1 pc:grid-cols-1">
       {MeetingData.content.map((list, i) => {
@@ -19,18 +22,26 @@ export function MeetingCard({ MeetingData, category }: { MeetingData: List; cate
           <div key={i}>
             <article className="mx-3 flex justify-center rounded-3xl p-2 tablet:justify-start pc:justify-start">
               <div className="group flex flex-col justify-center gap-4 border-b-2 border-dashed border-gray-50 pb-5 phablet:items-start tablet:flex-row pc:flex-row">
-                {list.gatheringImage ? (
-                  <Image
-                    alt="testImage"
-                    src={list.gatheringImage}
-                    width={311}
-                    height={156}
-                    style={{ width: '280px', height: '156px', objectFit: 'cover' }}
-                    className="relative mx-auto flex-shrink-0 overflow-hidden rounded-lg"
-                  />
-                ) : (
-                  <div className="relative mx-auto h-[156px] w-[280px] flex-shrink-0 overflow-hidden rounded-lg bg-gray-200" />
-                )}
+                <div className="relative">
+                  {list.gatheringImage ? (
+                    <Image
+                      alt="testImage"
+                      src={list.gatheringImage}
+                      width={311}
+                      height={156}
+                      style={{ width: '280px', height: '156px', objectFit: 'cover' }}
+                      className="mx-auto flex-shrink-0 overflow-hidden rounded-lg"
+                    />
+                  ) : (
+                    <div className="relative mx-auto h-[156px] w-[280px] flex-shrink-0 overflow-hidden rounded-lg bg-gray-200" />
+                  )}
+                  {(list.isClosed || list.maxUsers === list.participantUsers) && (
+                    <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black bg-opacity-80">
+                      {/* <span className={`text-full-response font-bold text-full ${bagelFatOne.className}`}>{list.isClosed ? 'CLOSED' : 'FULL'}</span> */}
+                      <span className="text-full-response font-bold text-full">{list.isClosed ? 'CLOSED' : 'FULL'}</span>
+                    </div>
+                  )}
+                </div>
 
                 <div className="flex flex-grow flex-col items-start justify-between gap-2 tablet:h-[156px] tablet:pt-0">
                   {category === '나의 모임' && (
