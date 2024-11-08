@@ -10,7 +10,7 @@ export function ReviewableCard({ MeetingData }: { MeetingData: List }) {
   const [showMoreButton, setShowMoreButton] = useState(false);
 
   const toggleExpand = () => setIsExpanded((prev) => !prev);
-  const comment = '리뷰 content 리뷰 content 리뷰 content 리뷰 content 리뷰';
+  const comment = '리뷰 content';
 
   const checkClamped = () => {
     if (commentRef.current) {
@@ -70,7 +70,9 @@ export function ReviewableCard({ MeetingData }: { MeetingData: List }) {
                       <span className="text-xs">·</span>
                       <span className="text-xs font-medium text-blue-700">{list.location}</span>
                     </div>
-                    <span className="select-none text-md text-blue-400">{`${dateObj.getFullYear()}.${dateObj.getMonth() + 1}.${dateObj.getDate()}`}</span>
+                    <span className="select-none text-md text-blue-400">
+                      {`${dateObj.getFullYear()}.${(dateObj.getMonth() + 1).toString().padStart(2, '0')}.${dateObj.getDate().toString().padStart(2, '0')}`}
+                    </span>
                   </div>
                 </div>
               </div>

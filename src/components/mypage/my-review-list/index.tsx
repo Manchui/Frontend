@@ -21,22 +21,15 @@ export default function MyReviewList({ category, review }: { category: string; r
   });
 
   const reviewableList = data?.reviewableList;
-  console.log('reviewableList: ', reviewableList);
 
   if (isLoading) return <Loading />;
   if (isError) return <div>Error</div>;
 
   if (reviewableList?.content.length === 0 && isReview) {
-    return <div className="py-72 text-center text-lg text-[#6B7280]">아직 작성 가능한 리뷰가 없어요</div>;
-  }
-  if (reviewableList?.content.length === 0 && !isReview) {
-    return <div className="py-72 text-center text-lg text-[#6B7280]">아직 작성한 리뷰가 없어요</div>;
+    return <div className="py-72 text-center text-lg text-[#6B7280]">{isReview ? '아직 작성 가능한 리뷰가 없어요' : '아직 작성한 리뷰가 없어요'}</div>;
   }
 
   return (
-    <div>
-      {reviewableList && isReview ? <MeetingCard MeetingData={reviewableList} category={review} /> : ''}
-      {reviewableList && !isReview ? <ReviewableCard MeetingData={reviewableList} /> : ''}
-    </div>
+    <div>{reviewableList && (isReview ? <MeetingCard MeetingData={reviewableList} category={review} /> : <ReviewableCard MeetingData={reviewableList} />)}</div>
   );
 }
