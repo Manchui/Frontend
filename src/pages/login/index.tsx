@@ -36,7 +36,6 @@ export default function LoginPage() {
     if (isLoggedIn) {
       // 로그인 상태라면 로그인 페이지로 접근 불가
       void router.push('/'); // 예시로 대시보드 페이지로 리디렉션
-      Toast('success', '이미 로그인 중입니다.');
     }
   }, [isLoggedIn, router]);
   
@@ -56,7 +55,8 @@ export default function LoginPage() {
       login();
       success = true;
     } catch (err: any) {
-      Toast('error', err.response.data.message);
+      console.error(err);
+      // Toast('error', err.response.data.message);
     }
     if (success) {
       try {
