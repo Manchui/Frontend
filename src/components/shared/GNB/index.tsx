@@ -39,10 +39,12 @@ export default function GNB() {
           login();
         } else {
           localStorage.removeItem('userName');
+          localStorage.removeItem('my-category');
           logout();
         }
       } else {
         localStorage.removeItem('userName');
+        localStorage.removeItem('my-category');
         logout();
       }
     };

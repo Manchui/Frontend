@@ -1,17 +1,20 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 import { useState } from 'react';
+import Lottie from 'lottie-react';
 import { getBookmarkData } from '@/apis/getBookmarkData';
 import BookmarkBanner from '@/components/bookmark/BookmarkBanner';
 import BookmarkCardList from '@/components/bookmark/BookmarkCardList';
 import BookmarkContainer from '@/components/bookmark/BookmarkContainer';
 import BookmarkFilter from '@/components/bookmark/BookmarkFilter';
 import BookmarkHeader from '@/components/bookmark/BookmarkHeader';
-import Pagination from '@/components/shared/Pagination';
+import PaginationBtn from '@/components/shared/PaginationBtn';
 import RootLayout from '@/components/shared/RootLayout';
 import { FILTER_OPTIONS } from '@/constants/contants';
 import useDeviceState from '@/hooks/useDeviceState';
 import useGetBookmarkData from '@/hooks/useGetBookmarkData';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
+
+import Error from 'public/lottie/error.json';
 
 const PAGE_SIZE_BY_DEVICE = {
   MOBILE: 2,
@@ -20,7 +23,7 @@ const PAGE_SIZE_BY_DEVICE = {
 };
 
 export default function BookmarkPage() {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState<number>(1);
   const [keyword, setKeyword] = useState<string | undefined>(undefined);
   const [location, setLocation] = useState<string | undefined>(undefined);
   const [category, setCategory] = useState<string | undefined>(FILTER_OPTIONS[0].id);
@@ -70,11 +73,17 @@ export default function BookmarkPage() {
 
   return (
     <>
-      <BookmarkBanner />
+      {isError ? (
+        <div className="mt-[60px] h-bookmark-banner">
+          <Lottie animationData={Error} className="size-full border-b-2 border-cardBorder bg-background" />
+        </div>
+      ) : (
+        <BookmarkBanner />
+      )}
       <RootLayout>
         <BookmarkContainer>
-          <BookmarkHeader data={bookmark?.data} handleSearchSubmit={handleSearchSubmit} />
-          <div className="w-full bg-white">
+          <BookmarkHeader data={bookmark?.data} setPage={setPage} handleSearchSubmit={handleSearchSubmit} />
+          <div className="min-h-screen w-full bg-white">
             <BookmarkFilter
               location={location}
               category={category}
@@ -85,8 +94,16 @@ export default function BookmarkPage() {
               handleCategoryClick={handleCategoryClick}
               handleCloseDateClick={handleCloseDateClick}
             />
-            <BookmarkCardList data={bookmark?.data} isLoading={isLoading} isError={isError} skeletonCount={PAGE_SIZE_BY_DEVICE[deviceState]} />
-            {!isLoading && !isError && <Pagination page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} handlePageChange={handlePageChange} />}
+            <BookmarkCardList
+              data={bookmark?.data}
+              isLoading={isLoading}
+              isError={isError}
+              skeletonCount={PAGE_SIZE_BY_DEVICE[deviceState]}
+              handleCategoryClick={handleCategoryClick}
+            />
+            {!isLoading && !isError && bookmark?.data.gatheringCount !== 0 && (
+              <PaginationBtn page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} handlePageChange={handlePageChange} />
+            )}
           </div>
         </BookmarkContainer>
       </RootLayout>

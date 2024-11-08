@@ -31,14 +31,16 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
         <div className="mx-6">
           <div className="flex justify-between">
             <p className="text-lg font-semibold">{gatherings.groupName}</p>
-            <button type="button">
-              <Image
-                src={gatherings.isHearted ? '/icons/heart-active-noround.svg' : '/icons/heart-inactive-noround.svg'}
-                alt="찜하기 버튼"
-                width={28}
-                height={28}
-              />
-            </button>
+            {localStorage.getItem('accessToken') && (
+              <button type="button">
+                <Image
+                  src={gatherings.isHearted ? '/icons/heart-active-noround.svg' : '/icons/heart-inactive-noround.svg'}
+                  alt="찜하기 버튼"
+                  width={28}
+                  height={28}
+                />
+              </button>
+            )}
           </div>
           <p className="mb-3 mt-[2px] text-sm font-medium text-blue-800">{gatherings.location}</p>
           <DateChip dateTime={gatheringDate} />

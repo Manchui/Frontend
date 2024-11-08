@@ -4,7 +4,7 @@ import type { BaseData } from '@/types/detail';
 
 import instance from '../api';
 
-export default async function deleteCancellation(gatheringsId: string) {
+export default async function deleteCancellation(gatheringsId: string | number) {
   try {
     const res = await instance.delete<BaseData>(`/api/gatherings/${gatheringsId}/cancel`);
     return res.data.data;

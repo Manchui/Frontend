@@ -51,7 +51,7 @@ export default function FilterSection({
       <CategoryList category={category} handleCategoryClick={handleCategoryClick} />
 
       {/* 필터 */}
-      <div className="flex select-none items-center justify-between">
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <CloseDateToggle onCloseDateClick={handleCloseDateClick} />
           <RegionDropdown location={location} setLocation={setLocation} />
@@ -62,7 +62,7 @@ export default function FilterSection({
         <button
           type="button"
           onClick={handleCreateButtonClick}
-          className="rounded-xl bg-blue-800 px-3 py-2 text-13-16-response font-semibold text-white transition-all duration-200 hover:bg-blue-700"
+          className="shrink-0 rounded-xl bg-blue-800 px-3 py-2 text-13-16-response font-semibold text-white transition-all duration-200 hover:bg-blue-700"
         >
           모임 만들기
         </button>
