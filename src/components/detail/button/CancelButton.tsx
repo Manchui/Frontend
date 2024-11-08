@@ -23,17 +23,9 @@ export function CancelButton({ id, gatherings }: DetailPageBaseType) {
     },
   });
 
-  const handleOnClick = () => {
-    if (name === gatherings.name && token) {
-      openModal();
-    } else {
-      mutation.mutate();
-    }
-  };
-
   return (
     <div>
-      <Button onClick={() => handleOnClick()} label={token && name === gatherings.groupName ? '모임 취소하기' : '참여 취소하기'} size="small" variant="white" />
+      <Button onClick={openModal} label={token && name === gatherings.groupName ? '모임 취소하기' : '참여 취소하기'} size="small" variant="white" />
       <Modal
         buttons={[
           {
@@ -44,8 +36,9 @@ export function CancelButton({ id, gatherings }: DetailPageBaseType) {
             label: '확인',
             onClick: () => {
               if (name === gatherings.name && token) {
-                mutation.mutate();
                 closeModal();
+              } else {
+                mutation.mutate();
               }
             },
           },
@@ -60,7 +53,13 @@ export function CancelButton({ id, gatherings }: DetailPageBaseType) {
             모임을 취소 기능은 준비 중 입니다. 😥
           </div>
         ) : (
-          ''
+          <div className="mx-16 mt-10 text-center">
+            <div className="text-xl font-semibold text-amber-500">{gatherings.groupName}</div>
+            <br />
+            모임을 취소하시겠습니까?
+            <br />
+            언제든 다시 참여할 수 있어요!
+          </div>
         )}
       </Modal>
     </div>

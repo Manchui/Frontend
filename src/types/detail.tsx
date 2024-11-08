@@ -7,7 +7,7 @@ export type BaseData = {
 export type ReviewsList = {
   reviewContentList: ReviewContentList[];
   reviewCount: number;
-  scoreList: ScoreList[];
+  scoreList: ScoreList;
 };
 
 export type ScoreList = {

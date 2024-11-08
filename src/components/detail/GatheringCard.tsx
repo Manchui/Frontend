@@ -21,13 +21,13 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
           width={486}
           height={270}
           style={{ objectFit: 'cover' }}
-          className="size-full rounded-[18px] border-2 duration-100"
+          className="size-full rounded-[18px] duration-100"
         />
         <div className="absolute right-0 top-0">
           {isToday && <Tag Hour={dueDate.getHours()} Type="detail" finish={dueDate.getTime() < new Date().getTime() && true} />}
         </div>
       </div>
-      <div className="h-[240px] w-[343px] rounded-2xl border bg-white py-[20.5px] duration-100 tablet:h-[240px] tablet:w-[360px] pc:h-[270px] pc:w-[486px] pc:py-6">
+      <div className="h-[240px] w-[343px] rounded-2xl bg-white py-[20.5px] duration-100 tablet:h-[240px] tablet:w-[360px] pc:h-[270px] pc:w-[486px] pc:py-6">
         <div className="mx-6">
           <div className="flex justify-between">
             <p className="text-lg font-semibold">{gatherings.groupName}</p>

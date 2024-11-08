@@ -15,7 +15,6 @@ export default function ReviewCategory({ category, review, setReview }: ReviewCa
   const handleCategoryChange = (categoryId: string) => {
     if (review !== categoryId) {
       setReview(categoryId);
-      localStorage.setItem('my-review', categoryId);
       void router.push(`/mypage?category=${category}&reviewCategory=${categoryId}`, undefined, { shallow: true });
     }
   };
@@ -30,7 +29,7 @@ export default function ReviewCategory({ category, review, setReview }: ReviewCa
   };
 
   return (
-    <div className="mx-4 my-6 flex gap-4">
+    <div className="mx-4 mt-6 flex gap-4">
       {reviewCategory.map((item) => (
         <button
           onClick={() => {

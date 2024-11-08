@@ -38,7 +38,7 @@ export default function LoginPage() {
       void router.push('/'); // 예시로 대시보드 페이지로 리디렉션
     }
   }, [isLoggedIn, router]);
-  
+
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (password.length < 8 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -61,8 +61,9 @@ export default function LoginPage() {
     if (success) {
       try {
         const userData = await getUserInfo();
-        console.log(userData.res);
         if (userData.res) {
+          localStorage.setItem('userName', userData.res?.name);
+
           userUpdate({
             email: userData.res?.email || '',
             id: userData.res?.id || '',
