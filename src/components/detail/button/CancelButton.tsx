@@ -35,7 +35,7 @@ export function CancelButton({ id, gatherings }: DetailPageBaseType) {
           {
             label: '확인',
             onClick: () => {
-              if (name === gatherings.name && token) {
+              if (token) {
                 closeModal();
               } else {
                 mutation.mutate();
@@ -46,7 +46,7 @@ export function CancelButton({ id, gatherings }: DetailPageBaseType) {
         isOpen={isOpen}
         onClose={closeModal}
       >
-        {token && name === gatherings.name ? (
+        {token ? (
           <div className="mx-16 mt-10 text-center">
             <div className="text-xl font-semibold text-amber-500">{gatherings.groupName}</div>
             <br />

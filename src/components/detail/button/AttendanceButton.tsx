@@ -52,7 +52,7 @@ export default function AttendanceButton({ id, gatherings }: DetailPageBaseType)
         onClose={closeModal}
       >
         <div className="mx-16 mt-10 text-center">
-          {token && gatherings.name ? (
+          {token ? (
             <div>
               <div className="text-xl font-semibold text-amber-500">{gatherings.groupName}</div>
               <br />
