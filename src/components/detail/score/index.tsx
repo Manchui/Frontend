@@ -12,7 +12,7 @@ export default function Score({ reviewsList }: { reviewsList: ReviewsList }) {
           const reversedIndex = array.length - index;
           return (
             <div key={key} className="mb-1 flex items-center justify-center gap-4">
-              <p className="text-sm font-medium text-gray-800">{reversedIndex}점</p>
+              <p className="text-md font-medium text-gray-800">{reversedIndex}점</p>
               <div className="w-[200px]">
                 <ProgressBar maxValue={5} value={value} design="primary" />
               </div>
