@@ -15,7 +15,7 @@ export type Gatherings = {
 };
 
 export type List = {
-  content: GatheringList[];
+  content: GatheringList[] | ReviewableList[];
   empty: boolean;
   first: boolean;
   last: boolean;
@@ -77,6 +77,7 @@ export type Reviewable = {
 
 export type ReviewableList = {
   category: string;
+  comment: string;
   createdAt: string;
   gatheringDate: string;
   gatheringId: number;
