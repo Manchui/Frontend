@@ -88,7 +88,7 @@ function Meeting({ MeetingData, category }: { MeetingData: GatheringList | Revie
                 </Link>
               </div>
             )}
-            {'deletedAt' in MeetingData && category === '작성 가능한 리뷰' && <ReviewButton data={MeetingData} />}
+            {'updatedAt' in MeetingData && category === '작성 가능한 리뷰' && <ReviewButton data={MeetingData} />}
           </div>
         </div>
       </article>
