@@ -25,7 +25,6 @@ export default function DetailPage() {
     staleTime: 1000 * 10,
   });
   const gatherings = data;
-  console.log('reviewData data:', gatherings);
 
   if (isLoading) return <Loading />;
   if (!gatherings) return <Loading />;
