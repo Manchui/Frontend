@@ -11,7 +11,7 @@ import ReviewButton from '../button/ReviewButton';
 
 export function MeetingCard({ MeetingData, category }: { MeetingData: List; category: string }) {
   // const bagelFatOne = Bagel_Fat_One({ weight: '400', subsets: ['latin'] });
-  console.log('MeetingData: ', MeetingData);
+
   return (
     <div className="grid grid-cols-1 px-1 pt-6 phablet:grid-cols-2 tablet:grid-cols-1 pc:grid-cols-1">
       {MeetingData.content.map((list, i) => {

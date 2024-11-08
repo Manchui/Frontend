@@ -5,9 +5,10 @@ import type { MyPageBaseData } from '@/types/mypage';
 import instance from '../api';
 
 // NOTE: 후기 생성
-export default async function createReview(gatheringId: number, value: string) {
+export default async function createReview(gatheringId: number, value: string, isScore: number) {
   const formData = new FormData();
   formData.append('comment', value);
+  formData.append('score', isScore.toString());
 
   try {
     const res = await instance.post<MyPageBaseData>(`/api/reviews/${gatheringId}`, formData);

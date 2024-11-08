@@ -15,7 +15,7 @@ export default function ReviewButton({ data }: { data: GatheringList }) {
   const [isError, setIsError] = useState('');
 
   const mutation = useMutation({
-    mutationFn: () => createReview(data.gatheringId, value),
+    mutationFn: () => createReview(data.gatheringId, value, isScore),
     onSuccess: () => {
       Toast('success', '리뷰 작성 했습니다.');
     },
@@ -54,7 +54,6 @@ export default function ReviewButton({ data }: { data: GatheringList }) {
         <div className="mx-6 mt-10 space-y-6">
           <div>
             <span className="text-2lg font-semibold">리뷰 쓰기 </span>
-            <span className="text-amber-500">{data.groupName}</span>
           </div>
           <div className="space-y-3 text-2lg font-semibold">
             <span>만족스러운 경험이었나요?</span>

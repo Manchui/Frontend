@@ -11,8 +11,8 @@ export default function MyPageCancelButton({ data }: { data: GatheringList }) {
   const myCategory = localStorage.getItem('my-category');
   const mutation = useMutation({
     mutationFn: () => deleteCancellation(data.gatheringId),
-    onSuccess: (res) => {
-      console.log('취소 성공 data: ', res);
+    onSuccess: () => {
+      Toast('success', '모임 취소 성공했습니다.');
       window.location.reload();
     },
     onError: (error) => {
