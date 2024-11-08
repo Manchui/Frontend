@@ -56,7 +56,7 @@ export function ReviewableCard({ MeetingData }: { MeetingData: List }) {
                   <div className="relative mx-auto h-[156px] w-[280px] flex-shrink-0 overflow-hidden rounded-lg bg-gray-200" />
                 )}
                 <div className="flex flex-grow flex-col items-start justify-start gap-2 tablet:h-[156px] tablet:pt-0">
-                  <Rating score={0} />
+                  <Rating score={list.score} />
                   <div className="flex w-full flex-col items-start">
                     <p ref={commentRef} className={`text-pretty break-all text-base ${isExpanded ? '' : 'line-clamp-1'}`}>
                       {comment}
