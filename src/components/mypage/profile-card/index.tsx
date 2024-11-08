@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import { editUserInfo } from '@/apis/userApi';
 import Input from '@/components/shared/Input';
@@ -11,8 +11,7 @@ export function ProfileCard() {
   const { isOpen, openModal, closeModal } = useModal();
   const [nick, setNick] = useState('');
   const userInfo = userStore((state) => state.user);
-  const isLoggedIn = userStore((state) => state.isLoggedIn);
-  const remove = userStore((state) => state.removeUser);
+
   const [imagePreview, setImagePreview] = useState('');
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,16 +21,10 @@ export function ProfileCard() {
     if (file) {
       // 파일을 URL로 변환하여 미리보기로 사용
       const previewUrl = URL.createObjectURL(file);
-      console.log(typeof previewUrl);
       setImagePreview(previewUrl); // 상태 업데이트
     }
   };
-  useEffect(() => {
-    if (!isLoggedIn) {
-      remove();
-    }
-  }, [isLoggedIn, remove]);
-  
+
   const handleEdit = async () => {
     if (nick.length < 3) {
       Toast('error', '닉네임을 입력해주세요.');
@@ -41,7 +34,6 @@ export function ProfileCard() {
       Toast('error', '이미지를 선택해주세요.');
       return;
     }
-    console.log(imagePreview);
     await editUserInfo(nick, imagePreview || userInfo.image);
   };
 
@@ -54,7 +46,7 @@ export function ProfileCard() {
     <div className="relative m-auto h-auto w-full rounded-3xl p-2.5 tablet:p-4 pc:p-5">
       <div className="absolute left-[4%] top-[-40%] rounded-full bg-white p-1 phablet:left-[7%] tablet:left-[6%] pc:left-[8.5%]">
         <Image
-          className="size-[60px] phablet:size-[70px] md:size-[90px]"
+          className="size-[60px] rounded-full phablet:size-[70px] md:size-[90px]"
           src={userInfo.image}
           alt="프로필 이미지"
           width={70}
@@ -96,16 +88,16 @@ export function ProfileCard() {
           >
             <div className="flex flex-col gap-5 px-6 pt-6">
               <div className="text-2lg font-semibold">프로필 수정하기</div>
-              <div onClick={handleImageClick} className="cursor-pointer">
+              <div onClick={handleImageClick} className="relative size-14 cursor-pointer hover:opacity-80">
                 {imagePreview ? (
-                  <Image src={imagePreview} alt="프로필 이미지" width={56} height={56} style={{ objectFit: 'cover' }} />
+                  <Image src={imagePreview} alt="프로필 이미지" fill style={{ objectFit: 'cover' }} className="rounded-full border-2 border-blue-500" />
                 ) : (
-                  <Image src={userInfo.image} alt="프로필 이미지" width={56} height={56} style={{ objectFit: 'cover' }} />
+                  <Image src={userInfo.image} alt="프로필 이미지" fill style={{ objectFit: 'cover' }} className="rounded-full border-2 border-blue-500" />
                 )}
               </div>
 
               <Input type="text" name="nick" onChange={(e) => setNick(e.target.value)} />
-              <input id="imageInput" type="file" accept="image/*" onChange={handleImageChange} />
+              <input id="imageInput" type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
             </div>
           </Modal>
         </div>

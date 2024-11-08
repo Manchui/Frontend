@@ -9,12 +9,13 @@ export type Gatherings = {
   page: number;
   pageSize: number;
   participatedGatheringList?: List;
+  reviewableList?: List;
   totalPage: number;
   writtenGatheringList?: List;
 };
 
 export type List = {
-  content: [];
+  content: GatheringList[] | ReviewableList[];
   empty: boolean;
   first: boolean;
   last: boolean;
@@ -45,6 +46,7 @@ export type GatheringList = {
   maxUsers: number;
   name?: string;
   participantUsers: number;
+  score: number;
   updatedAt?: string;
 };
 
@@ -86,4 +88,14 @@ export type ReviewableList = {
   location: string;
   score: number;
   updatedAt: string;
+};
+
+export type Reviews = {
+  data: {
+    comment: string;
+    gatheringId: number;
+    score: number;
+  };
+  message: string;
+  success: boolean;
 };

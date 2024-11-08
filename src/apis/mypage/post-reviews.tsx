@@ -4,10 +4,14 @@ import type { MyPageBaseData } from '@/types/mypage';
 
 import instance from '../api';
 
-// NOTE: 리뷰 작성 가능한 모임 목록 조회
-export default async function getMyReviewable() {
+// NOTE: 후기 생성
+export default async function createReview(gatheringId: number, value: string, isScore: number) {
+  const formData = new FormData();
+  formData.append('comment', value);
+  formData.append('score', isScore.toString());
+
   try {
-    const res = await instance.get<MyPageBaseData>('/api/users/reviewable/list?page=0&szie=10');
+    const res = await instance.post<MyPageBaseData>(`/api/reviews/${gatheringId}`, formData);
     return res.data.data;
   } catch (e: unknown) {
     if (axios.isAxiosError(e)) {
