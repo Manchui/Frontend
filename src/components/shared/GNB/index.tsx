@@ -32,7 +32,7 @@ export default function GNB() {
           updateUser({
             email: userData.res?.email || '',
             id: userData.res?.id || '',
-            image: userData.res?.image || '/images/together-findpage-large.png',
+            image: userData.res?.image || '/images/profile.svg',
             name: userData.res?.name || '',
             createdAt: formatDate(userData.res?.createdAt || '') || '',
           });
@@ -90,11 +90,7 @@ export default function GNB() {
         </div>
       </div>
 
-      <div className="flex flex-grow justify-center pc:hidden">
-        <p className="text-sm font-semibold text-black">
-          {router.pathname === '/main' ? '모임 찾기' : router.pathname === '/bookmark' ? '찜한모임' : router.pathname === '/review' ? '모든 리뷰' : ''}
-        </p>
-      </div>
+    
 
       <div className="flex flex-grow justify-end pc:hidden">
         <Drawer isLoggedIn={isLoggedIn ?? false} userData={userinfo} />
