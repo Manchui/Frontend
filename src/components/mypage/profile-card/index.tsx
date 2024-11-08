@@ -88,16 +88,16 @@ export function ProfileCard() {
           >
             <div className="flex flex-col gap-5 px-6 pt-6">
               <div className="text-2lg font-semibold">프로필 수정하기</div>
-              <div onClick={handleImageClick} className="relative size-14 cursor-pointer">
+              <div onClick={handleImageClick} className="relative size-14 cursor-pointer hover:opacity-80">
                 {imagePreview ? (
-                  <Image src={imagePreview} alt="프로필 이미지" fill style={{ objectFit: 'cover' }} className="rounded-full" />
+                  <Image src={imagePreview} alt="프로필 이미지" fill style={{ objectFit: 'cover' }} className="rounded-full border-2 border-blue-500" />
                 ) : (
-                  <Image src={userInfo.image} alt="프로필 이미지" fill style={{ objectFit: 'cover' }} className="rounded-full" />
+                  <Image src={userInfo.image} alt="프로필 이미지" fill style={{ objectFit: 'cover' }} className="rounded-full border-2 border-blue-500" />
                 )}
               </div>
 
               <Input type="text" name="nick" onChange={(e) => setNick(e.target.value)} />
-              <input id="imageInput" type="file" accept="image/*" onChange={handleImageChange} />
+              <input id="imageInput" type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
             </div>
           </Modal>
         </div>
