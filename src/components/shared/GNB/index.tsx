@@ -65,15 +65,6 @@ export default function GNB() {
             모임 찾기
           </Link>
           <Link
-            href="/bookmark"
-            className={clsx(
-              'transition-colors',
-              router.pathname === '/bookmark' ? 'border-b-2 text-gray-400' : 'duration-500 hover:border-b-2 hover:text-gray-300',
-            )}
-          >
-            찜한 모임
-          </Link>
-          <Link
             href="/review"
             className={clsx(
               'transition-colors',
@@ -82,10 +73,17 @@ export default function GNB() {
           >
             모든 리뷰
           </Link>
+          <Link
+            href="/bookmark"
+            className={clsx(
+              'transition-colors',
+              router.pathname === '/bookmark' ? 'border-b-2 text-gray-400' : 'duration-500 hover:border-b-2 hover:text-gray-300',
+            )}
+          >
+            찜한 모임
+          </Link>
         </div>
       </div>
-
-    
 
       <div className="flex flex-grow justify-end pc:hidden">
         <Drawer isLoggedIn={isLoggedIn ?? false} userData={userinfo} />

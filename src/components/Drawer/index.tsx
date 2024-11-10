@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -18,6 +18,7 @@ interface DrawerProps {
 
 export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [, setIsMobile] = useState(false);
   const router = useRouter();
 
   const isLoggedIns = userStore((state) => state.isLoggedIn);
@@ -28,9 +29,33 @@ export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
 
   const handleLogout = async () => {
     if (isLoggedIn) {
-      await logout();  
+      await logout();
+      setIsOpen(false);
     }
   };
+  const closeDrawer = () => {
+    setIsOpen(false);
+  };
+
+  // 화면사이즈에 따라 닫히게
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 820) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+        setIsOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <div className="flex items-center">
@@ -57,9 +82,18 @@ export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
       >
         <div className="mb-9">
           {isLoggedIn ? (
-            <Link href="/mypage">
+            <Link href="/mypage" onClick={closeDrawer}>
               <div className="flex gap-3">
-                <Image src={userData.image || '/icons/person-rounded.png'} alt="profile" width={40} height={40} className="rounded-full" />
+                <div>
+                  <Image
+                    src={userData.image || '/icons/person-rounded.png'}
+                    alt="profile"
+                    width={40}
+                    height={40}
+                    style={{ objectFit: 'cover' }}
+                    className="size-10 rounded-full"
+                  />
+                </div>
                 <div>
                   <p className="text-sm font-semibold">{userData.name}</p>
                   <p className="text-[10px] font-medium text-gray-200">{userData.email}</p>
@@ -67,7 +101,7 @@ export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
               </div>
             </Link>
           ) : (
-            <Link href="/login">
+            <Link href="/login" onClick={closeDrawer}>
               <div className="flex items-center justify-between pt-2">
                 <p className="text-sm font-semibold">로그인해주세요</p>
                 <Image src="/icons/arrow-right.svg" alt="오른쪽 " width={20} height={20} />
@@ -78,21 +112,30 @@ export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
 
         <div className="flex-grow overflow-y-auto text-sm font-medium">
           <div className="h-10">
-            <Link href="/main" className={router.pathname === '/main' ? 'border-b-2 text-gray-400' : 'duration-500 hover:border-b-2 hover:text-gray-300'}>
+            <Link
+              href="/main"
+              className={router.pathname === '/main' ? 'border-b-2 text-gray-400' : 'duration-500 hover:border-b-2 hover:text-gray-300'}
+              onClick={closeDrawer}
+            >
               모임 찾기
+            </Link>
+          </div>
+          <div className="h-10">
+            <Link
+              href="/review"
+              className={router.pathname === '/review' ? 'border-b-2 text-gray-400' : 'duration-500 hover:border-b-2 hover:text-gray-300'}
+              onClick={closeDrawer}
+            >
+              모든 리뷰
             </Link>
           </div>
           <div className="h-10">
             <Link
               href="/bookmark"
               className={router.pathname === '/bookmark' ? 'border-b-2 text-gray-400' : 'duration-500 hover:border-b-2 hover:text-gray-300'}
+              onClick={closeDrawer}
             >
               찜한 모임
-            </Link>
-          </div>
-          <div className="h-10">
-            <Link href="/review" className={router.pathname === '/review' ? 'border-b-2 text-gray-400' : 'duration-500 hover:border-b-2 hover:text-gray-300'}>
-              모든 리뷰
             </Link>
           </div>
         </div>

@@ -30,14 +30,23 @@ export default function Toggle({ userData }: ToggleProps) {
   };
 
   return (
-    <div className="relative">
-      <button type="button" onClick={isModalOpen ? closeModal : openModal} className="focuse:outline-none">
-        <Image src={userData.image || '/icons/person-rounded.png'} alt="프로필" width={40} height={40} />
+    <div className="relative" onMouseEnter={openModal} onMouseLeave={closeModal}>
+      <button type="button">
+        <div className="rounded-full focus:outline-none">
+          <Image
+            className="size-10 rounded-full"
+            src={userData.image || '/images/profile.svg'}
+            alt="프로필"
+            width={40}
+            height={40}
+            style={{ objectFit: 'cover' }}
+          />
+        </div>
       </button>
       {isModalOpen && (
         <div
           // eslint-disable-next-line tailwindcss/no-custom-classname
-          className={`absolute right-0 top-12 z-50 flex w-32 flex-col rounded-lg bg-white p-3 shadow-lg transition-transform ${animation}`}
+          className={`absolute -right-10 top-11 z-50 flex w-32 flex-col rounded-lg bg-white p-3 shadow-xl transition-transform ${animation}`}
         >
           <Link href="/mypage">
             <div className="flex flex-row content-between items-center">
