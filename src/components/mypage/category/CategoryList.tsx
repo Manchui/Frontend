@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 interface MyPageCategoryListProps {
@@ -11,16 +12,24 @@ export default function MyPageCategoryList({ category, setCategory }: MyPageCate
   const router = useRouter();
   const { query } = router;
 
+  useEffect(() => {
+    if (!category) {
+      setCategory(categories[0]);
+      void router.push(`/mypage?category=${categories[0]}`, undefined, { shallow: true });
+    }
+  }, [category, setCategory, router]);
+
   const handleCategoryChange = (categoryId: string) => {
     if (category !== categoryId) {
       setCategory(categoryId);
-      localStorage.setItem('my-category', categoryId);
       void router.push(`/mypage?category=${categoryId}`, undefined, { shallow: true });
     }
   };
 
   const getButtonClass = (categoryId: string) =>
-    categoryId === query.category ? 'flex-1 py-1.5 border-b-2 border-blue-800' : 'flex-1 hover:text-gray-500 text-blue-400 py-1.5 border-blue-100';
+    categoryId === query.category || categoryId === category
+      ? 'flex-1 py-1.5 border-b-2 border-blue-800'
+      : 'flex-1 hover:text-gray-500 text-blue-400 py-1.5 border-blue-100';
 
   return (
     <div className="flex select-none items-center justify-between text-sub-response font-semibold">

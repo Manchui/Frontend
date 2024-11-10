@@ -55,24 +55,24 @@ export default function DateDropdown({ handleDateSubmit, setDateStart, setDateEn
           </span>
         ) : (
           <>
-            <span className="hidden mobile:block">모임</span>
+            <span className="hidden tablet:block">모임</span>
             <span>날짜</span>
           </>
         )
       }
-      className="left-date-calendar"
+      className="left-date-calendar "
     >
       <div className={`flex flex-col gap-4 p-6 ${dateDropOpen ? 'animate-dropdown-open' : 'animate-dropdown-close'}`}>
         <Calendar selectionType="range" onDateChange={handleDateChange} prevRangeStart={startDate} prevRangeEnd={endDate} isDateLocked={isDateLocked} />
         <div className="flex h-[40px] justify-center gap-2 text-13-16-response font-semibold">
-          <button type="button" onClick={handleInitClick} className="w-[120px] rounded-xl border border-blue-800">
+          <button type="button" onClick={handleInitClick} className="w-[120px] rounded-xl border border-blue-800 hover:bg-black/10">
             초기화 하기
           </button>
           <button
             type="button"
             onClick={handleSubmit}
             disabled={isDateLocked}
-            className={`w-[120px] rounded-xl ${isDateLocked ? 'cursor-not-allowed bg-gray-300 text-gray-600' : 'bg-blue-800 text-white'}`}
+            className={`w-[120px] rounded-xl ${isDateLocked ? 'cursor-not-allowed bg-gray-300 text-gray-600' : 'bg-blue-800 text-white hover:bg-blue-700'}`}
           >
             적용하기
           </button>

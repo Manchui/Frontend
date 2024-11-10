@@ -25,9 +25,6 @@ export default function GNB() {
       const accessToken: string | null = localStorage.getItem('accessToken');
       if (accessToken) {
         const userData = await getUserInfo();
-        if (userData.res) {
-          localStorage.setItem('userName', userData.res?.name);
-        }
         if (userData.result) {
           updateUser({
             email: userData.res?.email || '',
@@ -39,12 +36,10 @@ export default function GNB() {
           login();
         } else {
           localStorage.removeItem('userName');
-          localStorage.removeItem('my-category');
           logout();
         }
       } else {
         localStorage.removeItem('userName');
-        localStorage.removeItem('my-category');
         logout();
       }
     };

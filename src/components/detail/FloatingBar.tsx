@@ -3,6 +3,7 @@ import type { GatheringList } from '@/types/mypage';
 
 import AttendanceButton from './button/AttendanceButton';
 import { CancelButton } from './button/CancelButton';
+import ShareButton from './button/ShareButton';
 import { Button } from '../shared/button';
 
 export interface DetailPageBaseType {
@@ -27,7 +28,10 @@ export function FloatingBar({ gatherings, id, usersList, maxUsers }: FloatingBar
         <span className="text-sm font-medium text-[#111827]">프로그램을 통해 지친 몸과 마음을 회복해봐요</span>
       </div>
       {findUserId ? (
-        <CancelButton gatherings={gatherings} id={id} />
+        <div className="flex gap-2">
+          <CancelButton gatherings={gatherings} id={id} />
+          <ShareButton />
+        </div>
       ) : isDisabled ? (
         <Button label="참여하기" size="primary" variant="primary" disabled />
       ) : (
