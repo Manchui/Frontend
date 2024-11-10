@@ -88,7 +88,7 @@ export default function GNB() {
         </div>
       </div>
 
-      <div className="flex flex-grow justify-end pc:hidden">
+      <div className="-mr-2 flex flex-grow justify-end tablet:-mr-4 pc:hidden">
         <Drawer isLoggedIn={isLoggedIn ?? false} userData={userinfo} />
       </div>
       <div className="hidden w-[154px] flex-grow pc:flex pc:justify-end">
