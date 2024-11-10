@@ -44,20 +44,17 @@ export default function Toggle({ userData }: ToggleProps) {
         </div>
       </button>
       {isModalOpen && (
-        <div
-          // eslint-disable-next-line tailwindcss/no-custom-classname
-          className={`absolute -right-10 top-11 z-50 flex w-32 flex-col rounded-lg bg-white p-3 shadow-xl transition-transform ${animation}`}
-        >
+        <div className={`absolute -right-10 top-11 z-50 flex w-32 flex-col rounded-lg bg-white p-3 shadow-xl transition-transform ${animation}`}>
           <Link href="/mypage">
             <div className="flex flex-row content-between items-center">
-              <Image src="/icons/mypage-gnb.png" className="size-4" alt="프로필" width={20} height={20} />
-              <p className="ml-3">마이페이지</p>
+              <Image src="/icons/person.svg" className="size-6" alt="프로필" width={24} height={24} />
+              <p className="ml-1 text-base font-semibold text-blue-800">마이페이지</p>
             </div>
           </Link>
 
           <button type="button" onClick={handleLogout} className="flex flex-row content-between items-center">
-            <Image src="/icons/logout-gnb.png" className="size-4" alt="프로필" width={20} height={20} />
-            <p className="ml-3">로그아웃</p>
+            <Image src="/icons/exit-black.svg" className="size-6" alt="프로필" width={24} height={24} />
+            <p className="ml-1 text-base font-semibold text-blue-800">로그아웃</p>
           </button>
         </div>
       )}

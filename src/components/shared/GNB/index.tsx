@@ -54,7 +54,7 @@ export default function GNB() {
         </Link>
       </div>
       <div className="hidden flex-grow pc:flex pc:justify-start">
-        <div className="hidden items-center gap-6 text-[16px] font-semibold text-black tablet:flex pc:gap-[30px]">
+        <div className="hidden items-center gap-4 text-[16px] font-semibold text-black tablet:flex">
           <Link href="/main" className={clsx('relative flex h-12 w-[84px] items-center justify-center transition-colors', 'group')}>
             모임 찾기
             <span
