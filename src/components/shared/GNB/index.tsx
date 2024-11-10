@@ -55,32 +55,35 @@ export default function GNB() {
       </div>
       <div className="hidden flex-grow pc:flex pc:justify-start">
         <div className="hidden items-center gap-6 text-[16px] font-semibold text-black tablet:flex pc:gap-[30px]">
-          <Link
-            href="/main"
-            className={clsx(
-              'transition-colors',
-              router.pathname === '/main' ? 'border-b-2 text-gray-400' : 'duration-500 hover:border-b-2 hover:text-gray-300',
-            )}
-          >
+          <Link href="/main" className={clsx('relative flex h-12 w-[84px] items-center justify-center transition-colors', 'group')}>
             모임 찾기
+            <span
+              className={clsx(
+                'absolute bottom-0 left-1/2 h-[2.5px] -translate-x-1/2 transform bg-black transition-all duration-300',
+                router.pathname === '/main' ? 'w-full' : 'w-0',
+                'group-hover:w-full',
+              )}
+            />
           </Link>
-          <Link
-            href="/review"
-            className={clsx(
-              'transition-colors',
-              router.pathname === '/review' ? 'border-b-2 text-gray-400' : 'duration-500 hover:border-b-2 hover:text-gray-300',
-            )}
-          >
+          <Link href="/review" className={clsx('relative flex h-12 w-[84px] items-center justify-center transition-colors', 'group')}>
             모든 리뷰
+            <span
+              className={clsx(
+                'absolute bottom-0 left-1/2 h-[2.5px] -translate-x-1/2 transform bg-black transition-all duration-300',
+                router.pathname === '/review' ? 'w-full' : 'w-0',
+                'group-hover:w-full',
+              )}
+            />
           </Link>
-          <Link
-            href="/bookmark"
-            className={clsx(
-              'transition-colors',
-              router.pathname === '/bookmark' ? 'border-b-2 text-gray-400' : 'duration-500 hover:border-b-2 hover:text-gray-300',
-            )}
-          >
+          <Link href="/bookmark" className={clsx('relative flex h-12 w-[84px] items-center justify-center transition-colors', 'group')}>
             찜한 모임
+            <span
+              className={clsx(
+                'absolute bottom-0 left-1/2 h-[2.5px] -translate-x-1/2 transform bg-black transition-all duration-300',
+                router.pathname === '/bookmark' ? 'w-full' : 'w-0',
+                'group-hover:w-full',
+              )}
+            />
           </Link>
         </div>
       </div>
@@ -95,17 +98,20 @@ export default function GNB() {
           </div>
         ) : (
           <div className="flex gap-4">
-            <button
-              type="button"
-              onClick={() => router.push('/signup')}
-              className="text-base font-semibold transition-colors duration-500 hover:border-b-2 hover:text-gray-300"
-            >
+            <Link href="/signup" className={clsx('group relative flex h-10 w-14 items-center justify-center text-base font-semibold transition-colors')}>
               회원가입
-            </button>
+              <span
+                className={clsx(
+                  'absolute bottom-0 left-1/2 h-[2.5px] -translate-x-1/2 transform bg-black transition-all duration-300',
+                  router.pathname === '/signup' ? 'w-full' : 'w-0',
+                  'group-hover:w-full',
+                )}
+              />
+            </Link>
             <button
               type="button"
               onClick={() => router.push('/login')}
-              className="rounded-full border-2 border-blue-800 bg-white px-4 py-[7.5px] text-base font-semibold text-black transition-colors duration-200 hover:bg-blue-800 hover:text-white"
+              className="rounded-full border-2 border-blue-800 bg-white px-4 py-[7.5px] text-base font-semibold text-black transition-colors duration-300 hover:bg-blue-800 hover:text-white"
             >
               로그인
             </button>
