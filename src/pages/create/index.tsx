@@ -137,6 +137,8 @@ export default function CreatePage() {
     // 1. 셀렉된 날짜가 29시간 후보다 큰 경우
     if (selectedDate > hoursLater29) {
       setTimeChips((prevChips) => prevChips.map((chip) => ({ ...chip, disable: false })));
+      const finalDate = selectedDate.toLocaleDateString('ko-KR').replace(/\.$/, '').replace(/\./g, '-').trim();
+      Toast('info', `선택 날짜는 ${finalDate} 입니다.`);
     }
 
     // 2. 셀렉된 날짜가 29시간 후보다 작은 경우
@@ -158,11 +160,15 @@ export default function CreatePage() {
             disable: chip.time <= hoursLater29Hour,
           })),
         );
+        const finalDate = selectedDate.toLocaleDateString('ko-KR').replace(/\.$/, '').replace(/\./g, '-').trim();
+        Toast('info', `선택 날짜는 ${finalDate} 입니다.`);
       } else if (currentHour >= 19 && currentHour < 24) {
         Toast('error', '모임 생성은 이틀 뒤부터 가능합니다.');
         handleDateReset();
       } else if (currentHour >= 0 && currentHour < 9) {
         setTimeChips((prevChips) => prevChips.map((chip) => ({ ...chip, disable: false })));
+        const finalDate = selectedDate.toLocaleDateString('ko-KR').replace(/\.$/, '').replace(/\./g, '-').trim();
+        Toast('info', `선택 날짜는 ${finalDate} 입니다.`);
       }
       // 29시간 후의 시간이 18시 이후일 때
       else if (hoursLater29Hour >= 18) {
@@ -264,7 +270,7 @@ export default function CreatePage() {
         },
       });
       Toast('success', '모임 생성 성공');
-      void router.push('/');
+      void router.push('/main');
     } catch (err: any) {
       const errorMessage =
         err.response?.data?.message ||
@@ -282,8 +288,8 @@ export default function CreatePage() {
 
   return (
     <>
-      <header className="mt-[60px] flex h-[97px] w-full items-center justify-center bg-blue-800 mobile:mb-10 mobile:h-[118px] tablet:h-[161px]">
-        <h1 className="text-lg font-semibold text-white mobile:font-bold tablet:text-2xl">만취 모임 만들기</h1>
+      <header className="mt-[60px] flex h-bookmark-banner min-w-[340px] flex-col items-center justify-center bg-blue-800 text-16-20-response font-semibold text-white">
+        만취 모임 만들기
       </header>
       <div className="mx-auto mb-8 mt-5 flex max-w-[343px] flex-col items-center justify-center px-3 mobile:max-w-[744px] tablet:max-w-[1000px]">
         <form onSubmit={handleSubmit} className="w-full space-y-6 mobile:space-y-10">

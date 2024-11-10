@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from 'react';
+import Lottie from 'lottie-react';
 import { useRouter } from 'next/router';
 import { getReviewData } from '@/apis/getReviewData';
 import HeaderSection from '@/components/main/HeaderSection';
@@ -60,7 +61,13 @@ export default function ReviewPage() {
 
   return (
     <div className="mt-[60px]">
-      <MainHeader />
+      {isError ? (
+        <div className="mt-[60px] h-bookmark-banner">
+          <Lottie animationData={Error} className="size-full border-b-2 border-cardBorder bg-background" />
+        </div>
+      ) : (
+        <MainHeader />
+      )}
       <RootLayout>
         <ReviewContainer>
           {/* Header (타이틀, 검색창) */}
@@ -79,7 +86,8 @@ export default function ReviewPage() {
           />
           {/* 카드 */}
           <ReviewCardList data={reviewData?.data} isLoading={isLoading} isError={isError} />
-          {!isLoading && !isError && reviewData?.data?.reviewContentList && reviewData.data.reviewContentList.length > 0 && (            <div className="w-full bg-white">
+          {!isLoading && !isError && reviewData?.data?.reviewContentList && reviewData.data.reviewContentList.length > 0 && (
+            <div className="w-full bg-white">
               <PaginationBtn page={reviewData?.data.page ?? 0} totalPage={reviewData?.data.totalPage ?? 0} handlePageChange={handlePageChange} />
             </div>
           )}
