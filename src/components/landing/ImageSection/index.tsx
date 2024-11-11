@@ -3,7 +3,7 @@ import Image from 'next/image';
 export default function ImageSection() {
   return (
     <section>
-      <div className="h-[350px] w-full bg-primary-400">
+      <div className="h-[300px] w-full bg-primary-400">
         <div className="relative mx-auto size-full max-w-screen-pc">
           <Image src="/icons/notebook.webp" alt="노트북그림" width={300} height={150} className="absolute -bottom-9" />
           <Image

@@ -1,4 +1,6 @@
-import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
+import { type Dispatch, type SetStateAction, useCallback, useMemo } from 'react';
+import { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 import { useRouter } from 'next/router';
 import CategoryList from '@/components/main/FilterSection/CategoryList';
 import CloseDateToggle from '@/components/main/FilterSection/CloseDateToggle';
@@ -29,24 +31,30 @@ export default function FilterSection({
   setDateEnd,
 }: FilterSectionProps) {
   const router = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
-  const handleCreateButtonClick = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true });
+
+  const isLoggedIn = useMemo(() => !IS_SERVER && !!localStorage.getItem('accessToken'), []);
+
+  const handleCreateButtonClick = useCallback(() => {
     if (isLoggedIn) {
       void router.push('/create');
     } else {
       Toast('warning', '로그인이 필요합니다.');
     }
-  };
-
-  useEffect(() => {
-    if (!IS_SERVER) {
-      setIsLoggedIn(!!localStorage.getItem('accessToken'));
-    }
-  }, []);
+  }, [isLoggedIn, router]);
 
   return (
-    <div className="scrollbar-hide relative mb-8 mt-4 flex w-full select-none flex-col gap-2 bg-white px-4 py-5 mobile:rounded-lg">
+    <motion.div
+      ref={ref}
+      style={{
+        transform: isInView ? 'none' : 'translateY(10px)',
+        opacity: isInView ? 1 : 0,
+        transition: 'all 1s ease-in-out',
+      }}
+      className="scrollbar-hide relative mb-8 mt-4 flex w-full select-none flex-col gap-2 bg-white px-4 py-5 mobile:rounded-lg"
+    >
       {/* 카테고리 */}
       <CategoryList category={category} handleCategoryClick={handleCategoryClick} />
 
@@ -67,6 +75,6 @@ export default function FilterSection({
           모임 만들기
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -111,7 +111,7 @@ function MainCarousel({ isError }: { isError: boolean }) {
                 <SwiperSlide
                   key={gathering.gatheringId}
                   onClick={() => swiperInstance?.slideTo(i)}
-                  className={`cursor-pointer rounded-lg ${swiperIndex !== i && 'border-none opacity-30'}`}
+                  className={`cursor-pointer rounded-lg ${swiperIndex !== i ? 'border-none opacity-30' : 'border-2 border-background'}`}
                 >
                   <Image
                     src={gathering.gatheringImage}
