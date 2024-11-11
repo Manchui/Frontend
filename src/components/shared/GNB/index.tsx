@@ -47,7 +47,7 @@ export default function GNB() {
   }, [login, logout, updateUser]);
 
   return (
-    <nav className="fixed top-0 z-[9999] flex h-[60px] w-full items-center justify-between border-b border-gray-100 bg-white px-4 tablet:px-6 pc:px-10">
+    <nav className="fixed top-0 z-[9999] flex h-[60px] w-full items-center justify-between bg-white px-4 tablet:px-6 pc:px-10">
       <div className="absolute left-1/2 -translate-x-1/2 transform">
         <Link href="/">
           <Image src="/logo/logo.png" alt="로고" width={73} height={35} />

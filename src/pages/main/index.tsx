@@ -111,7 +111,7 @@ export default function MainPage() {
           {/* 카드 */}
           <div className="mx-auto grid min-h-[200px] w-full select-none grid-cols-1 gap-6 px-4 mobile:p-0 tablet:grid-cols-3">
             {isLoading
-              ? Array.from({ length: PAGE_SIZE_BY_DEVICE[deviceState] }).map((_, idx) => <CardSkeleton key={idx} />)
+              ? Array.from({ length: PAGE_SIZE_BY_DEVICE.MOBILE }).map((_, idx) => <CardSkeleton key={idx} />)
               : mainData?.pages.map((page) => page.data.gatheringList.map((gathering) => <CardSection key={gathering.gatheringId} gathering={gathering} />))}
             {noData && (
               <div className="absolute left-1/2 w-full -translate-x-1/2">
@@ -119,9 +119,13 @@ export default function MainPage() {
                 <MessageWithLink onClick={() => handleCategoryClick('')} message="아직 등록된 모임이 없어요" buttonText="더 둘러보기" />
               </div>
             )}
-            {isError && <MessageWithLink message="에러가 발생하였습니다." buttonText="다시 시도하기" onClick={() => window.location.reload()} />}
+            {isError && (
+              <div className="absolute left-1/2 w-full -translate-x-1/2">
+                <MessageWithLink message="에러가 발생하였습니다." buttonText="다시 시도하기" onClick={() => window.location.reload()} />
+              </div>
+            )}
           </div>
-          {!isError && <div ref={sentinelRef} className="h-28 w-full flex-shrink-0 opacity-0" />}
+          {/* {!isError && <div ref={sentinelRef} className="h-28 w-full flex-shrink-0 opacity-0" />} */}
         </MainContainer>
       </RootLayout>
     </>

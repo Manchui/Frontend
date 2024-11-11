@@ -17,6 +17,9 @@ const typography = {
     '13-16-response': 'clamp(0.8125rem, 0.7443rem + 0.3409vw, 1rem)',
     '16-20-response': 'clamp(1rem, 0.9052rem + 0.4598vw, 1.25rem)',
     '18-32-response': 'clamp(1.125rem, 0.7273rem + 1.697vw, 2rem)',
+    '24-40-response': 'clamp(1.5rem, 1.0747rem + 1.8391vw, 2.5rem)',
+    '16-26-response': 'clamp(1rem, 0.7342rem + 1.1494vw, 1.625rem)',
+    'landing-title': 'clamp(1rem, -0.1922rem + 5.0867vw, 3.75rem)',
   },
   fontWeight: {
     regular: 400,

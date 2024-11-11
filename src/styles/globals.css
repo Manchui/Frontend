@@ -5,6 +5,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Pretendard-Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+}
+
+* {
+  font-family: 'Pretendard-Regular';
+}
+
 @layer base {
   * {
     font-family:
@@ -45,8 +56,8 @@
 }
 
 .scrollbar-hide {
-  -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
 }
 
 .scrollbar-hide::-webkit-scrollbar {
@@ -57,4 +68,138 @@
   .flex-center {
     @apply flex items-center justify-center;
   }
+  .flex-col-center {
+    @apply flex flex-col items-center justify-center;
+  }
+}
+.cubes {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-style: preserve-3d;
+}
+
+.loop {
+  transform: rotateX(-35deg) rotateY(-45deg) translateZ(2.25em);
+}
+
+@keyframes s {
+  to {
+    transform: scale3d(0.2, 0.2, 0.2);
+  }
+}
+
+.item {
+  margin: -2.25em;
+  box-shadow: 0 0 0.125em currentColor;
+  width: 4.5em;
+  height: 4.5em;
+  background: currentColor;
+  animation: s 0.6s cubic-bezier(0.45, 0.03, 0.51, 0.95) infinite alternate;
+  transform-origin: 50% 50% -2.25em;
+}
+
+.item:before,
+.item:after {
+  box-shadow: inherit;
+  position: absolute;
+  width: inherit;
+  height: inherit;
+  background: currentColor;
+  content: '';
+  transform-origin: 0 100%;
+}
+
+.item:before {
+  bottom: 100%;
+  transform: rotateX(90deg);
+}
+
+.item:after {
+  left: 100%;
+  transform: rotateY(90deg);
+}
+
+.item:nth-child(1) {
+  margin-top: 9em;
+  color: #f9d043;
+  animation-delay: -1.2s;
+}
+
+.item:nth-child(1):before {
+  color: #e3c038;
+}
+
+.item:nth-child(1):after {
+  color: #d6aa33;
+}
+
+.item:nth-child(2) {
+  margin-top: 4.5em;
+  color: #fadc75;
+  animation-delay: -1s;
+}
+
+.item:nth-child(2):before {
+  color: #fbe08a;
+}
+
+.item:nth-child(2):after {
+  color: #fadf85;
+}
+
+.item:nth-child(3) {
+  margin-top: 0em;
+  color: #fef5d7;
+  animation-delay: -0.8s;
+}
+
+.item:nth-child(3):before {
+  color: #fff9e3;
+}
+
+.item:nth-child(3):after {
+  color: #fff6dc;
+}
+
+.item:nth-child(4) {
+  margin-top: -4.5em;
+  color: #8898ab;
+  animation-delay: -0.6s;
+}
+
+.item:nth-child(4):before {
+  color: #9da9b9;
+}
+
+.item:nth-child(4):after {
+  color: #b3bac6;
+}
+
+.item:nth-child(5) {
+  margin-top: -9em;
+  color: #4d5e6e;
+  animation-delay: -0.4s;
+}
+
+.item:nth-child(5):before {
+  color: #607083;
+}
+
+.item:nth-child(5):after {
+  color: #738397;
+}
+
+.item:nth-child(6) {
+  margin-top: -13.5em;
+  color: #262f33;
+  animation-delay: -0.2s;
+}
+
+.item:nth-child(6):before {
+  color: #313842;
+}
+
+.item:nth-child(6):after {
+  color: #3d4a55;
 }
