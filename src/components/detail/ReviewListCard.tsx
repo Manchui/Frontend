@@ -4,8 +4,6 @@ import type { ReviewsList } from '@/types/detail';
 import Rating from '../shared/Rating';
 
 export function ReviewListCard({ reviews }: { reviews: ReviewsList }) {
-  console.log('reviews: ', reviews);
-
   return (
     <>
       <hr className="border-gray-50" />
