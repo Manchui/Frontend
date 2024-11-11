@@ -27,7 +27,7 @@ export default function PageLayout({ children, showHeader = true }: LayoutProps)
   const loading = useLoading();
   const pathname = usePathname();
 
-  // useAuthBoundary();
+  useAuthBoundary();
 
   const shouldShowHeader = pathname !== '/' && showHeader; // 로그인 & 회원가입도 헤더 없으면 더 깔끔하지 않을까 싶습니다
   // const shouldShowFooter = pathname !== '/' && !pathname.startsWith('/signup') && !pathname.startsWith('/login') && showFooter;
