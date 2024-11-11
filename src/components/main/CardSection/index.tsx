@@ -1,4 +1,5 @@
 /* eslint-disable tailwindcss/no-custom-classname */
+import { memo } from 'react';
 import { Gugi } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -12,7 +13,7 @@ interface CardSectionProps {
 
 const gugi = Gugi({ weight: '400', subsets: ['latin'] });
 
-export default function CardSection({ gathering }: CardSectionProps) {
+function CardSection({ gathering }: CardSectionProps) {
   return (
     <div className="group flex aspect-square min-h-[170px] flex-col overflow-hidden rounded-2xl border border-cardBorder bg-white shadow-[0_4px_16px_0_rgba(17,34,17,0.05)] mobile:aspect-auto mobile:h-[170px] mobile:flex-row tablet:aspect-square tablet:size-full tablet:min-h-[290px] tablet:flex-col">
       {/* 이미지 영역 */}
@@ -22,6 +23,8 @@ export default function CardSection({ gathering }: CardSectionProps) {
     </div>
   );
 }
+
+export default memo(CardSection);
 
 export function CardSkeleton() {
   return (
