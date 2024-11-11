@@ -19,7 +19,7 @@ export default function MyPageCancelButton({ data, category }: MyPageCancelProps
   const mutation = useMutation({
     mutationFn: () => deleteCancellation(data.gatheringId),
     onSuccess: () => {
-      Toast('success', '취소 성공했습니다!');
+      Toast('success', '신청이 취소 되었습니다!');
       window.location.reload();
     },
     onError: (error) => {
