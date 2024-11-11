@@ -1,3 +1,4 @@
+import { Bagel_Fat_One } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/shared/button';
@@ -6,6 +7,8 @@ import type { GatheringList, List, ReviewableList } from '@/types/mypage';
 
 import MyPageCancelButton from '../button/CancelButton';
 import ReviewButton from '../button/ReviewButton';
+
+const bagelFatOne = Bagel_Fat_One({ weight: '400', subsets: ['latin'] });
 
 export function MeetingCard({ MeetingData, category }: { MeetingData: List; category: string }) {
   return (
@@ -70,7 +73,7 @@ function Meeting({ MeetingData, category }: { MeetingData: GatheringList | Revie
             )}
             {(isClosed || isFull || isCanceled) && (
               <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black bg-opacity-80">
-                <span className="text-full-response font-bold text-full">{meetingStatus}</span>
+                <span className={`text-full-response font-bold text-full ${bagelFatOne.className}`}>{meetingStatus}</span>
               </div>
             )}
           </div>
