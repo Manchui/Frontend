@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+// 스켈레톤 나중에 추가
 import { MessageWithLink } from '@/components/main/CardSection';
 import type { GetReviewResponse } from '@manchui-api';
 
@@ -17,8 +18,8 @@ export default function ReviewCardList({ data, isLoading, isError, skeletonCount
     <section className="mt-0 flex w-full flex-col items-center gap-6 bg-white px-4 pb-6 pt-1 mobile:rounded-lg tablet:items-start">
       {data?.reviewContentList.map((reviewContent) => <ReviewCard key={reviewContent.reviewId} review={reviewContent} />)}
       {data?.reviewCount === 0 && (
-        <div className="h-[605px]tablet:flex-row w-[280px] flex-col items-center gap-4 bg-white tablet:flex tablet:w-full">
-          <p>아직 작성된 리뷰가 없습니다.</p>
+        <div className="relative h-[200px] tablet:flex-row w-[280px] flex-col items-start gap-4 bg-white tablet:flex tablet:w-full">
+         <MessageWithLink link="/main" message="아직 작성된 리뷰가 없습니다." buttonText="모임 둘러보기" />
         </div>
       )}
 

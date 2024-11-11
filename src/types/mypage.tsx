@@ -15,7 +15,7 @@ export type Gatherings = {
 };
 
 export type List = {
-  content: GatheringList[] | ReviewableList[];
+  content: GatheringList[];
   empty: boolean;
   first: boolean;
   last: boolean;
@@ -40,14 +40,11 @@ export type GatheringList = {
   groupName: string;
   isCanceled: boolean;
   isClosed: boolean;
-  isDeleted?: boolean | null;
   isOpened: boolean;
   location: string;
   maxUsers: number;
-  name?: string;
   participantUsers: number;
   score: number;
-  updatedAt?: string;
 };
 
 export type Pageable = {

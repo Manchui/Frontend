@@ -8,7 +8,7 @@ type MoreButtonProps = {
 export default function MoreButton({ isExpanded, onClick }: MoreButtonProps) {
   
   return (
-    <button type="button" className=" text-sm text-blue-700  duration-100 whitespace-nowrap flex items-center " onClick={onClick}>
+    <button type="button" className=" text-sm text-blue-700  duration-100 whitespace-nowrap flex items-center  " onClick={onClick}>
       {isExpanded ? '접기' : '더보기'}
       <Image 
         src="/icons/down.svg" 

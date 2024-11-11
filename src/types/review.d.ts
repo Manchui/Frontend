@@ -18,15 +18,6 @@ declare module '@manchui-api' {
         updatedAt: string;
       }[];
       reviewCount: number;
-
-      scoreList: {
-        avgScore: number;
-        fiveScoreCount: number;
-        fourScoreCount: number;
-        oneScoreCount: number;
-        threeScoreCount: number;
-        twoScoreCount: number;
-      };
       totalPage: number;
     };
     message: string;

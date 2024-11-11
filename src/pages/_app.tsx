@@ -2,15 +2,27 @@ import '@/styles/globals.css';
 import 'react-toastify/dist/ReactToastify.css';
 import '@/styles/toastify-custom.css';
 
+import type { ReactElement, ReactNode } from 'react';
 import { useState } from 'react';
 import { ToastContainer, Zoom } from 'react-toastify';
+import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import GNB from '@/components/shared/GNB';
+import PageLayout from '@/components/shared/pageLayout';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-export default function App({ Component, pageProps }: AppProps) {
+type NextPageWithLayout = NextPage & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+export default function App({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout || ((page) => <PageLayout>{page}</PageLayout>);
+
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -18,10 +30,6 @@ export default function App({ Component, pageProps }: AppProps) {
           queries: {
             staleTime: 60 * 1000,
             gcTime: 3 * 60 * 1000,
-            retry: 1,
-          },
-          mutations: {
-            retry: 1,
           },
         },
       }),
@@ -41,8 +49,7 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <QueryClientProvider client={queryClient}>
         <ToastContainer limit={1} transition={Zoom} />
-        <GNB />
-        <Component {...pageProps} />
+        {getLayout(<Component {...pageProps} />)}
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </>

@@ -55,7 +55,7 @@ export default function DateDropdown({ handleDateSubmit, setDateStart, setDateEn
           </span>
         ) : (
           <>
-            <span className="hidden mobile:block">모임</span>
+            <span className="hidden mobile:block">리뷰</span>
             <span>날짜</span>
           </>
         )
