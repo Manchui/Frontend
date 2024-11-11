@@ -44,37 +44,40 @@ function Reviewable({ MeetingData }: { MeetingData: ReviewableList }) {
 
   return (
     <article className="mx-3 flex justify-center rounded-3xl py-2 tablet:justify-start pc:justify-start">
-      <div className="group flex flex-col justify-center gap-4 border-b-2 border-dashed border-gray-50 pb-5 phablet:items-start tablet:flex-row pc:flex-row">
-        {MeetingData.gatheringImage ? (
-          <Image
-            alt="testImage"
-            src={MeetingData.gatheringImage}
-            width={280}
-            height={156}
-            style={{ width: '280px', height: '156px', objectFit: 'cover' }}
-            className="relative mx-auto flex-shrink-0 overflow-hidden rounded-lg"
-          />
-        ) : (
-          <div className="relative mx-auto h-[156px] w-[280px] flex-shrink-0 overflow-hidden rounded-lg bg-gray-200" />
-        )}
-        <div className="flex flex-grow flex-col items-start justify-start gap-2 tablet:h-[156px] tablet:pt-0">
-          <Rating score={MeetingData.score} />
-          <div className="flex w-full flex-col items-start">
-            <p ref={commentRef} className={`text-pretty break-all text-base ${isExpanded ? '' : 'line-clamp-1'}`}>
-              {MeetingData.comment}
-              {!isExpanded && showMoreButton && '...'}
-            </p>
-            {showMoreButton && <MoreButton isExpanded={isExpanded} onClick={toggleExpand} />}
-          </div>
-          <div>
-            <div className="flex items-center gap-1">
-              <span className="truncate text-xs">{MeetingData.groupName}</span>
-              <span className="text-xs">·</span>
-              <span className="text-xs font-medium text-blue-700">{MeetingData.location}</span>
+      <div className="w-[280px] flex-col items-center justify-center tablet:w-full">
+        <div className="group flex flex-col justify-center gap-4 border-b-2 border-dashed border-gray-50 pb-5 phablet:items-start tablet:flex-row pc:flex-row">
+          {MeetingData.gatheringImage ? (
+            <Image
+              alt="testImage"
+              src={MeetingData.gatheringImage}
+              width={280}
+              height={156}
+              style={{ width: '280px', height: '156px', objectFit: 'cover' }}
+              className="relative mx-auto flex-shrink-0 overflow-hidden rounded-lg"
+            />
+          ) : (
+            <div className="relative mx-auto h-[156px] w-[280px] flex-shrink-0 overflow-hidden rounded-lg bg-gray-200" />
+          )}
+
+          <div className="flex flex-grow flex-col items-start justify-start gap-2 tablet:h-[156px] tablet:pt-0">
+            <Rating score={MeetingData.score} />
+            <div className="flex w-full flex-col items-start">
+              <p ref={commentRef} className={`text-pretty break-all text-base ${isExpanded ? '' : 'line-clamp-1'}`}>
+                {MeetingData.comment}
+                {!isExpanded && showMoreButton && '...'}
+              </p>
+              {showMoreButton && <MoreButton isExpanded={isExpanded} onClick={toggleExpand} />}
             </div>
-            <span className="select-none text-md text-blue-400">
-              {`${dateObj.getFullYear()}.${(dateObj.getMonth() + 1).toString().padStart(2, '0')}.${dateObj.getDate().toString().padStart(2, '0')}`}
-            </span>
+            <div>
+              <div className="flex items-center gap-1">
+                <span className="truncate text-xs">{MeetingData.groupName}</span>
+                <span className="text-xs">·</span>
+                <span className="text-xs font-medium text-blue-700">{MeetingData.location}</span>
+              </div>
+              <span className="select-none text-md text-blue-400">
+                {`${dateObj.getFullYear()}.${(dateObj.getMonth() + 1).toString().padStart(2, '0')}.${dateObj.getDate().toString().padStart(2, '0')}`}
+              </span>
+            </div>
           </div>
         </div>
       </div>
