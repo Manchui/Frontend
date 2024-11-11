@@ -14,7 +14,7 @@ export default function Score({ reviewsList }: { reviewsList: ReviewsList }) {
             <div key={key} className="mb-1 flex items-center justify-center gap-4">
               <p className="text-md font-medium text-gray-800">{reversedIndex}점</p>
               <div className="w-[200px]">
-                <ProgressBar maxValue={5} value={value} design="primary" />
+                <ProgressBar maxValue={reviewsList.reviewCount} value={value} design="primary" />
               </div>
             </div>
           );
