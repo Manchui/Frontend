@@ -35,11 +35,9 @@ export default function GNB() {
           });
           login();
         } else {
-          localStorage.removeItem('userName');
           logout();
         }
       } else {
-        localStorage.removeItem('userName');
         logout();
       }
     };
