@@ -97,12 +97,11 @@ export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
               <div className="flex gap-2">
                 <div>
                   <Image
-                    src={userData.image || '/icons/person-rounded.png'}
+                    src={userData.image || '/images/profile.svg'}
                     alt="profile"
                     width={40}
                     height={40}
-                    style={{ objectFit: 'cover' }}
-                    className="size-10 rounded-full"
+                    className="size-10 rounded-full object-cover"
                   />
                 </div>
                 <div>
