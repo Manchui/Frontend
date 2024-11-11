@@ -12,7 +12,7 @@ declare module '@manchui-api' {
         groupName: string;
         location: string;
         name: string;
-        profileImagePth: string;
+        profileImagePath: string;
         reviewId: number;
         score: number;
         updatedAt: string;

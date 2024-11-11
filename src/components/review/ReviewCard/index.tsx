@@ -66,22 +66,29 @@ export function ReviewCard({ review }: ReviewCardSProps) {
       >
         <div className="-mb-1 flex w-full items-start justify-between">
           {/* <Rating score={review.score} /> */}
-          <div className="flex w-full flex-col items-start  gap-1 text-lg font-semibold text-blue-900 tablet:flex-row">
-          <span>{review.groupName}</span>
-            <div className='gap-1 flex'> 
-           
-              <span className='hidden tablet:flex'> &bull;</span>
-              <span className="text-blue-500 tablet:text-blue-900 text-sm tablet:text-lg -mt-1 tablet:mt-0">{review.location}</span>
+          <div className="flex w-full flex-col items-start gap-1 text-lg font-semibold text-blue-900 tablet:flex-row">
+            <span>{review.groupName}</span>
+            <div className="flex gap-1">
+              <span className="hidden tablet:flex"> &bull;</span>
+              <span className="-mt-1 text-sm text-blue-500 tablet:mt-0 tablet:text-lg tablet:text-blue-900">{review.location}</span>
             </div>
           </div>
+
           <Link
             href={`/detail/${review.gatheringId}`}
-            className="inline-flex h-8 items-center justify-center whitespace-nowrap rounded-md bg-blue-800 px-6 py-2 font-bold text-white transition-all duration-200 text-sub-response" 
+            className="group flex h-8 items-center justify-center whitespace-nowrap rounded-md bg-blue-800 px-6 py-2 text-sub-response font-bold text-white transition-all duration-200"
           >
-            보러가기
-            <Image src="/icons/main/banner-btn.svg" alt="버튼" width={20} height={20} className="-mr-2" />
+            <span>보러가기</span>
+            <Image
+              src="/icons/main/banner-btn.svg"
+              alt="버튼"
+              width={20}
+              height={20}
+              className="-mr-2 size-5 transition duration-500 will-change-transform group-hover:translate-x-2"
+            />
           </Link>
         </div>
+
         {/* <div className="flex w-full items-center gap-1 text-sm font-semibold text-blue-900 -mt-1 ">
           <span>{review.groupName}</span>
           <span> &bull;</span>
@@ -93,11 +100,11 @@ export function ReviewCard({ review }: ReviewCardSProps) {
           <div className="relative">
             <Image
               alt="profile"
-              src={review.profileImagePth ? review.profileImagePth : 'images/profile.svg'}
+              src={review.profileImagePath ? review.profileImagePath : 'images/profile.svg'}
               width={24}
               height={24}
               style={{ objectFit: 'cover' }}
-              className="rounded-full"
+              className="size-6 rounded-full"
             />
           </div>
           <span className="text-blue-700">{review.name}</span>
