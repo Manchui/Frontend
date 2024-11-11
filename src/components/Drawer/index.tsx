@@ -7,6 +7,8 @@ import { useRouter } from 'next/router';
 import { logout } from '@/apis/userApi';
 import { userStore } from '@/store/userStore';
 
+import MenuBtn from './MenuBtn';
+
 interface DrawerProps {
   isLoggedIn: boolean;
   userData: {
@@ -20,6 +22,7 @@ interface DrawerProps {
 export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [, setIsMobile] = useState(false);
+
   const router = useRouter();
 
   const isLoggedIns = userStore((state) => state.isLoggedIn);
@@ -61,15 +64,16 @@ export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
   return (
     <div className="flex items-center">
       <button type="button" onClick={toggleDrawer} className="relative flex h-10 w-10 items-center justify-center">
-        <div className={clsx('absolute transition-all duration-300 ease-in-out', isOpen ? 'rotate-90 opacity-0' : 'rotate-0 opacity-100')}>
+        {/* <div className={clsx('absolute transition-all duration-300 ease-in-out', isOpen ? 'rotate-90 opacity-0' : 'rotate-0 opacity-100')}>
           <Image src="/icons/menu.svg" alt="메뉴" width={38} height={38} />
         </div>
 
         <div className={clsx('absolute transition-all duration-300 ease-in-out', isOpen ? 'rotate-90 opacity-100' : '-rotate-90 opacity-0')}>
           <Image src="/icons/x.svg" alt="닫기" width={20} height={20} />
-        </div>
+        </div> */}
+        <MenuBtn setIsActive={setIsOpen} isActive={isOpen}/>
       </button>
-
+     
       <div
         className={clsx('fixed inset-0 top-[60px] z-10 h-full min-h-screen bg-black bg-opacity-50 transition-opacity', {
           'pointer-events-none opacity-0': !isOpen,
