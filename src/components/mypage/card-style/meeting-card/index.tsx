@@ -79,10 +79,10 @@ function Meeting({ MeetingData, category }: { MeetingData: GatheringList | Revie
             {meetingState}
             {meetingDetails}
 
-            {'deletedAt' in MeetingData && category === '나의 모임' && <MyPageCancelButton data={MeetingData} />}
+            {'deletedAt' in MeetingData && category === '나의 모임' && <MyPageCancelButton data={MeetingData} category={category} />}
             {'deletedAt' in MeetingData && category === '내가 만든 모임' && (
               <div className="flex gap-2">
-                <MyPageCancelButton data={MeetingData} />
+                <MyPageCancelButton data={MeetingData} category={category} />
                 <Link href={`/detail/${MeetingData.gatheringId}`}>
                   <Button label="자세히 보기" size="small" variant="primary" />
                 </Link>
