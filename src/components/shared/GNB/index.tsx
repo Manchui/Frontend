@@ -29,7 +29,7 @@ export default function GNB() {
           updateUser({
             email: userData.res?.email || '',
             id: userData.res?.id || '',
-            image: userData.res?.image || '/images/together-findpage-large.png',
+            image: userData.res?.image || '/images/profile.svg',
             name: userData.res?.name || '',
             createdAt: formatDate(userData.res?.createdAt || '') || '',
           });

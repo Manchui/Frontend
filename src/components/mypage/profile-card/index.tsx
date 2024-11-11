@@ -35,6 +35,7 @@ export function ProfileCard() {
       return;
     }
     await editUserInfo(nick, imagePreview || userInfo.image);
+    Toast('success', '프로필 변경이 완료 됐습니다.');
   };
 
   const handleImageClick = () => {
