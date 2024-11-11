@@ -23,9 +23,9 @@ export type ReviewContentList = {
   comment: string;
   createdAt: string;
   gatheringImage: string;
-  image: string;
   location: string;
   name: string;
+  profileImagePath: string;
   score: number;
   updatedAt: string;
 };
