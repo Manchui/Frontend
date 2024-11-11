@@ -1,6 +1,7 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 import type { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
 import { useCallback, useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 
 interface SearchBarProps {
@@ -20,7 +21,8 @@ export default function SearchBar({ keyword, onSearchSubmit, setPage }: SearchBa
       // 검색어가 비어 있으면 refetch
       if (!value) onSearchSubmit(value);
     },
-    [onSearchSubmit],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
   );
 
   const handleSearchSubmit = useCallback(
@@ -40,7 +42,13 @@ export default function SearchBar({ keyword, onSearchSubmit, setPage }: SearchBa
   }, [keyword]);
 
   return (
-    <form className="flex gap-1 border-b font-medium hover:border-b-gray-300" onSubmit={handleSearchSubmit}>
+    <motion.form
+      initial={{ x: 10, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      transition={{ duration: 1, ease: 'easeInOut' }}
+      className="flex gap-1 border-b font-medium hover:border-b-gray-300"
+      onSubmit={handleSearchSubmit}
+    >
       <label htmlFor="input" className="cursor-pointer">
         <Image src="/icons/main/search.svg" alt="검색창" width={24} height={24} className="tablet:size-8" />
       </label>
@@ -52,6 +60,6 @@ export default function SearchBar({ keyword, onSearchSubmit, setPage }: SearchBa
         placeholder="만취에서 찾고 계신 모임이 있나요?"
         className="placeholder:text-13-18-response w-search-180-240 bg-background text-13-16-response text-gray-400 outline-none focus:text-blue-800"
       />
-    </form>
+    </motion.form>
   );
 }
