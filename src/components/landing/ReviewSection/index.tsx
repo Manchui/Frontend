@@ -121,7 +121,7 @@ export default function ReviewSection() {
           exit={{ opacity: 0 }}
           onClick={scrollToTop}
           transition={{ duration: 0.5 }}
-          className="fixed bottom-10 left-1/2 -translate-x-1/2 transform rounded-2xl bg-white px-10 py-2 text-blue-800 drop-shadow-lg transition-colors duration-300 hover:bg-black hover:text-white"
+          className="fixed bottom-10 left-1/2 z-10 -translate-x-1/2 transform rounded-2xl bg-white px-10 py-2 shadow-lg transition-colors duration-300 hover:bg-black hover:text-white"
         >
           ▲
         </motion.button>

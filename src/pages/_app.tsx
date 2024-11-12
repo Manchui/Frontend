@@ -5,6 +5,7 @@ import '@/styles/toastify-custom.css';
 import type { ReactElement, ReactNode } from 'react';
 import { useState } from 'react';
 import { ToastContainer, Zoom } from 'react-toastify';
+import { domAnimation, LazyMotion } from 'framer-motion';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
@@ -48,9 +49,12 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
         <link rel="icon" href="/logo/logo.png" type="image/png" />
       </Head>
       <QueryClientProvider client={queryClient}>
-        <ToastContainer limit={1} transition={Zoom} />
-        {getLayout(<Component {...pageProps} />)}
-        <ReactQueryDevtools initialIsOpen={false} />
+        <LazyMotion features={domAnimation}>
+          {/* LazyMotion을 사용해 Framer Motion 구성요소의 전체 기능을 동기 or 비동기로 로드해서 번들 크기를 줄여줍니다 */}
+          <ToastContainer limit={1} transition={Zoom} />
+          {getLayout(<Component {...pageProps} />)}
+          <ReactQueryDevtools initialIsOpen={false} />
+        </LazyMotion>
       </QueryClientProvider>
     </>
   );
