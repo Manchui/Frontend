@@ -11,7 +11,7 @@ import { ReviewableCard } from '../card-style/reviewable-card';
 
 import Empty from 'public/lottie/empty.json';
 
-export default function MyReviewList({ category, review }: { category: string; review: string }) {
+export default function MyReviewList({ category, review, handleRemoveItem }: { category: string; handleRemoveItem: (id: number) => void; review: string }) {
   const isReview = category === '나의 리뷰' && review === '작성 가능한 리뷰';
   const [page, setPage] = useState<number>(1);
   const size = 10;
@@ -44,7 +44,12 @@ export default function MyReviewList({ category, review }: { category: string; r
 
   return (
     <div>
-      {reviewableList && (isReview ? <MeetingCard MeetingData={reviewableList} category={review} /> : <ReviewableCard MeetingData={reviewableList} />)}
+      {reviewableList &&
+        (isReview ? (
+          <MeetingCard MeetingData={reviewableList.content} category={review} handleRemoveItem={handleRemoveItem} />
+        ) : (
+          <ReviewableCard MeetingData={reviewableList} />
+        ))}
       {!isLoading && !isError && reviewableList?.content.length !== 0 && (
         <PaginationBtn page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} handlePageChange={handlePageChange} />
       )}

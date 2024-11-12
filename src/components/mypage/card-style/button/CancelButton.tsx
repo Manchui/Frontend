@@ -6,12 +6,15 @@ import { useModal } from '@/hooks/useModal';
 import type { GatheringList } from '@/types/mypage';
 import { useMutation } from '@tanstack/react-query';
 
-interface MyPageCancelProps {
+export default function MyPageCancelButton({
+  data,
+  category,
+  handleRemoveItem,
+}: {
   category: string;
   data: GatheringList;
-}
-
-export default function MyPageCancelButton({ data, category }: MyPageCancelProps) {
+  handleRemoveItem: (id: number) => void;
+}) {
   const { isOpen, openModal, closeModal } = useModal();
   const token = localStorage.getItem('accessToken');
   const isName = token && category === '내가 만든 모임';
@@ -20,7 +23,7 @@ export default function MyPageCancelButton({ data, category }: MyPageCancelProps
     mutationFn: () => deleteCancellation(data.gatheringId),
     onSuccess: () => {
       Toast('success', '신청이 취소 되었습니다!');
-      window.location.reload();
+      handleRemoveItem(data.gatheringId);
     },
     onError: (error) => {
       Toast('error', error.message);

@@ -3,30 +3,44 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/shared/button';
 import State from '@/components/shared/chip/State';
-import type { GatheringList, List, ReviewableList } from '@/types/mypage';
+import type { GatheringList, ReviewableList } from '@/types/mypage';
 
 import MyPageCancelButton from '../button/CancelButton';
 import ReviewButton from '../button/ReviewButton';
 
 const bagelFatOne = Bagel_Fat_One({ weight: '400', subsets: ['latin'] });
 
-export function MeetingCard({ MeetingData, category }: { MeetingData: List; category: string }) {
+export function MeetingCard({
+  MeetingData,
+  category,
+  handleRemoveItem,
+}: {
+  MeetingData: GatheringList[] | ReviewableList[] | undefined;
+  category: string;
+  handleRemoveItem: (id: number) => void;
+}) {
   return (
-    <div className="grid grid-cols-1 px-1 pt-6 phablet:grid-cols-2 tablet:grid-cols-1 pc:grid-cols-1">
-      {MeetingData.content.map((list, i) => (
-        <Meeting key={i} MeetingData={list} category={category} />
-      ))}
+    <div className="grid grid-cols-1 px-1 pt-1 phablet:grid-cols-2 tablet:grid-cols-1 pc:grid-cols-1">
+      {MeetingData && MeetingData.map((list, i) => <Meeting key={i} MeetingData={list} category={category} handleRemoveItem={handleRemoveItem} />)}
     </div>
   );
 }
 
-function Meeting({ MeetingData, category }: { MeetingData: GatheringList | ReviewableList; category: string }) {
+function Meeting({
+  MeetingData,
+  category,
+  handleRemoveItem,
+}: {
+  MeetingData: GatheringList | ReviewableList;
+  category: string;
+  handleRemoveItem: (id: number) => void;
+}) {
   const dateObj = new Date(MeetingData.gatheringDate);
   const isClosed = 'isClosed' in MeetingData && MeetingData.isClosed;
   const isFull = 'maxUsers' in MeetingData && 'participantUsers' in MeetingData && MeetingData.maxUsers === MeetingData.participantUsers;
   const isCanceled = 'isCanceled' in MeetingData && MeetingData.isCanceled;
 
-  const meetingStatus = isClosed ? 'CLOSED' : isFull ? 'FULL' : '';
+  const meetingStatus = isClosed ? 'CLOSED' : isFull ? 'FULL' : 'DELETE';
 
   const meetingState = category === '나의 모임' && (
     <div className="flex select-none gap-2">
@@ -56,8 +70,8 @@ function Meeting({ MeetingData, category }: { MeetingData: GatheringList | Revie
 
   return (
     <div>
-      <article className="mx-3 flex justify-center rounded-3xl p-2 tablet:justify-start pc:justify-start">
-        <div className="group flex flex-col justify-center gap-4 border-b-2 border-dashed border-gray-50 pb-5 phablet:items-start tablet:flex-row pc:flex-row">
+      <article className="mx-3 flex justify-center border-b-2 border-dashed border-gray-50 px-2 py-5 tablet:justify-start pc:justify-start">
+        <div className="group flex flex-col items-start justify-center gap-4 tablet:flex-row pc:flex-row">
           <div className="relative">
             {MeetingData.gatheringImage ? (
               <Image
@@ -81,10 +95,12 @@ function Meeting({ MeetingData, category }: { MeetingData: GatheringList | Revie
             {meetingState}
             {meetingDetails}
 
-            {'deletedAt' in MeetingData && category === '나의 모임' && <MyPageCancelButton data={MeetingData} category={category} />}
+            {'deletedAt' in MeetingData && category === '나의 모임' && (
+              <MyPageCancelButton data={MeetingData} category={category} handleRemoveItem={handleRemoveItem} />
+            )}
             {'deletedAt' in MeetingData && category === '내가 만든 모임' && (
               <div className="flex gap-2">
-                <MyPageCancelButton data={MeetingData} category={category} />
+                <MyPageCancelButton data={MeetingData} category={category} handleRemoveItem={handleRemoveItem} />
                 <Link href={`/detail/${MeetingData.gatheringId}`}>
                   <Button label="자세히 보기" size="small" variant="primary" />
                 </Link>
