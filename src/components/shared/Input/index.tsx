@@ -3,6 +3,7 @@ import Image from 'next/image';
 
 interface InputProps {
   name: 'nick' | 'id' | 'password' | 'password_check';
+  nickValue?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   passwordToMatch?: string;
   type: 'text' | 'email' | 'password';
@@ -20,16 +21,20 @@ interface InputProps {
  * 
  */
 
-export default function Input({ name, type, passwordToMatch, onChange }: InputProps) {
-  const [value, setValue] = useState('');
+export default function Input({ name, type, passwordToMatch, onChange, nickValue }: InputProps) {
+  const [value, setValue] = useState(nickValue || '');
   const [isValid, setIsValid] = useState(true); // 유효성 검사
   const [isVisible, setIsVisible] = useState(false); // 비밀번호 보이기/숨기기 상태
   const setting = {
     nick: {
       labelName: '닉네임',
       placeholderText: '이름을 입력해주세요.',
-      invalidText: '이름은 3자 이상이어야 합니다.',
-      validate: (val: string) => val.length >= 3,
+      invalidText: '이름은 3자 이상, 영문과 숫자만 가능합니다.',
+      validate: (val: string) => {
+        const isValidLength = val.length >= 3;
+        const isAlphaNumeric = /^[a-zA-Z0-9]+$/.test(val);
+        return isValidLength && isAlphaNumeric;
+      },
     },
     id: {
       labelName: '아이디',
@@ -64,7 +69,9 @@ export default function Input({ name, type, passwordToMatch, onChange }: InputPr
   };
   return (
     <div className="relative h-20 w-full">
-      <label htmlFor={type}>{labelName}</label>
+      <label htmlFor={type} className="font-bold">
+        {labelName}
+      </label>
       <input
         id={type}
         placeholder={placeholderText}
