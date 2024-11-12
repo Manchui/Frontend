@@ -43,35 +43,6 @@ instance.interceptors.request.use(
 );
 
 // instance.interceptors.response.use(
-//   async (config) => {
-//     const isLoggedIns = userStore((state) => state.isLoggedIn);
-//     const accessToken = localStorage.getItem('accessToken');
-
-//     if (isLoggedIns && getCookie('refresh')) {
-//       try {
-//         const res = await instance.post('/api/auths/reissue', undefined, {
-//           headers: {
-//             Authorization: accessToken,
-//           },
-//         });
-
-//         localStorage.setItem('accessToken', res.data.accessToken);
-//         instance.defaults.headers.Authorization = res.data.accessToken;
-//         config.headers.Authorization = res.data.accessToken;
-//         console.log('토큰 재발급 성공');
-//         return config;
-//       } catch (e) {
-//         console.error('토큰 재발급 실패', e);
-//         localStorage.removeItem('accessToken');
-//         Toast('warning', '로그인이 필요한 서비스입니다.');
-//       }
-//     }
-//     return config;
-//   },
-//   (error) => Promise.reject(error),
-// );
-
-// instance.interceptors.response.use(
 //   (response) => response,
 //   async (error) => {
 //     // accessToken이 없을 때 다시 로그인 페이지로 이동
@@ -87,14 +58,6 @@ instance.interceptors.request.use(
 //   },
 // );
 
-const getCookie = (key: string) => {
-  const target = document.cookie.split('; ').find((cookie) => cookie.startsWith(key));
-  if (target) {
-    return target.split('=')[1];
-  }
-  return '';
-};
-
 // instance.interceptors.request.use((config) => {
 //   // 요청 전 refresh API 여부를 표시하는 플래그 추가
 //   if (config.url.includes('/reissue')) {
@@ -102,11 +65,6 @@ const getCookie = (key: string) => {
 //   }
 //   return config;
 // });
-
-interface CustomAxiosRequestConfig extends AxiosRequestConfig {
-  isRefreshRequest?: boolean;
-  retry?: boolean;
-}
 
 const tokenRefresh = async (): Promise<string> => {
   const res = await instance.post('/api/auths/reissue', undefined, {
