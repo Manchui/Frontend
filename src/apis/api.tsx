@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable no-param-reassign */
 /* eslint-disable @typescript-eslint/prefer-promise-reject-errors */
-import type { AxiosError, AxiosRequestConfig } from 'axios';
+import type { AxiosError } from 'axios';
 import axios from 'axios';
 import { IS_SERVER } from '@/constants/server';
 
