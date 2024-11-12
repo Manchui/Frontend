@@ -65,8 +65,7 @@ function Meeting({ MeetingData, category }: { MeetingData: GatheringList | Revie
                 src={MeetingData.gatheringImage}
                 width={311}
                 height={156}
-                style={{ width: '280px', height: '156px', objectFit: 'cover' }}
-                className="mx-auto flex-shrink-0 overflow-hidden rounded-lg"
+                className="mx-auto h-[156px] w-[280px] flex-shrink-0 overflow-hidden rounded-lg object-cover"
               />
             ) : (
               <div className="relative mx-auto h-[156px] w-[280px] flex-shrink-0 overflow-hidden rounded-lg bg-gray-200" />

@@ -52,8 +52,7 @@ function Reviewable({ MeetingData }: { MeetingData: ReviewableList }) {
               src={MeetingData.gatheringImage}
               width={280}
               height={156}
-              style={{ width: '280px', height: '156px', objectFit: 'cover' }}
-              className="relative mx-auto flex-shrink-0 overflow-hidden rounded-lg"
+              className="relative mx-auto h-[156px] w-[280px] flex-shrink-0 overflow-hidden rounded-lg object-cover"
             />
           ) : (
             <div className="relative mx-auto h-[156px] w-[280px] flex-shrink-0 overflow-hidden rounded-lg bg-gray-200" />
