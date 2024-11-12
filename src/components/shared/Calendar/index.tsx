@@ -1,5 +1,5 @@
 /* eslint-disable tailwindcss/no-custom-classname */
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
 import RenderCalendar from '@/components/shared/Calendar/RenderCalendar';
@@ -26,7 +26,7 @@ export default function Calendar({ selectionType, onDateChange, prevRangeStart, 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
-  const years = Array.from({ length: 10 }, (_, i) => currentDate.getFullYear() - 4 + i);
+  const years = useMemo(() => Array.from({ length: 10 }, (_, i) => currentDate.getFullYear() - 4 + i), [currentDate]);
 
   const handleDateSelection = (date: string) => {
     if (isDateLocked) return;
@@ -56,14 +56,20 @@ export default function Calendar({ selectionType, onDateChange, prevRangeStart, 
     }
   };
 
-  const changeYear = (newYear: number) => {
-    setCurrentDate(new Date(newYear, currentDate.getMonth(), 1));
-    setDropOpen(false);
-  };
+  const changeYear = useCallback(
+    (newYear: number) => {
+      setCurrentDate(new Date(newYear, currentDate.getMonth(), 1));
+      setDropOpen(false);
+    },
+    [currentDate],
+  );
 
-  const changeMonth = (direction: 'prev' | 'next') => {
-    setCurrentDate(new Date(currentDate.getFullYear(), direction === 'prev' ? currentDate.getMonth() - 1 : currentDate.getMonth() + 1, 1));
-  };
+  const changeMonth = useCallback(
+    (direction: 'prev' | 'next') => {
+      setCurrentDate(new Date(currentDate.getFullYear(), direction === 'prev' ? currentDate.getMonth() - 1 : currentDate.getMonth() + 1, 1));
+    },
+    [currentDate],
+  );
 
   useEffect(() => {
     if (prevRangeStart) setRangeStart(prevRangeStart);

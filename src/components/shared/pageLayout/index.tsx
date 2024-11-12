@@ -1,9 +1,9 @@
-import type { ReactNode } from 'react';
+import { type ReactNode, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/router';
 import GNB from '@/components/shared/GNB';
 import Loading from '@/components/shared/Loading';
+import { IS_SERVER } from '@/constants/server';
 import { useAuthBoundary } from '@/hooks/useAuthBoundary';
 import { useLoading } from '@/hooks/useLoading';
 
@@ -11,6 +11,8 @@ type LayoutProps = {
   children: ReactNode;
   showHeader?: boolean;
 };
+
+const useIsomorphicLayoutEffect = !IS_SERVER ? useLayoutEffect : useEffect;
 
 /**
  * 페이지 컴포넌트를 감싸는 레이아웃 컴포넌트로 GNB(Header)와 Footer의 렌더링 여부를 관리하며, 페이지 전환 시 애니메이션 효과를 제공합니다.
@@ -23,13 +25,23 @@ type LayoutProps = {
  */
 
 export default function PageLayout({ children, showHeader = true }: LayoutProps) {
+  const [isClient, setIsClient] = useState(false);
+  const [is404, setIs404] = useState(false);
+
   const router = useRouter();
   const loading = useLoading();
-  const pathname = usePathname();
 
   useAuthBoundary();
 
-  const shouldShowHeader = pathname !== '/' && showHeader; // 로그인 & 회원가입도 헤더 없으면 더 깔끔하지 않을까 싶습니다
+  useIsomorphicLayoutEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useIsomorphicLayoutEffect(() => {
+    setIs404(router.pathname === '/404');
+  }, [router.pathname]);
+
+  const shouldShowHeader = useMemo(() => isClient && !is404 && router.pathname !== '/' && showHeader, [isClient, is404, router.pathname, showHeader]);
   // const shouldShowFooter = pathname !== '/' && !pathname.startsWith('/signup') && !pathname.startsWith('/login') && showFooter;
 
   return (

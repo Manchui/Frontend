@@ -1,8 +1,9 @@
 /* eslint-disable tailwindcss/no-custom-classname */
-import { useEffect, useRef, useState } from 'react';
-import Lottie from 'lottie-react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { motion, useInView } from 'framer-motion';
 import { getGatheringData } from '@/apis/getGatheringData';
 import CardSection, { CardSkeleton, MessageWithLink } from '@/components/main/CardSection';
+import EmptyState from '@/components/main/EmptyState';
 import FilterSection from '@/components/main/FilterSection';
 import HeaderSection from '@/components/main/HeaderSection';
 import MainCarousel from '@/components/main/MainCarousel';
@@ -14,8 +15,6 @@ import useGetGatheringData from '@/hooks/useGetGatheringData';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { userStore } from '@/store/userStore';
 import { dehydrate, QueryClient, useQueryClient } from '@tanstack/react-query';
-
-import Empty from 'public/lottie/empty.json';
 
 const PAGE_SIZE_BY_DEVICE = {
   MOBILE: 3,
@@ -31,6 +30,9 @@ export default function MainPage() {
   const [dateStart, setDateStart] = useState<string | undefined>(undefined);
   const [dateEnd, setDateEnd] = useState<string | undefined>(undefined);
 
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true });
+
   const sentinelRef = useRef<HTMLDivElement>(null);
   const isIntersecting = useIntersectionObserver(sentinelRef);
 
@@ -38,6 +40,8 @@ export default function MainPage() {
 
   const isLoggedIn = userStore((state) => state.isLoggedIn);
   const queryClient = useQueryClient();
+
+  const pageSize = useMemo(() => PAGE_SIZE_BY_DEVICE[deviceState], [deviceState]);
 
   const {
     data: mainData,
@@ -47,7 +51,7 @@ export default function MainPage() {
     fetchNextPage,
   } = useGetGatheringData({
     page: 1,
-    size: PAGE_SIZE_BY_DEVICE[deviceState],
+    size: pageSize,
     query: keyword,
     location,
     category,
@@ -91,7 +95,7 @@ export default function MainPage() {
   );
 
   return (
-    <>
+    <motion.div initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
       <MainCarousel isError={isError} />
       <RootLayout>
         <MainContainer>
@@ -109,26 +113,29 @@ export default function MainPage() {
             handleCloseDateClick={handleCloseDateClick}
           />
           {/* 카드 */}
-          <div className="mx-auto grid min-h-[200px] w-full select-none grid-cols-1 gap-6 px-4 mobile:p-0 tablet:grid-cols-3">
+          <motion.div
+            ref={ref}
+            style={{
+              transform: isInView ? 'none' : 'translateY(10px)',
+              opacity: isInView ? 1 : 0,
+              transition: 'all 1s ease-in-out',
+            }}
+            className="mx-auto grid min-h-[200px] w-full select-none grid-cols-1 gap-6 px-4 mobile:p-0 tablet:grid-cols-3"
+          >
             {isLoading
-              ? Array.from({ length: PAGE_SIZE_BY_DEVICE.MOBILE }).map((_, idx) => <CardSkeleton key={idx} />)
+              ? Array.from({ length: pageSize }).map((_, idx) => <CardSkeleton key={idx} />)
               : mainData?.pages.map((page) => page.data.gatheringList.map((gathering) => <CardSection key={gathering.gatheringId} gathering={gathering} />))}
-            {noData && (
-              <div className="absolute left-1/2 w-full -translate-x-1/2">
-                <Lottie animationData={Empty} className="h-empty fill-background" />
-                <MessageWithLink onClick={() => handleCategoryClick('')} message="아직 등록된 모임이 없어요" buttonText="더 둘러보기" />
-              </div>
-            )}
+            {noData && <EmptyState handleCategoryClick={handleCategoryClick} />}
             {isError && (
               <div className="absolute left-1/2 w-full -translate-x-1/2">
                 <MessageWithLink message="에러가 발생하였습니다." buttonText="다시 시도하기" onClick={() => window.location.reload()} />
               </div>
             )}
-          </div>
-          {/* {!isError && <div ref={sentinelRef} className="h-28 w-full flex-shrink-0 opacity-0" />} */}
+          </motion.div>
+          {!isError && <div ref={sentinelRef} className="h-20 w-full flex-shrink-0 opacity-0" />}
         </MainContainer>
       </RootLayout>
-    </>
+    </motion.div>
   );
 }
 
@@ -137,7 +144,7 @@ export const getServerSideProps = async () => {
 
   await queryClient.prefetchQuery({
     queryKey: ['main'],
-    queryFn: () => getGatheringData({ page: 1, size: PAGE_SIZE_BY_DEVICE.PC }),
+    queryFn: () => getGatheringData({ page: 1, size: PAGE_SIZE_BY_DEVICE.TABLET }),
   });
 
   return {

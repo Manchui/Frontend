@@ -85,18 +85,18 @@ function MainCarousel({ isError }: { isError: boolean }) {
               ref={prevRef}
               type="button"
               onClick={goToPreviousSlide}
-              className="absolute left-0 top-1/2 z-50 mx-4 hidden -translate-y-1/2 rounded-full p-2 text-white opacity-0 transition-all duration-300 group-hover:opacity-100 mobile:block"
+              className="absolute left-0 top-1/2 z-50 mx-4 hidden -translate-y-1/2 rounded-full p-2 opacity-0 transition-all duration-300 group-hover:opacity-100 mobile:block"
             >
-              <Image src="/icons/left.svg" alt="Previous Button" width={32} height={32} className="opacity-70" />
+              <Image src="/icons/left.svg" alt="Previous Button" width={32} height={32} className="opacity-70 hover:opacity-50" />
             </button>
 
             <button
               ref={nextRef}
               type="button"
               onClick={goToNextSlide}
-              className="absolute right-0 top-1/2 z-50 mx-4 hidden -translate-y-1/2 rounded-full p-2 text-white opacity-0 transition-all duration-300 group-hover:opacity-100 mobile:block"
+              className="absolute right-0 top-1/2 z-50 mx-4 hidden -translate-y-1/2 rounded-full p-2 opacity-0 transition-all duration-300 group-hover:opacity-100 mobile:block"
             >
-              <Image src="/icons/right.svg" alt="Next Button" width={32} height={32} className="opacity-70" />
+              <Image src="/icons/right.svg" alt="Next Button" width={32} height={32} className="opacity-70 hover:opacity-50" />
             </button>
 
             {/* Carousel Thumbnail */}
@@ -111,7 +111,7 @@ function MainCarousel({ isError }: { isError: boolean }) {
                 <SwiperSlide
                   key={gathering.gatheringId}
                   onClick={() => swiperInstance?.slideTo(i)}
-                  className={`cursor-pointer rounded-lg ${swiperIndex !== i && 'border-none opacity-30'}`}
+                  className={`cursor-pointer rounded-lg ${swiperIndex !== i ? 'border-none opacity-30' : 'border-2 border-background'}`}
                 >
                   <Image
                     src={gathering.gatheringImage}
