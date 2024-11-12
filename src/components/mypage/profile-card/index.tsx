@@ -34,11 +34,8 @@ export function ProfileCard() {
       Toast('error', '닉네임은 3자 이상이어야 합니다.');
       return;
     }
-    if (!nick.trim()) {
-      console.log('닉네임이 없을 때');
-      setNick(userInfo.name);
-    }
-    await editUserInfo(nick, imagePreview || userInfo.image);
+    const res = await editUserInfo(nick || userInfo.name, imagePreview || userInfo.image);
+    console.log(res);
   };
 
   const handleImageClick = () => {
@@ -99,7 +96,7 @@ export function ProfileCard() {
                 )}
               </div>
 
-              <Input type="text" name="nick" onChange={(e) => setNick(e.target.value)} />
+              <Input type="text" name="nick" nickValue={userInfo.name} onChange={(e) => setNick(e.target.value)} />
               <input id="imageInput" type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
             </div>
           </Modal>
