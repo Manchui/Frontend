@@ -98,7 +98,7 @@ export default function LoginPage() {
           </button>
           <p className="mt-4 text-center text-sm mobile:text-base">
             이미 회원이신가요?{' '}
-            <Link href="/signup" className="text-gray-400 underline hover:text-primary-400">
+            <Link href="/signup" className="text-gray-400 underline hover:text-blue-700 hover:font-bold">
               회원가입
             </Link>
           </p>

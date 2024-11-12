@@ -118,7 +118,7 @@ export default function SignupPage() {
           </button>
           <p className="mt-4 text-center text-sm mobile:text-base">
             이미 회원이신가요?{' '}
-            <Link href="/login" className="text-gray-400 underline hover:text-primary-400">
+            <Link href="/login" className="text-gray-400 underline hover:text-blue-700 hover:font-bold">
               로그인
             </Link>
           </p>
