@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import Lottie from 'lottie-react';
 import getMyReviewable from '@/apis/mypage/get-mypage-reviewable';
 import getMyReviews from '@/apis/mypage/get-mypage-reviews';
 import { MessageWithLink } from '@/components/main/CardSection';
+import PaginationBtn from '@/components/shared/PaginationBtn';
 import { useQuery } from '@tanstack/react-query';
 
 import { MeetingCard } from '../card-style/meeting-card';
@@ -11,18 +13,23 @@ import Empty from 'public/lottie/empty.json';
 
 export default function MyReviewList({ category, review }: { category: string; review: string }) {
   const isReview = category === '나의 리뷰' && review === '작성 가능한 리뷰';
+  const [page, setPage] = useState<number>(1);
+  const size = 10;
 
-  const { data } = useQuery({
-    // NOTE: page,size는 임시값
+  const { data, isLoading, isError } = useQuery({
     queryKey: ['mypage', category, review],
     queryFn: () => {
-      if (isReview) return getMyReviewable();
-      if (!isReview) return getMyReviews();
+      if (isReview) return getMyReviewable(page, size);
+      if (!isReview) return getMyReviews(page, size);
       return null;
     },
     staleTime: 1000 * 10,
   });
   const reviewableList = data?.reviewableList;
+
+  const handlePageChange = (pageValue: number) => {
+    setPage(pageValue);
+  };
 
   if (reviewableList?.content.length === 0) {
     return (
@@ -36,6 +43,11 @@ export default function MyReviewList({ category, review }: { category: string; r
   }
 
   return (
-    <div>{reviewableList && (isReview ? <MeetingCard MeetingData={reviewableList} category={review} /> : <ReviewableCard MeetingData={reviewableList} />)}</div>
+    <div>
+      {reviewableList && (isReview ? <MeetingCard MeetingData={reviewableList} category={review} /> : <ReviewableCard MeetingData={reviewableList} />)}
+      {!isLoading && !isError && reviewableList?.content.length !== 0 && (
+        <PaginationBtn page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} handlePageChange={handlePageChange} />
+      )}
+    </div>
   );
 }

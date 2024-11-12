@@ -3,6 +3,7 @@ import Lottie from 'lottie-react';
 import getMyAttendance from '@/apis/mypage/get-mypage-attendance';
 import getMyGathering from '@/apis/mypage/get-mypage-gathring';
 import { MessageWithLink } from '@/components/main/CardSection';
+import PaginationBtn from '@/components/shared/PaginationBtn';
 import { useQuery } from '@tanstack/react-query';
 
 import { MeetingCard } from './meeting-card';
@@ -13,18 +14,19 @@ import Empty from 'public/lottie/empty.json';
 
 export function CardComponents({ category }: { category: string }) {
   const [review, setReview] = useState('작성 가능한 리뷰');
+  const [page, setPage] = useState<number>(1);
+  const size = 10;
 
-  const { data } = useQuery({
-    // NOTE: page, size는 임시값
-    queryKey: ['mypage', category],
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['mypage', category, page],
     queryFn: () => {
       if (category === '나의 모임') {
         setReview('작성 가능한 리뷰');
-        return getMyAttendance();
+        return getMyAttendance(page, size);
       }
       if (category === '내가 만든 모임') {
         setReview('작성 가능한 리뷰');
-        return getMyGathering();
+        return getMyGathering(page, size);
       }
       return null;
     },
@@ -33,6 +35,10 @@ export function CardComponents({ category }: { category: string }) {
 
   const participatedList = data?.participatedGatheringList;
   const writtenGatheringList = data?.writtenGatheringList;
+
+  const handlePageChange = (pageValue: number) => {
+    setPage(pageValue);
+  };
 
   const renderEmptyState = (message: string) => (
     <div className="py-20">
@@ -60,6 +66,9 @@ export function CardComponents({ category }: { category: string }) {
         </>
       )}
       {writtenGatheringList && <MeetingCard category={category} MeetingData={writtenGatheringList} />}
+      {!isLoading && !isError && participatedList?.content.length !== 0 && category !== '나의 리뷰' && (
+        <PaginationBtn page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} handlePageChange={handlePageChange} />
+      )}
     </>
   );
 }
