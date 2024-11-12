@@ -1,7 +1,6 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
-import Image from 'next/image';
 import ArrowBtn from 'public/icons/ArrowBtn';
 import DownArrow from 'public/icons/DownArrow';
 import RenderCalendar from '@/components/shared/Calendar/RenderCalendar';

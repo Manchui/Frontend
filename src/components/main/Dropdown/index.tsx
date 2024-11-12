@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef } from 'react';
-import Image from 'next/image';
 import DownArrow from 'public/icons/DownArrow';
 
 interface DropdownProps {
