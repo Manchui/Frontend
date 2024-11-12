@@ -1,8 +1,8 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 import { memo } from 'react';
 import { Gugi } from 'next/font/google';
-import Image from 'next/image';
 import Link from 'next/link';
+import ArrowBtn from 'public/icons/ArrowBtn';
 import CardContent from '@/components/main/CardSection/CardContent';
 import CardImage from '@/components/main/CardSection/CardImage';
 import type { GetGatheringResponse } from '@manchui-api';
@@ -39,14 +39,14 @@ export function MessageWithLink({ message, buttonText, link, onClick }: { button
     <div className="flex flex-col items-center gap-4 text-pretty text-bookmark-title font-bold">
       <span className={`${gugi.className}`}>{message}</span>
       {link ? (
-        <Link href={link} className="flex w-fit items-center rounded-md bg-blue-800 px-4 py-2 text-sub-response text-white">
+        <Link href={link} className="flex items-center rounded-md bg-black px-4 py-2 text-sub-response text-white">
           {buttonText}
-          <Image src="/icons/main/banner-btn.svg" alt={`${message} 버튼`} width={24} height={24} />
+          <ArrowBtn direction="right" className="size-4 stroke-white mobile:size-7" />
         </Link>
       ) : (
-        <button type="button" onClick={onClick} className="flex w-fit items-center rounded-md bg-blue-800 px-4 py-2 text-10-24-response text-white">
+        <button type="button" onClick={onClick} className="flex items-center rounded-md bg-black px-4 py-2 text-10-24-response text-white">
           {buttonText}
-          <Image src="/icons/main/banner-btn.svg" alt={`${message} 버튼`} width={24} height={24} />
+          <ArrowBtn direction="right" className="size-4 stroke-white mobile:size-7" />
         </button>
       )}
     </div>

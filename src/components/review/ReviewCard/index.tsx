@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import ArrowBtn from 'public/icons/ArrowBtn';
 import Rating from '@/components/shared/Rating';
 import type { GetReviewResponse } from '@manchui-api';
 
@@ -66,20 +67,19 @@ export function ReviewCard({ review }: ReviewCardSProps) {
       >
         <div className="-mb-1 flex w-full items-start justify-between">
           {/* <Rating score={review.score} /> */}
-          <div className="flex w-full flex-col items-start  gap-1 text-lg font-semibold text-blue-900 tablet:flex-row">
-          <span>{review.groupName}</span>
-            <div className='gap-1 flex'> 
-           
-              <span className='hidden tablet:flex'> &bull;</span>
-              <span className="text-blue-500 tablet:text-blue-900 text-sm tablet:text-lg -mt-1 tablet:mt-0">{review.location}</span>
+          <div className="flex w-full flex-col items-start gap-1 text-lg font-semibold text-blue-900 tablet:flex-row">
+            <span>{review.groupName}</span>
+            <div className="flex gap-1">
+              <span className="hidden tablet:flex"> &bull;</span>
+              <span className="-mt-1 text-sm text-blue-500 tablet:mt-0 tablet:text-lg tablet:text-blue-900">{review.location}</span>
             </div>
           </div>
           <Link
             href={`/detail/${review.gatheringId}`}
-            className="inline-flex h-8 items-center justify-center whitespace-nowrap rounded-md bg-blue-800 px-6 py-2 font-bold text-white transition-all duration-200 text-sub-response" 
+            className="inline-flex h-8 items-center justify-center whitespace-nowrap rounded-md bg-blue-800 py-2 pl-6 pr-3 text-sub-response font-bold text-white transition-all duration-200"
           >
             보러가기
-            <Image src="/icons/main/banner-btn.svg" alt="버튼" width={20} height={20} className="-mr-2" />
+            <ArrowBtn direction="right" />
           </Link>
         </div>
         {/* <div className="flex w-full items-center gap-1 text-sm font-semibold text-blue-900 -mt-1 ">

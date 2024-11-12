@@ -13,7 +13,7 @@ const DIRECTION_DEGREE = {
   left: 180,
 } as const;
 
-// arrow-right.svg 이용해서 커스텀 가능하게 만들었습니다. 나중에 지금 컴포넌트로 다 변경해주시면 svg 파일은 삭제하겠습니다.
+// arrow-right.svg 이용해서 커스텀 가능하게 만들었습니다. ArrowBtn 컴포넌트로 다 변경해주시면 svg 파일은 삭제하겠습니다.
 export default  function ArrowBtn({
   direction = 'right',
   color = '#FFFFFF',
@@ -26,7 +26,7 @@ export default  function ArrowBtn({
     <Svg
       width="24"
       height="24"
-      viewBox="0 0 16 16"
+      viewBox="0 0 20 20"
       fill={color}
       className={className}
       style={{ transform: `rotate(${rotationDegree}deg)` }}

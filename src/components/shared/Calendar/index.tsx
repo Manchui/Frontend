@@ -2,6 +2,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
+import ArrowBtn from 'public/icons/ArrowBtn';
+import DownArrow from 'public/icons/DownArrow';
 import RenderCalendar from '@/components/shared/Calendar/RenderCalendar';
 
 interface CalendarProps {
@@ -82,7 +84,8 @@ export default function Calendar({ selectionType, onDateChange, prevRangeStart, 
         <div className="relative flex w-full items-center justify-between">
           <span onClick={() => setDropOpen(!dropOpen)} className="flex cursor-pointer items-center gap-1 text-13-15-response font-semibold text-gray-700">
             {currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월{' '}
-            <Image src="./icons/down-arrow.svg" alt="down arrow" width={18} height={18} className={`duration-300 ${dropOpen ? 'rotate-180' : 'rotate-0'}`} />
+            {/* <Image src="./icons/down-arrow.svg" alt="down arrow" width={18} height={18} className={`duration-300 ${dropOpen ? 'rotate-180' : 'rotate-0'}`} /> */}
+            <DownArrow direction={dropOpen ? 'up' : 'down'} color="black" className="duration-300" />
           </span>
           {dropOpen && (
             <ul
@@ -91,20 +94,18 @@ export default function Calendar({ selectionType, onDateChange, prevRangeStart, 
               }`}
             >
               {years.map((year) => (
-                <li key={year} onClick={() => changeYear(year)} className="cursor-pointer py-1 text-center text-sm hover:bg-gray-50">
+                <li key={year} onClick={() => changeYear(year)} className="py-1 text-center text-sm hover:bg-gray-50">
                   {year}
                 </li>
               ))}
             </ul>
           )}
-          <div className="flex cursor-pointer gap-3">
+          <div className="flex cursor-pointer items-center">
             <button type="button" onClick={() => changeMonth('prev')}>
-              <div className="absolute size-4 rounded-full hover:animate-pingpong hover:bg-gray-50 hover:opacity-0" />
-              <Image src="./icons/left.svg" alt="Previous Btn" width={16} height={16} />
+              <ArrowBtn direction="left" color="black" />
             </button>
             <button type="button" onClick={() => changeMonth('next')}>
-              <div className="absolute size-4 rounded-full hover:animate-pingpong hover:bg-gray-50 hover:opacity-0" />
-              <Image src="./icons/right.svg" alt="Next Btn" width={16} height={16} />
+              <ArrowBtn direction="right" color="black" />
             </button>
           </div>
         </div>
