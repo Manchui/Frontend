@@ -35,7 +35,7 @@ export default function LoginPage() {
   useEffect(() => {
     if (isLoggedIn) {
       // 로그인 상태라면 로그인 페이지로 접근 불가
-      void router.push('/'); // 예시로 대시보드 페이지로 리디렉션
+      void router.push('/main'); // 예시로 대시보드 페이지로 리디렉션
     }
   }, [isLoggedIn, router]);
 

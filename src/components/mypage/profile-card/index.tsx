@@ -26,19 +26,22 @@ export function ProfileCard() {
   };
 
   const handleEdit = async () => {
-    if (nick.length < 3) {
-      Toast('error', '닉네임을 입력해주세요.');
+    if (!nick.trim() && !imagePreview) {
+      Toast('error', '프로필 혹은 닉네임을 수정해주세요.');
       return;
     }
-    if (!imagePreview) {
-      Toast('error', '이미지를 선택해주세요.');
+    if (nick.trim().length >= 1 && nick.trim().length < 3) {
+      Toast('error', '닉네임은 3자 이상이어야 합니다.');
       return;
+    }
+    if (!nick.trim()) {
+      console.log('닉네임이 없을 때');
+      setNick(userInfo.name);
     }
     await editUserInfo(nick, imagePreview || userInfo.image);
   };
 
   const handleImageClick = () => {
-    // 이미지 클릭 시 파일 input을 클릭
     document.getElementById('imageInput')?.click();
   };
 

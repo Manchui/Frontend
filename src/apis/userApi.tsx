@@ -29,7 +29,7 @@ const convertBlobUrlToFile = async (blobUrl: string, filename: string) => {
     // Blob URL에서 데이터 fetch
     const res = await fetch(blobUrl);
     const blob = await res.blob(); // Blob 데이터
-
+    
     // Blob을 File 객체로 변환
     return new File([blob], filename, { type: blob.type });
   } catch (error) {
@@ -53,7 +53,24 @@ const convertBlobUrlToFile = async (blobUrl: string, filename: string) => {
 //   }
 // };
 
+const fetchFileFromUrl = async (fileUrl: string, fileName: string) => {
+  try {
+    const res = await fetch(fileUrl);
+    if (!res.ok) {
+      throw new Error('Failed to fetch file');
+    }
+    const blob = await res.blob();
+    console.log('line32: ', blob);
+    console.log(new File([blob], fileName, { type: blob.type }));
+    return new File([blob], fileName, { type: blob.type });
+  } catch (e) {
+    console.log(e);
+  }
+  return null;
+};
+
 export const editUserInfo = async (nick: string, image: string) => {
+  console.log(image);
   const formData = new FormData();
   formData.append('name', nick); // FormData에 닉네임 추가
   if (image.includes('blob')) {
@@ -61,28 +78,27 @@ export const editUserInfo = async (nick: string, image: string) => {
     if (fileFromBlob) {
       formData.append('image', fileFromBlob);
     }
+  } else {
+    const file = await fetchFileFromUrl(image, 'downloaded-file.png');
+    if (file) {
+      console.log('line82 ', file);
+      formData.append('image', file);
+    }
   }
-  // else if (!image.includes('blob')) {
-  //   const fileFromUrl = await convertBlobUrlToFile2(image);
-  //   formData.append('image', fileFromUrl);
-  // }
 
   try {
     const res = await instance.put('/api/auths/user', formData, {
       headers: {
-        'Authorization': localStorage.getItem('accessToken'),
         'Content-Type': 'multipart/form-data',
       },
     });
-
+    console.log(res);
     Toast('success', '닉네임 수정 되었습니다.');
-    console.log('API 응답:', res);
-    window.location.reload();
-    return { res: res.data, result: true };
   } catch (error) {
     console.error('요청 중 오류 발생:', error);
     return error;
   }
+  return null;
 };
 
 export const logout = async () => {
