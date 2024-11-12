@@ -18,7 +18,7 @@ const EXCLUDUDED_URLS = [
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true,
-  timeout: 1000,
+  timeout: 3000,
   headers: {
     'Content-Type': 'application/json', // JSON 형식으로 요청을 보냄
   },
@@ -108,38 +108,34 @@ interface CustomAxiosRequestConfig extends AxiosRequestConfig {
   retry?: boolean;
 }
 
-const tokenRefresh = async () => {
-  const storedRefreshToken = getCookie('refresh');
-  if (!storedRefreshToken) {
-    throw new Error(`refresh token이 없습니다: ${getCookie('refresh')}`);
-  }
-
+const tokenRefresh = async (): Promise<string> => {
   const res = await instance.post('/api/auths/reissue', undefined, {
     headers: {
       Authorization: localStorage.getItem('accessToken'),
     },
   });
 
-  const { accessToken } = res.data;
-  localStorage.setItem('accessToken', accessToken);
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return accessToken;
+  const token = res.headers.authorization || '';
+  return token as string;
 };
 
 instance.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
-    const originalRequest = error.config as CustomAxiosRequestConfig | undefined;
-
     if (error.response?.status === 401) {
-      // originalRequest.retry = true;
       try {
         const accessToken = await tokenRefresh();
-        instance.defaults.headers.common.Authorization = accessToken;
-        originalRequest.headers = originalRequest.headers || {};
-        originalRequest.headers.Authorization = accessToken;
-        console.log('토큰 재발급 성공');
-        return await instance(originalRequest);
+        if (accessToken) {
+          localStorage.setItem('accessToken', accessToken);
+          return axios.request({
+            ...error.config,
+            headers: {
+              ...error.config?.headers,
+              Authorization: accessToken,
+            },
+          });
+        }
+        return Promise.reject(error);
       } catch (e) {
         return Promise.reject(e);
       }
