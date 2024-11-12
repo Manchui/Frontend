@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
+import type { AxiosError } from 'axios';
 import instance from '@/apis/api';
 import { Toast } from '@/components/shared/Toast';
 import { userStore } from '@/store/userStore';
@@ -29,7 +30,7 @@ const convertBlobUrlToFile = async (blobUrl: string, filename: string) => {
     // Blob URL에서 데이터 fetch
     const res = await fetch(blobUrl);
     const blob = await res.blob(); // Blob 데이터
-    
+
     // Blob을 File 객체로 변환
     return new File([blob], filename, { type: blob.type });
   } catch (error) {
@@ -38,21 +39,6 @@ const convertBlobUrlToFile = async (blobUrl: string, filename: string) => {
   }
 };
 
-// const convertBlobUrlToFile2 = async (url: string) => {
-//   try {
-//     console.log('다운로드시작');
-//     const response = await axios.get(url, { responseType: 'blob' });
-//     const blob = new Blob([response.data]);
-//     const blobURL = URL.createObjectURL(blob);
-//     const a = await convertBlobUrlToFile(blobURL, 'profile-image.png');
-//     console.log(a);
-//     return a;
-//   } catch (error) {
-//     console.log('다운로드실패', error);
-//     return null;
-//   }
-// };
-
 const fetchFileFromUrl = async (fileUrl: string, fileName: string) => {
   try {
     const res = await fetch(fileUrl);
@@ -60,7 +46,6 @@ const fetchFileFromUrl = async (fileUrl: string, fileName: string) => {
       throw new Error('Failed to fetch file');
     }
     const blob = await res.blob();
-    console.log('line32: ', blob);
     console.log(new File([blob], fileName, { type: blob.type }));
     return new File([blob], fileName, { type: blob.type });
   } catch (e) {
@@ -70,7 +55,7 @@ const fetchFileFromUrl = async (fileUrl: string, fileName: string) => {
 };
 
 export const editUserInfo = async (nick: string, image: string) => {
-  console.log(image);
+  console.log(nick);
   const formData = new FormData();
   formData.append('name', nick); // FormData에 닉네임 추가
   if (image.includes('blob')) {
@@ -81,7 +66,6 @@ export const editUserInfo = async (nick: string, image: string) => {
   } else {
     const file = await fetchFileFromUrl(image, 'downloaded-file.png');
     if (file) {
-      console.log('line82 ', file);
       formData.append('image', file);
     }
   }
@@ -92,11 +76,17 @@ export const editUserInfo = async (nick: string, image: string) => {
         'Content-Type': 'multipart/form-data',
       },
     });
-    console.log(res);
     Toast('success', '닉네임 수정 되었습니다.');
-  } catch (error) {
-    console.error('요청 중 오류 발생:', error);
-    return error;
+    window.location.reload();
+    return res;
+  } catch (e) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+    if (e && (e as AxiosError).response) {
+      const errorMessage = ((e as AxiosError).response?.data as { message?: string })?.message || 'Unknown error';
+      Toast('error', errorMessage);
+    } else {
+      Toast('error', 'An unexpected error occurred.');
+    }
   }
   return null;
 };
@@ -118,7 +108,7 @@ export const logout = async () => {
     Toast('success', '로그아웃 되었습니다.');
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error('Logout failed:', error);
+    console.log(error);
     Toast('error', '로그아웃에 실패했습니다.');
   }
 };
