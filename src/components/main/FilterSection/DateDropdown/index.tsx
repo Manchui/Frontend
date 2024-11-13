@@ -5,31 +5,36 @@ import { Toast } from '@/components/shared/Toast';
 import { useSetDateEnd, useSetDateStart } from '@/store/useFilterStore';
 
 export default function DateDropdown() {
-  const [startDate, setStartDate] = useState<string | undefined>(undefined);
-  const [endDate, setEndDate] = useState<string | undefined>(undefined);
-  const [dateDropOpen, setDateDropOpen] = useState(false);
-  const [isDateLocked, setIsDateLocked] = useState(false);
+  const [startDate, setStartDate] = useState<string | null>(null);
+  const [endDate, setEndDate] = useState<string | null>(null);
+  const [dateDropOpen, setDateDropOpen] = useState<boolean>(false);
+  const [isApplyDisabled, setIsApplyDisabled] = useState<boolean>(false);
 
   const setDateStart = useSetDateStart();
   const setDateEnd = useSetDateEnd();
 
-  const handleDateChange = useCallback(
-    (data: { rangeEnd?: string; rangeStart?: string; selectedDate?: string }) => {
-      if (isDateLocked) return;
-      if (data.rangeStart !== undefined) setStartDate(data.rangeStart);
-      if (data.rangeEnd !== undefined) setEndDate(data.rangeEnd);
-    },
-    [isDateLocked],
-  );
+  const handleDateChange = (data: { rangeEnd?: string; rangeStart?: string }) => {
+    if (data.rangeStart) {
+      setStartDate(data.rangeStart);
+      setEndDate(null);
+      setIsApplyDisabled(false);
+    }
+    if (data.rangeEnd) {
+      setEndDate(data.rangeEnd);
+      setIsApplyDisabled(false);
+    }
+  };
 
   const handleSubmit = useCallback(() => {
     if (startDate && endDate) {
       setDateStart(startDate);
       setDateEnd(endDate);
-      setIsDateLocked(true);
+      setIsApplyDisabled(true);
       Toast('success', '날짜가 적용되었습니다.');
+      setDateDropOpen(false);
+    } else {
+      Toast('warning', '날짜 범위를 선택하세요');
     }
-    setDateDropOpen(false);
   }, [endDate, setDateEnd, setDateStart, startDate]);
 
   const handleInitClick = useCallback(() => {
@@ -38,16 +43,16 @@ export default function DateDropdown() {
       return;
     }
 
-    if (setDateStart && setDateEnd) {
-      setStartDate(undefined);
-      setEndDate(undefined);
-      setDateEnd(undefined);
+    if (startDate && endDate) {
+      setStartDate(null);
+      setEndDate(null);
       setDateStart(undefined);
-      setIsDateLocked(false);
+      setDateEnd(undefined);
+      setIsApplyDisabled(false);
       setDateDropOpen(false);
       Toast('success', '날짜 선택이 초기화되었습니다.');
     }
-  }, [startDate, endDate, setDateStart, setDateEnd]);
+  }, [startDate, endDate, setDateEnd, setDateStart]);
 
   return (
     <Dropdown
@@ -69,24 +74,17 @@ export default function DateDropdown() {
       }
       className="left-date-calendar"
     >
-      <div className={`flex flex-col gap-4 border-2 border-black p-6 ${dateDropOpen ? 'animate-dropdown-open' : 'animate-dropdown-close'}`}>
-        <Calendar
-          key={`${startDate}-${endDate}`}
-          selectionType="range"
-          onDateChange={handleDateChange}
-          prevRangeStart={startDate}
-          prevRangeEnd={endDate}
-          isDateLocked={isDateLocked}
-        />
+      <div className={`flex flex-col gap-4 p-6 ${dateDropOpen ? 'animate-dropdown-open' : 'animate-dropdown-close'}`}>
+        <Calendar selectionType="range" onDateChange={handleDateChange} startDate={startDate} endDate={endDate} isApplyDisabled={isApplyDisabled} />
         <div className="flex h-[40px] justify-center gap-2 text-13-16-response font-semibold">
-          <button type="button" onClick={handleInitClick} className="w-[120px] border-2 border-black hover:bg-black hover:text-white">
+          <button type="button" onClick={handleInitClick} className="w-[120px] rounded-xl border border-blue-800 hover:bg-black/10">
             초기화 하기
           </button>
           <button
             type="button"
             onClick={handleSubmit}
-            disabled={isDateLocked}
-            className={`w-[120px] ${isDateLocked ? 'cursor-not-allowed bg-gray-300 text-gray-600' : 'bg-black text-white hover:border-2 hover:border-black hover:bg-white hover:text-black'}`}
+            disabled={isApplyDisabled}
+            className={`w-[120px] rounded-xl ${isApplyDisabled ? 'cursor-not-allowed bg-gray-300 text-gray-600' : 'bg-blue-800 text-white hover:bg-blue-700'}`}
           >
             적용하기
           </button>

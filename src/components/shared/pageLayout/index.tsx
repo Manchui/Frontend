@@ -42,7 +42,10 @@ export default function PageLayout({ children, showHeader = true }: LayoutProps)
     setIs404(router.pathname === '/404');
   }, [router.pathname]);
 
-  const shouldShowHeader = useMemo(() => isClient && !is404 && router.pathname !== '/' && showHeader, [isClient, is404, router.pathname, showHeader]);
+  const shouldShowHeader = useMemo(
+    () => isClient && !is404 && router.pathname !== '/' && router.pathname !== '/login' && router.pathname !== '/signup' && showHeader,
+    [isClient, is404, router.pathname, showHeader],
+  );
   // const shouldShowFooter = pathname !== '/' && !pathname.startsWith('/signup') && !pathname.startsWith('/login') && showFooter;
 
   return (

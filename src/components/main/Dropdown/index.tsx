@@ -8,7 +8,7 @@ interface DropdownProps {
   dropOpen: boolean;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  value?: string;
+  value?: string | null;
 }
 
 export default function Dropdown({ buttonLabel, children, isOpen, setIsOpen, className, dropOpen, value }: DropdownProps) {
@@ -37,7 +37,7 @@ export default function Dropdown({ buttonLabel, children, isOpen, setIsOpen, cla
   }, [isOpen, handleClickOutside]);
 
   return (
-    <div ref={dropdownRef} className="relative cursor-pointer">
+    <div ref={dropdownRef} className="relative">
       <button
         type="button"
         onClick={toggleDropdown}

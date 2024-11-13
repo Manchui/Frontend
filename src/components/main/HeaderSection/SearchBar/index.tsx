@@ -63,7 +63,7 @@ export default function SearchBar() {
         value={searchValue}
         onChange={handleSearchChange}
         placeholder="만취에서 찾고 계신 모임이 있나요?"
-        className="w-search-180-240 bg-background text-13-16-response font-semibold outline-none placeholder:text-13-16-response placeholder:text-black"
+        className="w-search-180-240 bg-background text-13-16-response font-semibold outline-none placeholder:text-13-16-response placeholder:text-black/60"
       />
     </m.form>
   );

@@ -59,7 +59,9 @@ export default function CardContent({ gathering }: CardContentProps) {
       <Link href={`/detail/${gatheringId}`} className="my-auto flex flex-col gap-1">
         <div className={`mb-2 flex flex-col tablet:mb-0 ${closed ? 'text-gray-200' : 'text-black'}`}>
           <span className="text-pretty text-16-20-response font-semibold">{groupName}</span>
-          <span className={`text-sub-response font-medium text-gray-400 mobile:font-semibold ${closed && '!text-gray-200'}`}>{location}</span>
+          <span className={`text-sub-response font-medium text-gray-400 mobile:font-semibold ${closed && '!text-gray-200'}`}>
+            {gathering.category} | {location}
+          </span>
         </div>
         <DateChip dateTime={new Date(gatheringDate)} closed={closed} />
         <ProgressBar maxValue={maxUsers} value={currentUsers} mainValue={minUsers} design="basics" closed={closed} />
