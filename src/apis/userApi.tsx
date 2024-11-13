@@ -38,21 +38,6 @@ const convertBlobUrlToFile = async (blobUrl: string, filename: string) => {
   }
 };
 
-// const convertBlobUrlToFile2 = async (url: string) => {
-//   try {
-//     console.log('다운로드시작');
-//     const response = await axios.get(url, { responseType: 'blob' });
-//     const blob = new Blob([response.data]);
-//     const blobURL = URL.createObjectURL(blob);
-//     const a = await convertBlobUrlToFile(blobURL, 'profile-image.png');
-//     console.log(a);
-//     return a;
-//   } catch (error) {
-//     console.log('다운로드실패', error);
-//     return null;
-//   }
-// };
-
 export const editUserInfo = async (nick: string, image: string) => {
   const formData = new FormData();
   formData.append('name', nick); // FormData에 닉네임 추가
@@ -62,10 +47,6 @@ export const editUserInfo = async (nick: string, image: string) => {
       formData.append('image', fileFromBlob);
     }
   }
-  // else if (!image.includes('blob')) {
-  //   const fileFromUrl = await convertBlobUrlToFile2(image);
-  //   formData.append('image', fileFromUrl);
-  // }
 
   try {
     const res = await instance.put('/api/auths/user', formData, {
@@ -106,3 +87,17 @@ export const logout = async () => {
     Toast('error', '로그아웃에 실패했습니다.');
   }
 };
+
+export const kakaoLogin = async (code: string) => {
+  console.log(code);
+  try {
+    const res = await instance.post('/api/auths/kakao', { code });
+    // localStorage.setItem('accessToken', res.headers.authorization);
+    // Toast('success', res.data.message);
+    // userStore.getState().login();
+    // window.location.reload();
+  } catch (error) {
+    // Toast('error', error.response.data.message);
+    console.log(error);
+  }
+}
