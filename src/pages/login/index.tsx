@@ -79,6 +79,13 @@ export default function LoginPage() {
     }
   };
 
+  const KAKAO_REST = process.env.NEXT_PUBLIC_REST_API_KEY;
+  const K_REDIRECT_URI = 'http://localhost:3000/oauth';
+  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST}&redirect_uri=${K_REDIRECT_URI}&response_type=code`;
+
+  const loginKakao = () => {
+    window.location.href = kakaoURL;
+  };
   return (
     <div className="mt-[60px] flex h-screen min-h-[900px] flex-row bg-white tablet:bg-blue-800 pc:w-full pc:bg-white">
       <div className="m-0 flex min-h-[820px] w-full flex-shrink-0 flex-col items-center justify-center pc:w-1/2 pc:space-y-6">
@@ -87,6 +94,9 @@ export default function LoginPage() {
         <p className="m-auto hidden max-w-80 text-pretty text-center text-lg pc:flex">
           지금 바로 로그인하여 취미 활동을 통해 새로운 사람들과 특별한 경험을 만들어보세요.
         </p>
+        <button type="button" onClick={loginKakao}>
+          Kakao Talk
+        </button>
         {/* pc용 end */}
         <form onSubmit={handleLogin} className="m-0 flex h-fit flex-col items-center bg-white p-8 tablet:w-[620px] tablet:rounded-2xl">
           <h2 className="mb-4 text-center text-3xl font-bold pc:m-auto pc:hidden pc:text-4xl">로그인</h2>
