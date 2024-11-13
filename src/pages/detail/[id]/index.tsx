@@ -5,6 +5,7 @@ import { FloatingBar } from '@/components/detail/FloatingBar';
 import { GatheringCard } from '@/components/detail/GatheringCard';
 import { ReviewListCard } from '@/components/detail/ReviewListCard';
 import Score from '@/components/detail/score';
+import RootLayout from '@/components/shared/RootLayout';
 import { useQuery } from '@tanstack/react-query';
 
 export default function DetailPage() {
@@ -27,21 +28,16 @@ export default function DetailPage() {
   const gatherings = data;
 
   return (
-    <main className="pb-[96px] pt-[60px]">
-      <GatheringCard gatherings={gatherings} />
+    <main className="pb-[80px] pt-[60px]">
+      <RootLayout>
+        <GatheringCard gatherings={gatherings} />
 
-      <div className="mx-auto w-full max-w-[1200px]">
-        <section className="mt-6 px-4 tablet:mt-9 tablet:px-10 pc:mt-10 pc:px-5">
-          <h1 className="text-xl font-bold">모임설명</h1>
-          <p className="my-2 whitespace-pre-line">{gatherings.content}</p>
-          <hr className="border-gray-50" />
-        </section>
-        <Score reviewsList={gatherings.reviewsList} />
-        <section className="mt-6 min-h-20 px-4 tablet:mt-9 tablet:px-10 pc:mt-10 pc:px-5">
-          {gatherings.reviewsList && <ReviewListCard reviews={gatherings.reviewsList} />}
-        </section>
-      </div>
-      <FloatingBar id={isId} gatherings={gatherings} usersList={gatherings.usersList} maxUsers={gatherings.maxUsers} />
+        <div className="px-4 tablet:px-10 pc:px-5">
+          <Score reviewsList={gatherings.reviewsList} />
+          <section className="mt-6 min-h-20 tablet:mt-9 pc:mt-10">{gatherings.reviewsList && <ReviewListCard reviews={gatherings.reviewsList} />}</section>
+        </div>
+        <FloatingBar id={isId} gatherings={gatherings} usersList={gatherings.usersList} maxUsers={gatherings.maxUsers} />
+      </RootLayout>
     </main>
   );
 }

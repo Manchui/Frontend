@@ -53,7 +53,7 @@ export default function IntroduceSlide() {
             className="relative flex w-[300px] cursor-pointer flex-col items-center justify-center rounded-xl p-4 shadow-lg"
             style={{ backgroundColor: card.bg }}
           >
-            <Image src={`${POSITION_BASE}/${card.type}.svg`} alt={`${card.title} Icon`} width={200} height={100} className="mb-4" />
+            <Image src={`${POSITION_BASE}/${card.type}.svg`} alt={`${card.title} Icon`} width={200} height={100} priority className="mb-4 object-cover" />
             <h2 className="text-16-20-response font-bold text-white">{card.title}</h2>
           </m.div>
         ))}

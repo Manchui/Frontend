@@ -26,7 +26,11 @@ type DropdownProps = {
 export default function Dropdown({ locations = [], onDateChange, onLocationChange, onSortChange, sortOptions = [], type }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<string>('지역전체');
-  const [selectedDates, setSelectedDates] = useState<{ rangeEnd?: string | null; rangeStart?: string | null }>({});
+  const [selectedDates, setSelectedDates] = useState<{
+    rangeEnd: string | null;
+    rangeStart: string | null;
+  }>({ rangeEnd: null, rangeStart: null });
+
   const [dateTriggerText, setDateTriggerText] = useState<string>('날짜전체');
   const [selectedSort, setSelectedSort] = useState<string>('마감임박');
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -55,7 +59,10 @@ export default function Dropdown({ locations = [], onDateChange, onLocationChang
   };
 
   const handleDateChange = (data: { rangeEnd?: string; rangeStart?: string }) => {
-    setSelectedDates(data);
+    setSelectedDates({
+      rangeEnd: data.rangeEnd || null,
+      rangeStart: data.rangeStart || null,
+    });
   };
 
   const handleSortSelect = (sort: string) => {
@@ -136,7 +143,7 @@ export default function Dropdown({ locations = [], onDateChange, onLocationChang
           )}
           {type === 'date' && onDateChange && (
             <div className="flex flex-col items-center pb-3 pt-5">
-              <Calendar selectionType="range" onDateChange={handleDateChange} />
+              <Calendar selectionType="range" onDateChange={handleDateChange} startDate={selectedDates.rangeStart} />
               <div className="mt-2 flex gap-2">
                 <button
                   type="button"

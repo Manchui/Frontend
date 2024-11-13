@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import QNAItem from '@/components/landing/QNA/QNAItem';
-import { QNAS } from '@/constants/qna';
+import FAQItem from '@/components/landing/FAQ/FAQItem';
+import { FAQS } from '@/constants/faq';
 
 const DEFAULT_OPEN_IDX = 0;
 
-export default function QNA() {
+export default function FAQ() {
   const [activeIndex, setActiveIndex] = useState<number>(DEFAULT_OPEN_IDX);
 
   const onClickActiveFaq = (idx: number) => {
@@ -22,8 +22,8 @@ export default function QNA() {
           <span className="text-24-40-response font-bold">자주 묻는 질문</span>
           <div className="mx-auto w-full max-w-[1200px]">
             <ul className="space-y-6 drop-shadow-sm">
-              {QNAS.map((item, i) => (
-                <QNAItem key={item.question} isOpen={activeIndex === i} onClickOpenButton={() => onClickActiveFaq(i)} {...item} />
+              {FAQS.map((item, i) => (
+                <FAQItem key={item.question} isOpen={activeIndex === i} onClickOpenButton={() => onClickActiveFaq(i)} {...item} />
               ))}
             </ul>
           </div>
