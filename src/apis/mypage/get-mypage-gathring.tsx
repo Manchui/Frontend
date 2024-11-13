@@ -4,9 +4,9 @@ import type { MyPageBaseData } from '@/types/mypage';
 
 import instance from '../api';
 
-export default async function getMyGathering() {
+export default async function getMyGathering(page: number, size: number) {
   try {
-    const res = await instance.get<MyPageBaseData>('/api/users/gatherings?page=0&size=10');
+    const res = await instance.get<MyPageBaseData>(`/api/users/gatherings?page=${page}&size=${size}`);
     return res.data.data;
   } catch (e: unknown) {
     if (axios.isAxiosError(e)) {

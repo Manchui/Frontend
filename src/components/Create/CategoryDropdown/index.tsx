@@ -18,3 +18,4 @@ export function CategoryDropdown({ setSelectedCategory ,error}: CategoryDropdown
     </div>
   );
 }
+

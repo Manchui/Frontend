@@ -1,17 +1,17 @@
-import { CardList } from '@/components/landing/CardList';
-import { IntroduceReview } from '@/components/landing/IntroduceReview';
-import IntroduceService from '@/components/landing/IntroduceService';
-import MainIntro from '@/components/landing/MainIntro';
+import FeatureSection from '@/components/landing/FeatureSection';
+import ImageSection from '@/components/landing/ImageSection';
+import LandingMain from '@/components/landing/LandingMain';
+import PopularList from '@/components/landing/PopularList';
+import ReviewSection from '@/components/landing/ReviewSection';
 
 export default function Home() {
   return (
     <div className="bg-background">
-      <div className="mx-auto min-h-screen min-w-[330px] max-w-screen-pc overflow-hidden pt-[100px]">
-        <MainIntro />
-        <IntroduceService />
-        <IntroduceReview />
-      </div>
-      <CardList />
+      <LandingMain />
+      <FeatureSection />
+      <PopularList />
+      <ImageSection />
+      <ReviewSection />
     </div>
   );
 }
