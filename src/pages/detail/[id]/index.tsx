@@ -33,7 +33,7 @@ export default function DetailPage() {
       <div className="mx-auto w-full max-w-[1200px]">
         <section className="mt-6 px-4 tablet:mt-9 tablet:px-10 pc:mt-10 pc:px-5">
           <h1 className="text-xl font-bold">모임설명</h1>
-          <p className="my-2">{gatherings.content}</p>
+          <p className="my-2 whitespace-pre-line">{gatherings.content}</p>
           <hr className="border-gray-50" />
         </section>
         <Score reviewsList={gatherings.reviewsList} />
