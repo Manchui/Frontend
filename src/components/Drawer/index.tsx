@@ -20,6 +20,7 @@ interface DrawerProps {
 export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [, setIsMobile] = useState(false);
+
   const router = useRouter();
 
   const isLoggedIns = userStore((state) => state.isLoggedIn);
@@ -92,14 +93,7 @@ export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
             <div className="flex items-center justify-between gap-3 border-b border-blue-400 p-4">
               <div className="flex gap-2">
                 <div>
-                  <Image
-                    src={userData.image || '/icons/person-rounded.png'}
-                    alt="profile"
-                    width={40}
-                    height={40}
-                    style={{ objectFit: 'cover' }}
-                    className="size-10 rounded-full"
-                  />
+                  <Image src={userData.image || '/images/profile.svg'} alt="profile" width={40} height={40} className="size-10 rounded-full object-cover" />
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-white">{userData.name}</p>
@@ -109,7 +103,7 @@ export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
               <Link
                 href="/mypage"
                 onClick={closeDrawer}
-                className="h-6 w-[100px] rounded-full border-2 border-white text-center text-sm font-semibold text-white"
+                className="h-6 w-[100px] rounded-full border-2 border-white text-center text-sm font-semibold text-white duration-200 hover:bg-blue-900"
               >
                 마이페이지
               </Link>
@@ -129,8 +123,8 @@ export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
           <div className="flex-grow overflow-y-auto pt-4 text-base font-medium">
             <div
               className={clsx(
-                'flex w-full cursor-pointer items-center justify-start space-x-2 border-b border-blue-600 px-4 py-3',
-                router.pathname === '/main' ? 'bg-blue-700' : 'duration-300 hover:bg-blue-700',
+                'flex w-full cursor-pointer items-center justify-start space-x-2 border-b border-blue-600 px-4 py-3 duration-300',
+                router.pathname === '/main' ? 'bg-blue-700' : 'hover:bg-blue-900',
               )}
               onClick={() => {
                 void router.push('/main');
@@ -142,8 +136,8 @@ export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
             </div>
             <div
               className={clsx(
-                'flex w-full cursor-pointer items-center justify-start space-x-2 border-b border-blue-600 px-4 py-3',
-                router.pathname === '/review' ? 'bg-blue-700' : 'duration-300 hover:bg-blue-700',
+                'flex w-full cursor-pointer items-center justify-start space-x-2 border-b border-blue-600 px-4 py-3 duration-300',
+                router.pathname === '/review' ? 'bg-blue-700' : 'hover:bg-blue-900',
               )}
               onClick={() => {
                 void router.push('/review');
@@ -156,8 +150,8 @@ export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
 
             <div
               className={clsx(
-                'flex w-full cursor-pointer items-center justify-start space-x-2 border-b border-blue-600 px-4 py-3',
-                router.pathname === '/bookmark' ? 'bg-blue-700' : 'duration-300 hover:bg-blue-700',
+                'flex w-full cursor-pointer items-center justify-start space-x-2 border-b border-blue-600 px-4 py-3 duration-300',
+                router.pathname === '/bookmark' ? 'bg-blue-700' : 'hover:bg-blue-900',
               )}
               onClick={() => {
                 void router.push('/bookmark');

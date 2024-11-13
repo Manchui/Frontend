@@ -1,5 +1,5 @@
 import type { Dispatch, SetStateAction } from 'react';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import Dropdown from '@/components/main/Dropdown';
 import { Toast } from '@/components/shared/Toast';
 import { REGION_DATA } from '@/constants/contants';
@@ -12,20 +12,22 @@ interface RegionDropdownProps {
 export default function RegionDropdown({ location, setLocation }: RegionDropdownProps) {
   const [regionDropOpen, setRegionDropOpen] = useState(false);
 
-  const handleInitClick = () => {
+  const handleInitClick = useCallback(() => {
     setLocation(undefined);
     setRegionDropOpen(false);
 
     Toast('success', '지역 필터가 초기화되었습니다.');
-  };
+  }, [setLocation]);
 
-  const handleRegionSelect = (value: string) => {
-    setLocation(value);
-    setRegionDropOpen(false);
+  const handleRegionSelect = useCallback(
+    (value: string) => {
+      setLocation(value);
+      setRegionDropOpen(false);
 
-    Toast('success', `${value} 지역이 선택되었습니다.`);
-  };
-
+      Toast('success', `${value} 지역이 선택되었습니다.`);
+    },
+    [setLocation],
+  );
   return (
     <Dropdown
       value={location}
