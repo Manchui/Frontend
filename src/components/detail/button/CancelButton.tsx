@@ -3,6 +3,7 @@ import { Button } from '@/components/shared/button';
 import Modal from '@/components/shared/Modal';
 import { Toast } from '@/components/shared/Toast';
 import { useModal } from '@/hooks/useModal';
+import { userStore } from '@/store/userStore';
 import { useMutation } from '@tanstack/react-query';
 
 import type { DetailPageBaseType } from '../FloatingBar';
@@ -10,12 +11,13 @@ import type { DetailPageBaseType } from '../FloatingBar';
 export function CancelButton({ id, gatherings }: DetailPageBaseType) {
   const { isOpen, openModal, closeModal } = useModal();
   const token = localStorage.getItem('accessToken');
-  const name = localStorage.getItem('userName');
+  const name = userStore((state) => state.user.name);
+  const isName = token && 'name' in gatherings && name === gatherings.groupName;
 
   const mutation = useMutation({
     mutationFn: () => deleteCancellation(id),
     onSuccess: () => {
-      Toast('success', '취소 성공했습니다!');
+      Toast('success', '신청이 취소 되었습니다!');
       window.location.reload();
     },
     onError: (error) => {
@@ -25,7 +27,7 @@ export function CancelButton({ id, gatherings }: DetailPageBaseType) {
 
   return (
     <div>
-      <Button onClick={openModal} label={token && name === gatherings.groupName ? '모임 취소하기' : '참여 취소하기'} size="small" variant="white" />
+      <Button onClick={openModal} label={isName ? '모임 취소하기' : '참여 취소하기'} size="small" variant="white" />
       <Modal
         buttons={[
           {
@@ -35,7 +37,7 @@ export function CancelButton({ id, gatherings }: DetailPageBaseType) {
           {
             label: '확인',
             onClick: () => {
-              if (token) {
+              if (isName) {
                 closeModal();
               } else {
                 mutation.mutate();
@@ -46,11 +48,11 @@ export function CancelButton({ id, gatherings }: DetailPageBaseType) {
         isOpen={isOpen}
         onClose={closeModal}
       >
-        {token ? (
+        {isName ? (
           <div className="mx-16 mt-10 text-center">
             <div className="text-xl font-semibold text-amber-500">{gatherings.groupName}</div>
             <br />
-            모임을 취소 기능은 준비 중 입니다. 😥
+            모임 삭제 기능은 준비 중 입니다. 😥
           </div>
         ) : (
           <div className="mx-16 mt-10 text-center">

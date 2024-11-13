@@ -45,7 +45,7 @@ export default function BookmarkPage() {
           <Lottie animationData={Error} className="size-full border-b-2 border-cardBorder bg-background" />
         </div>
       ) : (
-        <BookmarkBanner />
+        <BookmarkBanner isError={isError} />
       )}
       <RootLayout>
         <BookmarkContainer>

@@ -1,3 +1,4 @@
+import { userStore } from '@/store/userStore';
 import type { DetailData, UsersList } from '@/types/detail';
 import type { GatheringList } from '@/types/mypage';
 
@@ -17,7 +18,7 @@ interface FloatingBarProps extends DetailPageBaseType {
 }
 
 export function FloatingBar({ gatherings, id, usersList, maxUsers }: FloatingBarProps) {
-  const myUserName = localStorage.getItem('userName');
+  const myUserName = userStore((state) => state.user.name);
   const findUserId = usersList.find((user) => user.name === myUserName);
   const isDisabled = usersList.length === maxUsers;
 
