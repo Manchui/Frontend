@@ -43,14 +43,10 @@ export function ProfileCard() {
 
   return (
     <div className="relative m-auto h-auto w-full rounded-3xl p-2.5 tablet:p-4 pc:p-5">
-      <div className="absolute left-[4%] top-[-40%] rounded-full bg-white p-1 phablet:left-[7%] tablet:left-[6%] pc:left-[8.5%]">
-        <Image
-          className="size-[60px] rounded-full object-cover phablet:size-[70px] md:size-[90px]"
-          src={userInfo.image}
-          alt="프로필 이미지"
-          width={70}
-          height={70}
-        />
+      <div className="absolute left-[4%] top-[-40%] phablet:left-[7%] tablet:left-[6%] pc:left-[8.5%]">
+        <div className="size-[60px] phablet:size-[70px] md:size-[90px]">
+          <Image className="relative rounded-full bg-background object-cover p-1" src={userInfo.image} alt="프로필 이미지" fill />
+        </div>
       </div>
       <div className="flex">
         <div className="m-2 size-1/6 phablet:size-1/5 tablet:size-1/6" />
