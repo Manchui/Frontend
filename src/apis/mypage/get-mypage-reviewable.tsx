@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Toast } from '@/components/shared/Toast';
 import type { MyPageBaseData } from '@/types/mypage';
 
-import instance from '../api';
+import { instance } from '../api';
 
 // NOTE: 리뷰 작성 가능한 모임 목록 조회
 export default async function getMyReviewable(page: number, size: number) {

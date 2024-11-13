@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Toast } from '@/components/shared/Toast';
 import type { BaseData } from '@/types/detail';
 
-import instance from '../api';
+import { instance } from '../api';
 
 export default async function deleteCancellation(gatheringsId: string | number) {
   try {

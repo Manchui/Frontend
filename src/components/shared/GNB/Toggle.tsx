@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
-import { logout } from '@/apis/userApi';
+import { logout } from '@/apis/user/postUser';
 
 interface ToggleProps {
   userData: {

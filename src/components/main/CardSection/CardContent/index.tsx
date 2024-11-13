@@ -1,7 +1,7 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 import { useState } from 'react';
 import RedHeart from 'public/icons/RedHeart';
-import instance from '@/apis/api';
+import { instance } from '@/apis/api';
 import DateChip from '@/components/shared/chip/DateChip';
 import { ProgressBar } from '@/components/shared/progress-bar';
 import { Toast } from '@/components/shared/Toast';

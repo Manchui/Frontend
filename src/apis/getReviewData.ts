@@ -1,4 +1,4 @@
-import instance from '@/apis/api';
+import { instanceWithoutAccess } from '@/apis/api';
 import type { GetReviewResponse } from '@manchui-api';
 
 type GetReviewProps= {
@@ -35,7 +35,7 @@ export async function getReviewData({
 
  
   try {
-    const res = await instance.get<GetReviewResponse>('/api/reviews?', {
+    const res = await instanceWithoutAccess.get<GetReviewResponse>('/api/reviews?', {
       params,
     });
 

@@ -1,39 +1,35 @@
 import { useState } from 'react';
 import Image from 'next/image';
-import { editUserInfo } from '@/apis/userApi';
+import { editUserInfo } from '@/apis/user/putUser';
 import Input from '@/components/shared/Input';
 import Modal from '@/components/shared/Modal';
-import { Toast } from '@/components/shared/Toast';
 import { useModal } from '@/hooks/useModal';
-import { userStore } from '@/store/userStore';
+import * as validator from '@/libs/validateForm';
+import { userStore } from '@/store/userStore';  
 
 export function ProfileCard() {
   const { isOpen, openModal, closeModal } = useModal();
   const [nick, setNick] = useState('');
   const userInfo = userStore((state) => state.user);
-
   const [imagePreview, setImagePreview] = useState('');
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files || null;
     if (!files) return;
-    const file = files[0]; // 파일 선택
-    if (file) {
-      // 파일을 URL로 변환하여 미리보기로 사용
-      const previewUrl = URL.createObjectURL(file);
-      setImagePreview(previewUrl); // 상태 업데이트
-    }
+    const previewUrl = URL.createObjectURL(files[0]);
+    setImagePreview(previewUrl);
   };
 
   const handleEdit = async () => {
-    if (!nick.trim() && !imagePreview) {
-      Toast('error', '프로필 혹은 닉네임을 수정해주세요.');
-      return;
-    }
-    if (nick.trim().length >= 1 && nick.trim().length < 3) {
-      Toast('error', '닉네임은 3자 이상이어야 합니다.');
-      return;
-    }
+    // if (!nick.trim() && !imagePreview) {
+    //   Toast('error', '프로필 혹은 닉네임을 수정해주세요.');
+    //   return;
+    // }
+    const [editVal, nickVal] = [
+      validator.isNotEditted(nick, imagePreview),
+      validator.isValidNickname(nick),
+    ];
+    if(!editVal || !nickVal) return; 
     await editUserInfo(nick || userInfo.name, imagePreview || userInfo.image);
   };
 
@@ -87,11 +83,7 @@ export function ProfileCard() {
             <div className="flex flex-col gap-5 px-6 pt-6">
               <div className="text-2lg font-semibold">프로필 수정하기</div>
               <div onClick={handleImageClick} className="relative size-14 cursor-pointer hover:opacity-80">
-                {imagePreview ? (
-                  <Image src={imagePreview} alt="프로필 이미지" fill className="rounded-full border-2 border-blue-500 object-cover" />
-                ) : (
-                  <Image src={userInfo.image} alt="프로필 이미지" fill className="rounded-full border-2 border-blue-500 object-cover" />
-                )}
+                <Image src={imagePreview || userInfo.image} alt="프로필 이미지" fill className="rounded-full border-2 border-blue-500 object-cover" />
               </div>
 
               <Input type="text" name="nick" nickValue={userInfo.name} onChange={(e) => setNick(e.target.value)} />

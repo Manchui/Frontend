@@ -1,4 +1,4 @@
-import instance from '@/apis/api';
+import { instance } from '@/apis/user/getUser';
 import type { GetBookmarkRequest, GetBookmarkResponse } from '@manchui-api';
 
 export async function getBookmarkData(request: GetBookmarkRequest): Promise<GetBookmarkResponse> {

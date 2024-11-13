@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { getUserInfo } from '@/apis/userApi';
+import { getUserInfo } from '@/apis/user/getUser';
 import Drawer from '@/components/Drawer';
 import Toggle from '@/components/shared/GNB/Toggle';
 import { formatDate } from '@/libs/formatDate';
@@ -19,7 +19,7 @@ export default function GNB() {
 
   const userinfo = userStore((state) => state.user);
   const updateUser = userStore((state) => state.updateUser);
-
+  
   useEffect(() => {
     const axiosUserData = async () => {
       const accessToken: string | null = localStorage.getItem('accessToken');
