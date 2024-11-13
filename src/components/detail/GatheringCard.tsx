@@ -33,12 +33,7 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
             <p className="text-lg font-semibold">{gatherings.groupName}</p>
             {localStorage.getItem('accessToken') && (
               <button type="button">
-                <Image
-                  src={gatherings.isHearted ? '/icons/heart-active-noround.svg' : '/icons/heart-inactive-noround.svg'}
-                  alt="찜하기 버튼"
-                  width={28}
-                  height={28}
-                />
+                <Image src={gatherings.hearted ? '/icons/heart-red.svg' : '/icons/heart-outline.svg'} alt="찜하기 버튼" width={28} height={28} />
               </button>
             )}
           </div>

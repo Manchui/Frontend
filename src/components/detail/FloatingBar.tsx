@@ -1,6 +1,5 @@
 import { userStore } from '@/store/userStore';
 import type { DetailData, UsersList } from '@/types/detail';
-import type { GatheringList } from '@/types/mypage';
 
 import AttendanceButton from './button/AttendanceButton';
 import { CancelButton } from './button/CancelButton';
@@ -8,8 +7,8 @@ import ShareButton from './button/ShareButton';
 import { Button } from '../shared/button';
 
 export interface DetailPageBaseType {
-  gatherings: DetailData | GatheringList;
-  id: string | number;
+  gatherings: DetailData;
+  id: string;
 }
 
 interface FloatingBarProps extends DetailPageBaseType {
@@ -20,7 +19,7 @@ interface FloatingBarProps extends DetailPageBaseType {
 export function FloatingBar({ gatherings, id, usersList, maxUsers }: FloatingBarProps) {
   const myUserName = userStore((state) => state.user.name);
   const findUserId = usersList.find((user) => user.name === myUserName);
-  const isDisabled = usersList.length === maxUsers;
+  const isDisabled = usersList.length === maxUsers || gatherings.closed;
 
   return (
     <footer className="fixed inset-x-0 bottom-0 flex min-h-[84px] items-center justify-between border-t bg-white px-10 py-5">
@@ -34,7 +33,7 @@ export function FloatingBar({ gatherings, id, usersList, maxUsers }: FloatingBar
           <ShareButton />
         </div>
       ) : isDisabled ? (
-        <Button label="참여하기" size="primary" variant="primary" disabled />
+        <Button label="마감되었습니다" size="primary" variant="primary" disabled />
       ) : (
         <AttendanceButton gatherings={gatherings} id={id} />
       )}
