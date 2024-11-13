@@ -91,7 +91,7 @@ export const logout = async () => {
 export const kakaoLogin = async (code: string) => {
   console.log(code);
   try {
-    const res = await instance.post('/api/auths/kakao', { code });
+    await instance.post('/api/auths/kakao', { code });
     // localStorage.setItem('accessToken', res.headers.authorization);
     // Toast('success', res.data.message);
     // userStore.getState().login();
@@ -100,4 +100,4 @@ export const kakaoLogin = async (code: string) => {
     // Toast('error', error.response.data.message);
     console.log(error);
   }
-}
+};
