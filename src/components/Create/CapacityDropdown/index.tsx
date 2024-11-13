@@ -20,8 +20,8 @@ export function CapacityDropdown({ errorMin, errorMax, selectedMinNum, selectedM
   return (
     <div>
       <h2 className="mb-3 text-base font-semibold text-gray-900"> 모집 정원 </h2>
-      <div className="flex w-full flex-col justify-center gap-2 mobile:flex-row mobile:justify-between tablet:gap-10">
-        <div className="flex flex-1 items-center">
+      <div className="flex w-full flex-col justify-center gap-2 phablet:flex-row phablet:justify-between phablet:gap-10">
+        <div className="flex flex-1 items-center gap-2">
           <p className="mr-2 whitespace-nowrap text-sm font-medium">최소 인원 </p>
           <div className="flex-1">
             <LongDropdown
@@ -33,7 +33,7 @@ export function CapacityDropdown({ errorMin, errorMax, selectedMinNum, selectedM
           </div>
         </div>
 
-        <div className="flex flex-1 items-center">
+        <div className="flex flex-1 items-center gap-2">
           <p className="mr-2 whitespace-nowrap text-sm font-medium">최대 인원 </p>
           <div className="flex-1">
             <LongDropdown

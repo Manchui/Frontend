@@ -317,15 +317,22 @@ export default function CreatePage() {
               <div className="-mt-4 flex gap-2">
                 <button
                   type="button"
-                  onClick={handleDateReset}
-                  className="h-10 w-[120px] rounded-xl border-2 border-blue-800 bg-white text-blue-800 hover:border-blue-400 hover:text-blue-400"
+                  onClick={() => {
+                    if (!selectedDates.selectedDate) {
+                      Toast('warning', '날짜를 선택하세요');
+                      return;
+                    }
+                    handleDateReset();
+                    Toast('success', '날짜 선택이 초기화되었습니다.');
+                  }}
+                  className="h-10 w-[120px] rounded-xl border border-blue-800 hover:bg-black/10"
                 >
                   초기화하기
                 </button>
                 <button
                   type="button"
                   onClick={handleDateApply}
-                  className={`h-10 w-[120px] rounded-xl ${selectedDates.selectedDate ? 'bg-blue-800 text-white hover:bg-blue-700' : 'bg-gray-200 text-gray-500'}`}
+                  className={`h-10 w-[120px] rounded-xl ${selectedDates.selectedDate ? 'bg-blue-800 text-white hover:bg-blue-700' : 'cursor-not-allowed bg-gray-300 text-gray-600'}`}
                 >
                   적용하기
                 </button>
