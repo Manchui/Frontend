@@ -38,7 +38,6 @@ export default function Toggle({ userData }: ToggleProps) {
       setIsModalOpen(false);
     }
   };
-
   // 화면사이즈 변경에 따라 닫히게
   useEffect(() => {
     const handleResize = () => closeModal();
@@ -69,7 +68,7 @@ export default function Toggle({ userData }: ToggleProps) {
         <div
           className={clsx(
             'absolute flex size-12 rounded-full transition-all duration-100 ease-in-out',
-            isModalOpen ? (isProfileHover ? 'bg-blue-200' : 'bg-blue-100') : 'bg-blue-200',
+            isModalOpen ? (isProfileHover ? 'bg-gray-50 shadow-md' : 'shadow-md') : 'bg-gray-50 shadow-md',
           )}
           onClick={isModalOpen ? closeModal : openModal}
           onMouseEnter={handleMouseEnter}
@@ -100,7 +99,7 @@ export default function Toggle({ userData }: ToggleProps) {
       {/* 모달 */}
       {isModalOpen && (
         <div className={`absolute -right-9 top-14 z-50 flex w-32 flex-col gap-1 rounded-lg bg-white p-2 drop-shadow-2xl transition-transform ${animation}`}>
-          <Link href="/mypage" onClick={() => setIsModalOpen(false)} className="rounded-lg p-1 transition-colors duration-100 hover:bg-blue-100">
+          <Link href="/mypage" onClick={() => setIsModalOpen(false)} className="rounded-lg p-1 transition-colors duration-100 hover:bg-gray-50">
             <div className="flex flex-row content-between items-center">
               <Image src="/icons/person.svg" className="size-6" alt="프로필" width={24} height={24} />
               <p className="ml-1 text-base font-semibold text-blue-800">마이페이지</p>
@@ -110,7 +109,7 @@ export default function Toggle({ userData }: ToggleProps) {
           <button
             type="button"
             onClick={handleLogout}
-            className="flex flex-row content-between items-center rounded-lg p-1 transition-colors duration-100 hover:bg-blue-100"
+            className="flex flex-row content-between items-center rounded-lg p-1 transition-colors duration-100 hover:bg-gray-50"
           >
             <Image src="/icons/exit-black.svg" className="size-6" alt="프로필" width={24} height={24} />
             <p className="ml-1 text-base font-semibold text-blue-800">로그아웃</p>
