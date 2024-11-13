@@ -45,12 +45,11 @@ export function ProfileCard() {
     <div className="relative m-auto h-auto w-full rounded-3xl p-2.5 tablet:p-4 pc:p-5">
       <div className="absolute left-[4%] top-[-40%] rounded-full bg-white p-1 phablet:left-[7%] tablet:left-[6%] pc:left-[8.5%]">
         <Image
-          className="size-[60px] rounded-full phablet:size-[70px] md:size-[90px]"
+          className="size-[60px] rounded-full object-cover phablet:size-[70px] md:size-[90px]"
           src={userInfo.image}
           alt="프로필 이미지"
           width={70}
           height={70}
-          style={{ objectFit: 'cover' }}
         />
       </div>
       <div className="flex">
@@ -89,9 +88,9 @@ export function ProfileCard() {
               <div className="text-2lg font-semibold">프로필 수정하기</div>
               <div onClick={handleImageClick} className="relative size-14 cursor-pointer hover:opacity-80">
                 {imagePreview ? (
-                  <Image src={imagePreview} alt="프로필 이미지" fill style={{ objectFit: 'cover' }} className="rounded-full border-2 border-blue-500" />
+                  <Image src={imagePreview} alt="프로필 이미지" fill className="rounded-full border-2 border-blue-500 object-cover" />
                 ) : (
-                  <Image src={userInfo.image} alt="프로필 이미지" fill style={{ objectFit: 'cover' }} className="rounded-full border-2 border-blue-500" />
+                  <Image src={userInfo.image} alt="프로필 이미지" fill className="rounded-full border-2 border-blue-500 object-cover" />
                 )}
               </div>
 
