@@ -61,8 +61,6 @@ export default function LoginPage() {
       try {
         const userData = await getUserInfo();
         if (userData.res) {
-          localStorage.setItem('userName', userData.res?.name);
-
           userUpdate({
             email: userData.res?.email || '',
             id: userData.res?.id || '',

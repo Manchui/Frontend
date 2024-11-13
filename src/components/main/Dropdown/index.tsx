@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import Image from 'next/image';
 
 interface DropdownProps {
@@ -14,35 +14,34 @@ interface DropdownProps {
 export default function Dropdown({ buttonLabel, children, isOpen, setIsOpen, className, dropOpen, value }: DropdownProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const toggleDropdown = () => {
+  const toggleDropdown = useCallback(() => {
     setIsOpen(!isOpen);
-  };
+  }, [isOpen, setIsOpen]);
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-      setIsOpen(false);
-    }
-  };
+  const handleClickOutside = useCallback(
+    (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    },
+    [setIsOpen],
+  );
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && dropdownRef.current) {
       document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
     }
-
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen]);
+  }, [isOpen, handleClickOutside]);
 
   return (
     <div ref={dropdownRef} className="relative cursor-pointer">
       <button
         type="button"
         onClick={toggleDropdown}
-        className={`flex items-center rounded-lg border border-gray-100 p-2 tablet:px-4 text-13-16-response font-semibold text-gray-900 mobile:gap-1 ${dropOpen && 'bg-blue-800 text-white'} ${value && 'bg-blue-800 text-white'}`}
+        className={`flex items-center rounded-lg border border-gray-100 p-2 text-13-16-response font-semibold text-gray-900 mobile:gap-1 tablet:px-4 ${dropOpen && 'bg-blue-800 text-white'} ${value && 'bg-blue-800 text-white'}`}
       >
         {buttonLabel}
         <Image
