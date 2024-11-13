@@ -39,6 +39,17 @@ export default function Toggle({ userData }: ToggleProps) {
     }
   };
 
+  // 화면사이즈 변경에 따라 닫히게
+  useEffect(() => {
+    const handleResize = () => closeModal();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  // 다른곳 클릭하면 모달닫히게
   useEffect(() => {
     if (isModalOpen) {
       document.addEventListener('mousedown', handleClickOutside);
