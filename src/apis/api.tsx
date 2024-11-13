@@ -12,7 +12,6 @@ const EXCLUDUDED_URLS = [
   /^\/api\/auths\/signin$/,
   /^\/api\/reviews\/score$/,
   /^\/api\/reviews(\?.*)?$/,
-  /^\/api\/gatherings\/public(\?.*)?$/,
 ];
 
 const instance = axios.create({
@@ -95,6 +94,7 @@ instance.interceptors.response.use(
         }
         return Promise.reject(error);
       } catch (e) {
+        document.cookie = `refresh=; expires=${new Date(0).toUTCString()}; path=/`;
         return Promise.reject(e);
       }
     }
