@@ -25,11 +25,13 @@ export default function MyPage() {
         마이페이지
       </div>
       <RootLayout>
-        <div className="m-auto flex flex-col gap-8 px-4 duration-100 tablet:gap-10 pc:gap-14">
+        <div className="m-auto flex flex-col gap-8 duration-100 tablet:gap-10 pc:gap-14">
           <ProfileCard />
-          <div className="flex flex-col">
+          <div>
             <MyPageCategoryList category={category} setCategory={setCategory} />
-            <CardComponents category={category} />
+            <div className="flex min-h-screen flex-col bg-white">
+              <CardComponents category={category} />
+            </div>
           </div>
         </div>
       </RootLayout>
