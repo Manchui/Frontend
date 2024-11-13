@@ -24,7 +24,8 @@ export default function SearchBar({ keyword, onSearchSubmit, setPage }: SearchBa
       // 검색어가 비어 있으면 refetch
       if (!value) onSearchSubmit(value);
     },
-    [onSearchSubmit],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
   );
 
   const handleSearchSubmit = useCallback(

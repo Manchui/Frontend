@@ -1,6 +1,6 @@
 /* eslint-disable tailwindcss/no-custom-classname */
-import { useState } from 'react';
-import Lottie from 'lottie-react';
+import { useMemo, useState } from 'react';
+import { motion } from 'framer-motion';
 import { getBookmarkData } from '@/apis/getBookmarkData';
 import BookmarkBanner from '@/components/bookmark/BookmarkBanner';
 import BookmarkCardList from '@/components/bookmark/BookmarkCardList';
@@ -13,8 +13,6 @@ import { FILTER_OPTIONS } from '@/constants/contants';
 import useDeviceState from '@/hooks/useDeviceState';
 import useGetBookmarkData from '@/hooks/useGetBookmarkData';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-
-import Error from 'public/lottie/error.json';
 
 const PAGE_SIZE_BY_DEVICE = {
   MOBILE: 2,
@@ -33,13 +31,15 @@ export default function BookmarkPage() {
 
   const deviceState = useDeviceState();
 
+  const pageSize = useMemo(() => PAGE_SIZE_BY_DEVICE[deviceState], [deviceState]);
+
   const {
     data: bookmark,
     isLoading,
     isError,
   } = useGetBookmarkData({
     page,
-    size: PAGE_SIZE_BY_DEVICE[deviceState],
+    size: pageSize,
     query: keyword,
     location,
     category,
@@ -72,18 +72,17 @@ export default function BookmarkPage() {
   };
 
   return (
-    <>
-      {isError ? (
-        <div className="mt-[60px] h-bookmark-banner">
-          <Lottie animationData={Error} className="size-full border-b-2 border-cardBorder bg-background" />
-        </div>
-      ) : (
-        <BookmarkBanner />
-      )}
+    <motion.div initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
+      <BookmarkBanner isError={isError} />
       <RootLayout>
         <BookmarkContainer>
           <BookmarkHeader data={bookmark?.data} setPage={setPage} handleSearchSubmit={handleSearchSubmit} />
-          <div className="min-h-screen w-full bg-white">
+          <motion.div
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 1, ease: 'easeInOut' }}
+            className="min-h-screen w-full bg-white"
+          >
             <BookmarkFilter
               location={location}
               category={category}
@@ -98,16 +97,16 @@ export default function BookmarkPage() {
               data={bookmark?.data}
               isLoading={isLoading}
               isError={isError}
-              skeletonCount={PAGE_SIZE_BY_DEVICE[deviceState]}
+              skeletonCount={pageSize}
               handleCategoryClick={handleCategoryClick}
             />
             {!isLoading && !isError && bookmark?.data.gatheringCount !== 0 && (
               <PaginationBtn page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} handlePageChange={handlePageChange} />
             )}
-          </div>
+          </motion.div>
         </BookmarkContainer>
       </RootLayout>
-    </>
+    </motion.div>
   );
 }
 
