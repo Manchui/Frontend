@@ -24,9 +24,12 @@ export default function CarouselContent({ i, gathering }: { gathering: GetGather
               인원 {currentUsers}/{maxUsers}
             </span>
           </div>
-          <Link href={`/detail/${gatheringId}`} className="flex w-fit items-center rounded-md bg-white/40 py-1 pl-2 text-sub-response mobile:py-2 mobile:pl-4">
+          <Link
+            href={`/detail/${gatheringId}`}
+            className="flex w-fit items-center rounded-md border-2 border-black bg-white/40 py-1 pl-2 text-sub-response text-black hover:bg-white/50 mobile:py-2 mobile:pl-4"
+          >
             지금 인기 있는 모임을 만나보세요
-            <ArrowBtn direction="right" />
+            <ArrowBtn direction="right" color="black" />
           </Link>
         </div>
       </div>

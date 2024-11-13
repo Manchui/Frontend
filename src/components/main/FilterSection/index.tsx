@@ -1,6 +1,6 @@
-import { type Dispatch, type SetStateAction, useCallback, useMemo } from 'react';
-import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useCallback, useMemo, useRef } from 'react';
+import { useInView } from 'framer-motion';
+import * as m from 'framer-motion/m';
 import { useRouter } from 'next/router';
 import CategoryList from '@/components/main/FilterSection/CategoryList';
 import CloseDateToggle from '@/components/main/FilterSection/CloseDateToggle';
@@ -9,27 +9,7 @@ import RegionDropdown from '@/components/main/FilterSection/RegionDropdown';
 import { Toast } from '@/components/shared/Toast';
 import { IS_SERVER } from '@/constants/server';
 
-interface FilterSectionProps {
-  category?: string;
-  handleCategoryClick: (category: string) => void;
-  handleCloseDateClick: (value: string) => void;
-  handleDateSubmit: ({ start, end }: { end: string; start: string }) => void;
-  location?: string;
-  setDateEnd?: Dispatch<SetStateAction<string | undefined>>;
-  setDateStart?: Dispatch<SetStateAction<string | undefined>>;
-  setLocation: Dispatch<SetStateAction<string | undefined>>;
-}
-
-export default function FilterSection({
-  handleCategoryClick,
-  category,
-  setLocation,
-  handleCloseDateClick,
-  location,
-  handleDateSubmit,
-  setDateStart,
-  setDateEnd,
-}: FilterSectionProps) {
+export default function FilterSection() {
   const router = useRouter();
 
   const ref = useRef<HTMLDivElement>(null);
@@ -46,7 +26,7 @@ export default function FilterSection({
   }, [isLoggedIn, router]);
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       style={{
         transform: isInView ? 'none' : 'translateY(10px)',
@@ -56,14 +36,14 @@ export default function FilterSection({
       className="scrollbar-hide relative mb-8 mt-4 flex w-full select-none flex-col gap-2 bg-white px-4 py-5 mobile:rounded-lg"
     >
       {/* 카테고리 */}
-      <CategoryList category={category} handleCategoryClick={handleCategoryClick} />
+      <CategoryList />
 
       {/* 필터 */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <CloseDateToggle onCloseDateClick={handleCloseDateClick} />
-          <RegionDropdown location={location} setLocation={setLocation} />
-          <DateDropdown setDateStart={setDateStart} setDateEnd={setDateEnd} handleDateSubmit={handleDateSubmit} />
+          <CloseDateToggle />
+          <RegionDropdown />
+          <DateDropdown />
         </div>
 
         {/* 모임 만들기 버튼 */}
@@ -75,6 +55,6 @@ export default function FilterSection({
           모임 만들기
         </button>
       </div>
-    </motion.div>
+    </m.div>
   );
 }

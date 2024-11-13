@@ -1,5 +1,6 @@
 import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useInView } from 'framer-motion';
+import * as m from 'framer-motion/m';
 import Link from 'next/link';
 
 export default function PopularList() {
@@ -10,7 +11,7 @@ export default function PopularList() {
     <section>
       <div className="bg-background">
         <div className="flex-col-center mx-auto min-h-screen w-full max-w-screen-pc select-none gap-10 px-8 text-center">
-          <motion.div
+          <m.div
             ref={ref}
             style={{
               transform: isInView ? 'none' : 'translateY(10px)',
@@ -27,8 +28,8 @@ export default function PopularList() {
             <Link href="/main" className="inline-block rounded-lg bg-black px-6 py-3 text-13-16-response font-bold text-white">
               모임 참여하기
             </Link>
-          </motion.div>
-          <motion.div
+          </m.div>
+          <m.div
             ref={ref}
             style={{
               transform: isInView ? 'none' : 'translateY(15px)',
@@ -42,7 +43,7 @@ export default function PopularList() {
             <div className="col-span-2 rounded-lg border border-blue-100 bg-gray-50 drop-shadow-lg" />
             <div className="col-span-3 rounded-lg border border-blue-100 bg-gray-50 drop-shadow-lg" />
             <div className="col-span-3 rounded-lg border border-blue-100 bg-gray-50 drop-shadow-lg" />
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </section>

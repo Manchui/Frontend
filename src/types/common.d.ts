@@ -7,7 +7,7 @@ declare module '@manchui-api' {
     category?: string;
     endDate?: string;
     location?: string;
-    page: number;
+    page?: number;
     query?: string;
     size: number;
     sort?: string;

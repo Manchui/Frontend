@@ -1,16 +1,14 @@
-import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import Dropdown from '@/components/main/Dropdown';
 import { Toast } from '@/components/shared/Toast';
-import { REGION_DATA } from '@/constants/contants';
+import { REGION_DATA } from '@/constants/filter';
+import { useLocation, useSetLocation } from '@/store/useFilterStore';
 
-interface RegionDropdownProps {
-  location?: string;
-  setLocation: Dispatch<SetStateAction<string | undefined>>;
-}
-
-export default function RegionDropdown({ location, setLocation }: RegionDropdownProps) {
+export default function RegionDropdown() {
   const [regionDropOpen, setRegionDropOpen] = useState(false);
+
+  const location = useLocation();
+  const setLocation = useSetLocation();
 
   const handleInitClick = () => {
     setLocation(undefined);

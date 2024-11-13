@@ -1,5 +1,4 @@
 /* eslint-disable tailwindcss/no-custom-classname */
-import { useState } from 'react';
 import Lottie from 'lottie-react';
 import { getBookmarkData } from '@/apis/getBookmarkData';
 import BookmarkBanner from '@/components/bookmark/BookmarkBanner';
@@ -9,27 +8,16 @@ import BookmarkFilter from '@/components/bookmark/BookmarkFilter';
 import BookmarkHeader from '@/components/bookmark/BookmarkHeader';
 import PaginationBtn from '@/components/shared/PaginationBtn';
 import RootLayout from '@/components/shared/RootLayout';
-import { FILTER_OPTIONS } from '@/constants/contants';
+import PAGE_SIZE_BY_DEVICE from '@/constants/pageSize';
 import useDeviceState from '@/hooks/useDeviceState';
 import useGetBookmarkData from '@/hooks/useGetBookmarkData';
+import useFilterStore from '@/store/useFilterStore';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 
 import Error from 'public/lottie/error.json';
 
-const PAGE_SIZE_BY_DEVICE = {
-  MOBILE: 2,
-  TABLET: 4,
-  PC: 6,
-};
-
 export default function BookmarkPage() {
-  const [page, setPage] = useState<number>(1);
-  const [keyword, setKeyword] = useState<string | undefined>(undefined);
-  const [location, setLocation] = useState<string | undefined>(undefined);
-  const [category, setCategory] = useState<string | undefined>(FILTER_OPTIONS[0].id);
-  const [closeDate, setCloseDate] = useState<string | undefined>(undefined);
-  const [dateStart, setDateStart] = useState<string | undefined>(undefined);
-  const [dateEnd, setDateEnd] = useState<string | undefined>(undefined);
+  const { page, keyword, location, category, closeDate, dateEnd, dateStart } = useFilterStore();
 
   const deviceState = useDeviceState();
 
@@ -39,7 +27,7 @@ export default function BookmarkPage() {
     isError,
   } = useGetBookmarkData({
     page,
-    size: PAGE_SIZE_BY_DEVICE[deviceState],
+    size: PAGE_SIZE_BY_DEVICE.BOOKMARK[deviceState],
     query: keyword,
     location,
     category,
@@ -49,27 +37,6 @@ export default function BookmarkPage() {
   });
 
   const data = bookmark?.data;
-
-  const handlePageChange = (pageValue: number) => {
-    setPage(pageValue);
-  };
-
-  const handleCategoryClick = (selectedCategory: string) => {
-    setCategory(selectedCategory);
-  };
-
-  const handleSearchSubmit = (submitValue: string) => {
-    setKeyword(submitValue);
-  };
-
-  const handleCloseDateClick = (value: string) => {
-    setCloseDate(value);
-  };
-
-  const handleDateSubmit = ({ start, end }: { end: string; start: string }) => {
-    setDateStart(start);
-    setDateEnd(end);
-  };
 
   return (
     <>
@@ -82,28 +49,11 @@ export default function BookmarkPage() {
       )}
       <RootLayout>
         <BookmarkContainer>
-          <BookmarkHeader data={bookmark?.data} setPage={setPage} handleSearchSubmit={handleSearchSubmit} />
+          <BookmarkHeader data={bookmark?.data} />
           <div className="min-h-screen w-full bg-white">
-            <BookmarkFilter
-              location={location}
-              category={category}
-              setDateEnd={setDateEnd}
-              setLocation={setLocation}
-              setDateStart={setDateStart}
-              handleDateSubmit={handleDateSubmit}
-              handleCategoryClick={handleCategoryClick}
-              handleCloseDateClick={handleCloseDateClick}
-            />
-            <BookmarkCardList
-              data={bookmark?.data}
-              isLoading={isLoading}
-              isError={isError}
-              skeletonCount={PAGE_SIZE_BY_DEVICE[deviceState]}
-              handleCategoryClick={handleCategoryClick}
-            />
-            {!isLoading && !isError && bookmark?.data.gatheringCount !== 0 && (
-              <PaginationBtn page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} handlePageChange={handlePageChange} />
-            )}
+            <BookmarkFilter />
+            <BookmarkCardList data={bookmark?.data} isLoading={isLoading} isError={isError} skeletonCount={PAGE_SIZE_BY_DEVICE.BOOKMARK[deviceState]} />
+            {!isLoading && !isError && bookmark?.data.gatheringCount !== 0 && <PaginationBtn page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} />}
           </div>
         </BookmarkContainer>
       </RootLayout>
