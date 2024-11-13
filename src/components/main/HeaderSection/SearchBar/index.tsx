@@ -1,7 +1,7 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 import type { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
-import { useCallback, useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 
 interface SearchBarProps {
@@ -12,6 +12,9 @@ interface SearchBarProps {
 
 export default function SearchBar({ keyword, onSearchSubmit, setPage }: SearchBarProps) {
   const [searchValue, setSearchValue] = useState<string | undefined>(keyword || '');
+
+  const ref = useRef<HTMLFormElement>(null);
+  const isInView = useInView(ref, { once: true });
 
   const handleSearchChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -43,9 +46,12 @@ export default function SearchBar({ keyword, onSearchSubmit, setPage }: SearchBa
 
   return (
     <motion.form
-      initial={{ x: 10, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      transition={{ duration: 1, ease: 'easeInOut' }}
+      ref={ref}
+      style={{
+        transform: isInView ? 'none' : 'translateX(10px)',
+        opacity: isInView ? 1 : 0,
+        transition: 'all 1s ease-in-out',
+      }}
       className="flex gap-1 border-b font-medium hover:border-b-gray-300"
       onSubmit={handleSearchSubmit}
     >
