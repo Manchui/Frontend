@@ -12,7 +12,6 @@ const EXCLUDUDED_URLS = [
   /^\/api\/auths\/signin$/,
   /^\/api\/reviews\/score$/,
   /^\/api\/reviews(\?.*)?$/,
-  /^\/api\/gatherings\/public(\?.*)?$/,
 ];
 
 const instance = axios.create({

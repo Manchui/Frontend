@@ -16,8 +16,6 @@ export default function MainCardSection({ isLoading, isError, mainData, pageSize
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true });
 
-  console.log(mainData);
-
   return (
     <m.div
       ref={ref}

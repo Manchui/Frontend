@@ -1,8 +1,5 @@
 import { Props, Svg } from 'public/icons/SVG';
 
-
-
-// down-white, down-arrow 이용해서 커스텀 가능하게 만들었습니다. DownArrow 변경해주시면 svg 파일은 삭제하겠습니다.
 export default  function Search({
   direction = 'right',
   color = '#FFFFFF',
