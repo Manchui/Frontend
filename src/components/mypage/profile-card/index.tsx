@@ -34,8 +34,7 @@ export function ProfileCard() {
       Toast('error', '닉네임은 3자 이상이어야 합니다.');
       return;
     }
-    const res = await editUserInfo(nick || userInfo.name, imagePreview || userInfo.image);
-    console.log(res);
+    await editUserInfo(nick || userInfo.name, imagePreview || userInfo.image);
   };
 
   const handleImageClick = () => {
