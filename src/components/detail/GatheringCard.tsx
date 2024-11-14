@@ -50,7 +50,7 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
             <p className="text-lg font-semibold">{gatherings.groupName}</p>
             {localStorage.getItem('accessToken') && (
               <button type="button" onClick={() => mutation.mutate()}>
-                <Image src={gatherings.hearted ? '/icons/heart-red.svg' : '/icons/heart-outline.svg'} alt="찜하기 버튼" width={28} height={28} />
+                <Image src={isHearted ? '/icons/heart-red.svg' : '/icons/heart-outline.svg'} alt="찜하기 버튼" width={28} height={28} />
               </button>
             )}
           </div>
@@ -68,7 +68,6 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
           />
         </div>
       </div>
-      {/* <CardContent gathering={gatherings} /> */}
     </article>
   );
 }
