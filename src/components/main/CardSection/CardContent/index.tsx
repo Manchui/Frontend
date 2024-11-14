@@ -1,12 +1,12 @@
 /* eslint-disable tailwindcss/no-custom-classname */
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import instance from '@/apis/api';
 import DateChip from '@/components/shared/chip/DateChip';
 import { ProgressBar } from '@/components/shared/progress-bar';
 import { Toast } from '@/components/shared/Toast';
-import { IS_SERVER } from '@/constants/server';
+import { userStore } from '@/store/userStore';
 import type { GetGatheringResponse } from '@manchui-api';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -17,8 +17,7 @@ interface CardContentProps {
 export default function CardContent({ gathering }: CardContentProps) {
   const { hearted, gatheringId, groupName, gatheringDate, closed, location, maxUsers, minUsers, currentUsers } = gathering;
   const [isHearted, setIsHearted] = useState(hearted);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-
+  const isLoggedIn = userStore((state) => state.isLoggedIn);
   const queryClient = useQueryClient();
 
   const toggleHeart = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -28,20 +27,17 @@ export default function CardContent({ gathering }: CardContentProps) {
       Toast('warning', '로그인이 필요합니다.');
       return;
     }
-
-    const updatedHearted = !isHearted;
-    setIsHearted(updatedHearted);
+    
     const endpoint = `/api/gatherings/${gatheringId}/heart`;
-
     try {
-      if (updatedHearted) {
+      if (!hearted) {
         await instance.post(endpoint);
         Toast('success', '찜 목록에 추가되었습니다!');
       } else {
         await instance.delete(endpoint);
         Toast('warning', '찜 목록에서 제거되었습니다!');
       }
-
+      setIsHearted(!isHearted);
       await queryClient.invalidateQueries({ queryKey: ['main'] });
       await queryClient.invalidateQueries({ queryKey: ['bookmark'] });
     } catch (error) {
@@ -49,12 +45,6 @@ export default function CardContent({ gathering }: CardContentProps) {
       setIsHearted((prevHearted) => !prevHearted);
     }
   };
-
-  useEffect(() => {
-    if (!IS_SERVER) {
-      setIsLoggedIn(!!localStorage.getItem('accessToken'));
-    }
-  }, []);
 
   return (
     <Link

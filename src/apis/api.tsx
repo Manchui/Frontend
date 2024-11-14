@@ -94,6 +94,7 @@ instance.interceptors.response.use(
         }
         return Promise.reject(error);
       } catch (e) {
+        document.cookie = `refresh=; expires=${new Date(0).toUTCString()}; path=/`;
         return Promise.reject(e);
       }
     }
