@@ -26,8 +26,6 @@ function MainCarousel({ isError }: { isError: boolean }) {
   const { data } = useQuery({
     queryKey: ['main'],
     queryFn: () => getGatheringData({ page: 1, size: 8 }),
-    staleTime: 1000 * 60 * 5,
-    gcTime: 1000 * 60 * 3,
   });
 
   const gatherings = data?.data.gatheringList || [];

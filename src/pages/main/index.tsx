@@ -7,6 +7,7 @@ import MainCardSection from '@/components/main/MainCardSection';
 import MainCarousel from '@/components/main/MainCarousel';
 import MainContainer from '@/components/main/MainContainer';
 import RootLayout from '@/components/shared/RootLayout';
+import { SEO } from '@/components/shared/SEO';
 import PAGE_SIZE_BY_DEVICE from '@/constants/pageSize';
 import useDeviceState from '@/hooks/useDeviceState';
 import useGetGatheringData from '@/hooks/useGetGatheringData';
@@ -62,6 +63,7 @@ export default function MainPage() {
 
   return (
     <>
+      <SEO />
       <MainCarousel isError={isError} />
       <RootLayout>
         <MainContainer>

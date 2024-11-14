@@ -8,6 +8,7 @@ import BookmarkFilter from '@/components/bookmark/BookmarkFilter';
 import BookmarkHeader from '@/components/bookmark/BookmarkHeader';
 import PaginationBtn from '@/components/shared/PaginationBtn';
 import RootLayout from '@/components/shared/RootLayout';
+import { SEO } from '@/components/shared/SEO';
 import PAGE_SIZE_BY_DEVICE from '@/constants/pageSize';
 import useDeviceState from '@/hooks/useDeviceState';
 import useGetBookmarkData from '@/hooks/useGetBookmarkData';
@@ -40,6 +41,7 @@ export default function BookmarkPage() {
 
   return (
     <>
+      <SEO />
       {isError ? (
         <div className="mt-[60px] h-bookmark-banner">
           <Lottie animationData={Error} className="size-full border-b-2 border-cardBorder bg-background" />

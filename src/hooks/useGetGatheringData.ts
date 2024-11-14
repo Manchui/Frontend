@@ -12,7 +12,6 @@ const useGetGatheringData = (request: GetGatheringRequest) =>
       }
       return undefined;
     },
-    staleTime: 1000 * 60 * 5,
     initialPageParam: 1,
     placeholderData: keepPreviousData,
   });
