@@ -1,6 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import type { AxiosError } from 'axios';
+import router from 'next/router';
 import instance from '@/apis/api';
 import { Toast } from '@/components/shared/Toast';
 import { userStore } from '@/store/userStore';
@@ -110,5 +114,41 @@ export const logout = async () => {
     // eslint-disable-next-line no-console
     console.log(error);
     Toast('error', '로그아웃에 실패했습니다.');
+  }
+};
+
+interface SignupData {
+  email: string;
+  name: string;
+  password: string;
+  passwordConfirm: string;
+}
+export const signup = async (name: string, email: string, password: string, passwordConfirm: string): Promise<SignupData> => {
+  try {
+    const response = await instance.post('/api/auths/signup', {
+      name,
+      email,
+      password,
+      passwordConfirm,
+    });
+    Toast('success', '회원가입이 완료되었습니다.');
+    void router.push('/login');
+    return response.data;
+  } catch (error: any) {
+    Toast('error', error.response.data.message);
+    throw error;
+  }
+};
+
+export const checkName = async (name: string) => {
+  try {
+    const res = await instance.post('/api/auths/check-name', {
+      name,
+    });
+    Toast('success', res.data.message);
+    return true;
+  } catch (err: any) {
+    Toast('error', err.response.data.message);
+    return false;
   }
 };

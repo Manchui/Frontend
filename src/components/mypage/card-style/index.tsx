@@ -51,10 +51,6 @@ export function CardComponents({ category }: { category: string }) {
     queryClient.setQueryData(['mypage', category, page], updatedData);
   };
 
-  const handlePageChange = (pageValue: number) => {
-    setPage(pageValue);
-  };
-
   const renderEmptyState = (message: string) => (
     <div className="py-20">
       <div className="absolute left-1/2 w-full -translate-x-1/2">
@@ -82,7 +78,7 @@ export function CardComponents({ category }: { category: string }) {
       )}
       {writtenGatheringList && <MeetingCard category={category} MeetingData={writtenGatheringList} handleRemoveItem={handleRemoveItem} />}
       {!isLoading && !isError && participatedList?.length !== 0 && category !== '나의 리뷰' && (
-        <PaginationBtn page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} handlePageChange={handlePageChange} />
+        <PaginationBtn page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} />
       )}
     </>
   );

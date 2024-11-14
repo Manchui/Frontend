@@ -1,3 +1,4 @@
+import FAQ from '@/components/landing/FAQ';
 import FeatureSection from '@/components/landing/FeatureSection';
 import ImageSection from '@/components/landing/ImageSection';
 import LandingMain from '@/components/landing/LandingMain';
@@ -12,6 +13,7 @@ export default function Home() {
       <PopularList />
       <ImageSection />
       <ReviewSection />
+      <FAQ />
     </div>
   );
 }

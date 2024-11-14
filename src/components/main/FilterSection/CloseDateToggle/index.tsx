@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { Toast } from '@/components/shared/Toast';
+import { useSetCloseDate } from '@/store/useFilterStore';
 
-export default function CloseDateToggle({ onCloseDateClick }: { onCloseDateClick: (value: string) => void }) {
+export default function CloseDateToggle() {
   const [toggleValue, setToggleValue] = useState<boolean>(false);
+
+  const setCloseDate = useSetCloseDate();
 
   const handleCloseDateFilterToggle = () => {
     const updatedToggleValue = !toggleValue;
     setToggleValue(updatedToggleValue);
-    onCloseDateClick(updatedToggleValue ? 'closeDate' : '');
+    setCloseDate(updatedToggleValue ? 'closeDate' : '');
 
     Toast('success', updatedToggleValue ? '마감 임박순 필터가 적용되었습니다.' : '마감 임박순 필터가 해제되었습니다.');
   };

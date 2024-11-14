@@ -1,5 +1,6 @@
 import { type ReactNode, useEffect, useLayoutEffect, useMemo, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
+import * as m from 'framer-motion/m';
 import { useRouter } from 'next/router';
 import GNB from '@/components/shared/GNB';
 import Loading from '@/components/shared/Loading';
@@ -41,7 +42,10 @@ export default function PageLayout({ children, showHeader = true }: LayoutProps)
     setIs404(router.pathname === '/404');
   }, [router.pathname]);
 
-  const shouldShowHeader = useMemo(() => isClient && !is404 && router.pathname !== '/' && showHeader, [isClient, is404, router.pathname, showHeader]);
+  const shouldShowHeader = useMemo(
+    () => isClient && !is404 && router.pathname !== '/' && router.pathname !== '/login' && router.pathname !== '/signup' && showHeader,
+    [isClient, is404, router.pathname, showHeader],
+  );
   // const shouldShowFooter = pathname !== '/' && !pathname.startsWith('/signup') && !pathname.startsWith('/login') && showFooter;
 
   return (
@@ -51,10 +55,10 @@ export default function PageLayout({ children, showHeader = true }: LayoutProps)
         <Loading />
       ) : (
         <AnimatePresence mode="wait">
-          <motion.div key={router.pathname} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+          <m.div key={router.pathname} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
             {children}
             {/* {shouldShowFooter && <Footer />} Footer 나중에 계발하면 넣을 생각입니다! */}
-          </motion.div>
+          </m.div>
         </AnimatePresence>
       )}
     </>

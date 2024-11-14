@@ -50,9 +50,7 @@ export default function MyReviewList({ category, review, handleRemoveItem }: { c
         ) : (
           <ReviewableCard MeetingData={reviewableList} />
         ))}
-      {!isLoading && !isError && reviewableList?.content.length !== 0 && (
-        <PaginationBtn page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} handlePageChange={handlePageChange} />
-      )}
+      {!isLoading && !isError && reviewableList?.content.length !== 0 && <PaginationBtn page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} />}
     </div>
   );
 }

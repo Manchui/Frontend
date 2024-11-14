@@ -109,15 +109,12 @@ export default function CreatePage() {
     setTimeChips((prevChips) => prevChips.map((chip) => ({ ...chip, disable: true })));
   };
 
-  const handleDateSelect = (data: { rangeEnd?: string; rangeStart?: string; selectedDate?: string }) => {
-    const { selectedDate: dateValue } = data;
+  const handleDateSelect = (data: { rangeStart?: string }) => {
+    const { rangeStart } = data;
 
-    if (dateValue) {
-      const date = new Date(dateValue);
-      if (!isNaN(date.getTime())) {
-        setSelectedDates({ selectedDate: date.toISOString() });
-        handleInputChange('날짜')(date.toISOString());
-      }
+    if (rangeStart) {
+      setSelectedDates({ selectedDate: rangeStart });
+      handleInputChange('날짜')(rangeStart);
     }
   };
   const handleTimeSelect = (time: string) => {
@@ -307,7 +304,7 @@ export default function CreatePage() {
           <div>
             <h2 className="mb-3 text-base font-semibold text-gray-900"> 날짜 </h2>
             <div className="flex h-[322px] w-full flex-col items-center justify-center rounded-lg border border-blue-200 shadow">
-              <Calendar selectionType="single" onDateChange={handleDateSelect} />
+              <Calendar selectionType="single" onDateChange={handleDateSelect} startDate={selectedDates.selectedDate as string} />
               <div className="-mt-4 flex gap-2">
                 <button
                   type="button"
