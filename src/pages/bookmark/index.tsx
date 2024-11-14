@@ -47,7 +47,7 @@ export default function BookmarkPage({ seo }: BookmarkProps) {
 
   return (
     <>
-      <SEO />
+      <SEO title={seo.title} />
       <HydrationBoundary>
         {isError ? (
           <div className="mt-[60px] h-bookmark-banner">
