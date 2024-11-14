@@ -1,7 +1,6 @@
 import { Props, Svg } from 'public/icons/SVG';
 
 export default  function Search({
-  direction = 'right',
   color = '#FFFFFF',
   className,
   ...props

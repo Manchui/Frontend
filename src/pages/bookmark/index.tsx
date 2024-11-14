@@ -54,8 +54,8 @@ export default function BookmarkPage({ seo, dehydratedState, initialPageSize }: 
   const data = bookmark?.data;
 
   useEffect(() => {
-    if (pageSize !== PAGE_SIZE_BY_DEVICE.MAIN[deviceState]) {
-      setPageSize(PAGE_SIZE_BY_DEVICE.MAIN[deviceState]);
+    if (pageSize !== PAGE_SIZE_BY_DEVICE.BOOKMARK[deviceState]) {
+      setPageSize(PAGE_SIZE_BY_DEVICE.BOOKMARK[deviceState]);
     }
   }, [deviceState, pageSize]);
 
@@ -88,7 +88,7 @@ export default function BookmarkPage({ seo, dehydratedState, initialPageSize }: 
 export const getServerSideProps = async () => {
   const queryClient = new QueryClient();
 
-  const initialPageSize = PAGE_SIZE_BY_DEVICE.MAIN.PC;
+  const initialPageSize = PAGE_SIZE_BY_DEVICE.BOOKMARK.PC;
 
   const request = { page: 1, size: initialPageSize };
 

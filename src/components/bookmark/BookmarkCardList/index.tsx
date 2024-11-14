@@ -1,10 +1,10 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 import CardSection, { CardSkeleton, MessageWithLink } from '@/components/main/CardSection';
 import NoData from '@/components/shared/NoData';
-import type { GetGatheringResponse } from '@manchui-api';
+import type { GetBookmarkResponse } from '@manchui-api';
 
 interface BookmarkCardListProps {
-  data?: GetGatheringResponse['data'];
+  data?: GetBookmarkResponse['data'];
   isError: boolean;
   isLoading: boolean;
   skeletonCount: number;

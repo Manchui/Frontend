@@ -1,7 +1,6 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 import { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+import RedHeart from 'public/icons/RedHeart';
 import instance from '@/apis/api';
 import DateChip from '@/components/shared/chip/DateChip';
 import { ProgressBar } from '@/components/shared/progress-bar';
@@ -15,19 +14,21 @@ interface CardContentProps {
 }
 
 export default function CardContent({ gathering }: CardContentProps) {
-  const { hearted, gatheringId, groupName, gatheringDate, closed, location, maxUsers, minUsers, currentUsers } = gathering;
+  const { hearted, gatheringId, groupName, gatheringDate, closed, location, maxUsers, minUsers, currentUsers, heartCounts } = gathering;
   const [isHearted, setIsHearted] = useState(hearted);
   const isLoggedIn = userStore((state) => state.isLoggedIn);
   const queryClient = useQueryClient();
 
-  const toggleHeart = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  console.log(heartCounts);
+
+  const toggleHeart = async (e: React.MouseEvent<SVGSVGElement>) => {
     e.preventDefault();
 
     if (!isLoggedIn) {
       Toast('warning', '로그인이 필요합니다.');
       return;
     }
-    
+
     const endpoint = `/api/gatherings/${gatheringId}/heart`;
     try {
       if (!hearted) {
@@ -47,23 +48,20 @@ export default function CardContent({ gathering }: CardContentProps) {
   };
 
   return (
-    <Link
-      href={`/detail/${gatheringId}`}
-      className="relative flex h-1/2 flex-1 flex-col justify-between rounded-2xl rounded-t-none border-t border-t-cardBorder p-2 mobile:h-full mobile:w-1/2 mobile:rounded-bl-none mobile:border-l mobile:border-cardBorder mobile:p-4 tablet:h-1/2 tablet:w-full tablet:border-t tablet:border-none"
-    >
-      <div className="my-auto flex flex-col gap-1">
-        <div className={`mb-2 flex flex-col tablet:mb-0 ${closed ? 'text-gray-200' : 'text-black'}`}>
-          <span className="text-pretty text-16-20-response font-semibold">{groupName}</span>
-          <span className={`text-sub-response font-medium text-gray-400 mobile:font-semibold ${closed && '!text-gray-200'}`}>
+    <div className="relative flex h-1/2 min-h-36 w-full cursor-pointer flex-col justify-between overflow-hidden px-5 py-4 mobile:h-full tablet:w-full">
+      <div className="mb-3 flex justify-between">
+        <div className="flex flex-col">
+          <span className="text-pretty text-16-20-response font-bold">{groupName}</span>
+          <span className={`pb-3 text-sub-response font-medium text-gray-500 ${closed && '!text-gray-200'}`}>
             {gathering.category} | {location}
           </span>
+          <DateChip dateTime={new Date(gatheringDate)} closed={closed} />
         </div>
-        <DateChip dateTime={new Date(gatheringDate)} closed={closed} />
+        <RedHeart color={`${hearted ? '#FF4D11' : '#D4D4D4'}`} className="size-8" onClick={toggleHeart} />
+      </div>
+      <div>
         <ProgressBar maxValue={maxUsers} value={currentUsers} mainValue={minUsers} design="basics" closed={closed} />
       </div>
-      <button type="button" onClick={toggleHeart} className="absolute right-heart-m-right top-heart-m-top tablet:top-heart-t-top">
-        <Image src={hearted ? '/icons/heart-red.svg' : '/icons/heart-outline.svg'} alt="찜하기 버튼" width={28} height={28} />
-      </button>
-    </Link>
+    </div>
   );
 }

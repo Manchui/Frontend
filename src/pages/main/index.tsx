@@ -1,10 +1,10 @@
 /* eslint-disable tailwindcss/no-custom-classname */
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { getGatheringData } from '@/apis/getGatheringData';
 import FilterSection from '@/components/main/FilterSection';
 import HeaderSection from '@/components/main/HeaderSection';
 import MainCardSection from '@/components/main/MainCardSection';
-import MainCarousel from '@/components/main/MainCarousel';
+// import MainCarousel from '@/components/main/MainCarousel';
 import MainContainer from '@/components/main/MainContainer';
 import RootLayout from '@/components/shared/RootLayout';
 import { SEO } from '@/components/shared/SEO';
@@ -19,15 +19,13 @@ import { dehydrate, HydrationBoundary, QueryClient, useQueryClient } from '@tans
 
 interface MainPageProps {
   dehydratedState: DehydratedState;
-  initialPageSize: number;
   seo: {
     title: string;
   };
 }
 
-export default function MainPage({ seo, dehydratedState, initialPageSize }: MainPageProps) {
+export default function MainPage({ seo, dehydratedState }: MainPageProps) {
   const { keyword, location, category, closeDate, dateStart, dateEnd } = useFilterStore();
-  const [pageSize, setPageSize] = useState(initialPageSize);
 
   const sentinelRef = useRef<HTMLDivElement>(null);
   const isIntersecting = useIntersectionObserver(sentinelRef);
@@ -37,6 +35,8 @@ export default function MainPage({ seo, dehydratedState, initialPageSize }: Main
   const isLoggedIn = userStore((state) => state.isLoggedIn);
   const queryClient = useQueryClient();
 
+  const pageSize = useMemo(() => PAGE_SIZE_BY_DEVICE.MAIN[deviceState], [deviceState]);
+
   const {
     data: mainData,
     isLoading,
@@ -44,7 +44,7 @@ export default function MainPage({ seo, dehydratedState, initialPageSize }: Main
     hasNextPage,
     fetchNextPage,
   } = useGetGatheringData({
-    page: 1,
+    cursor: undefined,
     size: pageSize,
     query: keyword,
     location,
@@ -69,17 +69,11 @@ export default function MainPage({ seo, dehydratedState, initialPageSize }: Main
     [isIntersecting, hasNextPage, fetchNextPage],
   );
 
-  useEffect(() => {
-    if (pageSize !== PAGE_SIZE_BY_DEVICE.MAIN[deviceState]) {
-      setPageSize(PAGE_SIZE_BY_DEVICE.MAIN[deviceState]);
-    }
-  }, [deviceState, pageSize]);
-
   return (
     <>
       <SEO title={seo.title} />
       <HydrationBoundary state={dehydratedState}>
-        <MainCarousel isError={isError} mainData={mainDataList} />
+        {/* <MainCarousel isError={isError} mainData={mainDataList} /> */}
         <RootLayout>
           <MainContainer>
             <HeaderSection />
@@ -96,9 +90,7 @@ export default function MainPage({ seo, dehydratedState, initialPageSize }: Main
 export const getServerSideProps = async () => {
   const queryClient = new QueryClient();
 
-  const initialPageSize = PAGE_SIZE_BY_DEVICE.MAIN.PC;
-
-  const request = { page: 1, size: initialPageSize };
+  const request = { page: 1, size: PAGE_SIZE_BY_DEVICE.MAIN.MOBILE };
 
   await queryClient.prefetchQuery({
     queryKey: ['main', { page: 1 }],
@@ -111,7 +103,6 @@ export const getServerSideProps = async () => {
       seo: {
         title: '만취 - 랜딩 페이지',
       },
-      initialPageSize,
     },
   };
 };
