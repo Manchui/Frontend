@@ -13,7 +13,7 @@ import PAGE_SIZE_BY_DEVICE from '@/constants/pageSize';
 import useDeviceState from '@/hooks/useDeviceState';
 import useGetBookmarkData from '@/hooks/useGetBookmarkData';
 import useFilterStore from '@/store/useFilterStore';
-import { dehydrate, QueryClient } from '@tanstack/react-query';
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 
 import Error from 'public/lottie/error.json';
 
@@ -42,23 +42,25 @@ export default function BookmarkPage() {
   return (
     <>
       <SEO />
-      {isError ? (
-        <div className="mt-[60px] h-bookmark-banner">
-          <Lottie animationData={Error} className="size-full border-b-2 border-cardBorder bg-background" />
-        </div>
-      ) : (
-        <BookmarkBanner isError={isError} />
-      )}
-      <RootLayout>
-        <BookmarkContainer>
-          <BookmarkHeader data={bookmark?.data} />
-          <div className="min-h-screen w-full bg-white">
-            <BookmarkFilter />
-            <BookmarkCardList data={bookmark?.data} isLoading={isLoading} isError={isError} skeletonCount={PAGE_SIZE_BY_DEVICE.BOOKMARK[deviceState]} />
-            {!isLoading && !isError && bookmark?.data.gatheringCount !== 0 && <PaginationBtn page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} />}
+      <HydrationBoundary>
+        {isError ? (
+          <div className="mt-[60px] h-bookmark-banner">
+            <Lottie animationData={Error} className="size-full border-b-2 border-cardBorder bg-background" />
           </div>
-        </BookmarkContainer>
-      </RootLayout>
+        ) : (
+          <BookmarkBanner isError={isError} />
+        )}
+        <RootLayout>
+          <BookmarkContainer>
+            <BookmarkHeader data={bookmark?.data} />
+            <div className="min-h-screen w-full bg-white">
+              <BookmarkFilter />
+              <BookmarkCardList data={bookmark?.data} isLoading={isLoading} isError={isError} skeletonCount={PAGE_SIZE_BY_DEVICE.BOOKMARK[deviceState]} />
+              {!isLoading && !isError && bookmark?.data.gatheringCount !== 0 && <PaginationBtn page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} />}
+            </div>
+          </BookmarkContainer>
+        </RootLayout>
+      </HydrationBoundary>
     </>
   );
 }

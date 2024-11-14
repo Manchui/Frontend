@@ -14,7 +14,7 @@ import useGetGatheringData from '@/hooks/useGetGatheringData';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import useFilterStore from '@/store/useFilterStore';
 import { userStore } from '@/store/userStore';
-import { dehydrate, QueryClient, useQueryClient } from '@tanstack/react-query';
+import { dehydrate, HydrationBoundary, QueryClient, useQueryClient } from '@tanstack/react-query';
 
 export default function MainPage() {
   const { keyword, location, category, closeDate, dateStart, dateEnd } = useFilterStore();
@@ -64,15 +64,17 @@ export default function MainPage() {
   return (
     <>
       <SEO />
-      <MainCarousel isError={isError} />
-      <RootLayout>
-        <MainContainer>
-          <HeaderSection />
-          <FilterSection />
-          <MainCardSection isError={isError} isLoading={isLoading} pageSize={pageSize} mainData={mainDataList} />
-          {!isError && <div ref={sentinelRef} className="h-20 w-full flex-shrink-0 opacity-0" />}
-        </MainContainer>
-      </RootLayout>
+      <HydrationBoundary>
+        <MainCarousel isError={isError} />
+        <RootLayout>
+          <MainContainer>
+            <HeaderSection />
+            <FilterSection />
+            <MainCardSection isError={isError} isLoading={isLoading} pageSize={pageSize} mainData={mainDataList} />
+            {!isError && <div ref={sentinelRef} className="h-20 w-full flex-shrink-0 opacity-0" />}
+          </MainContainer>
+        </RootLayout>
+      </HydrationBoundary>
     </>
   );
 }
