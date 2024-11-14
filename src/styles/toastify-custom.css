@@ -15,31 +15,79 @@
 
   border-radius: 10px;
   padding: 8px 12px;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 24px;
   margin: 10px;
 }
 
 .Toastify__toast--success {
-  background-color: #ffffff;
-  font-weight: bold;
-  color: #1b1b1b;
+  background-color: #14a44d;
+  font-weight: 900;
+  color: #ffffff;
+  border-inline-start-width: 5px;
+  border-color: #10833e;
+  --tw-border-opacity: 1;
+  transform: scale(1);
+  transition: transform 300ms ease-out;
+}
+
+.Toastify__toast--success:hover {
+  background-color: #10833e;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in;
+  transform: scale(1.1);
 }
 
 .Toastify__toast--error {
-  background-color: #ffffff;
+  background-color: #dc4c64;
   font-weight: bold;
-  color: #ff472e;
+  color: #ffffff;
+  border-inline-start-width: 5px;
+  border-color: #c04257;
+  --tw-border-opacity: 1;
+  transform: scale(1);
+  transition: transform 300ms ease-out;
+}
+
+.Toastify__toast--error:hover {
+  background-color: #c04257;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in;
+  transform: scale(1.1);
 }
 
 .Toastify__toast--info {
-  background-color: #ffffff;
+  background-color: #54b4d3;
   font-weight: bold;
-  color: #164fb7;
+  color: #ffffff;
+  border-inline-start-width: 5px;
+  border-color: #499cb8;
+  --tw-border-opacity: 1;
+  transform: scale(1);
+  transition: transform 300ms ease-out;
+}
+
+.Toastify__toast--info:hover {
+  background-color: #499cb8;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in;
+  transform: scale(1.1);
 }
 
 .Toastify__toast--warning {
-  background-color: #ffffff;
+  background-color: #d9991a;
   font-weight: bold;
-  color: #ffc23d;
+  color: #ffffff;
+  border-inline-start-width: 5px;
+  border-color: #c68c18;
+  --tw-border-opacity: 1;
+  transform: scale(1);
+  transition: transform 300ms ease-out;
+}
+
+.Toastify__toast--warning:hover {
+  background-color: #c68c18;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in;
+  transform: scale(1.1);
 }

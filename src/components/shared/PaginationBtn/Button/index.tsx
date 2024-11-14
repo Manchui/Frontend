@@ -1,16 +1,19 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 /* eslint-disable import/no-absolute-path */
 import { useCallback, useEffect, useState } from 'react';
+import { useSetPage } from '@/store/useFilterStore';
 
 import PaginationArrowLeft from '/public/icons/paginationArrowLeft.svg';
 import PaginationArrowRight from '/public/icons/paginationArrowRight.svg';
 
-export function PrevButton({ page, handlePageChange }: { handlePageChange: (page: number) => void; page: number }) {
+export function PrevButton({ page }: { page: number }) {
   const [disabled, setDisabled] = useState(page === 1);
+
+  const setPage = useSetPage();
 
   const handlePrevClick = () => {
     if (page <= 1) return;
-    handlePageChange(page - 1);
+    setPage(page - 1);
   };
 
   useEffect(() => {
@@ -31,12 +34,14 @@ export function PrevButton({ page, handlePageChange }: { handlePageChange: (page
   );
 }
 
-export function NextButton({ page, totalPage, handlePageChange }: { handlePageChange: (page: number) => void; page: number; totalPage: number }) {
+export function NextButton({ page, totalPage }: { page: number; totalPage: number }) {
   const [disabled, setDisabled] = useState(page === totalPage);
+
+  const setPage = useSetPage();
 
   const handleNextClick = () => {
     if (page >= totalPage) return;
-    handlePageChange(page + 1);
+    setPage(page + 1);
   };
 
   useEffect(() => {
@@ -57,7 +62,7 @@ export function NextButton({ page, totalPage, handlePageChange }: { handlePageCh
   );
 }
 
-export function PageList({ page, totalPage, handlePageChange }: { handlePageChange: (page: number) => void; page: number; totalPage: number }) {
+export function PageList({ page, totalPage }: { page: number; totalPage: number }) {
   const getPageNumbers = useCallback(() => {
     const pageNumbers = [];
     const MAXPAGE_TO_SHOW = 5;
@@ -81,15 +86,17 @@ export function PageList({ page, totalPage, handlePageChange }: { handlePageChan
   return (
     <>
       {pageNumbers.map((pageNumber) => (
-        <PageItem key={pageNumber} page={pageNumber} currentPage={page} handlePageChange={handlePageChange} />
+        <PageItem key={pageNumber} page={pageNumber} currentPage={page} />
       ))}
     </>
   );
 }
 
-export function PageItem({ page, currentPage, handlePageChange }: { currentPage: number; handlePageChange: (page: number) => void; page: number }) {
+export function PageItem({ page, currentPage }: { currentPage: number; page: number }) {
+  const setPage = useSetPage();
+
   const handlePageItemClick = () => {
-    handlePageChange(page);
+    setPage(page);
   };
 
   return (

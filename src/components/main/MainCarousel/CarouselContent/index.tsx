@@ -1,6 +1,7 @@
 import { Gugi } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
+import ArrowBtn from 'public/icons/ArrowBtn';
 import type { GetGatheringResponse } from '@manchui-api';
 
 const gugi = Gugi({ weight: '400', subsets: ['latin'] });
@@ -23,9 +24,12 @@ export default function CarouselContent({ i, gathering }: { gathering: GetGather
               인원 {currentUsers}/{maxUsers}
             </span>
           </div>
-          <Link href={`/detail/${gatheringId}`} className="flex w-fit items-center rounded-md bg-white/40 py-1 pl-2 text-sub-response mobile:py-2 mobile:pl-4">
+          <Link
+            href={`/detail/${gatheringId}`}
+            className="flex w-fit items-center rounded-md bg-white/40 py-1 pl-2 text-sub-response text-black hover:bg-white/50 mobile:py-2 mobile:pl-4"
+          >
             지금 인기 있는 모임을 만나보세요
-            <Image src="/icons/main/banner-btn.svg" alt="자세히 보기" width={24} height={24} className="ml-2" />
+            <ArrowBtn direction="right" color="black" />
           </Link>
         </div>
       </div>

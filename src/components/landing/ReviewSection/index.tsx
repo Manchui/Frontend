@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useInView } from 'framer-motion';
+import * as m from 'framer-motion/m';
 import Image from 'next/image';
 import Link from 'next/link';
 import Review1 from 'public/images/review1.png';
@@ -35,7 +36,7 @@ export default function ReviewSection() {
       <section>
         <div className="select-none bg-black text-white">
           <div className="mx-auto flex min-h-screen max-w-screen-pc flex-col justify-center gap-20 px-8">
-            <motion.div
+            <m.div
               ref={ref}
               style={{
                 transform: isInView ? 'none' : 'translateY(10px)',
@@ -49,8 +50,8 @@ export default function ReviewSection() {
               <Link href="/review" className="w-fit rounded-lg bg-white px-6 py-3 text-13-16-response font-bold text-black">
                 후기 보러가기
               </Link>
-            </motion.div>
-            <motion.div
+            </m.div>
+            <m.div
               ref={ref}
               style={{
                 transform: isInView ? 'none' : 'translateY(15px)',
@@ -107,7 +108,7 @@ export default function ReviewSection() {
                   <Image src={Review3} alt="후기3" />
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </div>
       </section>
@@ -115,16 +116,16 @@ export default function ReviewSection() {
         <div className="h-[150px] w-full bg-primary-400" />
       </section>
       {showScrollTop && (
-        <motion.button
+        <m.button
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={scrollToTop}
           transition={{ duration: 0.5 }}
-          className="fixed bottom-10 left-1/2 -translate-x-1/2 transform rounded-2xl bg-white px-10 py-2 text-blue-800 drop-shadow-lg transition-colors duration-300 hover:bg-black hover:text-white"
+          className="fixed bottom-10 left-1/2 z-10 -translate-x-1/2 transform rounded-2xl bg-white px-10 py-2 shadow-lg transition-colors duration-300 hover:bg-black hover:text-white"
         >
           ▲
-        </motion.button>
+        </m.button>
       )}
     </>
   );

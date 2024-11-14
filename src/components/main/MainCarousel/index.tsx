@@ -5,6 +5,7 @@ import 'swiper/css/bundle';
 import React, { useRef, useState } from 'react';
 import Lottie from 'lottie-react';
 import Image from 'next/image';
+import ArrowBtn from 'public/icons/ArrowBtn';
 import type SwiperCore from 'swiper';
 import { Autoplay, EffectCreative, Navigation, Pagination, Thumbs } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -87,7 +88,7 @@ function MainCarousel({ isError }: { isError: boolean }) {
               onClick={goToPreviousSlide}
               className="absolute left-0 top-1/2 z-50 mx-4 hidden -translate-y-1/2 rounded-full p-2 opacity-0 transition-all duration-300 group-hover:opacity-100 mobile:block"
             >
-              <Image src="/icons/left.svg" alt="Previous Button" width={32} height={32} className="opacity-70 hover:opacity-50" />
+              <ArrowBtn direction="left" color="dimgray" className="size-10" />
             </button>
 
             <button
@@ -96,7 +97,7 @@ function MainCarousel({ isError }: { isError: boolean }) {
               onClick={goToNextSlide}
               className="absolute right-0 top-1/2 z-50 mx-4 hidden -translate-y-1/2 rounded-full p-2 opacity-0 transition-all duration-300 group-hover:opacity-100 mobile:block"
             >
-              <Image src="/icons/right.svg" alt="Next Button" width={32} height={32} className="opacity-70 hover:opacity-50" />
+              <ArrowBtn direction="right" color="dimgray" className="size-10" />
             </button>
 
             {/* Carousel Thumbnail */}
