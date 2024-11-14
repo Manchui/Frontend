@@ -5,7 +5,7 @@ export async function getBookmarkData(request: GetGatheringRequest): Promise<Get
   const { page, size, sort, query, category, location, startDate, endDate } = request;
 
   const params = {
-    page: page.toString(),
+    page: page?.toString(),
     size: size.toString(),
     ...(sort && { sort }),
     ...(query && { query }),

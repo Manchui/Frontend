@@ -1,5 +1,5 @@
 /* eslint-disable tailwindcss/no-custom-classname */
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { getGatheringData } from '@/apis/getGatheringData';
 import FilterSection from '@/components/main/FilterSection';
 import HeaderSection from '@/components/main/HeaderSection';
@@ -14,16 +14,20 @@ import useGetGatheringData from '@/hooks/useGetGatheringData';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import useFilterStore from '@/store/useFilterStore';
 import { userStore } from '@/store/userStore';
+import type { DehydratedState } from '@tanstack/react-query';
 import { dehydrate, HydrationBoundary, QueryClient, useQueryClient } from '@tanstack/react-query';
 
 interface MainPageProps {
+  dehydratedState: DehydratedState;
+  initialPageSize: number;
   seo: {
     title: string;
   };
 }
 
-export default function MainPage({ seo }: MainPageProps) {
+export default function MainPage({ seo, dehydratedState, initialPageSize }: MainPageProps) {
   const { keyword, location, category, closeDate, dateStart, dateEnd } = useFilterStore();
+  const [pageSize, setPageSize] = useState(initialPageSize);
 
   const sentinelRef = useRef<HTMLDivElement>(null);
   const isIntersecting = useIntersectionObserver(sentinelRef);
@@ -32,8 +36,6 @@ export default function MainPage({ seo }: MainPageProps) {
 
   const isLoggedIn = userStore((state) => state.isLoggedIn);
   const queryClient = useQueryClient();
-
-  const pageSize = useMemo(() => PAGE_SIZE_BY_DEVICE.MAIN[deviceState], [deviceState]);
 
   const {
     data: mainData,
@@ -67,11 +69,17 @@ export default function MainPage({ seo }: MainPageProps) {
     [isIntersecting, hasNextPage, fetchNextPage],
   );
 
+  useEffect(() => {
+    if (pageSize !== PAGE_SIZE_BY_DEVICE.MAIN[deviceState]) {
+      setPageSize(PAGE_SIZE_BY_DEVICE.MAIN[deviceState]);
+    }
+  }, [deviceState, pageSize]);
+
   return (
     <>
       <SEO title={seo.title} />
-      <HydrationBoundary>
-        <MainCarousel isError={isError} />
+      <HydrationBoundary state={dehydratedState}>
+        <MainCarousel isError={isError} mainData={mainDataList} />
         <RootLayout>
           <MainContainer>
             <HeaderSection />
@@ -88,9 +96,13 @@ export default function MainPage({ seo }: MainPageProps) {
 export const getServerSideProps = async () => {
   const queryClient = new QueryClient();
 
+  const initialPageSize = PAGE_SIZE_BY_DEVICE.MAIN.PC;
+
+  const request = { page: 1, size: initialPageSize };
+
   await queryClient.prefetchQuery({
-    queryKey: ['main'],
-    queryFn: () => getGatheringData({ page: 1, size: PAGE_SIZE_BY_DEVICE.MAIN.TABLET }),
+    queryKey: ['main', { page: 1 }],
+    queryFn: () => getGatheringData(request),
   });
 
   return {
@@ -99,6 +111,7 @@ export const getServerSideProps = async () => {
       seo: {
         title: '만취 - 랜딩 페이지',
       },
+      initialPageSize,
     },
   };
 };

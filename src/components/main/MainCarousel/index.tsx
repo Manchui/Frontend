@@ -3,19 +3,20 @@ import 'swiper/css';
 import 'swiper/css/bundle';
 
 import React, { useRef, useState } from 'react';
-import Lottie from 'lottie-react';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import ArrowBtn from 'public/icons/ArrowBtn';
 import type SwiperCore from 'swiper';
 import { Autoplay, EffectCreative, Navigation, Pagination, Thumbs } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { getGatheringData } from '@/apis/getGatheringData';
 import CarouselContent from '@/components/main/MainCarousel/CarouselContent';
-import { useQuery } from '@tanstack/react-query';
+import type { GetGatheringResponse } from '@manchui-api';
 
-import Error from 'public/lottie/error.json'; // 빨간 느낌표
+import Error from 'public/lottie/error.json';
 
-function MainCarousel({ isError }: { isError: boolean }) {
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
+
+function MainCarousel({ isError, mainData }: { isError: boolean; mainData: GetGatheringResponse['data']['gatheringList'] }) {
   const [swiperIndex, setSwiperIndex] = useState(0);
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperCore | null>(null);
   const [swiperInstance, setSwiperInstance] = useState<SwiperCore | null>(null);
@@ -23,22 +24,15 @@ function MainCarousel({ isError }: { isError: boolean }) {
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
 
-  const { data } = useQuery({
-    queryKey: ['main'],
-    queryFn: () => getGatheringData({ page: 1, size: 8 }),
-  });
-
-  const gatherings = data?.data.gatheringList || [];
-
   const goToPreviousSlide = () => {
     if (swiperInstance) {
-      swiperInstance.slideTo(swiperIndex === 0 ? gatherings.length - 1 : swiperIndex - 1, 500);
+      swiperInstance.slideTo(swiperIndex === 0 ? mainData.length - 1 : swiperIndex - 1, 500);
     }
   };
 
   const goToNextSlide = () => {
     if (swiperInstance) {
-      swiperInstance.slideTo(swiperIndex === gatherings.length - 1 ? 0 : swiperIndex + 1, 500);
+      swiperInstance.slideTo(swiperIndex === mainData.length - 1 ? 0 : swiperIndex + 1, 500);
     }
   };
 
@@ -71,7 +65,7 @@ function MainCarousel({ isError }: { isError: boolean }) {
               autoplay={{ delay: 3000, disableOnInteraction: false, waitForTransition: false, pauseOnMouseEnter: true }}
               className="h-carousel-mobile-responsive tablet:h-carousel-tablet-responsive"
             >
-              {gatherings.map((gathering, i) => (
+              {mainData.map((gathering, i) => (
                 <SwiperSlide key={gathering.gatheringId} className="relative">
                   <CarouselContent gathering={gathering} i={i} />
                 </SwiperSlide>
@@ -106,7 +100,7 @@ function MainCarousel({ isError }: { isError: boolean }) {
               spaceBetween={10}
               className="absolute bottom-20 right-12 float-right opacity-0 tablet:h-[60px] tablet:w-thumb-tablet-responsive tablet:opacity-100 pc:w-thumb-pc-responsive"
             >
-              {gatherings.map((gathering, i) => (
+              {mainData.map((gathering, i) => (
                 <SwiperSlide
                   key={gathering.gatheringId}
                   onClick={() => swiperInstance?.slideTo(i)}
