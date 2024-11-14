@@ -16,7 +16,13 @@ import useFilterStore from '@/store/useFilterStore';
 import { userStore } from '@/store/userStore';
 import { dehydrate, HydrationBoundary, QueryClient, useQueryClient } from '@tanstack/react-query';
 
-export default function MainPage() {
+interface MainPageProps {
+  seo: {
+    title: string;
+  };
+}
+
+export default function MainPage({ seo }: MainPageProps) {
   const { keyword, location, category, closeDate, dateStart, dateEnd } = useFilterStore();
 
   const sentinelRef = useRef<HTMLDivElement>(null);
@@ -63,7 +69,7 @@ export default function MainPage() {
 
   return (
     <>
-      <SEO />
+      <SEO title={seo.title} />
       <HydrationBoundary>
         <MainCarousel isError={isError} />
         <RootLayout>
@@ -90,6 +96,9 @@ export const getServerSideProps = async () => {
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
+      seo: {
+        title: '만취 - 랜딩 페이지',
+      },
     },
   };
 };

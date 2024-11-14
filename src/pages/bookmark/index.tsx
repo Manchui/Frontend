@@ -17,7 +17,13 @@ import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query
 
 import Error from 'public/lottie/error.json';
 
-export default function BookmarkPage() {
+interface BookmarkProps {
+  seo: {
+    title: string;
+  };
+}
+
+export default function BookmarkPage({ seo }: BookmarkProps) {
   const { page, keyword, location, category, closeDate, dateEnd, dateStart } = useFilterStore();
 
   const deviceState = useDeviceState();
@@ -76,6 +82,9 @@ export const getServerSideProps = async () => {
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
+      seo: {
+        title: '만취 - 찜한 모임 페이지',
+      },
     },
   };
 };
