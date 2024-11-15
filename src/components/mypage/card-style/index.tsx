@@ -4,6 +4,7 @@ import getMyAttendance from '@/apis/mypage/get-mypage-attendance';
 import getMyGathering from '@/apis/mypage/get-mypage-gathring';
 import { MessageWithLink } from '@/components/main/CardSection';
 import PaginationBtn from '@/components/shared/PaginationBtn';
+import useFilterStore from '@/store/useFilterStore';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { MeetingCard } from './meeting-card';
@@ -15,7 +16,8 @@ import Empty from 'public/lottie/empty.json';
 export function CardComponents({ category }: { category: string }) {
   const queryClient = useQueryClient();
   const [review, setReview] = useState('작성 가능한 리뷰');
-  const [page, setPage] = useState<number>(1);
+  const { page } = useFilterStore();
+
   const size = 10;
 
   const { data, isLoading, isError } = useQuery({
@@ -23,11 +25,11 @@ export function CardComponents({ category }: { category: string }) {
     queryFn: () => {
       if (category === '나의 모임') {
         setReview('작성 가능한 리뷰');
-        return getMyAttendance(page, size);
+        return getMyAttendance(page ?? 1, size);
       }
       if (category === '내가 만든 모임') {
         setReview('작성 가능한 리뷰');
-        return getMyGathering(page, size);
+        return getMyGathering(page ?? 1, size);
       }
       return null;
     },
