@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { ProgressBar } from '@/components/shared/progress-bar';
 import Rating from '@/components/shared/Rating';
 import type { ReviewsList } from '@/types/detail';
@@ -33,9 +32,6 @@ export default function Score({ reviewsList }: { reviewsList: ReviewsList }) {
           </div>
           {SCORE}
         </div>
-      </div>
-      <div className="relative h-[193px] w-[343px] duration-100 tablet:h-[414px] tablet:w-[737px] pc:h-[356px] pc:w-[619px]">
-        <Image alt="지도 이미지" src="/images/img-detail-page.png" fill style={{ objectFit: 'cover' }} className="rounded-2xl" />
       </div>
     </section>
   );
