@@ -6,13 +6,7 @@ import instance from '../api';
 
 export default async function getGatheringData(gatheringsId: string) {
   try {
-    let res;
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      res = await instance.get<BaseData>(`/api/gatherings/${gatheringsId}/reviews?page=1&size=10`);
-    } else {
-      res = await instance.get<BaseData>(`/api/gatherings/public/${gatheringsId}/reviews?page=1&size=10`);
-    }
+    const res = await instance.get<BaseData>(`/api/gatherings/public/${gatheringsId}/reviews?page=1&size=10`);
     return res.data.data;
   } catch (e: unknown) {
     if (axios.isAxiosError(e)) {
