@@ -236,7 +236,9 @@ export default function CreatePage() {
     }
 
     data.append('groupName', name || ''); // 텍스트 값
-    data.append('gatheringContent', description || ''); // 텍스트 값
+    const normalizedDescription = description?.replace(/\r\n/g, '\n');
+    console.log(normalizedDescription?.length);
+    data.append('gatheringContent', normalizedDescription || ''); // 텍스트 값
     data.append('category', selectedCategory || ''); // 텍스트 값
     data.append('location', selectedLocation || ''); // 텍스트 값
 
@@ -269,6 +271,10 @@ export default function CreatePage() {
       Toast('success', '모임 생성 성공');
       void router.push('/main');
     } catch (err: any) {
+      if (err.response?.status === 400) {
+        console.error('400 Error: 전송하려던 데이터 내용 확인:');
+        console.log('gatheringContent:', data.get('gatheringContent'));
+      }
       const errorMessage =
         err.response?.data?.message ||
         (err.response?.status === 403

@@ -24,6 +24,7 @@ export default function DetailPage() {
     },
     staleTime: 1000 * 10,
   });
+
   const gatherings = data;
 
   if (isLoading) return <Loading />;
