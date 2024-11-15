@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import Image from 'next/image';
-import deleteBookMark from '@/apis/detail/delete-bookmark';
-import fetchBookMark from '@/apis/detail/post-bookmark';
+import instance from '@/apis/api';
 import type { DetailData } from '@/types/detail';
 import { useMutation } from '@tanstack/react-query';
 
@@ -19,7 +18,13 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
   const isToday = today.getFullYear() === dueDate.getFullYear() && today.getMonth() === dueDate.getMinutes() && today.getDate() === dueDate.getDate();
 
   const mutation = useMutation({
-    mutationFn: () => (isHearted ? deleteBookMark(gatherings.gatheringId) : fetchBookMark(gatherings.gatheringId)),
+    mutationFn: async () => {
+      if (!isHearted) {
+        await instance.post(`/api/gatherings/${gatherings.gatheringId}/heart`);
+      } else {
+        await instance.delete(`/api/gatherings/${gatherings.gatheringId}/heart`);
+      }
+    },
     onSuccess: () => {
       setIsHearted(!isHearted);
       Toast('success', isHearted ? '찜한 모임에서 제거되었습니다.' : '찜한 모임에 추가되었습니다.');
