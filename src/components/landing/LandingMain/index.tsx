@@ -1,5 +1,5 @@
 /* eslint-disable tailwindcss/no-custom-classname */
-import { motion } from 'framer-motion';
+import * as m from 'framer-motion/m';
 import Link from 'next/link';
 
 export default function LandingMain() {
@@ -11,7 +11,7 @@ export default function LandingMain() {
         </video>
       </div>
       <div className="mx-auto flex min-h-screen w-full max-w-screen-pc select-none px-8 pt-[90px]">
-        <motion.div
+        <m.div
           initial={{ x: -10, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.9, ease: 'easeInOut', delay: 0.4 }}
@@ -30,7 +30,7 @@ export default function LandingMain() {
           <Link href="/main" className="inline-block rounded-lg bg-black p-4 text-13-16-response text-white">
             만취 모임 참여하기
           </Link>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

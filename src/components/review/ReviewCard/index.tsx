@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import ArrowBtn from 'public/icons/ArrowBtn';
 import Rating from '@/components/shared/Rating';
 import type { GetReviewResponse } from '@manchui-api';
 
@@ -76,16 +77,10 @@ export function ReviewCard({ review }: ReviewCardSProps) {
 
           <Link
             href={`/detail/${review.gatheringId}`}
-            className="group flex h-8 items-center justify-center whitespace-nowrap rounded-md bg-blue-800 px-6 py-2 text-sub-response font-bold text-white transition-all duration-200"
+            className="inline-flex h-8 items-center justify-center whitespace-nowrap rounded-md bg-blue-800 py-2 pl-6 pr-3 text-sub-response font-bold text-white transition-all duration-200"
           >
-            <span>보러가기</span>
-            <Image
-              src="/icons/main/banner-btn.svg"
-              alt="버튼"
-              width={20}
-              height={20}
-              className="-mr-2 size-5 transition duration-500 will-change-transform group-hover:translate-x-2"
-            />
+            보러가기
+            <ArrowBtn direction="right" />
           </Link>
         </div>
 

@@ -1,6 +1,7 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useInView } from 'framer-motion';
+import * as m from 'framer-motion/m';
 import Image from 'next/image';
 import Logo from 'public/logo/logo.png';
 
@@ -12,7 +13,7 @@ export default function FeatureSection() {
     <section>
       <div className="relative min-h-screen w-full bg-black text-white">
         <div className="absolute left-1/2 top-1/2 flex w-full max-w-screen-pc -translate-x-1/2 -translate-y-1/2 select-none flex-col gap-20 px-10 py-12">
-          <motion.div
+          <m.div
             ref={ref}
             style={{
               transform: isInView ? 'none' : 'translateY(10px)',
@@ -27,8 +28,8 @@ export default function FeatureSection() {
               <span className="text-primary-400">다양한 활동</span>을 참여하세요.
             </h2>
             <span className="inline-block">몇 번의 클릭만으로 당신의 관심사를 함께할 사람들을 만나보세요.</span>
-          </motion.div>
-          <motion.div
+          </m.div>
+          <m.div
             ref={ref}
             style={{
               transform: isInView ? 'none' : 'translateY(15px)',
@@ -65,7 +66,7 @@ export default function FeatureSection() {
                 <Image src={Logo} alt="예시사진" fill className="rounded-xl object-cover" />
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </section>

@@ -10,18 +10,15 @@ import MainHeader from '@/components/review/MainHeader';
 import ReviewCardList from '@/components/review/ReviewCardList';
 import PaginationBtn from '@/components/shared/PaginationBtn';
 import RootLayout from '@/components/shared/RootLayout';
-import { FILTER_OPTIONS } from '@/constants/contants';
 import useGetReviewData from '@/hooks/useGetReviewData';
+import useFilterStore from '@/store/useFilterStore';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 
 export default function ReviewPage() {
   const [page, setPage] = useState(1);
   const [keyword, setKeyword] = useState<string | undefined>(undefined);
   const [sort, setSort] = useState<string | undefined>(undefined);
-  const [location, setLocation] = useState<string | undefined>(undefined);
-  const [category, setCategory] = useState<string | undefined>(FILTER_OPTIONS[0].id);
-  const [dateStart, setDateStart] = useState<string | undefined>(undefined);
-  const [dateEnd, setDateEnd] = useState<string | undefined>(undefined);
+  const { page, keyword, location, category, dateStart, dateEnd } = useFilterStore();
 
   const [pagesize] = useState(10);
 
@@ -40,22 +37,6 @@ export default function ReviewPage() {
     startDate: dateStart,
     endDate: dateEnd,
   });
-
-  const handlePageChange = (pageValue: number) => {
-    setPage(pageValue);
-  };
-  const handleCategoryClick = (selectedCategory: string) => {
-    setCategory(selectedCategory);
-  };
-
-  const handleSearchSubmit = (submitValue: string) => {
-    setKeyword(submitValue);
-  };
-
-  const handleDateSubmit = ({ start, end }: { end: string; start: string }) => {
-    setDateStart(start);
-    setDateEnd(end);
-  };
 
   return (
     <div className="mt-[60px]">
