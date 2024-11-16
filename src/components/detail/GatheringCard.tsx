@@ -7,17 +7,16 @@ import { useMutation } from '@tanstack/react-query';
 
 import DateChip from '../shared/chip/DateChip';
 import { ProgressBar } from '../shared/progress-bar';
-import Tag from '../shared/Tag';
+// import Tag from '../shared/Tag';
 import { Toast } from '../shared/Toast';
 
 export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
   const gatheringDate = new Date(gatherings.gatheringDate);
-  const dueDate = new Date(gatherings.dueDate);
+  // const dueDate = new Date(gatherings.dueDate);
   const isLoggedIn = userStore((state) => state.isLoggedIn);
-  // const today = new Date();
   const [isHearted, setIsHearted] = useState<boolean>(gatherings.hearted);
-  // const isToday = today.getFullYear() === dueDate.getFullYear() && today.getMonth() === dueDate.getMinutes() && today.getDate() === dueDate.getDate();
 
+  console.log('gatherings: ', gatherings.dueDate);
   const mutation = useMutation({
     mutationFn: async () => {
       if (!isLoggedIn) {
@@ -40,7 +39,7 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
     },
   });
   return (
-    <article className="mx-4 grid grid-cols-1 gap-5 tablet:grid-cols-2 pc:grid-cols-2">
+    <article className="mx-4 grid grid-cols-1 gap-5 pt-5 tablet:grid-cols-2 tablet:pt-6 pc:grid-cols-2 pc:pt-[52px]">
       <div>
         <div className="relative min-h-[343px]">
           <Image
@@ -51,10 +50,10 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
             sizes="(max-width: 820px) 50vw, (max-width: 1240px) 50vw, 50vw"
           />
           <div className="absolute right-0 top-0">
-            <Tag Hour={dueDate.getHours()} Type="detail" finish={dueDate.getTime() < new Date().getTime() && true} />
+            {/* <Tag Hour={dueDate.getHours()} Type="detail" finish={dueDate.getTime() < new Date().getTime() && true} /> */}
           </div>
         </div>
-        <div className="mt-5 hidden tablet:block pc:mt-6 pc:block">
+        <div className="mt-5 hidden duration-200 tablet:block pc:mt-7 pc:block">
           <ProgressBar
             maxValue={gatherings.maxUsers}
             mainValue={gatherings.minUsers}
@@ -93,7 +92,7 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
             {gatherings.heartCounts}
           </div>
         </div>
-        <hr className="mt-6 border border-dashed border-gray-50 duration-200 pc:mt-11" />
+        <hr className="mt-6 border border-dashed border-gray-50" />
         <div className="mt-5 tablet:hidden pc:mt-6">
           <ProgressBar
             maxValue={gatherings.maxUsers}
@@ -103,9 +102,9 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
             userList={gatherings.usersList}
           />
         </div>
-        <section className="mt-6 tablet:mt-9 pc:mt-10">
+        <section className="mt-6">
           <h1 className="mb-3 text-2lg font-bold">모임설명</h1>
-          <p className="whitespace-pre-line rounded-2xl border border-blue-100 px-4 py-2.5">{gatherings.content}</p>
+          <p className="whitespace-pre-line break-words rounded-2xl border border-blue-100 px-4 py-2.5">{gatherings.content}</p>
         </section>
       </div>
     </article>

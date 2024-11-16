@@ -28,7 +28,7 @@ export default function DetailPage() {
   const gatherings = data;
 
   return (
-    <main className="pb-[96px] pt-[60px]">
+    <main className="pb-[80px] pt-[60px]">
       <RootLayout>
         <GatheringCard gatherings={gatherings} />
 
