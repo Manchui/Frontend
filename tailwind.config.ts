@@ -28,33 +28,8 @@ const config = {
       backgroundImage,
       ...typography,
     },
-    keyframes: {
-      animateTop: {
-        '25%': { width: '100%', opacity: '1' },
-        '30%, 100%': { opacity: '0' },
-      },
-      animateBottom: {
-        '0%, 50%': { opacity: '0', width: '0' },
-        '75%': { opacity: '1', width: '100%' },
-        '76%, 100%': { opacity: '0' },
-      },
-      animateRight: {
-        '0%, 25%': { opacity: '0', height: '0' },
-        '50%': { opacity: '1', height: '100%' },
-        '55%, 100%': { opacity: '0', height: '100%' },
-      },
-      animateLeft: {
-        '0%, 75%': { opacity: '0', height: '0' },
-        '100%': { opacity: '1', height: '100%' },
-      },
-    },
-    animation: {
-      animateTop: 'animateTop 3s ease-in-out infinite',
-      animateBottom: 'animateBottom 3s ease-in-out infinite',
-      animateRight: 'animateRight 3s ease-in-out infinite',
-      animateLeft: 'animateLeft 3s ease-in-out infinite',
-    },
   },
+  safelist: ['bg-[#fb9b9b]', 'bg-[#85c8f5]', 'bg-[#cdf86f]'],
   plugins: [],
 };
 export default config;

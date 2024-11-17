@@ -14,7 +14,9 @@ export const useAuthBoundary = () => {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname && pathname.startsWith('/bookmark')) {
+    const protectedPaths = ['/bookmark', '/create', '/mypage'];
+
+    if (pathname && protectedPaths.some((path) => pathname.startsWith(path))) {
       const token = localStorage.getItem('accessToken');
       if (!token) {
         Toast('warning', '로그인이 필요한 서비스입니다.');

@@ -1,7 +1,7 @@
-import { useRouter } from 'next/router';
+import useInternalRouter from '@/hooks/useInternalRouter';
 
 export default function Custom404() {
-  const router = useRouter();
+  const router = useInternalRouter();
 
   const handleBack = () => {
     void router.back();

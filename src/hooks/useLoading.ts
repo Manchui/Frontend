@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Router, useRouter } from 'next/router';
+import { Router } from 'next/router';
+import useInternalRouter from '@/hooks/useInternalRouter';
 
 /**
  * useLoading 훅은 페이지 전환 시 로딩 상태를 관리하여 로딩 화면을 특정 조건에서만 보여주도록 합니다.
@@ -12,7 +13,7 @@ import { Router, useRouter } from 'next/router';
  */
 
 export const useLoading = () => {
-  const router = useRouter();
+  const router = useInternalRouter();
   const [loading, setLoading] = useState(false);
   const [loadedPages, setLoadedPages] = useState(new Set()); // 로드된 페이지 추적
 

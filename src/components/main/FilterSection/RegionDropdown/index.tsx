@@ -14,7 +14,7 @@ export default function RegionDropdown() {
     setLocation(undefined);
     setRegionDropOpen(false);
 
-    Toast('success', '지역 필터가 초기화되었습니다.');
+    Toast('info', '지역 필터가 초기화되었습니다.');
   };
 
   const handleRegionSelect = (value: string) => {

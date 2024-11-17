@@ -33,13 +33,13 @@ export default function DateDropdown() {
       Toast('success', '날짜가 적용되었습니다.');
       setDateDropOpen(false);
     } else {
-      Toast('warning', '날짜 범위를 선택하세요');
+      Toast('error', '날짜 범위를 선택하세요');
     }
   }, [endDate, setDateEnd, setDateStart, startDate]);
 
   const handleInitClick = useCallback(() => {
     if (!startDate && !endDate) {
-      Toast('warning', '날짜를 선택하세요');
+      Toast('error', '날짜를 선택하세요');
       return;
     }
 
@@ -50,7 +50,7 @@ export default function DateDropdown() {
       setDateEnd(undefined);
       setIsApplyDisabled(false);
       setDateDropOpen(false);
-      Toast('success', '날짜 선택이 초기화되었습니다.');
+      Toast('info', '날짜 선택이 초기화되었습니다.');
     }
   }, [startDate, endDate, setDateEnd, setDateStart]);
 
