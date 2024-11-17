@@ -24,9 +24,9 @@ export default function MainCardSection({ isLoading, isError, mainData, pageSize
         opacity: isInView ? 1 : 0,
         transition: 'all 1s ease-in-out',
       }}
-      className="mx-auto grid min-h-[200px] w-full select-none grid-cols-1 gap-6 px-4 mobile:p-0 tablet:grid-cols-3"
+      className="mx-auto grid min-h-[200px] w-full select-none grid-cols-1 gap-6 px-2 mobile:p-0 tablet:grid-cols-3"
     >
-      {isLoading
+      {isLoading && !isError
         ? Array.from({ length: pageSize }).map((_, idx) => <CardSkeleton key={idx} />)
         : mainData.map((gathering) => <CardSection key={gathering.gatheringId} gathering={gathering} />)}
       {mainData.length === 0 && !isError && <NoData use="main" />}

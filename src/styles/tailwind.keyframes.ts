@@ -52,6 +52,36 @@ const keyframes = {
       transform: 'translateX(0)',
     },
   },
+  'menu-bar1': {
+    '0%': { transform: 'translateY(8px) rotate(45deg)' },
+    '50%': { transform: 'translateY(8px) rotate(0)' },
+    '100%': { transform: 'translateY(0) rotate(0)' },
+  },
+  'menu-bar2': {
+    '0%': { transform: 'translateY(-8px) rotate(-45deg)' },
+    '50%': { transform: 'translateY(-8px) rotate(0)' },
+    '100%': { transform: 'translateY(0) rotate(0)' },
+  },
+  'menu-bar3': {
+    '0%': { transform: 'translateY(0px) rotate(0)', opacity: '0' },
+    '50%': { transform: 'translateY(0px) rotate(0)', opacity: '0' },
+    '100%': { transform: 'translateY(0px) rotate(0)', opacity: '100' },
+  },
+  'active-menu-bar3': {
+    '0%': { transform: 'translateY(0px) rotate(0)', opacity: '100' },
+    '50%': { transform: 'translateY(0px) rotate(0)', opacity: '100' },
+    '100%': { transform: 'translateY(0px) rotate(0)', opacity: '0' },
+  },
+  'active-menu-bar1': {
+    '0%': { transform: 'translateY(0px) rotate(0)' },
+    '50%': { transform: 'translateY(8px) rotate(0)' },
+    '100%': { transform: 'translateY(8px) rotate(45deg)' },
+  },
+  'active-menu-bar2': {
+    '0%': { transform: 'translateY(0px) rotate(0)' },
+    '50%': { transform: 'translateY(-8px) rotate(0)' },
+    '100%': { transform: 'translateY(-8px) rotate(-45deg)' },
+  },
 };
 
 export default keyframes;

@@ -1,10 +1,10 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 import CardSection, { CardSkeleton, MessageWithLink } from '@/components/main/CardSection';
 import NoData from '@/components/shared/NoData';
-import type { GetGatheringResponse } from '@manchui-api';
+import type { GetBookmarkResponse } from '@manchui-api';
 
 interface BookmarkCardListProps {
-  data?: GetGatheringResponse['data'];
+  data?: GetBookmarkResponse['data'];
   isError: boolean;
   isLoading: boolean;
   skeletonCount: number;
@@ -14,7 +14,7 @@ export default function BookmarkCardList({ data, isLoading, isError, skeletonCou
   return (
     <div className="flex flex-col items-center">
       <div className="bg-whte relative grid w-full select-none grid-cols-1 gap-6 bg-white px-4 pb-4 tablet:grid-cols-3">
-        {isLoading
+        {isLoading && !isError
           ? Array.from({ length: skeletonCount }).map((_, idx) => <CardSkeleton key={idx} />)
           : data?.gatheringList.map((gathering) => <CardSection key={gathering.gatheringId} gathering={gathering} />)}
 

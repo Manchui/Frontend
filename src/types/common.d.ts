@@ -3,8 +3,20 @@ declare module '@manchui-api' {
 
   export type Category = '전체' | '운동' | '영화' | '공부' | '문화/예술' | '게임' | '여행' | '맛집' | '음악';
 
+  export type GetBookmarkRequest = {
+    category?: string;
+    endDate?: string;
+    location?: string;
+    page?: number;
+    query?: string;
+    size: number;
+    sort?: string;
+    startDate?: string;
+  };
+
   export type GetGatheringRequest = {
     category?: string;
+    cursor?: number | undefined;
     endDate?: string;
     location?: string;
     page?: number;

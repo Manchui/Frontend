@@ -1,10 +1,9 @@
-/* eslint-disable tailwindcss/no-custom-classname */
 import { useEffect, useMemo, useRef } from 'react';
 import { getGatheringData } from '@/apis/getGatheringData';
+import Carousel from '@/components/main/Carousel';
 import FilterSection from '@/components/main/FilterSection';
 import HeaderSection from '@/components/main/HeaderSection';
 import MainCardSection from '@/components/main/MainCardSection';
-import MainCarousel from '@/components/main/MainCarousel';
 import MainContainer from '@/components/main/MainContainer';
 import SpeedDial from '@/components/main/SpeedDial';
 import RootLayout from '@/components/shared/RootLayout';
@@ -12,19 +11,25 @@ import { SEO } from '@/components/shared/SEO';
 import PAGE_SIZE_BY_DEVICE from '@/constants/pageSize';
 import useDeviceState from '@/hooks/useDeviceState';
 import useGetGatheringData from '@/hooks/useGetGatheringData';
+import useInternalRouter from '@/hooks/useInternalRouter';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
-import useFilterStore from '@/store/useFilterStore';
+import useFilterStore, { useResetFilters } from '@/store/useFilterStore';
 import { userStore } from '@/store/userStore';
+import type { DehydratedState } from '@tanstack/react-query';
 import { dehydrate, HydrationBoundary, QueryClient, useQueryClient } from '@tanstack/react-query';
 
 interface MainPageProps {
+  dehydratedState: DehydratedState;
   seo: {
     title: string;
   };
 }
 
-export default function MainPage({ seo }: MainPageProps) {
+export default function MainPage({ seo, dehydratedState }: MainPageProps) {
   const { keyword, location, category, closeDate, dateStart, dateEnd } = useFilterStore();
+
+  const router = useInternalRouter();
+  const resetFilters = useResetFilters();
 
   const sentinelRef = useRef<HTMLDivElement>(null);
   const isIntersecting = useIntersectionObserver(sentinelRef);
@@ -43,7 +48,7 @@ export default function MainPage({ seo }: MainPageProps) {
     hasNextPage,
     fetchNextPage,
   } = useGetGatheringData({
-    page: 1,
+    cursor: undefined,
     size: pageSize,
     query: keyword,
     location,
@@ -68,11 +73,23 @@ export default function MainPage({ seo }: MainPageProps) {
     [isIntersecting, hasNextPage, fetchNextPage],
   );
 
+  useEffect(() => {
+    const handleRouteChange = () => {
+      resetFilters();
+    };
+
+    router.events.on('routeChangeStart', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+    };
+  }, [router, resetFilters]);
+
   return (
     <>
       <SEO title={seo.title} />
-      <HydrationBoundary>
-        <MainCarousel isError={isError} />
+      <HydrationBoundary state={dehydratedState}>
+        <Carousel />
         <RootLayout>
           <MainContainer>
             <HeaderSection />
@@ -90,9 +107,11 @@ export default function MainPage({ seo }: MainPageProps) {
 export const getServerSideProps = async () => {
   const queryClient = new QueryClient();
 
+  const request = { page: 1, size: PAGE_SIZE_BY_DEVICE.MAIN.MOBILE };
+
   await queryClient.prefetchQuery({
-    queryKey: ['main'],
-    queryFn: () => getGatheringData({ page: 1, size: PAGE_SIZE_BY_DEVICE.MAIN.TABLET }),
+    queryKey: ['main', { page: 1 }],
+    queryFn: () => getGatheringData(request),
   });
 
   return {
