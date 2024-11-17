@@ -20,7 +20,13 @@ export function ReviewListCard({ reviews }: { reviews: ReviewsList }) {
                   <div className="flex items-center gap-3">
                     <div className="flex items-center gap-2">
                       <div className="relative size-6 rounded-full">
-                        <Image alt="profile" src={review.image || '/icons/person-rounded.png'} fill style={{ objectFit: 'cover' }} className="rounded-full" />
+                        <Image
+                          alt="profile"
+                          src={review.profileImagePath || '/icons/person-rounded.png'}
+                          fill
+                          style={{ objectFit: 'cover' }}
+                          className="rounded-full"
+                        />
                       </div>
                       <span>{review.name}</span>
                       <span>|</span>

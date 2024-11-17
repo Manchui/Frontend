@@ -1,16 +1,38 @@
+import { useState } from 'react';
 import Image from 'next/image';
+import instance from '@/apis/api';
 import type { DetailData } from '@/types/detail';
+import { useMutation } from '@tanstack/react-query';
 
 import DateChip from '../shared/chip/DateChip';
 import { ProgressBar } from '../shared/progress-bar';
 import Tag from '../shared/Tag';
+import { Toast } from '../shared/Toast';
 
 export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
   const gatheringDate = new Date(gatherings.gatheringDate);
   const dueDate = new Date(gatherings.dueDate);
   const today = new Date();
+  const [isHearted, setIsHearted] = useState<boolean>(gatherings.hearted);
 
   const isToday = today.getFullYear() === dueDate.getFullYear() && today.getMonth() === dueDate.getMinutes() && today.getDate() === dueDate.getDate();
+
+  const mutation = useMutation({
+    mutationFn: async () => {
+      if (!isHearted) {
+        await instance.post(`/api/gatherings/${gatherings.gatheringId}/heart`);
+      } else {
+        await instance.delete(`/api/gatherings/${gatherings.gatheringId}/heart`);
+      }
+    },
+    onSuccess: () => {
+      setIsHearted(!isHearted);
+      Toast('success', isHearted ? '찜한 모임에서 제거되었습니다.' : '찜한 모임에 추가되었습니다.');
+    },
+    onError: (error) => {
+      Toast('error', error.message);
+    },
+  });
 
   return (
     <article className="flex flex-col items-center justify-center gap-6 bg-blue-800 py-[22px] tablet:flex-row tablet:pb-7 tablet:pt-6 pc:flex-row pc:pb-[34px] pc:pt-[27px]">
@@ -32,13 +54,8 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
           <div className="flex justify-between">
             <p className="text-lg font-semibold">{gatherings.groupName}</p>
             {localStorage.getItem('accessToken') && (
-              <button type="button">
-                <Image
-                  src={gatherings.isHearted ? '/icons/heart-active-noround.svg' : '/icons/heart-inactive-noround.svg'}
-                  alt="찜하기 버튼"
-                  width={28}
-                  height={28}
-                />
+              <button type="button" onClick={() => mutation.mutate()}>
+                <Image src={isHearted ? '/icons/heart-red.svg' : '/icons/heart-outline.svg'} alt="찜하기 버튼" width={28} height={28} />
               </button>
             )}
           </div>

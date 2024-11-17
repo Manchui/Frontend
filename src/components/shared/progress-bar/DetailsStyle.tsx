@@ -28,8 +28,8 @@ export function DetailsStyle({ maxValue, mainValue = 0, value, location, userLis
               {testData.length > 5 ? (
                 <>
                   {testData.slice(0, 4).map((img, i) => (
-                    <div key={i} className="relative size-7">
-                      <Image src={img.profileImagePath || '/icons/person-rounded.png'} alt="유저이미지" className="rounded-full" fill />
+                    <div key={i} className="relative size-7 rounded-full border border-blue-200 bg-slate-50 shadow-sm">
+                      <Image src={img.profileImagePath || '/icons/person-rounded.png'} alt="유저이미지" className="rounded-full object-cover" fill />
                     </div>
                   ))}
                   <div className="relative flex size-7 items-center justify-center rounded-full bg-[#F3F4F3]">
@@ -38,8 +38,8 @@ export function DetailsStyle({ maxValue, mainValue = 0, value, location, userLis
                 </>
               ) : (
                 testData.map((img, i) => (
-                  <div key={i} className="relative size-7">
-                    <Image src={img.profileImagePath || '/icons/person-rounded.png'} alt="유저이미지" className="rounded-full" fill />
+                  <div key={i} className="relative size-7 rounded-full border border-blue-200 bg-slate-50 shadow-sm">
+                    <Image src={img.profileImagePath || '/icons/person-rounded.png'} alt="유저이미지" className="rounded-full object-cover" fill />
                   </div>
                 ))
               )}
