@@ -8,8 +8,6 @@ const animation = {
   'slide-up': 'slide-up 0.5s ease-in-out forwards',
   'slideInLeft': 'slideInFromLeft 0.4s ease-in-out forwards',
   'skeleton': 'skeleton 1.3s infinite ease-in-out',
-  'likeEffect': 'likeEffect 400ms ease',
-  'dislikeEffect': 'dislikeEffect 400ms ease',
 };
 
 export default animation;

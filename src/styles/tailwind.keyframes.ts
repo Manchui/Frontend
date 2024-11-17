@@ -52,16 +52,6 @@ const keyframes = {
       transform: 'translateX(0)',
     },
   },
-  'likeEffect': {
-    '0%': { transform: 'scale(0)' },
-    '50%': { transform: 'scale(1.2)' },
-    '100%': { transform: 'scale(1)' },
-  },
-  'dislikeEffect': {
-    '0%': { transform: 'scale(0)' },
-    '50%': { transform: 'scale(1.2)' },
-    '100%': { transform: 'scale(1)' },
-  },
 };
 
 export default keyframes;
