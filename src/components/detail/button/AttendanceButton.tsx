@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import submitAttendance from '@/apis/detail/post-attendance';
 import { Button } from '@/components/shared/button';
 import Modal from '@/components/shared/Modal';
@@ -8,6 +9,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { DetailPageBaseType } from '../FloatingBar';
 
 export default function AttendanceButton({ id, gatherings }: DetailPageBaseType) {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const { isOpen, openModal, closeModal } = useModal();
   const token = localStorage.getItem('accessToken');
@@ -38,6 +40,8 @@ export default function AttendanceButton({ id, gatherings }: DetailPageBaseType)
               if (token) {
                 mutation.mutate();
                 closeModal();
+              } else {
+                void router.push('/login');
               }
             },
           },

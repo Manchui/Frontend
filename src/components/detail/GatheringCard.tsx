@@ -1,4 +1,6 @@
+import { useMemo } from 'react';
 import Image from 'next/image';
+import RedHeart from 'public/icons/RedHeart';
 import instance from '@/apis/api';
 import { userStore } from '@/store/userStore';
 import type { DetailData } from '@/types/detail';
@@ -6,7 +8,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import DateChip from '../shared/chip/DateChip';
 import { ProgressBar } from '../shared/progress-bar';
-// import Tag from '../shared/Tag';
+import Tag from '../shared/Tag';
 import { Toast } from '../shared/Toast';
 
 export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
@@ -14,6 +16,17 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
   const gatheringDate = new Date(gatherings.gatheringDate);
   // const dueDate = new Date(gatherings.dueDate);
   const isLoggedIn = userStore((state) => state.isLoggedIn);
+
+  const dueDate = useMemo(() => {
+    const date = new Date(gatherings.gatheringDate);
+    date.setDate(date.getDate() - 1);
+    return date;
+  }, [gatherings]);
+
+  const showTag = useMemo(() => {
+    const now = new Date();
+    return now >= dueDate;
+  }, [dueDate]);
 
   const mutation = useMutation({
     mutationFn: async () => {
@@ -41,7 +54,7 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
       if (context?.oldData) {
         queryClient.setQueryData(['detail'], context.oldData);
       }
-      Toast('error', gatherings.hearted ? '좋아요를 누르지 않은 모임입니다.' : '이미 좋아요를 누른 모임입니다.');
+      Toast('error', error.message);
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['detail'] });
@@ -60,9 +73,7 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
             className="rounded-2xl object-cover duration-100"
             sizes="(max-width: 820px) 50vw, (max-width: 1240px) 50vw, 50vw"
           />
-          <div className="absolute right-0 top-0">
-            {/* <Tag Hour={dueDate.getHours()} Type="detail" finish={dueDate.getTime() < new Date().getTime() && true} /> */}
-          </div>
+          <div className="absolute right-0 top-0 z-10">{showTag && <Tag Type="detail" Hour={dueDate.getHours() - 5} />}</div>
         </div>
         <div className="mt-5 hidden duration-200 tablet:block pc:mt-7 pc:block">
           <ProgressBar
@@ -97,9 +108,7 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
             </div>
           </div>
           <div className="flex flex-col items-center text-xs text-gray-400">
-            <button type="button" onClick={() => mutation.mutate()}>
-              <Image src={gatherings.hearted ? '/icons/heart-red.svg' : '/icons/heart-outline.svg'} alt="찜하기 버튼" width={28} height={28} />
-            </button>
+            <RedHeart color={`${gatherings.hearted ? '#FF4D11' : '#D4D4D4'}`} className="size-7" onClick={() => mutation.mutate()} />
             {gatherings.heartCounts}
           </div>
         </div>
