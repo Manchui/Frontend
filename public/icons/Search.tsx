@@ -1,4 +1,5 @@
-import { Props, Svg } from 'public/icons/SVG';
+import type { Props } from '@/components/shared/Svg';
+import { Svg } from '@/components/shared/Svg';
 
 export default  function Search({
   direction = 'right',
