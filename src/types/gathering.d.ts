@@ -13,6 +13,7 @@ declare module '@manchui-api' {
         gatheringId: number;
         gatheringImage: string;
         groupName: string;
+        heartCounts: number;
         hearted: boolean;
         location: Location;
         maxUsers: number;
