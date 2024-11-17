@@ -1,6 +1,5 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 import { useState } from 'react';
-import { Bagel_Fat_One } from 'next/font/google';
 import RedHeart from 'public/icons/RedHeart';
 import instance from '@/apis/api';
 import DateChip from '@/components/shared/chip/DateChip';
@@ -13,7 +12,6 @@ import { useQueryClient } from '@tanstack/react-query';
 interface CardContentProps {
   gathering: GetGatheringResponse['data']['gatheringList'][number];
 }
-const bagelFatOne = Bagel_Fat_One({ weight: '400', subsets: ['latin'] });
 
 export default function CardContent({ gathering }: CardContentProps) {
   const { hearted, gatheringId, groupName, gatheringDate, closed, location, category, maxUsers, minUsers, currentUsers, heartCounts } = gathering;
