@@ -1,11 +1,11 @@
 import instance from '@/apis/api';
-import type { GetGatheringRequest, GetGatheringResponse } from '@manchui-api';
+import type { GetBookmarkRequest, GetBookmarkResponse } from '@manchui-api';
 
-export async function getBookmarkData(request: GetGatheringRequest): Promise<GetGatheringResponse> {
+export async function getBookmarkData(request: GetBookmarkRequest): Promise<GetBookmarkResponse> {
   const { page, size, sort, query, category, location, startDate, endDate } = request;
 
   const params = {
-    page: page.toString(),
+    page: page?.toString(),
     size: size.toString(),
     ...(sort && { sort }),
     ...(query && { query }),
@@ -16,7 +16,7 @@ export async function getBookmarkData(request: GetGatheringRequest): Promise<Get
   };
 
   try {
-    const res = await instance.get<GetGatheringResponse>('/api/gatherings/heart', {
+    const res = await instance.get<GetBookmarkResponse>('/api/gatherings/heart', {
       params,
     });
 

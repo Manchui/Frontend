@@ -7,6 +7,7 @@ declare module '@manchui-api' {
     keyword?: string;
     location?: string | undefined;
     page?: number;
+    resetFilters: () => void;
     setCategory: (category: string) => void;
     setCloseDate: (closeDate: string) => void;
     setDateEnd: (dateEnd: string | undefined) => void;

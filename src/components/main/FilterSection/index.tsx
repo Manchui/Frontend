@@ -1,16 +1,16 @@
 import { useCallback, useMemo, useRef } from 'react';
 import { useInView } from 'framer-motion';
 import * as m from 'framer-motion/m';
-import { useRouter } from 'next/router';
 import CategoryList from '@/components/main/FilterSection/CategoryList';
 import CloseDateToggle from '@/components/main/FilterSection/CloseDateToggle';
 import DateDropdown from '@/components/main/FilterSection/DateDropdown';
 import RegionDropdown from '@/components/main/FilterSection/RegionDropdown';
 import { Toast } from '@/components/shared/Toast';
 import { IS_SERVER } from '@/constants/server';
+import useInternalRouter from '@/hooks/useInternalRouter';
 
 export default function FilterSection() {
-  const router = useRouter();
+  const router = useInternalRouter();
 
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true });
@@ -21,7 +21,7 @@ export default function FilterSection() {
     if (isLoggedIn) {
       void router.push('/create');
     } else {
-      Toast('warning', '로그인이 필요합니다.');
+      Toast('error', '로그인이 필요합니다.');
     }
   }, [isLoggedIn, router]);
 

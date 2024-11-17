@@ -17,6 +17,7 @@ const useFilterStore = create<FilterStateType>((set) => ({
   setCloseDate: (closeDate) => set({ closeDate }),
   setDateStart: (dateStart) => set({ dateStart }),
   setDateEnd: (dateEnd) => set({ dateEnd }),
+  resetFilters: () => set({ keyword: undefined, location: undefined, category: '', closeDate: undefined, dateStart: undefined, dateEnd: undefined, page: 1 }),
 }));
 
 // States
@@ -36,5 +37,6 @@ export const useSetCloseDate = () => useFilterStore((state) => state.setCloseDat
 export const useSetPage = () => useFilterStore((state) => state.setPage);
 export const useSetDateStart = () => useFilterStore((state) => state.setDateStart);
 export const useSetDateEnd = () => useFilterStore((state) => state.setDateEnd);
+export const useResetFilters = () => useFilterStore((state) => state.resetFilters);
 
 export default useFilterStore;

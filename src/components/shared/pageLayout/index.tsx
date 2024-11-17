@@ -1,11 +1,11 @@
 import { type ReactNode, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import * as m from 'framer-motion/m';
-import { useRouter } from 'next/router';
 import GNB from '@/components/shared/GNB';
 import Loading from '@/components/shared/Loading';
 import { IS_SERVER } from '@/constants/server';
 import { useAuthBoundary } from '@/hooks/useAuthBoundary';
+import useInternalRouter from '@/hooks/useInternalRouter';
 import { useLoading } from '@/hooks/useLoading';
 
 type LayoutProps = {
@@ -29,7 +29,7 @@ export default function PageLayout({ children, showHeader = true }: LayoutProps)
   const [isClient, setIsClient] = useState(false);
   const [is404, setIs404] = useState(false);
 
-  const router = useRouter();
+  const router = useInternalRouter();
   const loading = useLoading();
 
   useAuthBoundary();
@@ -43,7 +43,14 @@ export default function PageLayout({ children, showHeader = true }: LayoutProps)
   }, [router.pathname]);
 
   const shouldShowHeader = useMemo(
-    () => isClient && !is404 && router.pathname !== '/' && router.pathname !== '/login' && router.pathname !== '/signup' && showHeader,
+    () =>
+      isClient &&
+      !is404 &&
+      router.pathname !== '/' &&
+      router.pathname !== '/login' &&
+      router.pathname !== '/signup' &&
+      router.pathname !== '/introduce' &&
+      showHeader,
     [isClient, is404, router.pathname, showHeader],
   );
   // const shouldShowFooter = pathname !== '/' && !pathname.startsWith('/signup') && !pathname.startsWith('/login') && showFooter;
@@ -51,16 +58,16 @@ export default function PageLayout({ children, showHeader = true }: LayoutProps)
   return (
     <>
       {shouldShowHeader && <GNB />}
-      {loading ? (
-        <Loading />
-      ) : (
-        <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait">
+        {loading ? (
+          <Loading />
+        ) : (
           <m.div key={router.pathname} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
             {children}
             {/* {shouldShowFooter && <Footer />} Footer 나중에 계발하면 넣을 생각입니다! */}
           </m.div>
-        </AnimatePresence>
-      )}
+        )}
+      </AnimatePresence>
     </>
   );
 }

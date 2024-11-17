@@ -25,7 +25,10 @@ export default function PopularList() {
             <p className="text-16-20-response text-gray-600">
               다양한 취미와 관심사를 가진 사람들이 함께하는 인기 모임들을 만나고, 당신만의 특별한 경험을 만들어 보세요.
             </p>
-            <Link href="/main" className="inline-block rounded-lg bg-black px-6 py-3 text-13-16-response font-bold text-white">
+            <Link
+              href="/main"
+              className="inline-block rounded-lg bg-black px-6 py-3 text-13-16-response font-bold text-white duration-300 hover:bg-gray-900/80"
+            >
               모임 참여하기
             </Link>
           </m.div>
