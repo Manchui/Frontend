@@ -52,9 +52,7 @@ export default function CardContent({ gathering }: CardContentProps) {
     <div className="relative flex h-1/2 min-h-36 w-full cursor-pointer flex-col justify-between overflow-hidden px-5 py-4 mobile:h-full tablet:w-full">
       <div className="mb-3 flex justify-between">
         <div className="flex flex-col">
-          <div className="text-pretty text-16-20-response font-bold">
-            {groupName} <span className={`${bagelFatOne.className} text-primary-400`}>New</span>
-          </div>
+          <div className="text-pretty text-16-20-response font-bold">{groupName}</div>
           <span className={`pb-3 text-sub-response font-medium text-gray-500 ${closed && '!text-gray-200'}`}>
             {category} | {location}
           </span>
