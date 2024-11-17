@@ -17,11 +17,9 @@ function CardSection({ gathering }: CardSectionProps) {
   return (
     <Link
       href={`/detail/${gathering.gatheringId}`}
-      className="group flex aspect-square min-h-[170px] flex-col rounded-2xl bg-white shadow-[0_4px_16px_0_rgba(17,34,17,0.05)] mobile:aspect-auto mobile:flex-row tablet:flex-col"
+      className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_4px_16px_0_rgba(17,34,17,0.05)] mobile:flex-row tablet:flex-col"
     >
-      {/* 이미지 영역 */}
       <CardImage gathering={gathering} />
-      {/* 콘텐츠 영역 */}
       <CardContent gathering={gathering} />
     </Link>
   );

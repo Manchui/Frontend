@@ -2,6 +2,7 @@ import { type ReactNode, useEffect, useLayoutEffect, useMemo, useState } from 'r
 import { AnimatePresence } from 'framer-motion';
 import * as m from 'framer-motion/m';
 import GNB from '@/components/shared/GNB';
+import Loading from '@/components/shared/Loading';
 import { IS_SERVER } from '@/constants/server';
 import { useAuthBoundary } from '@/hooks/useAuthBoundary';
 import useInternalRouter from '@/hooks/useInternalRouter';
@@ -42,7 +43,14 @@ export default function PageLayout({ children, showHeader = true }: LayoutProps)
   }, [router.pathname]);
 
   const shouldShowHeader = useMemo(
-    () => isClient && !is404 && router.pathname !== '/' && router.pathname !== '/login' && router.pathname !== '/signup' && showHeader,
+    () =>
+      isClient &&
+      !is404 &&
+      router.pathname !== '/' &&
+      router.pathname !== '/login' &&
+      router.pathname !== '/signup' &&
+      router.pathname !== '/introduce' &&
+      showHeader,
     [isClient, is404, router.pathname, showHeader],
   );
   // const shouldShowFooter = pathname !== '/' && !pathname.startsWith('/signup') && !pathname.startsWith('/login') && showFooter;
@@ -52,7 +60,7 @@ export default function PageLayout({ children, showHeader = true }: LayoutProps)
       {shouldShowHeader && <GNB />}
       <AnimatePresence mode="wait">
         {loading ? (
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-title-response font-bold text-black">Loading ...</div>
+          <Loading />
         ) : (
           <m.div key={router.pathname} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
             {children}

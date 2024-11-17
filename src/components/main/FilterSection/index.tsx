@@ -21,7 +21,7 @@ export default function FilterSection() {
     if (isLoggedIn) {
       void router.push('/create');
     } else {
-      Toast('warning', '로그인이 필요합니다.');
+      Toast('error', '로그인이 필요합니다.');
     }
   }, [isLoggedIn, router]);
 

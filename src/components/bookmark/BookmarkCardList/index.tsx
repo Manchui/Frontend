@@ -14,7 +14,7 @@ export default function BookmarkCardList({ data, isLoading, isError, skeletonCou
   return (
     <div className="flex flex-col items-center">
       <div className="bg-whte relative grid w-full select-none grid-cols-1 gap-6 bg-white px-4 pb-4 tablet:grid-cols-3">
-        {isLoading
+        {isLoading && !isError
           ? Array.from({ length: skeletonCount }).map((_, idx) => <CardSkeleton key={idx} />)
           : data?.gatheringList.map((gathering) => <CardSection key={gathering.gatheringId} gathering={gathering} />)}
 

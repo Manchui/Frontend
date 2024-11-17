@@ -1,18 +1,18 @@
-/* eslint-disable tailwindcss/no-custom-classname */
 import { useEffect, useMemo, useRef } from 'react';
 import { getGatheringData } from '@/apis/getGatheringData';
+import Carousel from '@/components/main/Carousel';
 import FilterSection from '@/components/main/FilterSection';
 import HeaderSection from '@/components/main/HeaderSection';
 import MainCardSection from '@/components/main/MainCardSection';
-// import MainCarousel from '@/components/main/MainCarousel';
 import MainContainer from '@/components/main/MainContainer';
 import RootLayout from '@/components/shared/RootLayout';
 import { SEO } from '@/components/shared/SEO';
 import PAGE_SIZE_BY_DEVICE from '@/constants/pageSize';
 import useDeviceState from '@/hooks/useDeviceState';
 import useGetGatheringData from '@/hooks/useGetGatheringData';
+import useInternalRouter from '@/hooks/useInternalRouter';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
-import useFilterStore from '@/store/useFilterStore';
+import useFilterStore, { useResetFilters } from '@/store/useFilterStore';
 import { userStore } from '@/store/userStore';
 import type { DehydratedState } from '@tanstack/react-query';
 import { dehydrate, HydrationBoundary, QueryClient, useQueryClient } from '@tanstack/react-query';
@@ -26,6 +26,9 @@ interface MainPageProps {
 
 export default function MainPage({ seo, dehydratedState }: MainPageProps) {
   const { keyword, location, category, closeDate, dateStart, dateEnd } = useFilterStore();
+
+  const router = useInternalRouter();
+  const resetFilters = useResetFilters();
 
   const sentinelRef = useRef<HTMLDivElement>(null);
   const isIntersecting = useIntersectionObserver(sentinelRef);
@@ -69,11 +72,23 @@ export default function MainPage({ seo, dehydratedState }: MainPageProps) {
     [isIntersecting, hasNextPage, fetchNextPage],
   );
 
+  useEffect(() => {
+    const handleRouteChange = () => {
+      resetFilters();
+    };
+
+    router.events.on('routeChangeStart', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+    };
+  }, [router, resetFilters]);
+
   return (
     <>
       <SEO title={seo.title} />
       <HydrationBoundary state={dehydratedState}>
-        {/* <MainCarousel isError={isError} mainData={mainDataList} /> */}
+        <Carousel />
         <RootLayout>
           <MainContainer>
             <HeaderSection />

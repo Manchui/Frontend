@@ -13,7 +13,8 @@ import { SEO } from '@/components/shared/SEO';
 import PAGE_SIZE_BY_DEVICE from '@/constants/pageSize';
 import useDeviceState from '@/hooks/useDeviceState';
 import useGetBookmarkData from '@/hooks/useGetBookmarkData';
-import useFilterStore from '@/store/useFilterStore';
+import useInternalRouter from '@/hooks/useInternalRouter';
+import useFilterStore, { useResetFilters } from '@/store/useFilterStore';
 import type { DehydratedState } from '@tanstack/react-query';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 
@@ -33,6 +34,9 @@ export default function BookmarkPage({ seo, dehydratedState, initialPageSize }: 
   const [pageSize, setPageSize] = useState(initialPageSize);
 
   const { page, keyword, location, category, closeDate, dateEnd, dateStart } = useFilterStore();
+
+  const router = useInternalRouter();
+  const resetFilters = useResetFilters();
 
   const deviceState = useDeviceState();
 
@@ -58,6 +62,18 @@ export default function BookmarkPage({ seo, dehydratedState, initialPageSize }: 
       setPageSize(PAGE_SIZE_BY_DEVICE.BOOKMARK[deviceState]);
     }
   }, [deviceState, pageSize]);
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      resetFilters();
+    };
+
+    router.events.on('routeChangeStart', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+    };
+  }, [router, resetFilters]);
 
   return (
     <>

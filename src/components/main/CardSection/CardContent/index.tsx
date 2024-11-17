@@ -14,29 +14,28 @@ interface CardContentProps {
 }
 
 export default function CardContent({ gathering }: CardContentProps) {
-  const { hearted, gatheringId, groupName, gatheringDate, closed, location, maxUsers, minUsers, currentUsers, heartCounts } = gathering;
+  const { hearted, gatheringId, groupName, gatheringDate, closed, location, category, maxUsers, minUsers, currentUsers, heartCounts } = gathering;
   const [isHearted, setIsHearted] = useState(hearted);
   const isLoggedIn = userStore((state) => state.isLoggedIn);
   const queryClient = useQueryClient();
-
-  console.log(heartCounts);
 
   const toggleHeart = async (e: React.MouseEvent<SVGSVGElement>) => {
     e.preventDefault();
 
     if (!isLoggedIn) {
-      Toast('warning', '로그인이 필요합니다.');
+      Toast('error', '로그인이 필요합니다.');
       return;
     }
 
     const endpoint = `/api/gatherings/${gatheringId}/heart`;
+
     try {
       if (!hearted) {
         await instance.post(endpoint);
         Toast('success', '찜 목록에 추가되었습니다!');
       } else {
         await instance.delete(endpoint);
-        Toast('warning', '찜 목록에서 제거되었습니다!');
+        Toast('error', '찜 목록에서 제거되었습니다!');
       }
       setIsHearted(!isHearted);
       await queryClient.invalidateQueries({ queryKey: ['main'] });
@@ -53,11 +52,14 @@ export default function CardContent({ gathering }: CardContentProps) {
         <div className="flex flex-col">
           <span className="text-pretty text-16-20-response font-bold">{groupName}</span>
           <span className={`pb-3 text-sub-response font-medium text-gray-500 ${closed && '!text-gray-200'}`}>
-            {gathering.category} | {location}
+            {category} | {location}
           </span>
           <DateChip dateTime={new Date(gatheringDate)} closed={closed} />
         </div>
-        <RedHeart color={`${hearted ? '#FF4D11' : '#D4D4D4'}`} className="size-8" onClick={toggleHeart} />
+        <div className="relative h-fit">
+          <RedHeart color={`${hearted ? '#FF4D11' : '#D4D4D4'}`} className="size-7" onClick={toggleHeart} />
+          <span className="absolute right-1/2 translate-x-1/2 text-gray-200 text-xs">{heartCounts}</span>
+        </div>
       </div>
       <div>
         <ProgressBar maxValue={maxUsers} value={currentUsers} mainValue={minUsers} design="basics" closed={closed} />

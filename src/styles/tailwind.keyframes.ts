@@ -52,6 +52,41 @@ const keyframes = {
       transform: 'translateX(0)',
     },
   },
+  'bounce': {
+    '0%': {
+      transform: 'translateY(0px)',
+    },
+    '30%': {
+      transform: 'translateY(-30px)',
+    },
+    '60%': {
+      transform: 'translateY(10px)',
+    },
+    '80%': {
+      transform: 'translateY(0px)',
+    },
+    '100%': {
+      transform: 'translateY(0px)',
+    },
+  },
+  'animateTop': {
+    '25%': { width: '100%', opacity: '1' },
+    '30%, 100%': { opacity: '0' },
+  },
+  'animateBottom': {
+    '0%, 50%': { opacity: '0', width: '0' },
+    '75%': { opacity: '1', width: '100%' },
+    '76%, 100%': { opacity: '0' },
+  },
+  'animateRight': {
+    '0%, 25%': { opacity: '0', height: '0' },
+    '50%': { opacity: '1', height: '100%' },
+    '55%, 100%': { opacity: '0', height: '100%' },
+  },
+  'animateLeft': {
+    '0%, 75%': { opacity: '0', height: '0' },
+    '100%': { opacity: '1', height: '100%' },
+  },
 };
 
 export default keyframes;

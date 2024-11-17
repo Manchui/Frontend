@@ -8,6 +8,11 @@ const animation = {
   'slide-up': 'slide-up 0.5s ease-in-out forwards',
   'slideInLeft': 'slideInFromLeft 0.4s ease-in-out forwards',
   'skeleton': 'skeleton 1.3s infinite ease-in-out',
+  'bounce': 'bounce 1s ease-in-out infinite',
+  'animateTop': 'animateTop 3s ease-in-out infinite',
+  'animateBottom': 'animateBottom 3s ease-in-out infinite',
+  'animateRight': 'animateRight 3s ease-in-out infinite',
+  'animateLeft': 'animateLeft 3s ease-in-out infinite',
 };
 
 export default animation;

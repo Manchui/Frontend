@@ -6,11 +6,7 @@ const useGetGatheringData = (request: GetGatheringRequest) =>
   useInfiniteQuery<GetGatheringResponse>({
     queryKey: ['main', request],
     queryFn: ({ pageParam = request.cursor }) => getGatheringData({ ...request, cursor: pageParam as number | undefined }),
-    getNextPageParam: (lastPage) => {
-      console.log('Last page data:', lastPage);
-      console.log('Next cursor:', lastPage.data.nextCursor);
-      return lastPage.data.nextCursor || undefined;
-    },
+    getNextPageParam: (lastPage) => lastPage.data.nextCursor || undefined,
     initialPageParam: undefined,
     placeholderData: keepPreviousData,
   });
