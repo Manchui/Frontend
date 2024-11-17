@@ -33,10 +33,18 @@ export default function Carousel() {
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="min-w-[320px] select-none overflow-hidden bg-gradient-to-r from-[#85c8f5] via-[#fb9b9b] to-[#cdf86f] pt-[60px]"
+      className="min-w-[320px] select-none overflow-hidden bg-black pt-[60px]"
     >
-      <div className="flex h-[400px] flex-col justify-center mobile:h-[500px] tablet:h-[600px]">
-        <h1 className="text-center text-24-40-response font-bold text-white drop-shadow-lg">만취 프로젝트 개발자</h1>
+      <div className="flex h-[400px] flex-col justify-center mobile:h-[500px] tablet:h-[550px]">
+        <div className="mx-auto flex w-full max-w-[940px] items-center justify-between">
+          <h1 className="text-center text-24-40-response font-bold text-white drop-shadow-lg">만취 프로젝트 개발자</h1>
+          <button
+            type="button"
+            className="inline-block rounded-lg bg-white px-5 py-2 text-13-16-response font-bold text-black shadow-md transition hover:bg-gray-50"
+          >
+            더 알아보기
+          </button>
+        </div>
         <div className="mt-10 flex justify-center gap-3 mobile:gap-6">
           {cards.map((card, index) => (
             <m.div
@@ -46,6 +54,7 @@ export default function Carousel() {
               animate="visible"
               variants={cardVariants}
               whileHover={{ scale: 1.1 }}
+              onClick={() => router.push('/introduce')}
               className="relative flex w-[300px] cursor-pointer flex-col items-center justify-center rounded-xl p-4 shadow-lg"
               style={{ backgroundColor: card.bg }}
             >
@@ -54,7 +63,7 @@ export default function Carousel() {
             </m.div>
           ))}
         </div>
-        <div className="mt-4 text-center tablet:mt-10">
+        {/* <div className="mt-4 text-center tablet:mt-10">
           <button
             type="button"
             onClick={() => router.push('/introduce')}
@@ -62,7 +71,7 @@ export default function Carousel() {
           >
             더 알아보기
           </button>
-        </div>
+        </div> */}
       </div>
     </m.div>
   );

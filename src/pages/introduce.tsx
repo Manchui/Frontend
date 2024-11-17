@@ -36,12 +36,12 @@ export default function Introduce() {
   };
 
   return (
-    <m.div initial="hidden" animate="visible" transition={{ duration: 0.5 }}>
-      <div className="mx-auto flex min-h-screen min-w-[350px] max-w-screen-pc flex-col items-center space-y-5 px-5 py-14">
+    <m.div initial="hidden" animate="visible" transition={{ duration: 0.5 }} className="bg-black">
+      <div className="mx-auto flex min-h-screen min-w-[350px] max-w-screen-pc flex-col items-center space-y-5 px-5 pb-24 pt-14">
         {/* Frontend Section */}
         <m.div variants={sectionVariants} transition={{ duration: 0.8, delay: 0.3 }} className="w-full space-y-5">
           <h2
-            className={`${gugi.className} text-introduce-response inline-block select-none underline decoration-[#fb9b9b] decoration-[6px] underline-offset-8`}
+            className={`${gugi.className} inline-block select-none text-introduce-response text-white underline decoration-[#fb9b9b] decoration-[6px] underline-offset-8`}
           >
             Frontend Dev
           </h2>
@@ -55,7 +55,9 @@ export default function Introduce() {
         {/* Backend, Designer Section */}
         <m.div variants={sectionVariants} transition={{ duration: 0.8, delay: 0.8 }} className="flex w-full flex-col gap-3 phablet:flex-row">
           <div className="flex-1 space-y-5 text-center tablet:text-start">
-            <h2 className={`${gugi.className} text-introduce-response select-none underline decoration-[#85c8f5] decoration-[6px] underline-offset-8`}>
+            <h2
+              className={`${gugi.className} select-none text-introduce-response text-white underline decoration-[#85c8f5] decoration-[6px] underline-offset-8`}
+            >
               Backend Dev
             </h2>
             <div className="flex flex-wrap justify-center gap-3 tablet:justify-start">
@@ -66,7 +68,7 @@ export default function Introduce() {
           </div>
           <m.div variants={sectionVariants} transition={{ duration: 0.8, delay: 1.3 }} className="mx-auto w-full max-w-[320px] flex-1 space-y-5">
             <h2
-              className={`${gugi.className} text-introduce-response select-none text-center underline decoration-[#cdf86f] decoration-[6px] underline-offset-8`}
+              className={`${gugi.className} select-none text-center text-introduce-response text-white underline decoration-[#cdf86f] decoration-[6px] underline-offset-8`}
             >
               Designer
             </h2>
@@ -81,11 +83,11 @@ export default function Introduce() {
             whileHover="hover"
             onClick={() => router.push('/main')}
             transition={{ duration: 1 }}
-            className={`fixed bottom-10 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1 rounded-2xl bg-black px-8 py-4 text-13-15-response text-white shadow-lg ${bagelFatOne.className}`}
+            className={`fixed bottom-10 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1 rounded-2xl bg-white px-8 py-4 text-13-15-response drop-shadow-xl ${bagelFatOne.className}`}
           >
             HOME
-            <m.div variants={{ hover: { x: 10 } }} transition={{ duration: 0.3, ease: 'easeOut' }}>
-              <DoubleArrow direction="right" color="white" className="size-4" />
+            <m.div variants={{ hover: { x: 8 } }} transition={{ duration: 0.3, ease: 'easeOut' }}>
+              <DoubleArrow direction="right" color="black" className="size-4" />
             </m.div>
           </m.button>
         )}

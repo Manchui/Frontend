@@ -1,5 +1,6 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 import { useState } from 'react';
+import { Bagel_Fat_One } from 'next/font/google';
 import RedHeart from 'public/icons/RedHeart';
 import instance from '@/apis/api';
 import DateChip from '@/components/shared/chip/DateChip';
@@ -12,6 +13,7 @@ import { useQueryClient } from '@tanstack/react-query';
 interface CardContentProps {
   gathering: GetGatheringResponse['data']['gatheringList'][number];
 }
+const bagelFatOne = Bagel_Fat_One({ weight: '400', subsets: ['latin'] });
 
 export default function CardContent({ gathering }: CardContentProps) {
   const { hearted, gatheringId, groupName, gatheringDate, closed, location, category, maxUsers, minUsers, currentUsers, heartCounts } = gathering;
@@ -50,7 +52,9 @@ export default function CardContent({ gathering }: CardContentProps) {
     <div className="relative flex h-1/2 min-h-36 w-full cursor-pointer flex-col justify-between overflow-hidden px-5 py-4 mobile:h-full tablet:w-full">
       <div className="mb-3 flex justify-between">
         <div className="flex flex-col">
-          <span className="text-pretty text-16-20-response font-bold">{groupName}</span>
+          <div className="text-pretty text-16-20-response font-bold">
+            {groupName} <span className={`${bagelFatOne.className} text-primary-400`}>New</span>
+          </div>
           <span className={`pb-3 text-sub-response font-medium text-gray-500 ${closed && '!text-gray-200'}`}>
             {category} | {location}
           </span>
@@ -58,7 +62,7 @@ export default function CardContent({ gathering }: CardContentProps) {
         </div>
         <div className="relative h-fit">
           <RedHeart color={`${hearted ? '#FF4D11' : '#D4D4D4'}`} className="size-7" onClick={toggleHeart} />
-          <span className="absolute right-1/2 translate-x-1/2 text-gray-200 text-xs">{heartCounts}</span>
+          <span className="absolute right-1/2 translate-x-1/2 text-xs text-gray-200">{heartCounts}</span>
         </div>
       </div>
       <div>
