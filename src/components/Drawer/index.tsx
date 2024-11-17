@@ -1,4 +1,5 @@
-import { useState } from 'react';
+/* eslint-disable tailwindcss/enforces-shorthand */
+import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -18,6 +19,8 @@ interface DrawerProps {
 
 export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [, setIsMobile] = useState(false);
+
   const router = useRouter();
 
   const isLoggedIns = userStore((state) => state.isLoggedIn);
@@ -28,18 +31,48 @@ export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
 
   const handleLogout = async () => {
     if (isLoggedIn) {
-      await logout();  
+      await logout();
+      setIsOpen(false);
     }
   };
+  const closeDrawer = () => {
+    setIsOpen(false);
+  };
+
+  // 화면사이즈에 따라 닫히게
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 820) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+        setIsOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <div className="flex items-center">
-      <button type="button" onClick={toggleDrawer}>
-        <Image src="/icons/menu.svg" alt="메뉴 " width={38} height={38} />
+      <button type="button" onClick={toggleDrawer} className="relative flex h-10 w-10 items-center justify-center">
+        <div className={clsx('absolute transition-all duration-300 ease-in-out', isOpen ? 'rotate-90 opacity-0' : 'rotate-0 opacity-100')}>
+          <Image src="/icons/menu.svg" alt="메뉴" width={38} height={38} />
+        </div>
+
+        <div className={clsx('absolute transition-all duration-300 ease-in-out', isOpen ? 'rotate-90 opacity-100' : '-rotate-90 opacity-0')}>
+          <Image src="/icons/x.svg" alt="닫기" width={20} height={20} />
+        </div>
       </button>
 
       <div
-        className={clsx('fixed inset-0 top-[60px] z-10 h-screen bg-black bg-opacity-50 transition-opacity', {
+        className={clsx('fixed inset-0 top-[60px] z-10 h-full min-h-screen bg-black bg-opacity-50 transition-opacity', {
           'pointer-events-none opacity-0': !isOpen,
           'opacity-50': isOpen,
         })}
@@ -48,58 +81,92 @@ export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
 
       <div
         className={clsx(
-          'fixed right-0 top-[60px] z-20 flex h-[calc(100vh-60px)] w-40 transform flex-col justify-between bg-white p-2 shadow-lg transition-transform duration-300',
+          'fixed right-0 top-[60px] z-20 flex h-full min-h-[calc(100vh-60px)] w-full transform flex-col bg-blue-800 shadow-lg transition-transform duration-300 mobile:w-[375px]',
           {
             'translate-x-full': !isOpen,
             'translate-x-0': isOpen,
           },
         )}
       >
-        <div className="mb-9">
+        <header>
           {isLoggedIn ? (
-            <Link href="/mypage">
-              <div className="flex gap-3">
-                <Image src={userData.image || '/icons/person-rounded.png'} alt="profile" width={40} height={40} className="rounded-full" />
+            <div className="flex items-center justify-between gap-3 border-b border-blue-400 p-4">
+              <div className="flex gap-2">
                 <div>
-                  <p className="text-sm font-semibold">{userData.name}</p>
+                  <Image src={userData.image || '/images/profile.svg'} alt="profile" width={40} height={40} className="size-10 rounded-full object-cover" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-white">{userData.name}</p>
                   <p className="text-[10px] font-medium text-gray-200">{userData.email}</p>
                 </div>
               </div>
-            </Link>
+              <Link
+                href="/mypage"
+                onClick={closeDrawer}
+                className="h-6 w-[100px] rounded-full border-2 border-white text-center text-sm font-semibold text-white duration-200 hover:bg-blue-900"
+              >
+                마이페이지
+              </Link>
+            </div>
           ) : (
-            <Link href="/login">
-              <div className="flex items-center justify-between pt-2">
-                <p className="text-sm font-semibold">로그인해주세요</p>
-                <Image src="/icons/arrow-right.svg" alt="오른쪽 " width={20} height={20} />
+            <Link href="/login" onClick={closeDrawer}>
+              <div className="flex items-center justify-between gap-3 border-b border-blue-400 px-4 py-5 text-white">
+                <p className="text-base font-medium">로그인해주세요</p>
+                <Image src="/icons/arrow-right-white.svg" alt="오른쪽 " width={24} height={24} />
               </div>
             </Link>
           )}
-        </div>
+        </header>
 
-        <div className="flex-grow overflow-y-auto text-sm font-medium">
-          <div className="h-10">
-            <Link href="/main" className={router.pathname === '/main' ? 'border-b-2 text-gray-400' : 'duration-500 hover:border-b-2 hover:text-gray-300'}>
-              모임 찾기
-            </Link>
-          </div>
-          <div className="h-10">
-            <Link
-              href="/bookmark"
-              className={router.pathname === '/bookmark' ? 'border-b-2 text-gray-400' : 'duration-500 hover:border-b-2 hover:text-gray-300'}
+        <section className="px-4 py-4 text-white">
+          <p className="px-2 text-xl font-semibold text-white">모임</p>
+          <div className="flex-grow overflow-y-auto pt-4 text-base font-medium">
+            <div
+              className={clsx(
+                'flex w-full cursor-pointer items-center justify-start space-x-2 border-b border-blue-600 px-4 py-3 duration-300',
+                router.pathname === '/main' ? 'bg-blue-700' : 'hover:bg-blue-900',
+              )}
+              onClick={() => {
+                void router.push('/main');
+                closeDrawer();
+              }}
             >
-              찜한 모임
-            </Link>
-          </div>
-          <div className="h-10">
-            <Link href="/review" className={router.pathname === '/review' ? 'border-b-2 text-gray-400' : 'duration-500 hover:border-b-2 hover:text-gray-300'}>
-              모든 리뷰
-            </Link>
-          </div>
-        </div>
+              <Image src="/icons/search.svg" alt="메뉴" width={20} height={20} />
+              <span>모임 찾기</span>
+            </div>
+            <div
+              className={clsx(
+                'flex w-full cursor-pointer items-center justify-start space-x-2 border-b border-blue-600 px-4 py-3 duration-300',
+                router.pathname === '/review' ? 'bg-blue-700' : 'hover:bg-blue-900',
+              )}
+              onClick={() => {
+                void router.push('/review');
+                closeDrawer();
+              }}
+            >
+              <Image src="/icons/review.svg" alt="메뉴" width={20} height={20} />
+              <span> 모든 리뷰</span>
+            </div>
 
+            <div
+              className={clsx(
+                'flex w-full cursor-pointer items-center justify-start space-x-2 border-b border-blue-600 px-4 py-3 duration-300',
+                router.pathname === '/bookmark' ? 'bg-blue-700' : 'hover:bg-blue-900',
+              )}
+              onClick={() => {
+                void router.push('/bookmark');
+                closeDrawer();
+              }}
+            >
+              <Image src="/icons/bookmark.svg" alt="메뉴" width={20} height={20} />
+              <span> 찜한 모임</span>
+            </div>
+          </div>
+        </section>
         {isLoggedIns && (
-          <button type="button" onClick={handleLogout} className="flex text-sm font-semibold text-black">
-            <span className="border-b-2 border-transparent duration-500 hover:border-gray-300 hover:text-gray-300">로그아웃</span>
+          <button type="button" onClick={handleLogout} className="fixed bottom-20 flex flex-row content-between items-center px-4">
+            <Image src="/icons/exit.svg" className="size-6" alt="프로필" width={24} height={24} />
+            <p className="ml-1 text-base font-medium text-white">로그아웃</p>
           </button>
         )}
       </div>

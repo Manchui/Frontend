@@ -52,40 +52,35 @@ const keyframes = {
       transform: 'translateX(0)',
     },
   },
-  'bounce': {
-    '0%': {
-      transform: 'translateY(0px)',
-    },
-    '30%': {
-      transform: 'translateY(-30px)',
-    },
-    '60%': {
-      transform: 'translateY(10px)',
-    },
-    '80%': {
-      transform: 'translateY(0px)',
-    },
-    '100%': {
-      transform: 'translateY(0px)',
-    },
+  'menu-bar1': {
+    '0%': { transform: 'translateY(8px) rotate(45deg)' },
+    '50%': { transform: 'translateY(8px) rotate(0)' },
+    '100%': { transform: 'translateY(0) rotate(0)' },
   },
-  'animateTop': {
-    '25%': { width: '100%', opacity: '1' },
-    '30%, 100%': { opacity: '0' },
+  'menu-bar2': {
+    '0%': { transform: 'translateY(-8px) rotate(-45deg)' },
+    '50%': { transform: 'translateY(-8px) rotate(0)' },
+    '100%': { transform: 'translateY(0) rotate(0)' },
   },
-  'animateBottom': {
-    '0%, 50%': { opacity: '0', width: '0' },
-    '75%': { opacity: '1', width: '100%' },
-    '76%, 100%': { opacity: '0' },
+  'menu-bar3': {
+    '0%': { transform: 'translateY(0px) rotate(0)', opacity: '0' },
+    '50%': { transform: 'translateY(0px) rotate(0)', opacity: '0' },
+    '100%': { transform: 'translateY(0px) rotate(0)', opacity: '100' },
   },
-  'animateRight': {
-    '0%, 25%': { opacity: '0', height: '0' },
-    '50%': { opacity: '1', height: '100%' },
-    '55%, 100%': { opacity: '0', height: '100%' },
+  'active-menu-bar3': {
+    '0%': { transform: 'translateY(0px) rotate(0)', opacity: '100' },
+    '50%': { transform: 'translateY(0px) rotate(0)', opacity: '100' },
+    '100%': { transform: 'translateY(0px) rotate(0)', opacity: '0' },
   },
-  'animateLeft': {
-    '0%, 75%': { opacity: '0', height: '0' },
-    '100%': { opacity: '1', height: '100%' },
+  'active-menu-bar1': {
+    '0%': { transform: 'translateY(0px) rotate(0)' },
+    '50%': { transform: 'translateY(8px) rotate(0)' },
+    '100%': { transform: 'translateY(8px) rotate(45deg)' },
+  },
+  'active-menu-bar2': {
+    '0%': { transform: 'translateY(0px) rotate(0)' },
+    '50%': { transform: 'translateY(-8px) rotate(0)' },
+    '100%': { transform: 'translateY(-8px) rotate(-45deg)' },
   },
 };
 
