@@ -15,7 +15,7 @@ export default function SpeedDial() {
 
   const toggleSpeedDial = () => setIsOpen((prev) => !prev);
 
-  if (deviceState !== Device.Tablet) {
+  if (deviceState !== Device.Tablet && deviceState !== Device.Mobile) {
     return null;
   }
 
