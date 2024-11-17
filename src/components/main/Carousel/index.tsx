@@ -40,6 +40,7 @@ export default function Carousel() {
           <h1 className="text-center text-24-40-response font-bold text-white drop-shadow-lg">만취 프로젝트 개발자</h1>
           <button
             type="button"
+            onClick={() => router.push('/introduce')}
             className="inline-block rounded-lg bg-white px-5 py-2 text-13-16-response font-bold text-black shadow-md transition hover:bg-gray-50"
           >
             더 알아보기
@@ -63,15 +64,6 @@ export default function Carousel() {
             </m.div>
           ))}
         </div>
-        {/* <div className="mt-4 text-center tablet:mt-10">
-          <button
-            type="button"
-            onClick={() => router.push('/introduce')}
-            className="inline-block rounded-lg bg-white px-8 py-4 text-13-16-response font-bold text-black shadow-md transition hover:bg-gray-50"
-          >
-            더 알아보기
-          </button>
-        </div> */}
       </div>
     </m.div>
   );
