@@ -3,19 +3,20 @@ import { Button } from '@/components/shared/button';
 import Modal from '@/components/shared/Modal';
 import { Toast } from '@/components/shared/Toast';
 import { useModal } from '@/hooks/useModal';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import type { DetailPageBaseType } from '../FloatingBar';
 
 export default function AttendanceButton({ id, gatherings }: DetailPageBaseType) {
+  const queryClient = useQueryClient();
   const { isOpen, openModal, closeModal } = useModal();
   const token = localStorage.getItem('accessToken');
 
   const mutation = useMutation({
     mutationFn: () => submitAttendance(id),
-    onSuccess: () => {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['detail'] });
       Toast('success', '참여 완료하였습니다.');
-      window.location.reload();
     },
     onError: (error) => {
       Toast('error', error.message);

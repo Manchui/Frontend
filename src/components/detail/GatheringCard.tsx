@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Image from 'next/image';
 import instance from '@/apis/api';
 import { userStore } from '@/store/userStore';
