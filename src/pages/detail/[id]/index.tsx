@@ -14,7 +14,7 @@ export default function DetailPage() {
   const [isId, setIsId] = useState('');
   const { data } = useQuery({
     // NOTE: page,size는 임시값
-    queryKey: ['detail', { id, page: 1, size: 10 }],
+    queryKey: ['detail', { id, page: 1, size: 10, hearted: false }],
     queryFn: () => {
       if (typeof id === 'string') {
         setIsId(id);

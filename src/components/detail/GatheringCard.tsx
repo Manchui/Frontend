@@ -3,7 +3,7 @@ import Image from 'next/image';
 import instance from '@/apis/api';
 import { userStore } from '@/store/userStore';
 import type { DetailData } from '@/types/detail';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import DateChip from '../shared/chip/DateChip';
 import { ProgressBar } from '../shared/progress-bar';
@@ -11,33 +11,45 @@ import { ProgressBar } from '../shared/progress-bar';
 import { Toast } from '../shared/Toast';
 
 export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
+  const queryClient = useQueryClient();
   const gatheringDate = new Date(gatherings.gatheringDate);
   // const dueDate = new Date(gatherings.dueDate);
   const isLoggedIn = userStore((state) => state.isLoggedIn);
-  const [isHearted, setIsHearted] = useState<boolean>(gatherings.hearted);
 
-  console.log('gatherings: ', gatherings.dueDate);
   const mutation = useMutation({
     mutationFn: async () => {
       if (!isLoggedIn) {
         Toast('warning', '로그인 이후에 사용할 수 있습니다.');
-      } else if (!isHearted) {
-        await instance.post(`/api/gatherings/${gatherings.gatheringId}/heart`);
-      } else {
-        await instance.delete(`/api/gatherings/${gatherings.gatheringId}/heart`);
-      }
-    },
-    onSuccess: () => {
-      if (!isLoggedIn) {
         return;
       }
-      setIsHearted(!isHearted);
-      Toast('success', isHearted ? '찜한 모임에서 제거되었습니다.' : '찜한 모임에 추가되었습니다.');
+      const url = `/api/gatherings/${gatherings.gatheringId}/heart`;
+      await (gatherings.hearted ? instance.delete(url) : instance.post(url));
     },
-    onError: (error) => {
-      Toast('error', error.message);
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: ['detail'] });
+      const oldData = queryClient.getQueryData<DetailData>(['detail']);
+
+      if (oldData) {
+        queryClient.setQueryData<DetailData>(['detail'], {
+          ...oldData,
+          hearted: !gatherings.hearted,
+        });
+      }
+
+      return { oldData };
+    },
+    onError(error, variables, context) {
+      if (context?.oldData) {
+        queryClient.setQueryData(['detail'], context.oldData);
+      }
+      Toast('error', gatherings.hearted ? '좋아요를 누르지 않은 모임입니다.' : '이미 좋아요를 누른 모임입니다.');
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['detail'] });
+      Toast('success', gatherings.hearted ? '찜한 모임에서 제거되었습니다.' : '찜한 모임에 추가되었습니다.');
     },
   });
+
   return (
     <article className="mx-4 grid grid-cols-1 gap-5 pt-5 tablet:grid-cols-2 tablet:pt-6 pc:grid-cols-2 pc:pt-[52px]">
       <div>
@@ -87,7 +99,7 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
           </div>
           <div className="flex flex-col items-center text-xs text-gray-400">
             <button type="button" onClick={() => mutation.mutate()}>
-              <Image src={isHearted ? '/icons/heart-red.svg' : '/icons/heart-outline.svg'} alt="찜하기 버튼" width={28} height={28} />
+              <Image src={gatherings.hearted ? '/icons/heart-red.svg' : '/icons/heart-outline.svg'} alt="찜하기 버튼" width={28} height={28} />
             </button>
             {gatherings.heartCounts}
           </div>
