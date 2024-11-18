@@ -24,9 +24,9 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
   }, [dueDate]);
 
   return (
-    <article className="mx-4 grid grid-cols-1 gap-5 pt-5 tablet:grid-cols-2 tablet:pt-6 pc:grid-cols-2 pc:pt-[52px]">
+    <article className="mx-4 grid grid-cols-1 gap-5 pt-5 tablet:mx-8 tablet:grid-cols-2 tablet:gap-7 tablet:pt-7 pc:grid-cols-2 pc:gap-12 pc:pt-7">
       <div>
-        <div className="relative min-h-[343px]">
+        <div className="relative min-h-[530px]">
           <Image
             alt="모임 이미지"
             src={gatherings.gatheringImage}
@@ -34,7 +34,9 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
             className="rounded-2xl object-cover duration-100"
             sizes="(max-width: 820px) 50vw, (max-width: 1240px) 50vw, 50vw"
           />
-          <div className="absolute right-0 top-0 z-10">{showTag && <Tag Type="detail" Hour={dueDate.getHours() - 5} />}</div>
+          <div className="absolute right-0 top-0 z-10">
+            {showTag && <Tag Type="detail" Hour={dueDate.getHours() - 5} finish={new Date(gatherings.dueDate).getTime() < new Date().getTime()} />}
+          </div>
         </div>
         <div className="mt-5 hidden duration-200 tablet:block pc:mt-7 pc:block">
           <ProgressBar
@@ -49,7 +51,7 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
       <div>
         <div className="flex justify-between">
           <div>
-            <p className="text-lg font-semibold">{gatherings.groupName}</p>
+            <p className="mt-2 text-lg font-semibold">{gatherings.groupName}</p>
             <div className="mb-3 mt-1 text-sm font-medium text-blue-800">
               <span>{gatherings.category}</span>
               <span> | </span>
@@ -73,7 +75,7 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
             {gatherings.heartCounts}
           </div>
         </div>
-        <hr className="mt-6 border border-dashed border-gray-50" />
+        <hr className="mt-8 border border-dashed border-gray-50" />
         <div className="mt-5 tablet:hidden pc:mt-6">
           <ProgressBar
             maxValue={gatherings.maxUsers}
@@ -83,10 +85,21 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
             userList={gatherings.usersList}
           />
         </div>
-        <section className="mt-6">
+        <section className="my-8">
           <h1 className="mb-3 text-2lg font-bold">모임설명</h1>
-          <p className="whitespace-pre-line break-words rounded-2xl border border-blue-100 px-4 py-2.5">{gatherings.content}</p>
+          <p className="min-h-52 whitespace-pre-line break-words rounded-2xl border border-blue-100 px-4 py-2.5 tablet:min-h-[280px] pc:min-h-[280px]">
+            {gatherings.content}
+          </p>
         </section>
+        <div className="relative min-h-[323px]">
+          <Image
+            src="/images/img-detail-page.png"
+            fill
+            alt="지도"
+            className="rounded-2xl object-cover duration-100"
+            sizes="(max-width: 820px) 50vw, (max-width: 1240px) 50vw, 50vw"
+          />
+        </div>
       </div>
     </article>
   );

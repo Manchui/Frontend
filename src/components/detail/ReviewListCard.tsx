@@ -6,7 +6,7 @@ import Rating from '../shared/Rating';
 export function ReviewListCard({ reviews }: { reviews: ReviewsList }) {
   return (
     <>
-      <hr className="border-gray-50" />
+      <hr className="border-blue-100" />
       {reviews.reviewContentList.length > 0 ? (
         <article className="flex flex-col items-center pt-2">
           {reviews.reviewContentList.map((review, i) => {
