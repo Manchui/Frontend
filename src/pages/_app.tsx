@@ -35,6 +35,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
         },
       }),
   );
+  console.log(pageProps);
 
   return (
     <QueryClientProvider client={queryClient}>

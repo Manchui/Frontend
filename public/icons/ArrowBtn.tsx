@@ -1,10 +1,9 @@
-import { Props, Svg } from 'public/icons/SVG';
-
+import type { Props } from '@/components/shared/Svg';
+import { Svg } from '@/components/shared/Svg';
 
 export interface ChevronIconProps extends Props {
   direction?: 'up' | 'right' | 'down' | 'left';
 }
-
 
 const DIRECTION_DEGREE = {
   up: 270,
@@ -32,7 +31,7 @@ export default  function ArrowBtn({
       style={{ transform: `rotate(${rotationDegree}deg)` }}
       {...props}
     >
-      <g clip-path="url(#clip0_187_28417)">
+      <g clipPath="url(#clip0_187_28417)">
         <path d="M7.1582 13.825L10.9749 10L7.1582 6.175L8.3332 5L13.3332 10L8.3332 15L7.1582 13.825Z" />
       </g>
       <defs>

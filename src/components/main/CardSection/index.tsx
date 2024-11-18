@@ -15,12 +15,13 @@ const gugi = Gugi({ weight: '400', subsets: ['latin'] });
 
 function CardSection({ gathering }: CardSectionProps) {
   return (
-    <div className="group flex aspect-square min-h-[170px] flex-col overflow-hidden rounded-2xl border border-cardBorder bg-white shadow-[0_4px_16px_0_rgba(17,34,17,0.05)] mobile:aspect-auto mobile:h-[170px] mobile:flex-row tablet:aspect-square tablet:size-full tablet:min-h-[290px] tablet:flex-col">
-      {/* 이미지 영역 */}
+    <Link
+      href={`/detail/${gathering.gatheringId}`}
+      className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_4px_16px_0_rgba(17,34,17,0.05)] mobile:flex-row tablet:flex-col"
+    >
       <CardImage gathering={gathering} />
-      {/* 콘텐츠 영역 */}
       <CardContent gathering={gathering} />
-    </div>
+    </Link>
   );
 }
 

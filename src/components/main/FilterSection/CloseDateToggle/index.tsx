@@ -13,7 +13,11 @@ export default function CloseDateToggle() {
     setToggleValue(updatedToggleValue);
     setCloseDate(updatedToggleValue ? 'closeDate' : '');
 
-    Toast('success', updatedToggleValue ? '마감 임박순 필터가 적용되었습니다.' : '마감 임박순 필터가 해제되었습니다.');
+    if (updatedToggleValue) {
+      Toast('success', '마감 임박순 필터가 적용되었습니다.');
+    } else {
+      Toast('info', '마감 임박순 필터가 해제되었습니다.');
+    }
   };
 
   return (

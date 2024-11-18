@@ -1,10 +1,9 @@
-import { Props, Svg } from 'public/icons/SVG';
-
+import type { Props } from '@/components/shared/Svg';
+import { Svg } from '@/components/shared/Svg';
 
 export interface ChevronIconProps extends Props {
   direction?: 'up' | 'right' | 'down' | 'left';
 }
-
 
 const DIRECTION_DEGREE = {
   up: 180,

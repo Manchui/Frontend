@@ -49,7 +49,7 @@ export function ProgressBar({ maxValue, value, design, mainValue = 0, imgLength 
 
   if (isValueExceeded) return <div>값 초과 입니다</div>;
 
-  const getContainerClass = () => (design === 'primary' ? 'bg-blue-50' : 'bg-gray-200');
+  const getContainerClass = () => (design === 'primary' ? 'bg-blue-50' : 'bg-gray-100');
 
   const getBarClass = () => (design === 'primary' ? 'bg-primary-400' : 'bg-gray-900');
 

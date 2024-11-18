@@ -47,7 +47,7 @@ export default function ReviewSection() {
             >
               <h2 className="text-24-40-response font-bold">만취와 함께한 경험을 공유합니다</h2>
               <span className="text-16-20-response">참여자들이 남긴 생생한 후기를 통해 다양한 모임의 실제 경험을 확인해보세요.</span>
-              <Link href="/review" className="w-fit rounded-lg bg-white px-6 py-3 text-13-16-response font-bold text-black">
+              <Link href="/review" className="w-fit rounded-lg bg-white px-6 py-3 text-13-16-response font-bold text-black duration-300 hover:bg-gray-100">
                 후기 보러가기
               </Link>
             </m.div>

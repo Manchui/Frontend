@@ -5,14 +5,9 @@ import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 const useGetGatheringData = (request: GetGatheringRequest) =>
   useInfiniteQuery<GetGatheringResponse>({
     queryKey: ['main', request],
-    queryFn: ({ pageParam = request.page }) => getGatheringData({ ...request, page: pageParam as number }),
-    getNextPageParam: (last) => {
-      if (last?.data.totalPage > last?.data.page) {
-        return last.data.page + 1;
-      }
-      return undefined;
-    },
-    initialPageParam: 1,
+    queryFn: ({ pageParam = request.cursor }) => getGatheringData({ ...request, cursor: pageParam as number | undefined }),
+    getNextPageParam: (lastPage) => lastPage.data.nextCursor || undefined,
+    initialPageParam: undefined,
     placeholderData: keepPreviousData,
   });
 
