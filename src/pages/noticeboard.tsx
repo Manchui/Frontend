@@ -16,6 +16,7 @@ export default function NoticeBoard() {
   const [activeIndex, setActiveIndex] = useState<number[]>([]);
   const [openAll, setOpenAll] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useInternalRouter();
 
@@ -44,7 +45,7 @@ export default function NoticeBoard() {
   useEffect(() => {
     const handleScroll = () => {
       if (!IS_SERVER) {
-        setShowScrollTop(window.scrollY > 0);
+        setShowScrollTop(window.scrollY > 300);
       }
     };
 
@@ -53,10 +54,14 @@ export default function NoticeBoard() {
   }, []);
 
   useEffect(() => {
-    if (isIntersecting) {
-      setVisibleCount((prev) => Math.min(prev + 5, NOTICES.length));
+    if (isIntersecting && !isLoading) {
+      setIsLoading(true);
+      setTimeout(() => {
+        setVisibleCount((prev) => Math.min(prev + 5, NOTICES.length));
+        setIsLoading(false);
+      }, 1000);
     }
-  }, [isIntersecting]);
+  }, [isIntersecting, isLoading]);
 
   return (
     <m.div variants={sectionVariants} initial="hidden" animate="visible" transition={{ duration: 0.5 }} className="bg-black">
@@ -82,6 +87,19 @@ export default function NoticeBoard() {
               />
             ))}
           </ul>
+          {isLoading && (
+            <div className="mt-4 flex items-center justify-center gap-3">
+              <div className="size-2 animate-ping rounded-full bg-white">
+                <div className="size-2 animate-ping rounded-full bg-white" />
+              </div>
+              <div className="size-2 animate-ping rounded-full bg-white">
+                <div className="size-2 animate-ping rounded-full bg-white" />
+              </div>
+              <div className="size-2 animate-ping rounded-full bg-white">
+                <div className="size-2 animate-ping rounded-full bg-white" />
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <div ref={sentinelRef} className={`h-10 ${visibleCount >= NOTICES.length ? 'hidden' : ''}`} />
