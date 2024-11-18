@@ -1,21 +1,16 @@
 import { useMemo } from 'react';
 import Image from 'next/image';
 import RedHeart from 'public/icons/RedHeart';
-import instance from '@/apis/api';
-import { userStore } from '@/store/userStore';
+import { useHeartChange } from '@/hooks/useHeartChange';
 import type { DetailData } from '@/types/detail';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import DateChip from '../shared/chip/DateChip';
 import { ProgressBar } from '../shared/progress-bar';
 import Tag from '../shared/Tag';
-import { Toast } from '../shared/Toast';
 
 export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
-  const queryClient = useQueryClient();
   const gatheringDate = new Date(gatherings.gatheringDate);
-  // const dueDate = new Date(gatherings.dueDate);
-  const isLoggedIn = userStore((state) => state.isLoggedIn);
+  const mutation = useHeartChange(gatherings);
 
   const dueDate = useMemo(() => {
     const date = new Date(gatherings.gatheringDate);
@@ -27,40 +22,6 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
     const now = new Date();
     return now >= dueDate;
   }, [dueDate]);
-
-  const mutation = useMutation({
-    mutationFn: async () => {
-      if (!isLoggedIn) {
-        Toast('warning', '로그인 이후에 사용할 수 있습니다.');
-        return;
-      }
-      const url = `/api/gatherings/${gatherings.gatheringId}/heart`;
-      await (gatherings.hearted ? instance.delete(url) : instance.post(url));
-    },
-    onMutate: async () => {
-      await queryClient.cancelQueries({ queryKey: ['detail'] });
-      const oldData = queryClient.getQueryData<DetailData>(['detail']);
-
-      if (oldData) {
-        queryClient.setQueryData<DetailData>(['detail'], {
-          ...oldData,
-          hearted: !gatherings.hearted,
-        });
-      }
-
-      return { oldData };
-    },
-    onError(error, variables, context) {
-      if (context?.oldData) {
-        queryClient.setQueryData(['detail'], context.oldData);
-      }
-      Toast('error', error.message);
-    },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['detail'] });
-      Toast('success', gatherings.hearted ? '찜한 모임에서 제거되었습니다.' : '찜한 모임에 추가되었습니다.');
-    },
-  });
 
   return (
     <article className="mx-4 grid grid-cols-1 gap-5 pt-5 tablet:grid-cols-2 tablet:pt-6 pc:grid-cols-2 pc:pt-[52px]">
