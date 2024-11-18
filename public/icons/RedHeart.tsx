@@ -1,5 +1,5 @@
-import { Props, Svg } from 'public/icons/SVG';
-
+import type { Props } from '@/components/shared/Svg';
+import { Svg } from '@/components/shared/Svg';
 
 // heart-red, heart-outline 이용해서 커스텀 가능하게 만들었습니다. 변경해주시면 svg 파일은 삭제하겠습니다.
 export default function RedHeart({

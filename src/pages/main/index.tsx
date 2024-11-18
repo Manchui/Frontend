@@ -28,6 +28,8 @@ interface MainPageProps {
 export default function MainPage({ seo, dehydratedState }: MainPageProps) {
   const { keyword, location, category, closeDate, dateStart, dateEnd } = useFilterStore();
 
+  const scrollRef = useRef<HTMLDivElement>(null);
+
   const router = useInternalRouter();
   const resetFilters = useResetFilters();
 
@@ -85,16 +87,22 @@ export default function MainPage({ seo, dehydratedState }: MainPageProps) {
     };
   }, [router, resetFilters]);
 
+  const handleScrollToFilter = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <>
       <SEO title={seo.title} />
       <HydrationBoundary state={dehydratedState}>
-        <Carousel />
+        <Carousel handleScrollToFilter={handleScrollToFilter} />
         <RootLayout>
           <MainContainer>
             <HeaderSection />
             <FilterSection />
-            <MainCardSection isError={isError} isLoading={isLoading} pageSize={pageSize} mainData={mainDataList} />
+            <MainCardSection scrollRef={scrollRef} isError={isError} isLoading={isLoading} pageSize={pageSize} mainData={mainDataList} />
             {!isError && <div ref={sentinelRef} className="h-20 w-full flex-shrink-0 opacity-0" />}
             <SpeedDial />
           </MainContainer>

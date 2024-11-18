@@ -11,9 +11,21 @@ type DetailPath = '/detail';
 type BookmarkPath = '/bookmark';
 type MyPagePath = '/mypage';
 type IntroducePath = '/introduce';
+type NoticeBoardPath = '/noticeboard';
 
 // 프로젝트에서 사용할 내부 경로 타입을 하나로 통합합니다.
-export type InternalPaths = LandingPath | LoginPath | SignupPath | MainPath | CreatePath | ReviewPath | DetailPath | BookmarkPath | MyPagePath | IntroducePath;
+export type InternalPaths =
+  | LandingPath
+  | LoginPath
+  | SignupPath
+  | MainPath
+  | CreatePath
+  | ReviewPath
+  | DetailPath
+  | BookmarkPath
+  | MyPagePath
+  | IntroducePath
+  | NoticeBoardPath;
 
 interface TransitionOptions {
   locale?: string | false;

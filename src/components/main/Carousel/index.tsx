@@ -1,69 +1,118 @@
-import type { Variants } from 'framer-motion';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { type Variants } from 'framer-motion';
 import * as m from 'framer-motion/m';
-import Image from 'next/image';
-import { BACKEND_CARDS, DESIGNER_CARDS, FRONTEND_CARDS } from '@/constants/cards';
-import { POSITION_BASE } from '@/constants/image';
-import useInternalRouter from '@/hooks/useInternalRouter';
+import ArrowBtn from 'public/icons/ArrowBtn';
+import IntroduceSlide from '@/components/main/Carousel/IntroduceSlide';
+import NoticeBoardSlide from '@/components/main/Carousel/NoticeBoardSlide';
+import PopularCategorySlide from '@/components/main/Carousel/PopularCategorySlide';
 
-export default function Carousel() {
-  const router = useInternalRouter();
+const zoomVariants: Variants = {
+  enter: {
+    scale: 1.1,
+    opacity: 0,
+  },
+  center: {
+    scale: 1,
+    opacity: 1,
+    transition: { duration: 0.8 },
+  },
+};
 
-  const cards = [
-    { ...BACKEND_CARDS[0], bg: '#85c8f5', title: 'SERVER' },
-    { ...FRONTEND_CARDS[0], bg: '#fb9b9b', title: 'WEB' },
-    { ...DESIGNER_CARDS[0], bg: '#cdf86f', title: 'DESIGN' },
+interface CarouselProps {
+  handleScrollToFilter: () => void;
+}
+
+export default function Carousel({ handleScrollToFilter }: CarouselProps) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const slides = [
+    <IntroduceSlide key="introduce" />,
+    <PopularCategorySlide key="popular" handleScrollToFilter={handleScrollToFilter} />,
+    <NoticeBoardSlide key="notice" />,
   ];
 
-  const cardVariants: Variants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: 'spring',
-        stiffness: 80,
-        damping: 15,
-        delay: i * 0.4,
-      },
-    }),
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleNext = useCallback(() => {
+    if (timeoutRef.current) return;
+    setCurrentIndex((prev) => (prev + 1) % slides.length);
+
+    timeoutRef.current = setTimeout(() => {
+      timeoutRef.current = null;
+    }, 500);
+  }, [slides.length]);
+
+  const handlePrev = () => {
+    if (timeoutRef.current) return;
+    setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
+
+    timeoutRef.current = setTimeout(() => {
+      timeoutRef.current = null;
+    }, 500);
   };
+
+  useEffect(() => {
+    if (isHovered) {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+      return undefined;
+    }
+
+    intervalRef.current = setInterval(() => {
+      handleNext();
+    }, 3000);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [handleNext, isHovered]);
+
+  useEffect(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+  }, []);
 
   return (
     <m.div
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="min-w-[320px] select-none overflow-hidden bg-black pt-[60px]"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="relative min-w-[320px] select-none overflow-hidden bg-black pt-[60px]"
     >
-      <div className="flex h-[400px] flex-col justify-center mobile:h-[500px] tablet:h-[550px]">
-        <div className="mx-auto flex w-full max-w-[940px] items-center justify-between">
-          <h1 className="text-center text-24-40-response font-bold text-white drop-shadow-lg">만취 프로젝트 개발자</h1>
-          <button
-            type="button"
-            onClick={() => router.push('/introduce')}
-            className="inline-block rounded-lg bg-white px-5 py-2 text-13-16-response font-bold text-black shadow-md transition hover:bg-gray-50"
-          >
-            더 알아보기
-          </button>
-        </div>
-        <div className="mt-10 flex justify-center gap-3 mobile:gap-6">
-          {cards.map((card, index) => (
-            <m.div
-              key={card.title}
-              custom={index}
-              initial="hidden"
-              animate="visible"
-              variants={cardVariants}
-              whileHover={{ scale: 1.1 }}
-              onClick={() => router.push('/introduce')}
-              className="relative flex w-[300px] cursor-pointer flex-col items-center justify-center rounded-xl p-4 shadow-lg"
-              style={{ backgroundColor: card.bg }}
-            >
-              <Image src={`${POSITION_BASE}/${card.type}.svg`} alt={`${card.title} Icon`} width={200} height={100} className="mb-4" />
-              <h2 className="text-16-20-response font-bold text-white">{card.title}</h2>
-            </m.div>
-          ))}
-        </div>
+      <m.div key={currentIndex} variants={zoomVariants} initial="enter" animate="center" className="w-full">
+        {slides[currentIndex]}
+      </m.div>
+
+      <button type="button" onClick={handlePrev} className="absolute left-4 top-1/2 p-2">
+        <ArrowBtn direction="left" color="gray" className="size-12" />
+      </button>
+
+      <button type="button" onClick={handleNext} className="absolute right-4 top-1/2 p-2">
+        <ArrowBtn direction="right" color="gray" className="size-12" />
+      </button>
+
+      <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
+        {slides.map((_, index) => (
+          <div
+            key={index}
+            onClick={() => setCurrentIndex(index)}
+            className={`cursor-pointer rounded-full transition-all duration-500 ${index === currentIndex ? 'h-[10px] w-10 bg-white' : 'size-[10px] bg-gray-400'}`}
+            style={{
+              transition: 'width 0.7s cubic-bezier(0.25, 0.8, 0.5, 1), background-color 0.5s',
+            }}
+          />
+        ))}
       </div>
     </m.div>
   );
