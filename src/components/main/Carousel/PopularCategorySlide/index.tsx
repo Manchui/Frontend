@@ -34,9 +34,9 @@ export default function PopularCategorySlide({ handleScrollToFilter }: PopularCa
           <div
             key={rank}
             onClick={() => handleCategoryClick(category)}
-            className="relative flex w-[400px] cursor-pointer flex-col items-center justify-center gap-3 rounded-md transition-transform duration-300 hover:scale-105"
+            className="relative flex cursor-pointer flex-col items-center justify-center gap-3 rounded-md transition-transform duration-300 hover:scale-105"
           >
-            <div className="absolute left-0 top-0 flex h-7 w-14 items-center justify-center rounded-br-md rounded-tl-md bg-black/70 text-xl font-medium">
+            <div className="absolute left-0 top-0 flex h-7 w-14 items-center justify-center rounded-br-md rounded-tl-md bg-black/70 text-16-20-response font-medium">
               {rank}위
             </div>
             <Image src={imageSrc} alt={category} width={400} height={400} className="rounded-md" />

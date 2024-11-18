@@ -9,11 +9,11 @@ export default function NoticeBoardSlide() {
   return (
     <div className="flex h-[400px] flex-col items-center justify-center bg-black text-white mobile:h-[500px] tablet:h-[600px]">
       <h1 className="text-center text-24-40-response font-bold drop-shadow-lg">✨ 공지사항 ✨</h1>
-      <p className="mt-4 text-center text-16-20-response tracking-wide text-gray-300">
+      <p className="mt-10 text-center text-16-20-response tracking-wide text-gray-300">
         <span className={`font-bold text-primary-300 ${gugi.className}`}>New!</span> 만취에서 새로운 카테고리 추가! <br />
         <span className={`font-semibold text-white ${gugi.className}`}>&apos;여행&apos;</span>을 즐겨보세요.
       </p>
-      <ul className="mt-6 space-y-2 text-center text-13-16-response text-gray-400">
+      <ul className="my-6 space-y-2 text-center text-13-16-response text-gray-400">
         <li>
           🌍 <span className="font-bold text-white">테마 여행 모임</span>으로 특별한 추억 만들기
         </li>
@@ -27,7 +27,7 @@ export default function NoticeBoardSlide() {
       <button
         type="button"
         onClick={() => router.push('/noticeboard')}
-        className="mt-6 inline-block rounded-lg bg-white px-5 py-2 text-13-16-response font-bold text-black shadow-md"
+        className="inline-block rounded-lg bg-white px-5 py-2 text-13-16-response font-bold text-black shadow-md"
       >
         공지사항 보기
       </button>
