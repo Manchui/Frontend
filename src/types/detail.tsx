@@ -23,9 +23,9 @@ export type ReviewContentList = {
   comment: string;
   createdAt: string;
   gatheringImage: string;
-  image: string;
   location: string;
   name: string;
+  profileImagePath: string;
   score: number;
   updatedAt: string;
 };
@@ -36,7 +36,9 @@ export type UsersList = {
 };
 
 export type DetailData = {
+  canceled: boolean;
   category: string;
+  closed: boolean;
   content: string;
   createdAt: string;
   currentUsers: number;
@@ -46,15 +48,13 @@ export type DetailData = {
   gatheringId: number;
   gatheringImage: string;
   groupName: string;
+  hearted: boolean;
   image: string;
-  isCanceled: boolean;
-  isClosed: boolean;
-  isHearted: boolean;
-  isOpened: boolean;
   location: string;
   maxUsers: number;
   minUsers: number;
   name: string;
+  opened: boolean;
   reviewsList: ReviewsList;
   updatedAt: string;
   usersList: UsersList[];

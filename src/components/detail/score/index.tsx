@@ -14,7 +14,7 @@ export default function Score({ reviewsList }: { reviewsList: ReviewsList }) {
             <div key={key} className="mb-1 flex items-center justify-center gap-4">
               <p className="text-md font-medium text-gray-800">{reversedIndex}점</p>
               <div className="w-[200px]">
-                <ProgressBar maxValue={5} value={value} design="primary" />
+                <ProgressBar maxValue={reviewsList.reviewCount} value={value} design="primary" />
               </div>
             </div>
           );
@@ -26,7 +26,7 @@ export default function Score({ reviewsList }: { reviewsList: ReviewsList }) {
     <section className="my-6 flex flex-col-reverse items-center justify-center gap-6 pc:mb-16 pc:mt-10 pc:flex-row pc:gap-[42px]">
       <div className="flex flex-col justify-center gap-6 pc:gap-8">
         <h2 className="text-lg font-bold tablet:text-xl pc:text-xl">이용자들은 이 프로그램을 이렇게 느꼈어요!</h2>
-        <div className="flex flex-col gap-4 tablet:flex-row tablet:gap-[60px] pc:flex-row pc:gap-[60px]">
+        <div className="flex flex-col items-center gap-4">
           <div className="flex flex-col items-center gap-4 tablet:flex-row pc:flex-row">
             <h1 className="text-5xl font-bold">{reviewsList.scoreList.avgScore}</h1>
             <Rating score={reviewsList.scoreList.avgScore} />

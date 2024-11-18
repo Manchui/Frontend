@@ -12,7 +12,7 @@ export function CancelButton({ id, gatherings }: DetailPageBaseType) {
   const { isOpen, openModal, closeModal } = useModal();
   const token = localStorage.getItem('accessToken');
   const name = userStore((state) => state.user.name);
-  const isName = token && 'name' in gatherings && name === gatherings.groupName;
+  const isName = token && 'name' in gatherings && name === gatherings.name;
 
   const mutation = useMutation({
     mutationFn: () => deleteCancellation(id),

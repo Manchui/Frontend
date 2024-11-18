@@ -27,7 +27,6 @@ export default function CardContent({ gathering }: CardContentProps) {
       Toast('warning', '로그인이 필요합니다.');
       return;
     }
-    
     const endpoint = `/api/gatherings/${gatheringId}/heart`;
     try {
       if (!hearted) {
