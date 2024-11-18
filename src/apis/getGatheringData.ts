@@ -2,10 +2,10 @@ import instance from '@/apis/api';
 import type { GetGatheringRequest, GetGatheringResponse } from '@manchui-api';
 
 export async function getGatheringData(request: GetGatheringRequest): Promise<GetGatheringResponse> {
-  const { page, size, sort, query, category, location, startDate, endDate } = request;
+  const { size, sort, query, category, location, startDate, endDate, cursor } = request;
 
   const params = {
-    page: page.toString(),
+    cursor,
     size: size.toString(),
     ...(sort && { sort }),
     ...(query && { query }),

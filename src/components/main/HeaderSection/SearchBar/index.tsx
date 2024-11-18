@@ -1,16 +1,20 @@
 /* eslint-disable tailwindcss/no-custom-classname */
-import type { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
-import { useCallback, useEffect, useState } from 'react';
-import Image from 'next/image';
+import type { ChangeEvent, FormEvent } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useInView } from 'framer-motion';
+import * as m from 'framer-motion/m';
+import Search from 'public/icons/Search';
+import { useKeyword, useSetKeyword, useSetPage } from '@/store/useFilterStore';
 
-interface SearchBarProps {
-  keyword?: string;
-  onSearchSubmit: (submitValue: string) => void;
-  setPage?: Dispatch<SetStateAction<number>>;
-}
+export default function SearchBar() {
+  const keyword = useKeyword();
+  const setPage = useSetPage();
+  const setKeyword = useSetKeyword();
 
-export default function SearchBar({ keyword, onSearchSubmit, setPage }: SearchBarProps) {
   const [searchValue, setSearchValue] = useState<string | undefined>(keyword || '');
+
+  const ref = useRef<HTMLFormElement>(null);
+  const isInView = useInView(ref, { once: true });
 
   const handleSearchChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -18,9 +22,9 @@ export default function SearchBar({ keyword, onSearchSubmit, setPage }: SearchBa
       setSearchValue(value);
 
       // 검색어가 비어 있으면 refetch
-      if (!value) onSearchSubmit(value);
+      if (!value) setKeyword(value);
     },
-    [onSearchSubmit],
+    [setKeyword],
   );
 
   const handleSearchSubmit = useCallback(
@@ -28,11 +32,11 @@ export default function SearchBar({ keyword, onSearchSubmit, setPage }: SearchBa
       e.preventDefault();
 
       if (searchValue && searchValue !== '') {
-        onSearchSubmit(searchValue);
+        setKeyword(searchValue);
         if (setPage) setPage(1);
       }
     },
-    [onSearchSubmit, searchValue, setPage],
+    [searchValue, setKeyword, setPage],
   );
 
   useEffect(() => {
@@ -40,9 +44,18 @@ export default function SearchBar({ keyword, onSearchSubmit, setPage }: SearchBa
   }, [keyword]);
 
   return (
-    <form className="flex gap-1 border-b font-medium hover:border-b-gray-300" onSubmit={handleSearchSubmit}>
+    <m.form
+      ref={ref}
+      style={{
+        transform: isInView ? 'none' : 'translateX(10px)',
+        opacity: isInView ? 1 : 0,
+        transition: 'all 1s ease-in-out',
+      }}
+      className="flex gap-1 border-b border-b-black"
+      onSubmit={handleSearchSubmit}
+    >
       <label htmlFor="input" className="cursor-pointer">
-        <Image src="/icons/main/search.svg" alt="검색창" width={24} height={24} className="tablet:size-8" />
+        <Search color="black" className="size-6 mobile:size-8" />
       </label>
       <input
         id="input"
@@ -50,8 +63,8 @@ export default function SearchBar({ keyword, onSearchSubmit, setPage }: SearchBa
         value={searchValue}
         onChange={handleSearchChange}
         placeholder="만취에서 찾고 계신 모임이 있나요?"
-        className="placeholder:text-13-18-response w-search-180-240 bg-background text-13-16-response text-gray-400 outline-none focus:text-blue-800"
+        className="w-search-180-240 bg-background text-13-16-response font-semibold outline-none placeholder:text-13-16-response placeholder:text-black/60"
       />
-    </form>
+    </m.form>
   );
 }

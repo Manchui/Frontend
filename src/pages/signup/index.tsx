@@ -1,16 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import router from 'next/router';
-import instance from '@/apis/api';
+import { checkName, signup } from '@/apis/userApi';
 import Carousel from '@/components/loginLogout/Carousel';
 import Input from '@/components/shared/Input';
-import { Toast } from '@/components/shared/Toast';
+import * as validateForm from '@/libs/validateForm';
 import { userStore } from '@/store/userStore';
 
 /**
@@ -29,88 +23,46 @@ export default function SignupPage() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      // 로그인 상태라면 로그인 페이지로 접근 불가
-      void router.push('/'); // 예시로 대시보드 페이지로 리디렉션
-      Toast('success', '이미 로그인 중입니다.');
+      void router.push('/main'); // 예시로 대시보드 페이지로 리디렉션
     }
   }, [isLoggedIn]);
 
+  
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!doubleCheck) {
-      Toast('error', '중복 확인을 해주세요.');
-      return;
-    }
-    if (nick.length < 3) {
-      Toast('error', '닉네임은 3자 이상이어야 합니다.');
-      return;
-    }
-    if (password.length < 8) {
-      Toast('error', '비밀번호는 8자 이상이어야 합니다.');
-      return;
-    }
-    if (password !== passwordCheck) {
-      Toast('error', '비밀번호가 일치하지 않습니다.');
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      Toast('error', '이메일 형식을 확인해주세요.');
-      return;
-    }
+    validateForm.isDoubleChecked(doubleCheck);
+    validateForm.isValidNickname(nick);
+    validateForm.isValidPassword(password);
+    validateForm.isPasswordMatching(password, passwordCheck);
+    validateForm.isValidEmailFormat(email);
 
-    try {
-      const res = await instance.post('/api/auths/signup', {
-        name: nick,
-        email,
-        password,
-        passwordConfirm: passwordCheck,
-      });
-      Toast('success', res.data.message);
-      void router.push('/login');
-    } catch (err: any) {
-      Toast('error', err.response.data.message);
-    }
+    await signup(nick, email, password, passwordCheck);
   };
 
   const handleDoubleCheck = async () => {
-    if (nick.length < 3) {
-      Toast('error', '닉네임은 3자 이상이어야 합니다.');
-      return;
-    }
-    try {
-      const res = await instance.post('/api/auths/check-name', {
-        name: nick,
-      });
-      Toast('success', res.data.message);
-      setDoubleCheck(true);
-    } catch (err: any) {
-      Toast('error', err.response.data.message);
-      setDoubleCheck(false);
-    }
+    validateForm.isValidNickname(nick);
+    const res = await checkName(nick);
+    setDoubleCheck(res);
   };
 
   return (
-    <div aria-label="target" className="mt-[60px] flex h-screen min-h-[900px] flex-row bg-white tablet:bg-blue-800 pc:w-full pc:bg-white">
-      <div className="m-0 flex min-h-[820px] w-full flex-shrink-0 flex-col items-center justify-center pc:w-1/2 pc:space-y-6">
+    <div aria-label="target" className="flex h-screen flex-row bg-white pc:w-full pc:bg-white">
+      <div className="mt-[60pt] flex min-h-[500px] w-full flex-shrink-0 flex-col items-center justify-center overflow-y-auto tablet:min-h-0 pc:w-1/2 pc:space-y-6 pc:overflow-y-hidden">
         {/* pc용 */}
         <h2 className="mt-8 hidden text-4xl font-bold pc:flex">회원가입</h2>
         <p className="m-auto hidden max-w-80 text-pretty text-center text-lg pc:flex">
           지금 바로 가입하여 취미 활동을 통해 새로운 사람들과 특별한 경험을 만들어보세요.
         </p>
         {/* pc용 end */}
-        <form onSubmit={handleSignup} className="m-0 flex h-fit flex-col items-center bg-white p-8 tablet:w-[620px] tablet:rounded-2xl">
+        <form onSubmit={handleSignup} className="m-0 flex flex-col items-center bg-white p-8 tablet:w-[620px] tablet:rounded-2xl">
           <h2 className="mb-4 text-center text-3xl font-bold pc:m-auto pc:hidden pc:text-4xl">회원가입</h2>
-          <p className="mb-4 max-w-80 text-pretty text-center text-sm mobile:text-base tablet:text-lg pc:hidden">
-            지금 바로 가입하여 취미 활동을 통해 새로운 사람들과 특별한 경험을 만들어보세요.
-          </p>
-          <Image src="/images/board-signuppage.png" className="size-auto" width={200} height={200} alt="board" />
           <div className="w-full space-y-4">
             <div className="flex">
               <Input type="text" name="nick" onChange={(e) => setNick(e.target.value)} />
               <button
                 type="button"
                 onClick={handleDoubleCheck}
-                className="ml-4 mt-7 h-10 w-24 rounded-xl border bg-blue-800 text-sm text-white hover:bg-blue-700"
+                className="ml-4 mt-6 h-[44px] w-24 rounded-xl border bg-blue-800 text-sm text-white hover:bg-blue-700"
               >
                 중복 확인
               </button>
@@ -124,13 +76,13 @@ export default function SignupPage() {
           </button>
           <p className="mt-4 text-center text-sm mobile:text-base">
             이미 회원이신가요?{' '}
-            <Link href="/login" className="text-gray-400 underline hover:text-primary-400">
+            <Link href="/login" className="text-gray-400 underline hover:font-bold hover:text-blue-700">
               로그인
             </Link>
           </p>
         </form>
       </div>
-      <div className="relative hidden h-full min-h-[820px] w-1/2 flex-col items-center justify-center bg-blue-800 pc:flex">
+      <div className="relative hidden h-full w-1/2 flex-col items-center justify-center bg-blue-800 pc:flex">
         <Carousel />
       </div>
     </div>

@@ -1,16 +1,18 @@
 import Image from 'next/image';
+import { useCategory, useSetCategory } from '@/store/useFilterStore';
 
 interface CategoryItemsProps {
-  category?: string;
-  onCategoryClick: (category: string) => void;
   option: { icon: string; id: string; label: string };
 }
 
-export default function CategoryItems({ onCategoryClick, category, option }: CategoryItemsProps) {
+export default function CategoryItems({ option }: CategoryItemsProps) {
+  const category = useCategory();
+  const setCategory = useSetCategory();
+
   return (
     <div
       onClick={() => {
-        onCategoryClick(option.id);
+        setCategory(option.id);
       }}
     >
       <input type="radio" id={option.id} className="hidden" />

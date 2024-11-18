@@ -35,11 +35,9 @@ export default function GNB() {
           });
           login();
         } else {
-          localStorage.removeItem('userName');
           logout();
         }
       } else {
-        localStorage.removeItem('userName');
         logout();
       }
     };
@@ -47,39 +45,39 @@ export default function GNB() {
   }, [login, logout, updateUser]);
 
   return (
-    <nav className="fixed top-0 z-[9999] flex h-[60px] w-full items-center justify-between border-b border-gray-100 bg-white px-4 tablet:px-6 pc:px-10">
+    <nav className="fixed top-0 z-[9999] flex h-[60px] w-full items-center justify-between border-b border-gray-50 bg-white px-4 tablet:px-6 pc:px-10">
       <div className="absolute left-1/2 -translate-x-1/2 transform">
         <Link href="/">
           <Image src="/logo/logo.png" alt="로고" width={73} height={35} />
         </Link>
       </div>
       <div className="hidden flex-grow pc:flex pc:justify-start">
-        <div className="hidden items-center gap-4 text-[16px] font-semibold text-black tablet:flex">
-          <Link href="/main" className={clsx('relative flex h-12 w-[84px] items-center justify-center transition-colors', 'group')}>
+        <div className="hidden items-center gap-3 text-[16px] font-semibold text-black tablet:flex">
+          <Link href="/main" className={clsx('relative flex h-10 w-16 items-center justify-center', 'group')}>
             모임 찾기
             <span
               className={clsx(
-                'absolute bottom-0 left-1/2 h-[2.5px] -translate-x-1/2 transform bg-black transition-all duration-300',
+                'absolute bottom-0 left-1/2 h-[2.5px] -translate-x-1/2 transform bg-blue-800 transition-all duration-300 ease-linear',
                 router.pathname === '/main' ? 'w-full' : 'w-0',
                 'group-hover:w-full',
               )}
             />
           </Link>
-          <Link href="/review" className={clsx('relative flex h-12 w-[84px] items-center justify-center transition-colors', 'group')}>
+          <Link href="/review" className={clsx('relative flex h-10 w-16 items-center justify-center', 'group')}>
             모든 리뷰
             <span
               className={clsx(
-                'absolute bottom-0 left-1/2 h-[2.5px] -translate-x-1/2 transform bg-black transition-all duration-300',
+                'absolute bottom-0 left-1/2 h-[2.5px] -translate-x-1/2 transform bg-black transition-all duration-300 ease-linear',
                 router.pathname === '/review' ? 'w-full' : 'w-0',
                 'group-hover:w-full',
               )}
             />
           </Link>
-          <Link href="/bookmark" className={clsx('relative flex h-12 w-[84px] items-center justify-center transition-colors', 'group')}>
+          <Link href="/bookmark" className={clsx('relative flex h-10 w-16 items-center justify-center', 'group')}>
             찜한 모임
             <span
               className={clsx(
-                'absolute bottom-0 left-1/2 h-[2.5px] -translate-x-1/2 transform bg-black transition-all duration-300',
+                'absolute bottom-0 left-1/2 h-[2.5px] -translate-x-1/2 transform bg-black transition-all duration-300 ease-linear',
                 router.pathname === '/bookmark' ? 'w-full' : 'w-0',
                 'group-hover:w-full',
               )}
@@ -98,11 +96,11 @@ export default function GNB() {
           </div>
         ) : (
           <div className="flex gap-4">
-            <Link href="/signup" className={clsx('group relative flex h-10 w-14 items-center justify-center text-base font-semibold transition-colors')}>
+            <Link href="/signup" className={clsx('group relative flex h-10 w-14 items-center justify-center text-base font-semibold')}>
               회원가입
               <span
                 className={clsx(
-                  'absolute bottom-0 left-1/2 h-[2.5px] -translate-x-1/2 transform bg-black transition-all duration-300',
+                  'absolute bottom-0 left-1/2 h-[2.5px] -translate-x-1/2 transform bg-black transition-all duration-300 ease-linear',
                   router.pathname === '/signup' ? 'w-full' : 'w-0',
                   'group-hover:w-full',
                 )}
@@ -111,7 +109,7 @@ export default function GNB() {
             <button
               type="button"
               onClick={() => router.push('/login')}
-              className="rounded-full border-2 border-blue-800 bg-white px-4 py-[7.5px] text-base font-semibold text-black transition-colors duration-300 hover:bg-blue-800 hover:text-white"
+              className="rounded-full border-2 border-blue-800 bg-white px-4 py-[7.5px] text-base font-semibold text-black transition-colors duration-500 hover:bg-blue-800 hover:text-white"
             >
               로그인
             </button>

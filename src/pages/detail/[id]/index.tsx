@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import getGatheringData from '@/apis/detail/get-gathering-data';
 import { FloatingBar } from '@/components/detail/FloatingBar';
 import { GatheringCard } from '@/components/detail/GatheringCard';
-import Loading from '@/components/detail/loading/Loading';
 import { ReviewListCard } from '@/components/detail/ReviewListCard';
 import Score from '@/components/detail/score';
 import { useQuery } from '@tanstack/react-query';
@@ -12,7 +11,7 @@ export default function DetailPage() {
   const router = useRouter();
   const { id } = router.query;
   const [isId, setIsId] = useState('');
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     // NOTE: page,size는 임시값
     queryKey: ['detail', { id, page: 1, size: 10 }],
     queryFn: () => {
@@ -24,10 +23,8 @@ export default function DetailPage() {
     },
     staleTime: 1000 * 10,
   });
+  if (!data) return null;
   const gatherings = data;
-
-  if (isLoading) return <Loading />;
-  if (!gatherings) return <Loading />;
 
   return (
     <main className="pb-[96px] pt-[60px]">
@@ -36,7 +33,7 @@ export default function DetailPage() {
       <div className="mx-auto w-full max-w-[1200px]">
         <section className="mt-6 px-4 tablet:mt-9 tablet:px-10 pc:mt-10 pc:px-5">
           <h1 className="text-xl font-bold">모임설명</h1>
-          <p className="my-2">{gatherings.content}</p>
+          <p className="my-2 whitespace-pre-line">{gatherings.content}</p>
           <hr className="border-gray-50" />
         </section>
         <Score reviewsList={gatherings.reviewsList} />

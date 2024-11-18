@@ -1,61 +1,49 @@
-import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import { useCallback, useMemo, useRef } from 'react';
+import { useInView } from 'framer-motion';
+import * as m from 'framer-motion/m';
 import CategoryList from '@/components/main/FilterSection/CategoryList';
 import CloseDateToggle from '@/components/main/FilterSection/CloseDateToggle';
 import DateDropdown from '@/components/main/FilterSection/DateDropdown';
 import RegionDropdown from '@/components/main/FilterSection/RegionDropdown';
 import { Toast } from '@/components/shared/Toast';
 import { IS_SERVER } from '@/constants/server';
+import useInternalRouter from '@/hooks/useInternalRouter';
 
-interface FilterSectionProps {
-  category?: string;
-  handleCategoryClick: (category: string) => void;
-  handleCloseDateClick: (value: string) => void;
-  handleDateSubmit: ({ start, end }: { end: string; start: string }) => void;
-  location?: string;
-  setDateEnd?: Dispatch<SetStateAction<string | undefined>>;
-  setDateStart?: Dispatch<SetStateAction<string | undefined>>;
-  setLocation: Dispatch<SetStateAction<string | undefined>>;
-}
+export default function FilterSection() {
+  const router = useInternalRouter();
 
-export default function FilterSection({
-  handleCategoryClick,
-  category,
-  setLocation,
-  handleCloseDateClick,
-  location,
-  handleDateSubmit,
-  setDateStart,
-  setDateEnd,
-}: FilterSectionProps) {
-  const router = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true });
 
-  const handleCreateButtonClick = () => {
+  const isLoggedIn = useMemo(() => !IS_SERVER && !!localStorage.getItem('accessToken'), []);
+
+  const handleCreateButtonClick = useCallback(() => {
     if (isLoggedIn) {
       void router.push('/create');
     } else {
-      Toast('warning', '로그인이 필요합니다.');
+      Toast('error', '로그인이 필요합니다.');
     }
-  };
-
-  useEffect(() => {
-    if (!IS_SERVER) {
-      setIsLoggedIn(!!localStorage.getItem('accessToken'));
-    }
-  }, []);
+  }, [isLoggedIn, router]);
 
   return (
-    <div className="scrollbar-hide relative mb-8 mt-4 flex w-full select-none flex-col gap-2 bg-white px-4 py-5 mobile:rounded-lg">
+    <m.div
+      ref={ref}
+      style={{
+        transform: isInView ? 'none' : 'translateY(10px)',
+        opacity: isInView ? 1 : 0,
+        transition: 'all 1s ease-in-out',
+      }}
+      className="scrollbar-hide relative mb-8 mt-4 flex w-full select-none flex-col gap-2 bg-white px-4 py-5 mobile:rounded-lg"
+    >
       {/* 카테고리 */}
-      <CategoryList category={category} handleCategoryClick={handleCategoryClick} />
+      <CategoryList />
 
       {/* 필터 */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <CloseDateToggle onCloseDateClick={handleCloseDateClick} />
-          <RegionDropdown location={location} setLocation={setLocation} />
-          <DateDropdown setDateStart={setDateStart} setDateEnd={setDateEnd} handleDateSubmit={handleDateSubmit} />
+          <CloseDateToggle />
+          <RegionDropdown />
+          <DateDropdown />
         </div>
 
         {/* 모임 만들기 버튼 */}
@@ -67,6 +55,6 @@ export default function FilterSection({
           모임 만들기
         </button>
       </div>
-    </div>
+    </m.div>
   );
 }

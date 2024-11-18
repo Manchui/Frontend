@@ -5,10 +5,10 @@ import Modal from '@/components/shared/Modal';
 import Rating from '@/components/shared/Rating';
 import { Toast } from '@/components/shared/Toast';
 import { useModal } from '@/hooks/useModal';
-import type { GatheringList } from '@/types/mypage';
+import type { ReviewableList } from '@/types/mypage';
 import { useMutation } from '@tanstack/react-query';
 
-export default function ReviewButton({ data }: { data: GatheringList }) {
+export default function ReviewButton({ data }: { data: ReviewableList }) {
   const { isOpen, openModal, closeModal } = useModal();
   const [value, setValue] = useState('');
   const [isScore, setIsScore] = useState(0);

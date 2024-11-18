@@ -1,6 +1,6 @@
 /* eslint-disable tailwindcss/no-custom-classname */
-import { useState } from 'react';
-import Lottie from 'lottie-react';
+import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { getBookmarkData } from '@/apis/getBookmarkData';
 import BookmarkBanner from '@/components/bookmark/BookmarkBanner';
 import BookmarkCardList from '@/components/bookmark/BookmarkCardList';
@@ -9,27 +9,34 @@ import BookmarkFilter from '@/components/bookmark/BookmarkFilter';
 import BookmarkHeader from '@/components/bookmark/BookmarkHeader';
 import PaginationBtn from '@/components/shared/PaginationBtn';
 import RootLayout from '@/components/shared/RootLayout';
-import { FILTER_OPTIONS } from '@/constants/contants';
+import { SEO } from '@/components/shared/SEO';
+import PAGE_SIZE_BY_DEVICE from '@/constants/pageSize';
 import useDeviceState from '@/hooks/useDeviceState';
 import useGetBookmarkData from '@/hooks/useGetBookmarkData';
-import { dehydrate, QueryClient } from '@tanstack/react-query';
+import useInternalRouter from '@/hooks/useInternalRouter';
+import useFilterStore, { useResetFilters } from '@/store/useFilterStore';
+import type { DehydratedState } from '@tanstack/react-query';
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 
 import Error from 'public/lottie/error.json';
 
-const PAGE_SIZE_BY_DEVICE = {
-  MOBILE: 2,
-  TABLET: 4,
-  PC: 6,
-};
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
-export default function BookmarkPage() {
-  const [page, setPage] = useState<number>(1);
-  const [keyword, setKeyword] = useState<string | undefined>(undefined);
-  const [location, setLocation] = useState<string | undefined>(undefined);
-  const [category, setCategory] = useState<string | undefined>(FILTER_OPTIONS[0].id);
-  const [closeDate, setCloseDate] = useState<string | undefined>(undefined);
-  const [dateStart, setDateStart] = useState<string | undefined>(undefined);
-  const [dateEnd, setDateEnd] = useState<string | undefined>(undefined);
+interface BookmarkProps {
+  dehydratedState: DehydratedState;
+  initialPageSize: number;
+  seo: {
+    title: string;
+  };
+}
+
+export default function BookmarkPage({ seo, dehydratedState, initialPageSize }: BookmarkProps) {
+  const [pageSize, setPageSize] = useState(initialPageSize);
+
+  const { page, keyword, location, category, closeDate, dateEnd, dateStart } = useFilterStore();
+
+  const router = useInternalRouter();
+  const resetFilters = useResetFilters();
 
   const deviceState = useDeviceState();
 
@@ -39,7 +46,7 @@ export default function BookmarkPage() {
     isError,
   } = useGetBookmarkData({
     page,
-    size: PAGE_SIZE_BY_DEVICE[deviceState],
+    size: pageSize,
     query: keyword,
     location,
     category,
@@ -50,63 +57,46 @@ export default function BookmarkPage() {
 
   const data = bookmark?.data;
 
-  const handlePageChange = (pageValue: number) => {
-    setPage(pageValue);
-  };
+  useEffect(() => {
+    if (pageSize !== PAGE_SIZE_BY_DEVICE.BOOKMARK[deviceState]) {
+      setPageSize(PAGE_SIZE_BY_DEVICE.BOOKMARK[deviceState]);
+    }
+  }, [deviceState, pageSize]);
 
-  const handleCategoryClick = (selectedCategory: string) => {
-    setCategory(selectedCategory);
-  };
+  useEffect(() => {
+    const handleRouteChange = () => {
+      resetFilters();
+    };
 
-  const handleSearchSubmit = (submitValue: string) => {
-    setKeyword(submitValue);
-  };
+    router.events.on('routeChangeStart', handleRouteChange);
 
-  const handleCloseDateClick = (value: string) => {
-    setCloseDate(value);
-  };
-
-  const handleDateSubmit = ({ start, end }: { end: string; start: string }) => {
-    setDateStart(start);
-    setDateEnd(end);
-  };
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+    };
+  }, [router, resetFilters]);
 
   return (
     <>
-      {isError ? (
-        <div className="mt-[60px] h-bookmark-banner">
-          <Lottie animationData={Error} className="size-full border-b-2 border-cardBorder bg-background" />
-        </div>
-      ) : (
-        <BookmarkBanner />
-      )}
-      <RootLayout>
-        <BookmarkContainer>
-          <BookmarkHeader data={bookmark?.data} setPage={setPage} handleSearchSubmit={handleSearchSubmit} />
-          <div className="min-h-screen w-full bg-white">
-            <BookmarkFilter
-              location={location}
-              category={category}
-              setDateEnd={setDateEnd}
-              setLocation={setLocation}
-              setDateStart={setDateStart}
-              handleDateSubmit={handleDateSubmit}
-              handleCategoryClick={handleCategoryClick}
-              handleCloseDateClick={handleCloseDateClick}
-            />
-            <BookmarkCardList
-              data={bookmark?.data}
-              isLoading={isLoading}
-              isError={isError}
-              skeletonCount={PAGE_SIZE_BY_DEVICE[deviceState]}
-              handleCategoryClick={handleCategoryClick}
-            />
-            {!isLoading && !isError && bookmark?.data.gatheringCount !== 0 && (
-              <PaginationBtn page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} handlePageChange={handlePageChange} />
-            )}
+      <SEO title={seo.title} />
+      <HydrationBoundary state={dehydratedState}>
+        {isError ? (
+          <div className="mt-[60px] h-bookmark-banner">
+            <Lottie animationData={Error} className="size-full border-b-2 border-cardBorder bg-background" />
           </div>
-        </BookmarkContainer>
-      </RootLayout>
+        ) : (
+          <BookmarkBanner isError={isError} />
+        )}
+        <RootLayout>
+          <BookmarkContainer>
+            <BookmarkHeader data={bookmark?.data} />
+            <div className="min-h-screen w-full bg-white">
+              <BookmarkFilter />
+              <BookmarkCardList data={bookmark?.data} isLoading={isLoading} isError={isError} skeletonCount={pageSize} />
+              {!isLoading && !isError && bookmark?.data.gatheringCount !== 0 && <PaginationBtn page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} />}
+            </div>
+          </BookmarkContainer>
+        </RootLayout>
+      </HydrationBoundary>
     </>
   );
 }
@@ -114,14 +104,22 @@ export default function BookmarkPage() {
 export const getServerSideProps = async () => {
   const queryClient = new QueryClient();
 
+  const initialPageSize = PAGE_SIZE_BY_DEVICE.BOOKMARK.PC;
+
+  const request = { page: 1, size: initialPageSize };
+
   await queryClient.prefetchQuery({
-    queryKey: ['bookmark', 1, 9],
-    queryFn: () => getBookmarkData({ page: 1, size: 9 }),
+    queryKey: ['bookmark', { page: 1 }],
+    queryFn: () => getBookmarkData(request),
   });
 
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
+      seo: {
+        title: '만취 - 찜한 모임 페이지',
+      },
+      initialPageSize,
     },
   };
 };

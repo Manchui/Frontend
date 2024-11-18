@@ -1,4 +1,36 @@
 declare module '@manchui-api' {
+  export type GetBookmarkResponse = {
+    data: {
+      gatheringCount: number;
+      gatheringList: {
+        category: Category;
+        closed: boolean;
+        createdAt: string;
+        currentUsers: number;
+        deletedAt: null;
+        dueDate: string;
+        gatheringDate: string;
+        gatheringId: number;
+        gatheringImage: string;
+        groupName: string;
+        heartCounts: number;
+        hearted: boolean;
+        location: Location;
+        maxUsers: number;
+        minUsers: number;
+        name: string;
+        opened: boolean;
+        profileImage: string;
+        updatedAt: string;
+      }[];
+      page: number;
+      pageSize: number;
+      totalPage: number;
+    };
+    message: string;
+    success: boolean;
+  };
+
   export type GetGatheringResponse = {
     data: {
       gatheringCount: number;
@@ -13,6 +45,7 @@ declare module '@manchui-api' {
         gatheringId: number;
         gatheringImage: string;
         groupName: string;
+        heartCounts: number;
         hearted: boolean;
         location: Location;
         maxUsers: number;
@@ -22,9 +55,7 @@ declare module '@manchui-api' {
         profileImage: string;
         updatedAt: string;
       }[];
-      page: number;
-      pageSize: number;
-      totalPage: number;
+      nextCursor: number | undefined;
     };
     message: string;
     success: boolean;

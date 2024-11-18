@@ -8,6 +8,12 @@ const animation = {
   'slide-up': 'slide-up 0.4s ease-in-out forwards',
   'slideInLeft': 'slideInFromLeft 0.4s ease-in-out forwards',
   'skeleton': 'skeleton 1.3s infinite ease-in-out',
+  'hamburgerone': 'menu-bar1 0.6s forwards',
+  'hamburgertwo': 'menu-bar3 0.6s forwards',
+  'hamburgerthree': 'menu-bar2 0.6s forwards',
+  'active-hamburgerone': 'active-menu-bar1 0.6s forwards',
+  'active-hamburgertwo': 'active-menu-bar3 0.3s forwards',
+  'active-hamburgerthree': 'active-menu-bar2 0.6s forwards',
 };
 
 export default animation;

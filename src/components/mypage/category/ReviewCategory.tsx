@@ -25,7 +25,7 @@ export default function ReviewCategory({ category, review, setReview }: ReviewCa
         return 'text-white bg-blue-800';
       }
     }
-    return categoryId === query.reviewCategory ? 'text-white bg-blue-800' : 'text-blue-700 bg-blue-100';
+    return categoryId === query.reviewCategory ? 'text-white bg-blue-800' : 'text-blue-700 bg-blue-100 hover:bg-blue-200';
   };
 
   return (

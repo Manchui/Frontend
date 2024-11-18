@@ -1,12 +1,11 @@
 /* eslint-disable tailwindcss/no-custom-classname */
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+import { useState } from 'react';
+import RedHeart from 'public/icons/RedHeart';
 import instance from '@/apis/api';
 import DateChip from '@/components/shared/chip/DateChip';
 import { ProgressBar } from '@/components/shared/progress-bar';
 import { Toast } from '@/components/shared/Toast';
-import { IS_SERVER } from '@/constants/server';
+import { userStore } from '@/store/userStore';
 import type { GetGatheringResponse } from '@manchui-api';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -15,58 +14,56 @@ interface CardContentProps {
 }
 
 export default function CardContent({ gathering }: CardContentProps) {
-  const { hearted, gatheringId, groupName, gatheringDate, closed, location, maxUsers, minUsers, currentUsers } = gathering;
+  const { hearted, gatheringId, groupName, gatheringDate, closed, location, category, maxUsers, minUsers, currentUsers, heartCounts } = gathering;
   const [isHearted, setIsHearted] = useState(hearted);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-
+  const isLoggedIn = userStore((state) => state.isLoggedIn);
   const queryClient = useQueryClient();
 
-  const toggleHeart = async () => {
+  const toggleHeart = async (e: React.MouseEvent<SVGSVGElement>) => {
+    e.preventDefault();
+
     if (!isLoggedIn) {
-      Toast('warning', '로그인이 필요합니다.');
+      Toast('error', '로그인이 필요합니다.');
       return;
     }
 
-    const updatedHearted = !isHearted;
-    setIsHearted(updatedHearted);
     const endpoint = `/api/gatherings/${gatheringId}/heart`;
 
     try {
-      if (updatedHearted) {
+      if (!hearted) {
         await instance.post(endpoint);
         Toast('success', '찜 목록에 추가되었습니다!');
       } else {
         await instance.delete(endpoint);
-        Toast('success', '찜 목록에서 제거되었습니다!');
+        Toast('error', '찜 목록에서 제거되었습니다!');
       }
-
+      setIsHearted(!isHearted);
       await queryClient.invalidateQueries({ queryKey: ['main'] });
       await queryClient.invalidateQueries({ queryKey: ['bookmark'] });
-    } catch (e) {
-      console.error('API 요청에 실패했습니다:', e);
+    } catch (error) {
+      console.error('API 요청에 실패했습니다:', error);
       setIsHearted((prevHearted) => !prevHearted);
     }
   };
 
-  useEffect(() => {
-    if (!IS_SERVER) {
-      setIsLoggedIn(!!localStorage.getItem('accessToken'));
-    }
-  }, []);
-
   return (
-    <div className="border-t-cardBorder mobile:border-cardBorder relative flex h-1/2 flex-1 flex-col justify-between rounded-2xl rounded-t-none border-t p-2 mobile:h-full mobile:w-1/2 mobile:rounded-bl-none mobile:border-l mobile:p-4 tablet:h-1/2 tablet:w-full tablet:border-t tablet:border-none">
-      <Link href={`/detail/${gatheringId}`} className="my-auto flex flex-col gap-1">
-        <div className={`mb-2 flex flex-col tablet:mb-0 ${closed ? 'text-gray-200' : 'text-black'}`}>
-          <span className="text-pretty text-16-20-response font-semibold">{groupName}</span>
-          <span className={`text-sub-response font-medium text-gray-400 mobile:font-semibold ${closed && '!text-gray-200'}`}>{location}</span>
+    <div className="relative flex h-1/2 min-h-36 w-full cursor-pointer flex-col justify-between overflow-hidden px-5 py-4 mobile:h-full tablet:w-full">
+      <div className="mb-3 flex justify-between">
+        <div className="flex flex-col">
+          <div className="text-pretty text-16-20-response font-bold">{groupName}</div>
+          <span className={`pb-3 text-sub-response font-medium text-gray-500 ${closed && '!text-gray-200'}`}>
+            {category} | {location}
+          </span>
+          <DateChip dateTime={new Date(gatheringDate)} closed={closed} />
         </div>
-        <DateChip dateTime={new Date(gatheringDate)} closed={closed} />
+        <div className="relative h-fit">
+          <RedHeart color={`${hearted ? '#FF4D11' : '#D4D4D4'}`} className="size-7" onClick={toggleHeart} />
+          <span className="absolute right-1/2 translate-x-1/2 text-xs text-gray-200">{heartCounts}</span>
+        </div>
+      </div>
+      <div>
         <ProgressBar maxValue={maxUsers} value={currentUsers} mainValue={minUsers} design="basics" closed={closed} />
-      </Link>
-      <button type="button" onClick={toggleHeart} className="absolute right-heart-m-right top-heart-m-top tablet:top-heart-t-top">
-        <Image src={hearted ? '/icons/heart-red.svg' : '/icons/heart-outline.svg'} alt="찜하기 버튼" width={28} height={28} />
-      </button>
+      </div>
     </div>
   );
 }

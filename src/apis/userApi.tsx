@@ -1,5 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
+import type { AxiosError } from 'axios';
+import router from 'next/router';
 import instance from '@/apis/api';
 import { Toast } from '@/components/shared/Toast';
 import { userStore } from '@/store/userStore';
@@ -38,22 +43,23 @@ const convertBlobUrlToFile = async (blobUrl: string, filename: string) => {
   }
 };
 
-// const convertBlobUrlToFile2 = async (url: string) => {
-//   try {
-//     console.log('다운로드시작');
-//     const response = await axios.get(url, { responseType: 'blob' });
-//     const blob = new Blob([response.data]);
-//     const blobURL = URL.createObjectURL(blob);
-//     const a = await convertBlobUrlToFile(blobURL, 'profile-image.png');
-//     console.log(a);
-//     return a;
-//   } catch (error) {
-//     console.log('다운로드실패', error);
-//     return null;
-//   }
-// };
+const fetchFileFromUrl = async (fileUrl: string, fileName: string) => {
+  try {
+    const res = await fetch(fileUrl);
+    if (!res.ok) {
+      throw new Error('Failed to fetch file');
+    }
+    const blob = await res.blob();
+    console.log(new File([blob], fileName, { type: blob.type }));
+    return new File([blob], fileName, { type: blob.type });
+  } catch (e) {
+    console.log(e);
+  }
+  return null;
+};
 
 export const editUserInfo = async (nick: string, image: string) => {
+  console.log(nick);
   const formData = new FormData();
   formData.append('name', nick); // FormData에 닉네임 추가
   if (image.includes('blob')) {
@@ -61,28 +67,32 @@ export const editUserInfo = async (nick: string, image: string) => {
     if (fileFromBlob) {
       formData.append('image', fileFromBlob);
     }
+  } else {
+    const file = await fetchFileFromUrl(image, 'downloaded-file.png');
+    if (file) {
+      formData.append('image', file);
+    }
   }
-  // else if (!image.includes('blob')) {
-  //   const fileFromUrl = await convertBlobUrlToFile2(image);
-  //   formData.append('image', fileFromUrl);
-  // }
 
   try {
     const res = await instance.put('/api/auths/user', formData, {
       headers: {
-        'Authorization': localStorage.getItem('accessToken'),
         'Content-Type': 'multipart/form-data',
       },
     });
-
     Toast('success', '닉네임 수정 되었습니다.');
-    console.log('API 응답:', res);
     window.location.reload();
-    return { res: res.data, result: true };
-  } catch (error) {
-    console.error('요청 중 오류 발생:', error);
-    return error;
+    return res;
+  } catch (e) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+    if (e && (e as AxiosError).response) {
+      const errorMessage = ((e as AxiosError).response?.data as { message?: string })?.message || 'Unknown error';
+      Toast('error', errorMessage);
+    } else {
+      Toast('error', 'An unexpected error occurred.');
+    }
   }
+  return null;
 };
 
 export const logout = async () => {
@@ -102,7 +112,43 @@ export const logout = async () => {
     Toast('success', '로그아웃 되었습니다.');
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error('Logout failed:', error);
+    console.log(error);
     Toast('error', '로그아웃에 실패했습니다.');
+  }
+};
+
+interface SignupData {
+  email: string;
+  name: string;
+  password: string;
+  passwordConfirm: string;
+}
+export const signup = async (name: string, email: string, password: string, passwordConfirm: string): Promise<SignupData> => {
+  try {
+    const response = await instance.post('/api/auths/signup', {
+      name,
+      email,
+      password,
+      passwordConfirm,
+    });
+    Toast('success', '회원가입이 완료되었습니다.');
+    void router.push('/login');
+    return response.data;
+  } catch (error: any) {
+    Toast('error', error.response.data.message);
+    throw error;
+  }
+};
+
+export const checkName = async (name: string) => {
+  try {
+    const res = await instance.post('/api/auths/check-name', {
+      name,
+    });
+    Toast('success', res.data.message);
+    return true;
+  } catch (err: any) {
+    Toast('error', err.response.data.message);
+    return false;
   }
 };
