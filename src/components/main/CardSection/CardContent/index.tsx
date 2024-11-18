@@ -50,14 +50,18 @@ export default function CardContent({ gathering }: CardContentProps) {
     <div className="relative flex h-1/2 min-h-36 w-full cursor-pointer flex-col justify-between overflow-hidden px-5 py-4 mobile:h-full tablet:w-full">
       <div className="mb-3 flex justify-between">
         <div className="flex flex-col">
-          <div className="text-pretty text-16-20-response font-bold">{groupName}</div>
+          <span className="text-pretty text-16-20-response font-bold">{groupName}</span>
           <span className={`pb-3 text-sub-response font-medium text-gray-500 ${closed && '!text-gray-200'}`}>
             {category} | {location}
           </span>
           <DateChip dateTime={new Date(gatheringDate)} closed={closed} />
         </div>
         <div className="relative h-fit">
-          <RedHeart color={`${hearted ? '#FF4D11' : '#D4D4D4'}`} className="size-7" onClick={toggleHeart} />
+          <RedHeart
+            color={`${hearted ? '#FF4D11' : 'white'}`}
+            className={`group size-7 ${hearted ? 'stroke-[#FF4D11] stroke-1' : 'stroke-[#D4D4D4] stroke-2'}`}
+            onClick={toggleHeart}
+          />
           <span className="absolute right-1/2 translate-x-1/2 text-xs text-gray-200">{heartCounts}</span>
         </div>
       </div>
