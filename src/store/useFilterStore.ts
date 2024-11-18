@@ -9,6 +9,7 @@ const useFilterStore = create<FilterStateType>((set) => ({
   closeDate: undefined,
   dateStart: undefined,
   dateEnd: undefined,
+  sort: undefined,
   page: 1,
   setPage: (page: number) => set({ page }),
   setKeyword: (keyword) => set({ keyword }),
@@ -17,7 +18,8 @@ const useFilterStore = create<FilterStateType>((set) => ({
   setCloseDate: (closeDate) => set({ closeDate }),
   setDateStart: (dateStart) => set({ dateStart }),
   setDateEnd: (dateEnd) => set({ dateEnd }),
-  resetFilters: () => set({ keyword: undefined, location: undefined, category: '', closeDate: undefined, dateStart: undefined, dateEnd: undefined, page: 1 }),
+  setSort: (sort) => set({ sort }),
+  resetFilters: () => set({ keyword: undefined, location: undefined, category: '', closeDate: undefined, dateStart: undefined, sort:undefined,dateEnd: undefined, page: 1 }),
 }));
 
 // States
@@ -28,7 +30,7 @@ export const useCloseDate = () => useFilterStore((state) => state.closeDate);
 export const useDateStart = () => useFilterStore((state) => state.dateStart);
 export const useDateEnd = () => useFilterStore((state) => state.dateEnd);
 export const usePage = () => useFilterStore((state) => state.page);
-
+export const useSort = () => useFilterStore((state) => state.sort);
 // Actions
 export const useSetKeyword = () => useFilterStore((state) => state.setKeyword);
 export const useSetLocation = () => useFilterStore((state) => state.setLocation);
@@ -38,5 +40,6 @@ export const useSetPage = () => useFilterStore((state) => state.setPage);
 export const useSetDateStart = () => useFilterStore((state) => state.setDateStart);
 export const useSetDateEnd = () => useFilterStore((state) => state.setDateEnd);
 export const useResetFilters = () => useFilterStore((state) => state.resetFilters);
+export const useSetSort = () => useFilterStore((state) => state.setSort);
 
 export default useFilterStore;

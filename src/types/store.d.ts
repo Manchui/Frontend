@@ -15,5 +15,7 @@ declare module '@manchui-api' {
     setKeyword: (keyword: string) => void;
     setLocation: (location: string | undefined) => void;
     setPage: (page: number) => void;
+    setSort: (sort: string |undefined) => void;
+    sort?: string | undefined;
   };
 }

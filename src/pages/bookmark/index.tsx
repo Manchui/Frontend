@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable tailwindcss/no-custom-classname */
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';

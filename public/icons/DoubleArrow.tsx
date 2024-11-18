@@ -1,4 +1,4 @@
-import { Props, Svg } from 'public/icons/SVG';
+import { Props, Svg } from '@/components/shared/Svg';
 
 
 export interface ChevronIconProps extends Props {

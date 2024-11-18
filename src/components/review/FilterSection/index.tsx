@@ -1,30 +1,39 @@
-import { type Dispatch, type SetStateAction } from 'react';
+import { useRef } from 'react';
+import { useInView } from 'framer-motion';
+import * as m from 'framer-motion/m';
 import CategoryList from '@/components/main/FilterSection/CategoryList';
 import DateDropdown from '@/components/main/FilterSection/DateDropdown';
 import RegionDropdown from '@/components/main/FilterSection/RegionDropdown';
 
 import SortToggle from './SortToggle';
 
-interface FilterSectionProps {
-  setSort: Dispatch<SetStateAction<string | undefined>>;
-  sort?: string;
-}
+export default function FilterSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true });
 
-export default function FilterSection({ sort, setSort }: FilterSectionProps) {
   return (
-    <div className="scrollbar-hide relative my-0 flex w-full select-none flex-col gap-2 bg-white px-4 py-5 mobile:rounded-lg">
+    <m.div
+      ref={ref}
+      style={{
+        transform: isInView ? 'none' : 'translateY(10px)',
+        opacity: isInView ? 1 : 0,
+        transition: 'all 1s ease-in-out',
+      }}
+      className="scrollbar-hide relative mb-8 mt-4 flex w-full select-none flex-col gap-2 bg-white px-4 py-5 mobile:rounded-lg"
+    >
       {/* 카테고리 */}
       <CategoryList />
 
       {/* 필터 */}
-      <div className="flex select-none items-center justify-between">
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <RegionDropdown />
           <DateDropdown />
         </div>
-        {/* 정렬 버튼 */}
-        <SortToggle sort={sort} setSort={setSort} />
+
+        {/* 모임 만들기 버튼 */}
+        <SortToggle />
       </div>
-    </div>
+    </m.div>
   );
 }
