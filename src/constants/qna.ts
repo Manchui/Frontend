@@ -1,9 +1,9 @@
-export type FAQType = {
+export type QNAType = {
   answer: string;
   question: string;
 };
 
-export const FAQS: FAQType[] = [
+export const QNAS: QNAType[] = [
   {
     question: 'Q: 모임에 어떻게 참여할 수 있나요?',
     answer: '원하는 모임 페이지에서 "참여하기" 버튼을 클릭하여 신청하시면 참여가 완료됩니다.',

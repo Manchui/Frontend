@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import * as m from 'framer-motion/m';
 import { useRouter } from 'next/router';
 
 interface MyPageCategoryListProps {
@@ -45,7 +45,7 @@ export default function MyPageCategoryList({ category, setCategory }: MyPageCate
             className={`${getButtonClass(item)}`}
           >
             <div className="py-1.5">{item}</div>
-            {item === selectedTab ? <motion.div className="border-b-2 border-blue-800" layoutId="underline" /> : null}
+            {item === selectedTab ? <m.div className="border-b-2 border-blue-800" layoutId="underline" /> : null}
           </button>
         ))}
       </nav>

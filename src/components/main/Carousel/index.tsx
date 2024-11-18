@@ -63,7 +63,7 @@ export default function Carousel({ handleScrollToFilter }: CarouselProps) {
 
     intervalRef.current = setInterval(() => {
       handleNext();
-    }, 3000);
+    }, 4000);
 
     return () => {
       if (intervalRef.current) {
@@ -94,12 +94,20 @@ export default function Carousel({ handleScrollToFilter }: CarouselProps) {
         {slides[currentIndex]}
       </m.div>
 
-      <button type="button" onClick={handlePrev} className="absolute left-4 top-1/2 p-2">
-        <ArrowBtn direction="left" color="gray" className="size-12" />
+      <button
+        type="button"
+        onClick={handlePrev}
+        className={`absolute left-4 top-1/2 p-2 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+      >
+        <ArrowBtn direction="left" color="lightgray" className="size-12" />
       </button>
 
-      <button type="button" onClick={handleNext} className="absolute right-4 top-1/2 p-2">
-        <ArrowBtn direction="right" color="gray" className="size-12" />
+      <button
+        type="button"
+        onClick={handleNext}
+        className={`absolute right-4 top-1/2 p-2 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+      >
+        <ArrowBtn direction="right" color="lightgray" className="size-12" />
       </button>
 
       <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">

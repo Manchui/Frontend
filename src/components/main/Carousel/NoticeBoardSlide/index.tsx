@@ -13,7 +13,7 @@ export default function NoticeBoardSlide() {
         <span className={`font-bold text-primary-300 ${gugi.className}`}>New!</span> 만취에서 새로운 카테고리 추가! <br />
         <span className={`font-semibold text-white ${gugi.className}`}>&apos;여행&apos;</span>을 즐겨보세요.
       </p>
-      <ul className="my-6 space-y-2 text-center text-13-16-response text-gray-400">
+      <ul className="mb-10 mt-6 space-y-2 text-center text-13-16-response text-gray-400">
         <li>
           🌍 <span className="font-bold text-white">테마 여행 모임</span>으로 특별한 추억 만들기
         </li>

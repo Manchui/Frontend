@@ -36,7 +36,7 @@ export default function Introduce() {
   };
 
   return (
-    <m.div initial="hidden" animate="visible" transition={{ duration: 0.5 }} className="bg-black">
+    <m.div variants={sectionVariants} initial="hidden" animate="visible" transition={{ duration: 0.5 }} className="bg-black">
       <div className="mx-auto flex min-h-screen min-w-[350px] max-w-screen-pc flex-col items-center space-y-5 p-14 px-5">
         {/* Frontend Section */}
         <m.div variants={sectionVariants} transition={{ duration: 0.8, delay: 0.3 }} className="w-full space-y-5">
@@ -58,7 +58,7 @@ export default function Introduce() {
             <h2 className={`${gugi.className} decoration-backend select-none text-introduce-response text-white underline decoration-[6px] underline-offset-8`}>
               Backend Dev
             </h2>
-            <div className="flex flex-wrap justify-center gap-3 tablet:justify-start max-w-[600px]">
+            <div className="flex max-w-[600px] flex-wrap justify-center gap-3 tablet:justify-start">
               {CARDS.backend.map((card) => (
                 <Card key={card.title} title={card.title} type={card.type} description={card.description} bgColorClass={card.bgColorClass} />
               ))}

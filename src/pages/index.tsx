@@ -1,8 +1,8 @@
-import FAQ from '@/components/landing/FAQ';
 import FeatureSection from '@/components/landing/FeatureSection';
 import ImageSection from '@/components/landing/ImageSection';
 import LandingMain from '@/components/landing/LandingMain';
 import PopularList from '@/components/landing/PopularList';
+import QNA from '@/components/landing/QNA';
 import ReviewSection from '@/components/landing/ReviewSection';
 
 export default function Home() {
@@ -13,7 +13,7 @@ export default function Home() {
       <PopularList />
       <ImageSection />
       <ReviewSection />
-      <FAQ />
+      <QNA />
     </div>
   );
 }
