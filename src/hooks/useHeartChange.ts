@@ -23,8 +23,9 @@ export const useHeartChange = (gatherings: DetailData) => {
     onError(error) {
       Toast('error', error.message);
     },
-    onSuccess: () => {
-      // await queryClient.invalidateQueries({ queryKey: ['detail'] });
+    onSuccess: async () => {
+      if (!isLoggedIn) return;
+      await queryClient.invalidateQueries({ queryKey: ['detail'] });
       Toast('success', gatherings.hearted ? '찜한 모임에서 제거되었습니다.' : '찜한 모임에 추가되었습니다.');
     },
     mutationKey: [MUTATION_KEY],
