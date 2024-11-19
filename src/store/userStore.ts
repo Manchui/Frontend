@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 
 interface User {
   createdAt: string;
@@ -20,7 +19,6 @@ interface UserStore {
 }
 
 export const userStore = create<UserStore>()(
-  persist(
     (set) => ({
       user: {
         id: '',
@@ -37,10 +35,5 @@ export const userStore = create<UserStore>()(
       }),
       login: () => set({ isLoggedIn: true }),
       logout: () => set({ isLoggedIn: false }),
-    }),
-    {
-      name: 'user-storage', // 로컬 스토리지 키 이름
-      partialize: (state) => ({ user: state.user, isLoggedIn: state.isLoggedIn }), // 저장할 상태 지정
-    }
-  )
+    })
 );

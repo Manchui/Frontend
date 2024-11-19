@@ -2,6 +2,7 @@ import { instance, instanceWithoutAccess } from '@/apis//api';
 import { Toast } from '@/components/shared/Toast';
 import { userStore } from '@/store/userStore';
 import type { LoginType, NickCheckType, Signuptype } from '@/types/user';
+import type { QueryClient } from '@tanstack/react-query';
 
 export const checkName = async (name: string) => {
   try {
@@ -52,8 +53,9 @@ export const signup = async (name: string, email: string, password: string, pass
   }
 };
 
-export const logout = async () => {
+export const logout = async (queryClient: QueryClient | undefined) => {
   const remover = userStore.getState().removeUser;
+
   try {
     await instance.post('/api/auths/signout', undefined, {
       headers: {
@@ -63,7 +65,9 @@ export const logout = async () => {
     remover();
 
     localStorage.removeItem('accessToken');
-    localStorage.removeItem('user-storage');
+    if (queryClient) {
+      void queryClient.invalidateQueries({ queryKey: ['getUserInfo'] });
+    }
     Toast('success', '로그아웃 되었습니다.');
   } catch (error) {
     Toast('error', '로그아웃에 실패했습니다.');

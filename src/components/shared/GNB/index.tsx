@@ -10,39 +10,40 @@ import Drawer from '@/components/Drawer';
 import Toggle from '@/components/shared/GNB/Toggle';
 import { formatDate } from '@/libs/formatDate';
 import { userStore } from '@/store/userStore';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 export default function GNB() {
+  const queryClient = useQueryClient();
   const router = useRouter();
   const isLoggedIn = userStore((state) => state.isLoggedIn);
-  const logout = userStore((state) => state.logout);
+  const logoutStore = userStore((state) => state.logout);
   const login = userStore((state) => state.login);
 
   const userinfo = userStore((state) => state.user);
   const updateUser = userStore((state) => state.updateUser);
-  
+
+  const { data } = useQuery({
+    queryKey: ['getUserInfo'],
+    queryFn: getUserInfo,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 6,
+  });
+
   useEffect(() => {
-    const axiosUserData = async () => {
-      const accessToken: string | null = localStorage.getItem('accessToken');
-      if (accessToken) {
-        const userData = await getUserInfo();
-        if (userData.result) {
-          updateUser({
-            email: userData.res?.email || '',
-            id: userData.res?.id || '',
-            image: userData.res?.image || '/images/profile.svg',
-            name: userData.res?.name || '',
-            createdAt: formatDate(userData.res?.createdAt || '') || '',
-          });
-          login();
-        } else {
-          logout();
-        }
-      } else {
-        logout();
-      }
-    };
-    void axiosUserData();
-  }, [login, logout, updateUser]);
+    const accessToken: string | null = localStorage.getItem('accessToken');
+    if (data && accessToken) {
+      updateUser({
+        email: data.res?.email || '',
+        id: data.res?.id || '',
+        image: data.res?.image || '/images/profile.svg',
+        name: data.res?.name || '',
+        createdAt: formatDate(data.res?.createdAt || '') || '',
+      });
+      login();
+    } else {
+      logoutStore();
+    }
+  }, [login, data, logoutStore, queryClient, updateUser]);
 
   return (
     <nav className="fixed top-0 z-[9999] flex h-[60px] w-full items-center justify-between bg-white px-4 tablet:px-6 pc:px-10">
