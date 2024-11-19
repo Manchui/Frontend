@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { ProgressBar } from '@/components/shared/progress-bar';
 import Rating from '@/components/shared/Rating';
 import type { ReviewsList } from '@/types/detail';
@@ -12,8 +11,8 @@ export default function Score({ reviewsList }: { reviewsList: ReviewsList }) {
           const reversedIndex = array.length - index;
           return (
             <div key={key} className="mb-1 flex items-center justify-center gap-4">
-              <p className="text-md font-medium text-gray-800">{reversedIndex}점</p>
-              <div className="w-[200px]">
+              <span className="text-md font-medium text-gray-800">{reversedIndex}점</span>
+              <div className="max-w-52 flex-1 tablet:max-w-80 pc:max-w-80">
                 <ProgressBar maxValue={reviewsList.reviewCount} value={value} design="primary" />
               </div>
             </div>
@@ -23,20 +22,14 @@ export default function Score({ reviewsList }: { reviewsList: ReviewsList }) {
   );
 
   return (
-    <section className="my-6 flex flex-col-reverse items-center justify-center gap-6 pc:mb-16 pc:mt-10 pc:flex-row pc:gap-[42px]">
-      <div className="flex flex-col justify-center gap-6 pc:gap-8">
-        <h2 className="text-lg font-bold tablet:text-xl pc:text-xl">이용자들은 이 프로그램을 이렇게 느꼈어요!</h2>
-        <div className="flex flex-col items-center gap-4">
-          <div className="flex flex-col items-center gap-4 tablet:flex-row pc:flex-row">
-            <h1 className="text-5xl font-bold">{reviewsList.scoreList.avgScore}</h1>
-            <Rating score={reviewsList.scoreList.avgScore} />
-          </div>
-          {SCORE}
-        </div>
+    <section>
+      <hr className="my-6 border-blue-100" />
+      <h2 className="mb-6 text-center text-lg font-bold tablet:text-xl pc:mb-8 pc:text-xl">이용자들은 이 프로그램을 이렇게 느꼈어요!</h2>
+      <div className="mb-4 flex flex-col items-center justify-center gap-4 tablet:mb-6 tablet:flex-row pc:mb-6 pc:flex-row">
+        <h1 className="text-5xl font-bold">{reviewsList.scoreList.avgScore}</h1>
+        <Rating score={reviewsList.scoreList.avgScore} />
       </div>
-      <div className="relative h-[193px] w-[343px] duration-100 tablet:h-[414px] tablet:w-[737px] pc:h-[356px] pc:w-[619px]">
-        <Image alt="지도 이미지" src="/images/img-detail-page.png" fill style={{ objectFit: 'cover' }} className="rounded-2xl" />
-      </div>
+      {SCORE}
     </section>
   );
 }

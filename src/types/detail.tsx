@@ -48,6 +48,7 @@ export type DetailData = {
   gatheringId: number;
   gatheringImage: string;
   groupName: string;
+  heartCounts: number;
   hearted: boolean;
   image: string;
   location: string;

@@ -47,6 +47,7 @@ export default function PageLayout({ children, showHeader = true }: LayoutProps)
       isClient &&
       !is404 &&
       router.pathname !== '/' &&
+      router.pathname !== '/faq' &&
       router.pathname !== '/login' &&
       router.pathname !== '/signup' &&
       router.pathname !== '/introduce' &&

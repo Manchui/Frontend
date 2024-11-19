@@ -1,12 +1,12 @@
 export type NoticesType = {
-  content: string;
+  content: string | string[];
   title: string;
 };
 
 export const NOTICES: NoticesType[] = [
   {
     title: '❤️ 11/18 공지사항',
-    content: '동혁 - Main Page Carausel 제작',
+    content: ['동혁 - Main Page Carausel 제작', '소희 - 마이페이지 디자인 수정', '인지 - 모든 리뷰 별점 컴포넌트 제작'],
   },
   {
     title: '❤️ 11/17 공지사항',
