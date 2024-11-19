@@ -14,7 +14,7 @@ interface CardProps {
 
 export default function Card({ type, title, description, bgColorClass }: CardProps) {
   return (
-    <div className={`group relative rounded-2xl h-[400px] max-w-xs flex-1 basis-[200px] cursor-pointer overflow-hidden ${bgColorClass}`}>
+    <div className={`group relative h-[400px] max-w-xs flex-1 basis-[200px] cursor-pointer overflow-hidden rounded-2xl ${bgColorClass}`}>
       {/* 카드 이미지 */}
       <div className="relative top-1/2 size-full -translate-y-1/2 transition-transform duration-300 ease-in-out group-hover:blur-sm group-hover:brightness-90">
         <Image src={`${POSITION_BASE}/${type}.svg`} alt="개발자 아이콘" fill />

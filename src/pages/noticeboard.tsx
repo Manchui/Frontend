@@ -16,6 +16,7 @@ export default function NoticeBoard() {
   const [activeIndex, setActiveIndex] = useState<number[]>([]);
   const [openAll, setOpenAll] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useInternalRouter();
 
@@ -44,7 +45,7 @@ export default function NoticeBoard() {
   useEffect(() => {
     const handleScroll = () => {
       if (!IS_SERVER) {
-        setShowScrollTop(window.scrollY > 0);
+        setShowScrollTop(window.scrollY > 100);
       }
     };
 
@@ -53,15 +54,19 @@ export default function NoticeBoard() {
   }, []);
 
   useEffect(() => {
-    if (isIntersecting) {
-      setVisibleCount((prev) => Math.min(prev + 5, NOTICES.length));
+    if (isIntersecting && !isLoading) {
+      setIsLoading(true);
+      setTimeout(() => {
+        setVisibleCount((prev) => Math.min(prev + 5, NOTICES.length));
+        setIsLoading(false);
+      }, 1000);
     }
-  }, [isIntersecting]);
+  }, [isIntersecting, isLoading]);
 
   return (
-    <m.div variants={sectionVariants} initial="hidden" animate="visible" transition={{ duration: 0.5 }} className="bg-black">
+    <m.div variants={sectionVariants} initial="hidden" animate="visible" transition={{ duration: 0.5 }} className="bg-blue-800">
       <div className="mx-auto flex min-h-screen min-w-[350px] max-w-screen-pc flex-col items-center space-y-5 p-14 px-5">
-        <span className="mb-20 text-24-40-response font-bold text-white">✨ 공지사항 ✨</span>
+        <span className="mb-20 text-landing-title font-bold text-[#3FD9F9]">🫧 공지사항 🫧</span>
         <div className="flex w-full justify-end gap-4 text-13-16-response">
           <button type="button" onClick={handleCloseAll} className="rounded-md bg-gray-700 px-5 py-2 font-semibold text-white duration-300 hover:bg-gray-600">
             전부 닫기
@@ -78,10 +83,23 @@ export default function NoticeBoard() {
                 isOpen={openAll || activeIndex.includes(i)}
                 onClickOpenButton={() => onClickActiveNotice(i)}
                 title={item.title}
-                content={item.content}
+                contents={item.content}
               />
             ))}
           </ul>
+          {isLoading && (
+            <div className="mt-4 flex items-center justify-center gap-3">
+              <div className="size-2 animate-ping rounded-full bg-white">
+                <div className="size-2 animate-ping rounded-full bg-white" />
+              </div>
+              <div className="size-2 animate-ping rounded-full bg-white">
+                <div className="size-2 animate-ping rounded-full bg-white" />
+              </div>
+              <div className="size-2 animate-ping rounded-full bg-white">
+                <div className="size-2 animate-ping rounded-full bg-white" />
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <div ref={sentinelRef} className={`h-10 ${visibleCount >= NOTICES.length ? 'hidden' : ''}`} />
@@ -93,11 +111,11 @@ export default function NoticeBoard() {
           whileHover="hover"
           onClick={() => router.push('/main')}
           transition={{ duration: 1 }}
-          className={`fixed bottom-10 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1 rounded-2xl bg-white px-8 py-4 text-13-15-response drop-shadow-xl ${bagelFatOne.className}`}
+          className={`fixed bottom-10 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1 rounded-2xl bg-black px-8 py-4 text-13-15-response text-white drop-shadow-xl ${bagelFatOne.className}`}
         >
           HOME
           <m.div variants={{ hover: { x: 8 } }} transition={{ duration: 0.3, ease: 'easeOut' }}>
-            <DoubleArrow direction="right" color="black" className="size-4" />
+            <DoubleArrow direction="right" color="white" className="size-4" />
           </m.div>
         </m.button>
       )}

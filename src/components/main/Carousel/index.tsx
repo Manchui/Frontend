@@ -2,9 +2,11 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { type Variants } from 'framer-motion';
 import * as m from 'framer-motion/m';
 import ArrowBtn from 'public/icons/ArrowBtn';
+import FAQSlide from '@/components/main/Carousel/FAQSlide';
 import IntroduceSlide from '@/components/main/Carousel/IntroduceSlide';
 import NoticeBoardSlide from '@/components/main/Carousel/NoticeBoardSlide';
 import PopularCategorySlide from '@/components/main/Carousel/PopularCategorySlide';
+import TopSlide from '@/components/main/Carousel/TopSlide';
 
 const zoomVariants: Variants = {
   enter: {
@@ -30,6 +32,8 @@ export default function Carousel({ handleScrollToFilter }: CarouselProps) {
     <IntroduceSlide key="introduce" />,
     <PopularCategorySlide key="popular" handleScrollToFilter={handleScrollToFilter} />,
     <NoticeBoardSlide key="notice" />,
+    <TopSlide key="top" />,
+    <FAQSlide key="faq" />,
   ];
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);

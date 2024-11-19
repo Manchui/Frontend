@@ -1,9 +1,9 @@
-export type QNAType = {
+export type FAQSType = {
   answer: string;
   question: string;
 };
 
-export const QNAS: QNAType[] = [
+export const FAQS: FAQSType[] = [
   {
     question: 'Q: 모임에 어떻게 참여할 수 있나요?',
     answer: '원하는 모임 페이지에서 "참여하기" 버튼을 클릭하여 신청하시면 참여가 완료됩니다.',
@@ -23,5 +23,12 @@ export const QNAS: QNAType[] = [
   {
     question: 'Q: 참여를 취소할 수 있나요?',
     answer: '네, 모임 시작 전이라면 언제든지 마이페이지에서 참여를 취소할 수 있습니다.',
+  },
+];
+
+export const SINGLE_FAQ = [
+  {
+    question: 'Q. FAQ 페이지에서는 무엇을 확인할 수 있나요?',
+    answer: 'A. FAQ 페이지에서는 자주 묻는 질문과 답변을 확인할 수 있으며, 추가적인 문의사항이 있다면 직접 문의도 가능합니다.',
   },
 ];

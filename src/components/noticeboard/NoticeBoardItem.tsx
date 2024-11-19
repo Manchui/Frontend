@@ -3,14 +3,14 @@ import * as m from 'framer-motion/m';
 import ArrowBtn from 'public/icons/ArrowBtn';
 
 interface NoticeBoardItemProps {
-  content: string;
+  contents: string | string[];
   isOpen: boolean;
   onClickOpenButton: () => void;
   title: string;
 }
 
 const headerVariants: Variants = {
-  open: { backgroundColor: 'black' },
+  open: { backgroundColor: '#009CEB' },
   closed: { backgroundColor: 'white' },
 };
 
@@ -20,7 +20,7 @@ const bodyVariants: Variants = {
   closed: { opacity: 0, height: 0, display: 'none' },
 };
 
-export default function NoticeBoardItem({ isOpen, onClickOpenButton, title, content }: NoticeBoardItemProps) {
+export default function NoticeBoardItem({ isOpen, onClickOpenButton, title, contents }: NoticeBoardItemProps) {
   return (
     <li onClick={onClickOpenButton} className="cursor-pointer text-13-16-response font-semibold">
       <m.div
@@ -35,7 +35,17 @@ export default function NoticeBoardItem({ isOpen, onClickOpenButton, title, cont
         </m.div>
       </m.div>
       <m.div animate={isOpen ? 'open' : 'closed'} variants={bodyVariants} transition={{ duration: 0.3, height: 0, ease: 'easeOut' }}>
-        <p className="bg-white px-6 py-5">{content}</p>
+        <div className="bg-white px-6 py-5">
+          {Array.isArray(contents) ? (
+            contents.map((content, index) => (
+              <p key={index} className="mb-2 last:mb-0">
+                {content}
+              </p>
+            ))
+          ) : (
+            <p>{contents}</p>
+          )}
+        </div>
       </m.div>
     </li>
   );
