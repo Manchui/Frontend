@@ -67,7 +67,7 @@ export default function Carousel({ handleScrollToFilter }: CarouselProps) {
 
     intervalRef.current = setInterval(() => {
       handleNext();
-    }, 400000);
+    }, 4000);
 
     return () => {
       if (intervalRef.current) {
