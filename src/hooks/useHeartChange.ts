@@ -1,5 +1,5 @@
-import instance from '@/apis/api';
-import { Toast } from '@/libs/validateForm';
+import { instance } from '@/apis/api';
+import { Toast } from '@/components/shared/Toast';
 import { userStore } from '@/store/userStore';
 import type { DetailData } from '@/types/detail';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
