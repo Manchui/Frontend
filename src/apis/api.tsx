@@ -38,16 +38,6 @@ instance.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
-instance.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response.status === 400) {
-      window.location.href = '/login';
-    }
-    return Promise.reject(error);
-  },
-);
-
 const tokenRefresh = async (): Promise<string> => {
   const res = await instance.post('/api/auths/reissue', undefined, {
     headers: {
@@ -59,7 +49,7 @@ const tokenRefresh = async (): Promise<string> => {
   return token as string;
 };
 
-instance.interceptors.response.use(
+axios.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     if (error.response?.status === 401) {
