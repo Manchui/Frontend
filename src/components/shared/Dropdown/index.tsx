@@ -136,7 +136,7 @@ export default function Dropdown({ locations = [], onDateChange, onLocationChang
           )}
           {type === 'date' && onDateChange && (
             <div className="flex flex-col items-center pb-3 pt-5">
-              <Calendar selectionType="range" onDateChange={handleDateChange} />
+               <Calendar selectionType="range" onDateChange={handleDateChange} startDate={selectedDates.rangeStart} />
               <div className="mt-2 flex gap-2">
                 <button
                   type="button"
