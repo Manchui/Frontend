@@ -16,7 +16,7 @@ import RootLayout from '@/components/shared/RootLayout';
 import { SEO } from '@/components/shared/SEO';
 import useGetReviewData from '@/hooks/useGetReviewData';
 import useInternalRouter from '@/hooks/useInternalRouter';
-import useFilterStore, { useResetFilters } from '@/store/useFilterStore';
+import useFilterStore, { useResetFilters, useScore, useSetScore } from '@/store/useFilterStore';
 import type { DehydratedState } from '@tanstack/react-query';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 
@@ -33,9 +33,9 @@ type ReviewProps = {
 };
 export default function ReviewPage({ seo, dehydratedState, initialPageSize }: ReviewProps) {
   const [pageSize, setPageSize] = useState(initialPageSize);
-  const [scoreSort, setScoreSort] = useState(0);
   const { page, keyword, location, category, sort, dateEnd, dateStart } = useFilterStore();
-
+  const score = useScore();
+  const setScore = useSetScore();
   const router = useInternalRouter();
   const resetFilters = useResetFilters();
 
@@ -53,7 +53,7 @@ export default function ReviewPage({ seo, dehydratedState, initialPageSize }: Re
     sort,
     startDate: dateStart,
     endDate: dateEnd,
-    // score: scoreSort,
+    score,
   });
   const data = reviewData?.data;
   console.log('reviewData:', reviewData);
@@ -76,6 +76,7 @@ export default function ReviewPage({ seo, dehydratedState, initialPageSize }: Re
       router.events.off('routeChangeStart', handleRouteChange);
     };
   }, [router, resetFilters]);
+  
   return (
     <>
       <SEO title={seo.title} />
@@ -93,9 +94,8 @@ export default function ReviewPage({ seo, dehydratedState, initialPageSize }: Re
             {/* Header (타이틀, 검색창) */}
             <HeaderSection />
             <div className="mt-2 min-h-screen w-full rounded-t-lg bg-white">
-              
               <FilterSection data={data} />
-           
+
               {/* 카드 */}
 
               <ReviewCardList data={reviewData?.data} isLoading={isLoading} isError={isError} />
