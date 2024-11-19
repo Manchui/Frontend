@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Image from 'next/image';
-import instance from '@/apis/api';
+import { instance } from '@/apis/api';
 import type { DetailData } from '@/types/detail';
 import { useMutation } from '@tanstack/react-query';
 
