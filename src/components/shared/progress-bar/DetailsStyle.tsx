@@ -16,10 +16,7 @@ export function DetailsStyle({ maxValue, mainValue = 0, value, location, userLis
           name: `abcd-${index + 1}`,
           profileImagePath: '/icons/person-rounded.png',
         }));
-  // console.log(
-  //   'testData: ',
-  //   testData.sort(() => Math.random() - 0.5).map,
-  // );
+
   return (
     <div>
       {location === 'up' ? (
