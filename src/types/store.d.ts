@@ -8,6 +8,7 @@ declare module '@manchui-api' {
     location?: string | undefined;
     page?: number;
     resetFilters: () => void;
+    score?: number;
     setCategory: (category: string) => void;
     setCloseDate: (closeDate: string) => void;
     setDateEnd: (dateEnd: string | undefined) => void;
@@ -15,7 +16,8 @@ declare module '@manchui-api' {
     setKeyword: (keyword: string) => void;
     setLocation: (location: string | undefined) => void;
     setPage: (page: number) => void;
-    setSort: (sort: string |undefined) => void;
+    setScore: (score: number) => void;
+    setSort: (sort: string | undefined) => void;
     sort?: string | undefined;
   };
 }

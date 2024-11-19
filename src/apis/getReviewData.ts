@@ -1,16 +1,18 @@
 import instance from '@/apis/api';
+import { useScore } from '@/store/useFilterStore';
 import type { GetReviewResponse } from '@manchui-api';
 
-type GetReviewProps= {
+type GetReviewProps = {
   category?: string;
   endDate?: string;
   location?: string;
   page?: number;
   query?: string;
+  score?: number;
   size?: number;
   sort?: string;
   startDate?: string;
-}
+};
 
 export async function getReviewData({
   page = 0,
@@ -21,11 +23,13 @@ export async function getReviewData({
   endDate,
   query,
   sort,
-}: GetReviewProps): Promise<GetReviewResponse> {
+  score,
+}: GetReviewProps ): Promise<GetReviewResponse> {
   const params = new URLSearchParams({
     page: page.toString(),
     size: size.toString(),
     ...(sort && { sort }),
+    ...(score !== undefined && { score: score.toString() }),
     ...(query && { query }),
     ...(category && { category }),
     ...(location && { location }),
@@ -33,7 +37,6 @@ export async function getReviewData({
     ...(endDate && { endDate }),
   });
 
- 
   try {
     const res = await instance.get<GetReviewResponse>('/api/reviews?', {
       params,

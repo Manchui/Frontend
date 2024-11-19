@@ -1,39 +1,34 @@
-import { useRef } from 'react';
-import { useInView } from 'framer-motion';
-import * as m from 'framer-motion/m';
+import { useState } from 'react';
+import Image from 'next/image';
 import CategoryList from '@/components/main/FilterSection/CategoryList';
 import DateDropdown from '@/components/main/FilterSection/DateDropdown';
 import RegionDropdown from '@/components/main/FilterSection/RegionDropdown';
+import type { GetReviewResponse } from '@manchui-api';
 
+import ScoreFilter from './ScoreFilter';
 import SortToggle from './SortToggle';
+import ReviewRating from '../ReviewRating';
 
-export default function FilterSection() {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true });
-
+type ReviewCardListProps = {
+  data?: GetReviewResponse['data'];
+};
+export default function FilterSection({ data }: ReviewCardListProps) {
   return (
-    <m.div
-      ref={ref}
-      style={{
-        transform: isInView ? 'none' : 'translateY(10px)',
-        opacity: isInView ? 1 : 0,
-        transition: 'all 1s ease-in-out',
-      }}
-      className="scrollbar-hide relative mb-8 mt-4 flex w-full select-none flex-col gap-2 bg-white px-4 py-5 mobile:rounded-lg"
-    >
+    <div className="flex flex-col gap-3 border-t border-t-gray-100 px-4 py-6">
       {/* 카테고리 */}
       <CategoryList />
-
+      <ReviewRating  data={data}/>
       {/* 필터 */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <RegionDropdown />
           <DateDropdown />
+          <ScoreFilter />
         </div>
 
         {/* 모임 만들기 버튼 */}
         <SortToggle />
       </div>
-    </m.div>
+    </div>
   );
 }

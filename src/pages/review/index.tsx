@@ -1,13 +1,16 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { getReviewData } from '@/apis/getReviewData';
-import BookmarkBanner from '@/components/bookmark/BookmarkBanner';
 import BookmarkContainer from '@/components/bookmark/BookmarkContainer';
+import Score from '@/components/detail/score';
 import HeaderSection from '@/components/main/HeaderSection';
 import FilterSection from '@/components/review/FilterSection';
+import MainHeader from '@/components/review/MainHeader';
 import ReviewCardList from '@/components/review/ReviewCardList';
+import ReviewRating from '@/components/review/ReviewRating';
 import PaginationBtn from '@/components/shared/PaginationBtn';
 import RootLayout from '@/components/shared/RootLayout';
 import { SEO } from '@/components/shared/SEO';
@@ -30,7 +33,7 @@ type ReviewProps = {
 };
 export default function ReviewPage({ seo, dehydratedState, initialPageSize }: ReviewProps) {
   const [pageSize, setPageSize] = useState(initialPageSize);
-
+  const [scoreSort, setScoreSort] = useState(0);
   const { page, keyword, location, category, sort, dateEnd, dateStart } = useFilterStore();
 
   const router = useInternalRouter();
@@ -50,8 +53,11 @@ export default function ReviewPage({ seo, dehydratedState, initialPageSize }: Re
     sort,
     startDate: dateStart,
     endDate: dateEnd,
+    // score: scoreSort,
   });
   const data = reviewData?.data;
+  console.log('reviewData:', reviewData);
+  console.log('data:', data);
 
   useEffect(() => {
     if (pageSize !== 10) {
@@ -80,16 +86,18 @@ export default function ReviewPage({ seo, dehydratedState, initialPageSize }: Re
             <Lottie animationData={Error} className="size-full border-b-2 border-cardBorder bg-background" />
           </div>
         ) : (
-          <BookmarkBanner isError={isError} />
+          <MainHeader isError={isError} />
         )}
         <RootLayout>
           <BookmarkContainer>
             {/* Header (타이틀, 검색창) */}
             <HeaderSection />
             <div className="mt-2 min-h-screen w-full rounded-t-lg bg-white">
-              {/* 카테고리 */}
-              <FilterSection />
+              
+              <FilterSection data={data} />
+           
               {/* 카드 */}
+
               <ReviewCardList data={reviewData?.data} isLoading={isLoading} isError={isError} />
 
               {!isLoading && !isError && reviewData?.data?.reviewContentList && reviewData.data.reviewContentList.length > 0 && (

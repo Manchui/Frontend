@@ -18,22 +18,29 @@ declare module '@manchui-api' {
         updatedAt: string;
       }[];
       reviewCount: number;
+      scoreList: {
+        '1ScoreCount': number;
+        '2ScoreCount': number;
+        '3ScoreCount': number;
+        '4ScoreCount': number;
+        '5ScoreCount': number;
+        'avgScore': number;
+      };
       totalPage: number;
     };
     message: string;
     success: boolean;
   };
-  
-  export type GetReviewRequest= {
+
+  export type GetReviewRequest = {
     category?: string;
     endDate?: string;
     location?: string;
     page?: number;
     query?: string;
+    score?: number;
     size: number;
     sort?: string;
     startDate?: string;
   };
 }
-
-
