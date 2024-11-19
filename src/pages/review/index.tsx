@@ -5,12 +5,10 @@ import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { getReviewData } from '@/apis/getReviewData';
 import BookmarkContainer from '@/components/bookmark/BookmarkContainer';
-import Score from '@/components/detail/score';
 import HeaderSection from '@/components/main/HeaderSection';
 import FilterSection from '@/components/review/FilterSection';
 import MainHeader from '@/components/review/MainHeader';
 import ReviewCardList from '@/components/review/ReviewCardList';
-import ReviewRating from '@/components/review/ReviewRating';
 import PaginationBtn from '@/components/shared/PaginationBtn';
 import RootLayout from '@/components/shared/RootLayout';
 import { SEO } from '@/components/shared/SEO';
@@ -56,8 +54,6 @@ export default function ReviewPage({ seo, dehydratedState, initialPageSize }: Re
     score,
   });
   const data = reviewData?.data;
-  console.log('reviewData:', reviewData);
-  console.log('data:', data);
 
   useEffect(() => {
     if (pageSize !== 10) {
@@ -93,12 +89,12 @@ export default function ReviewPage({ seo, dehydratedState, initialPageSize }: Re
           <BookmarkContainer>
             {/* Header (타이틀, 검색창) */}
             <HeaderSection />
-            <div className="mt-2 min-h-screen w-full rounded-t-lg bg-white">
+            <div className="min-h-screen w-full bg-white">
               <FilterSection data={data} />
 
               {/* 카드 */}
 
-              <ReviewCardList data={reviewData?.data} isLoading={isLoading} isError={isError} />
+              <ReviewCardList data={reviewData?.data} isLoading={isLoading} isError={isError}  />
 
               {!isLoading && !isError && reviewData?.data?.reviewContentList && reviewData.data.reviewContentList.length > 0 && (
                 <PaginationBtn page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} />

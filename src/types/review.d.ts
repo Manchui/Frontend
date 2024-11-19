@@ -24,7 +24,7 @@ declare module '@manchui-api' {
         '3ScoreCount': number;
         '4ScoreCount': number;
         '5ScoreCount': number;
-        'avgScore': number;
+       
       };
       totalPage: number;
     };

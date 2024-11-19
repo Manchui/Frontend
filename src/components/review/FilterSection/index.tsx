@@ -9,10 +9,8 @@ import ScoreFilter from './ScoreFilter';
 import SortToggle from './SortToggle';
 import ReviewRating from '../ReviewRating';
 
-type ReviewCardListProps = {
-  data?: GetReviewResponse['data'];
-};
-export default function FilterSection({ data }: ReviewCardListProps) {
+
+export default function FilterSection({  data }: { data?: GetReviewResponse['data'] }) {
   return (
     <div className="flex flex-col gap-3 border-t border-t-gray-100 px-4 py-6">
       {/* 카테고리 */}

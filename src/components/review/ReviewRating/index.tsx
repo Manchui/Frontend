@@ -1,24 +1,84 @@
+import { useEffect, useState } from 'react';
+import { ProgressBar } from '@/components/shared/progress-bar';
+import { useScore, useSetScore } from '@/store/useFilterStore';
 import type { GetReviewResponse } from '@manchui-api';
 
-import ReviewScore from '../ReviewScore';
 
-type ReviewCardListProps = {
-  data?: GetReviewResponse['data'];
-};
+export default function ReviewRating({  data }: { data?: GetReviewResponse['data'] }) {
+  const [scoreList, setScoreList] = useState<
+    | {
+        '1ScoreCount': number;
+        '2ScoreCount': number;
+        '3ScoreCount': number;
+        '4ScoreCount': number;
+        '5ScoreCount': number;
+      }
+    | 0
+  >(0);
+  const [reviewCount, setReviewCount] = useState<number>(0);
+  const score = useScore();
+  const setScore = useSetScore();
 
-export default function ReviewRating({ data }: ReviewCardListProps) {
+  const handleScoreToggle = (reversedIndex: number) => {
+    setScore(reversedIndex);
+  };
+
+  useEffect(() => {
+    if (data && score === 0) {
+      setScoreList(data.scoreList);
+      setReviewCount(data.reviewCount);
+    }
+  }, [data, score]);
+
   return (
     <div className="flex flex-col items-center justify-center gap-4 border-b-2 border-blue-100 py-6 pt-4 tablet:flex-row tablet:gap-[140px] pc:flex-row">
       <div className="flex flex-col items-center gap-1">
         <h1 className="text-13-16-response font-medium text-gray-400">총 리뷰수</h1>
         <div className="flex items-baseline">
-          <span className="align-baseline text-24-40-response font-bold">{data?.reviewCount}</span>
-          <span className="align-baseline text-16-20-response font-bold">개</span>
+          <span className="align-baseline text-24-40-response font-bold">{data?.reviewCount || 0}</span>
+          <span className="align-baseline text-16-20-response font-bold pb-1">개</span>
         </div>
       </div>
       <div>
-        <ReviewScore datas={data} />
+        <section className="my-6 flex flex-col-reverse items-center justify-center gap-6 pc:mb-16 pc:mt-10 pc:flex-row pc:gap-[42px]">
+          <div className="flex flex-col justify-center gap-6 pc:gap-8">
+            <div className="flex flex-col items-center gap-4">
+              {' '}
+              <div>
+                {/* 데이터가 있는 경우 */}
+                {Object.entries(scoreList || {})
+                  .slice(1)
+                  .map(([key, value], index, array) => {
+                    const reversedIndex = array.length - index;
+                    const scoreValue = value || 0;
+
+                    return (
+                      <div
+                        key={key}
+                        className="group mb-1 flex w-full cursor-pointer items-center justify-between gap-4 transition-all duration-200"
+                        onClick={() => handleScoreToggle(reversedIndex)}
+                      >
+                        <p
+                          className={`text-right text-md font-medium text-gray-800 ${score === reversedIndex ? 'font-bold text-yellow-500' : ''} group-hover:font-light  group-hover:text-yellow-500`}
+                        >
+                          {reversedIndex}점
+                        </p>
+                        <div className={`w-[200px] transition-all duration-200 group-hover:brightness-95 group-hover:scale-105 ${score === reversedIndex ? 'brightness-90 scale-105' : ''}`}>
+                          <ProgressBar maxValue={reviewCount || 1} value={scoreValue} design="primary" />
+                        </div>
+                        <p
+                          className={`text-md font-medium text-gray-800 ${score === reversedIndex ? 'font-bold text-yellow-500' : ''} group-hover:font-light group-hover:text-yellow-500`}
+                        >
+                          {scoreValue}
+                        </p>
+                      </div>
+                    );
+                  })}
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );
-} 
+}
