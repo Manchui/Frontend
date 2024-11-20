@@ -4,6 +4,7 @@
 
 import type { AxiosError } from 'axios';
 import axios from 'axios';
+import { Toast } from '@/components/shared/Toast';
 import { IS_SERVER } from '@/constants/server';
 
 const instance = axios.create({
@@ -20,7 +21,7 @@ const instanceWithoutAccess = axios.create({
   withCredentials: true,
   timeout: 3000,
   headers: {
-    'Content-Type': 'application/json', 
+    'Content-Type': 'application/json',
   },
 });
 
@@ -49,7 +50,7 @@ const tokenRefresh = async (): Promise<string> => {
   return token as string;
 };
 
-axios.interceptors.response.use(
+instance.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     if (error.response?.status === 401) {
@@ -74,6 +75,10 @@ axios.interceptors.response.use(
         }
       }
     }
+    localStorage.removeItem('accessToken');
+    Toast('error', '로그인 후 이용해주세요.');
+    window.location.href = '/login';
+    
     return Promise.reject(error);
   },
 );
