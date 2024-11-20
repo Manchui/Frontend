@@ -25,7 +25,6 @@ const instanceWithoutAccess = axios.create({
   },
 });
 
-// instance만 accessToken 포함하기
 instance.interceptors.request.use(
   (config) => {
     if (!IS_SERVER) {
@@ -74,11 +73,11 @@ instance.interceptors.response.use(
           throw new Error('error');
         }
       }
+    } else if(error.response?.status === 400) {
+      localStorage.removeItem('accessToken');
+      Toast('error', '로그인 시간이 만료되었습니다. 다시 로그인해주세요.');
     }
-    localStorage.removeItem('accessToken');
-    Toast('error', '로그인 후 이용해주세요.');
-    window.location.href = '/login';
-    
+
     return Promise.reject(error);
   },
 );
