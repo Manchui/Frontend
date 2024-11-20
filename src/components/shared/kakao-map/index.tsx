@@ -6,7 +6,7 @@ declare global {
       maps: {
         LatLng: new (lat: number, lng: number) => object;
         Map: new (container: HTMLElement, options: object) => object;
-        Marker: new (options: { position: object }) => { setMap: (map: object | null) => void };
+        Marker: new (options: { image?: object; position: object }) => { setMap: (map: object | null) => void };
         MarkerImage: new (src: string, size: object, options?: object) => object;
         Point: new (x: number, y: number) => object;
         Size: new (width: number, height: number) => object;
@@ -44,13 +44,15 @@ export function KakaoMap({ lat, lng, zoom }: MapProps) {
         };
         // eslint-disable-next-line no-new
         const map = new window.kakao.maps.Map(container, options);
-        // const markerImageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
-        // const imageSize = new window.kakao.maps.Size(24, 35);
-        // const markerImage = new window.kakao.maps.MarkerImage(markerImageSrc, imageSize);
+        const markerImageSrc = 'https://i.ibb.co/CVvvn3s/free-icon-veterinarian-5695706.png';
+        const markerImageSize = new window.kakao.maps.Size(50, 50);
+        const markerImage = new window.kakao.maps.MarkerImage(markerImageSrc, markerImageSize);
 
         const markerPosition = new window.kakao.maps.LatLng(lat || 37.566363, lng || 126.992572);
-        const marker = new window.kakao.maps.Marker({ position: markerPosition });
-        // const marker = new window.kakao.maps.Marker({ position: markerPosition, image: markerImage });
+        const marker = new window.kakao.maps.Marker({
+          position: markerPosition,
+          image: markerImage,
+        });
         marker.setMap(map);
       });
     };

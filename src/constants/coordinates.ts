@@ -16,8 +16,8 @@ export const POSITION_COORDINATES = [
   },
   {
     location: '홍대 입구',
-    Latitude: 37.556715,
-    Longitude: 126.923528,
+    Latitude: 37.556949,
+    Longitude: 126.923909,
   },
   {
     location: '성수',
