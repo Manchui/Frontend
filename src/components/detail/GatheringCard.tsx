@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import Image from 'next/image';
 import RedHeart from 'public/icons/RedHeart';
+import { POSITION_COORDINATES } from '@/constants/coordinates';
 import { useHeartChange } from '@/hooks/useHeartChange';
 import type { DetailData } from '@/types/detail';
 
@@ -12,6 +13,7 @@ import Tag from '../shared/Tag';
 export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
   const gatheringDate = new Date(gatherings.gatheringDate);
   const mutation = useHeartChange(gatherings);
+  const location = POSITION_COORDINATES.find((item) => item.location === gatherings.location);
 
   const dueDate = useMemo(() => {
     const date = new Date(gatherings.gatheringDate);
@@ -92,16 +94,7 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
             {gatherings.content}
           </p>
         </section>
-        {/* <div className="relative ">
-          <Image
-            src="/images/img-detail-page.png"
-            fill
-            alt="지도"
-            className=" object-cover duration-100"
-            sizes="(max-width: 820px) 50vw, (max-width: 1240px) 50vw, 50vw"
-          />
-        </div> */}
-        <KakaoMap />
+        <KakaoMap lat={location?.Latitude} lng={location?.Longitude} />
       </div>
     </article>
   );

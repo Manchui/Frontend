@@ -1,13 +1,15 @@
 import { useEffect } from 'react';
 
-import { Toast } from '../Toast';
-
 declare global {
   interface Window {
     kakao: {
       maps: {
         LatLng: new (lat: number, lng: number) => object;
         Map: new (container: HTMLElement, options: object) => object;
+        Marker: new (options: { position: object }) => { setMap: (map: object | null) => void };
+        MarkerImage: new (src: string, size: object, options?: object) => object;
+        Point: new (x: number, y: number) => object;
+        Size: new (width: number, height: number) => object;
         load: (callback: () => void) => void;
       };
     };
@@ -21,36 +23,49 @@ interface MapProps {
 }
 
 export function KakaoMap({ lat, lng, zoom }: MapProps) {
+  const apiKey = process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY;
+
   useEffect(() => {
-    const apiKey = process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY;
-    if (!apiKey) {
-      Toast('error', 'Kakao Map API Key is missing!');
-      return;
-    }
     const kakaoMapScript = document.createElement('script');
     kakaoMapScript.async = true;
     kakaoMapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${apiKey}&autoload=false`;
     document.head.appendChild(kakaoMapScript);
 
     const onLoadKakaoAPI = () => {
+      if (!window.kakao) return;
+
       window.kakao.maps.load(() => {
         const container = document.getElementById('map');
         if (!container) return;
+
         const options = {
-          center: new window.kakao.maps.LatLng(lat || 33.450701, lng || 126.570667),
+          center: new window.kakao.maps.LatLng(lat || 37.566363, lng || 126.992572),
           level: zoom || 3,
         };
         // eslint-disable-next-line no-new
-        new window.kakao.maps.Map(container, options);
+        const map = new window.kakao.maps.Map(container, options);
+        // const markerImageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
+        // const imageSize = new window.kakao.maps.Size(24, 35);
+        // const markerImage = new window.kakao.maps.MarkerImage(markerImageSrc, imageSize);
+
+        const markerPosition = new window.kakao.maps.LatLng(lat || 37.566363, lng || 126.992572);
+        const marker = new window.kakao.maps.Marker({ position: markerPosition });
+        // const marker = new window.kakao.maps.Marker({ position: markerPosition, image: markerImage });
+        marker.setMap(map);
       });
     };
 
     kakaoMapScript.addEventListener('load', onLoadKakaoAPI);
-  }, [lat, lng, zoom]);
+
+    return () => {
+      kakaoMapScript.removeEventListener('load', onLoadKakaoAPI);
+      document.head.removeChild(kakaoMapScript);
+    };
+  }, [apiKey, lat, lng, zoom]);
 
   return (
-    <div className="h-[323px] max-w-screen-tablet">
-      <div id="map" className="size-full rounded-2xl" />
+    <div className="relative z-0 h-[323px] max-w-screen-tablet">
+      <div id="map" className="absolute size-full rounded-2xl" />
     </div>
   );
 }
