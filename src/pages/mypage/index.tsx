@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import { CardComponents } from '@/components/mypage/card-style';
+import { CardComponents } from '@/components/mypage/cardStyle';
 import MyPageCategoryList from '@/components/mypage/category/CategoryList';
-import { ProfileCard } from '@/components/mypage/profile-card';
+import { ProfileCard } from '@/components/mypage/ProfileCard';
 import RootLayout from '@/components/shared/RootLayout';
 
 export default function MyPage() {
   const [category, setCategory] = useState('');
-
 
   return (
     <div>
