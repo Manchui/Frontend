@@ -1,4 +1,4 @@
-import { instance } from '@/apis/api';
+import { instance, instanceWithoutAccess } from '@/apis/api';
 import { useQuery } from '@tanstack/react-query';
 
 interface UserInfo {
@@ -20,12 +20,27 @@ export const getUserInfo = async () => {
   }
 };
 
-export const useUserInfo = () =>
+export const useUserInfo = () => {
   useQuery({
     queryKey: ['userInfo'],
     queryFn: getUserInfo,
     staleTime: 1000 * 60 * 30,
     gcTime: 1000 * 60 * 60,
   });
+};
 
-export { instance };
+// eslint-disable-next-line consistent-return
+export const getSocialAccess = async (social: string, code: string) => {
+  console.log(social, code);
+  try {
+    const res = await instanceWithoutAccess.get(`/login/oauth2/callback/${social}?code=${code}`);
+    console.log(res.headers.authorization);
+    const accessToken = res.headers.authorization as string;
+    localStorage.setItem('accessToken', accessToken);
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
+
