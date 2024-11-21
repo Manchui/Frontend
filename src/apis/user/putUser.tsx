@@ -1,3 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+
+import { AxiosError } from 'axios';
+
 import { Toast } from '../../components/shared/Toast';
 import { instance } from '../api';
 
@@ -8,7 +14,6 @@ const fetchFileFromUrl = async (fileUrl: string, fileName: string) => {
       throw new Error('Failed to fetch file');
     }
     const blob = await res.blob();
-    console.log(new File([blob], fileName, { type: blob.type }));
     return new File([blob], fileName, { type: blob.type });
   } catch (e) {
     console.log(e);
@@ -17,7 +22,6 @@ const fetchFileFromUrl = async (fileUrl: string, fileName: string) => {
 };
 
 export const editUserInfo = async (nick: string, image: string) => {
-  console.log(nick);
   const formData = new FormData();
   formData.append('name', nick); // FormData에 닉네임 추가
 
@@ -36,7 +40,11 @@ export const editUserInfo = async (nick: string, image: string) => {
     window.location.reload();
     return res;
   } catch (e) {
-    Toast('error', '회원가입에 실패했습니다.');
-    throw e;
+    if (e instanceof AxiosError && e.response && e.response.data) {
+      Toast('error', e.response.data.message);
+    } else {
+      Toast('error', '알 수 없는 에러가 발생했습니다.');
+    }
+    return e;
   }
 };
