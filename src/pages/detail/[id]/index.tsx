@@ -34,7 +34,7 @@ export default function DetailPage({ seo, dehydratedState, isId }: DetailPagePro
             <GatheringCard gatherings={gatherings} />
             <Score reviewsList={gatherings.reviewsList} />
             <ReviewListCard reviews={gatherings.reviewsList} />
-            <FloatingBar id={isId} gatherings={gatherings} usersList={gatherings.usersList} maxUsers={gatherings.maxUsers} />
+            <FloatingBar id={isId} gatherings={gatherings} />
           </div>
         </RootLayout>
       </HydrationBoundary>

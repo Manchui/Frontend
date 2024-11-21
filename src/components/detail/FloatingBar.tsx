@@ -1,5 +1,5 @@
 import { userStore } from '@/store/userStore';
-import type { DetailData, UsersList } from '@/types/detail';
+import type { DetailData } from '@/types/detail';
 
 import AttendanceButton from './button/AttendanceButton';
 import { CancelButton } from './button/CancelButton';
@@ -11,15 +11,10 @@ export interface DetailPageBaseType {
   id: number;
 }
 
-interface FloatingBarProps extends DetailPageBaseType {
-  maxUsers: number;
-  usersList: UsersList[];
-}
-
-export function FloatingBar({ gatherings, id, usersList, maxUsers }: FloatingBarProps) {
+export function FloatingBar({ gatherings, id }: DetailPageBaseType) {
   const myUserName = userStore((state) => state.user.name);
-  const findUserId = usersList.find((user) => user.name === myUserName);
-  const isDisabled = usersList.length === maxUsers;
+  const findUserId = gatherings.usersList.find((user) => user.name === myUserName);
+  const isDisabled = gatherings.usersList.length === gatherings.maxUsers;
   const isClosed = gatherings.closed;
 
   return (
