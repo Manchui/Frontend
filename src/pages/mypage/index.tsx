@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { CardComponents } from '@/components/mypage/cardStyle';
+import { CardComponents } from '@/components/mypage/card-style';
 import MyPageCategoryList from '@/components/mypage/category/CategoryList';
-import { ProfileCard } from '@/components/mypage/ProfileCard';
+import { ProfileCard } from '@/components/mypage/profile-card';
 import RootLayout from '@/components/shared/RootLayout';
 
 export default function MyPage() {

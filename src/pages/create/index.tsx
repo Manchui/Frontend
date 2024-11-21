@@ -9,12 +9,12 @@ import { useState } from 'react';
 import clsx from 'clsx';
 import router from 'next/router';
 import { instance } from '@/apis/api';
-import { CapacityDropdown } from '@/components/create/CapacityDropdown';
-import { CategoryDropdown } from '@/components/create/CategoryDropdown';
-import { DescriptionInput } from '@/components/create/DescriptionInput';
-import { GroupNameInput } from '@/components/create/GroupNameInput';
-import ImageUploader from '@/components/create/ImageUploader';
-import { LocationDropdown } from '@/components/create/LocationDropdown';
+import { CapacityDropdown } from '@/components/Create/CapacityDropdown';
+import { CategoryDropdown } from '@/components/Create/CategoryDropdown';
+import { DescriptionInput } from '@/components/Create/DescriptionInput';
+import { GroupNameInput } from '@/components/Create/GroupNameInput';
+import ImageUploader from '@/components/Create/ImageUploader';
+import { LocationDropdown } from '@/components/Create/LocationDropdown';
 import Calendar from '@/components/shared/Calendar';
 import { Toast } from '@/components/shared/Toast';
 
