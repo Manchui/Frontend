@@ -7,9 +7,9 @@ import PaginationBtn from '@/components/shared/PaginationBtn';
 import useFilterStore from '@/store/useFilterStore';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { MeetingCard } from './meeting-card';
+import { MeetingCard } from './MeetingCard';
 import ReviewCategory from '../category/ReviewCategory';
-import MyReviewList from '../my-review-list';
+import MyReviewList from '../MyReviewList';
 
 import Empty from 'public/lottie/empty.json';
 

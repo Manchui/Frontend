@@ -6,8 +6,8 @@ import PaginationBtn from '@/components/shared/PaginationBtn';
 import useFilterStore from '@/store/useFilterStore';
 import { useQuery } from '@tanstack/react-query';
 
-import { MeetingCard } from '../card-style/meeting-card';
-import { ReviewableCard } from '../card-style/reviewable-card';
+import { MeetingCard } from '../cardStyle/MeetingCard';
+import { ReviewableCard } from '../cardStyle/ReviewableCard';
 
 import Empty from 'public/lottie/empty.json';
 
