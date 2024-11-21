@@ -30,10 +30,12 @@ export default function DetailPage() {
   return (
     <main className="pb-[80px] pt-[60px]">
       <RootLayout>
-        <GatheringCard gatherings={gatherings} />
-        <Score reviewsList={gatherings.reviewsList} />
-        {gatherings.reviewsList && <ReviewListCard reviews={gatherings.reviewsList} />}
-        <FloatingBar id={isId} gatherings={gatherings} usersList={gatherings.usersList} maxUsers={gatherings.maxUsers} />
+        <div className="bg-white">
+          <GatheringCard gatherings={gatherings} />
+          <Score reviewsList={gatherings.reviewsList} />
+          <ReviewListCard reviews={gatherings.reviewsList} />
+          <FloatingBar id={isId} gatherings={gatherings} usersList={gatherings.usersList} maxUsers={gatherings.maxUsers} />
+        </div>
       </RootLayout>
     </main>
   );

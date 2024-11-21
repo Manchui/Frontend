@@ -29,7 +29,7 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
   return (
     <article className="mx-4 grid grid-cols-1 gap-5 pt-5 tablet:mx-8 tablet:grid-cols-2 tablet:gap-7 tablet:pt-7 pc:grid-cols-2 pc:gap-12 pc:pt-7">
       <section>
-        <figure className="relative min-h-[530px]">
+        <figure className="relative min-h-[530px] rounded-2xl border-2 border-blue-100">
           <Image
             alt="모임 이미지"
             src={gatherings.gatheringImage}
@@ -54,15 +54,15 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
       <section>
         <div className="flex justify-between">
           <div>
-            <h1 className="mt-2 text-lg font-semibold">{gatherings.groupName}</h1>
-            <div className="mb-3 mt-1 text-sm font-medium text-blue-800">
+            <h1 className="mt-2 text-2lg font-semibold">{gatherings.groupName}</h1>
+            <div className="mb-3 mt-1 text-md font-medium text-blue-800">
               <span>{gatherings.category}</span>
               <span> | </span>
               <span>{gatherings.location}</span>
             </div>
             <DateChip dateTime={gatheringDate} />
-            <div className="mt-5 flex items-center gap-1">
-              <div className="relative size-7 rounded-full border border-blue-200 bg-slate-50 shadow-sm">
+            <div className="mt-5 flex select-none items-center gap-2.5 text-md font-medium">
+              <div className="relative size-7 rounded-full border border-blue-100 bg-slate-50 shadow-sm">
                 <Image
                   src={gatherings.usersList[0].profileImagePath || '/icons/person-rounded.png'}
                   alt="유저이미지"
@@ -73,7 +73,7 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
               <span>{gatherings.name}</span>
             </div>
           </div>
-          <div className="flex flex-col items-center text-xs text-gray-400">
+          <div className="flex select-none flex-col items-center text-xs text-gray-400">
             <RedHeart color={`${gatherings.hearted ? '#FF4D11' : '#D4D4D4'}`} className="size-7" onClick={() => mutation.mutate()} />
             {gatherings.heartCounts}
           </div>
@@ -88,9 +88,9 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
             userList={gatherings.usersList}
           />
         </div>
-        <div className="my-8">
-          <h2 className="mb-3 text-2lg font-bold">모임설명</h2>
-          <p className="min-h-52 whitespace-pre-line break-words rounded-2xl border border-blue-100 px-4 py-2.5 tablet:min-h-[280px] pc:min-h-[280px]">
+        <div className="my-8 text-lg">
+          <h2 className="mb-3 font-bold">모임설명</h2>
+          <p className="min-h-52 whitespace-pre-line break-words rounded-2xl border border-blue-100 px-4 py-2.5 font-medium tablet:min-h-[280px] pc:min-h-[280px]">
             {gatherings.content}
           </p>
         </div>

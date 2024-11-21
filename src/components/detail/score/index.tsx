@@ -4,7 +4,7 @@ import type { ReviewsList } from '@/types/detail';
 
 export default function Score({ reviewsList }: { reviewsList: ReviewsList }) {
   const SCORE = (
-    <section>
+    <section className="select-none font-medium">
       {Object.entries(reviewsList.scoreList)
         .slice(1)
         .map(([key, value], index, array) => {
