@@ -31,9 +31,9 @@ export default function Input({ name, type, passwordToMatch, onChange, nickValue
       placeholderText: '이름을 입력해주세요.',
       invalidText: '이름은 3자 이상, 영문과 숫자만 가능합니다.',
       validate: (val: string) => {
-        const isValidLength = val.length >= 3;
-        const isAlphaNumeric = /^[a-zA-Z0-9]+$/.test(val);
-        return isValidLength && isAlphaNumeric;
+        const isValidLength = val.trim().length >= 3; // 양끝 공백을 제거한 길이 체크
+        const isAlphaNumericWithSpaces = /^[a-zA-Z0-9 ]+$/.test(val); // 공백 포함 알파벳, 숫자 검사
+        return isValidLength && isAlphaNumericWithSpaces;
       },
     },
     id: {
