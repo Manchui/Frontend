@@ -20,11 +20,10 @@ const instanceWithoutAccess = axios.create({
   withCredentials: true,
   timeout: 3000,
   headers: {
-    'Content-Type': 'application/json', 
+    'Content-Type': 'application/json',
   },
 });
 
-// instance만 accessToken 포함하기
 instance.interceptors.request.use(
   (config) => {
     if (!IS_SERVER) {
@@ -49,7 +48,7 @@ const tokenRefresh = async (): Promise<string> => {
   return token as string;
 };
 
-axios.interceptors.response.use(
+instance.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     if (error.response?.status === 401) {
@@ -73,7 +72,10 @@ axios.interceptors.response.use(
           throw new Error('error');
         }
       }
+    } else if(error.response?.status === 400) {
+      localStorage.removeItem('accessToken');
     }
+
     return Promise.reject(error);
   },
 );

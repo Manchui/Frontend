@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { checkName, signup } from '@/apis/user/postUser';
+import Social from '@/components/loginSignup/Social';
 import Input from '@/components/shared/Input';
 import { Toast } from '@/components/shared/Toast';
 import useInternalRouter from '@/hooks/useInternalRouter';
@@ -49,6 +50,8 @@ export default function SignupForm() {
   return (
     <form onSubmit={handleSignup} className="flex flex-col items-center bg-white p-8 tablet:w-[600px] tablet:rounded-2xl">
       <Image src="/logo/logo.png" alt="로고" width={250} height={150} className="mb-10 cursor-pointer" onClick={() => router.push('/main')} priority />
+      <Social />
+      <hr className="my-8 w-full" />
       <div className="w-full space-y-4">
         <div className="flex">
           <Input type="text" name="nick" onChange={(e) => setNick(e.target.value)} />

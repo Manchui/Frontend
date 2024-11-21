@@ -9,7 +9,7 @@ function isDoubleChecked(doubleCheck: boolean): boolean {
 }
 
 function isValidNickname(nick: string): boolean {
-  if (nick.length < 3) {
+  if (nick.length > 1 && nick.length < 3) {
     Toast('error', '닉네임은 영문, 숫자만 사용가능하며 3자 이상이어야 합니다.');
     return false;
   }

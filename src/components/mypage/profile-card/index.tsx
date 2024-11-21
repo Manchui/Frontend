@@ -21,10 +21,6 @@ export function ProfileCard() {
   };
 
   const handleEdit = async () => {
-    // if (!nick.trim() && !imagePreview) {
-    //   Toast('error', '프로필 혹은 닉네임을 수정해주세요.');
-    //   return;
-    // }
     const [editVal, nickVal] = [
       validator.isNotEditted(nick, imagePreview),
       validator.isValidNickname(nick),

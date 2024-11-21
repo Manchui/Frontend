@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { getUserInfo } from '@/apis/user/getUser';
-import Carousel from '@/components/loginLogout/Carousel';
-import LoginForm from '@/components/loginLogout/LoginForm';
+import Carousel from '@/components/loginSignup/Carousel';
+import LoginForm from '@/components/loginSignup/LoginForm';
 import { SEO } from '@/components/shared/SEO';
 import useInternalRouter from '@/hooks/useInternalRouter';
 import { formatDate } from '@/libs/formatDate';
@@ -38,14 +38,14 @@ export default function LoginPage() {
   return (
     <>
       <SEO title="manchui-login" />
-      <div className="flex h-screen flex-row bg-white pc:w-full pc:bg-white">
-        <div className="flex w-full flex-col items-center justify-center pc:w-1/2 pc:space-y-8">
+      <main className="flex h-screen flex-row bg-white pc:w-full pc:bg-white">
+        <section className="flex w-full flex-col items-center justify-center pc:w-1/2 pc:space-y-8">
           <LoginForm />
-        </div>
-        <div className="relative hidden h-full w-1/2 flex-col items-center justify-center bg-blue-800 pc:flex">
+        </section>
+        <aside className="relative hidden h-full w-1/2 flex-col items-center justify-center bg-blue-800 pc:flex">
           <Carousel />
-        </div>
-      </div>
+        </aside>
+      </main>
     </>
   );
 }
