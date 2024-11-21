@@ -4,7 +4,6 @@
 
 import type { AxiosError } from 'axios';
 import axios from 'axios';
-import { Toast } from '@/components/shared/Toast';
 import { IS_SERVER } from '@/constants/server';
 
 const instance = axios.create({
@@ -75,7 +74,6 @@ instance.interceptors.response.use(
       }
     } else if(error.response?.status === 400) {
       localStorage.removeItem('accessToken');
-      Toast('error', '로그인 시간이 만료되었습니다. 다시 로그인해주세요.');
     }
 
     return Promise.reject(error);
