@@ -8,7 +8,7 @@ import { ToastContainer, Zoom } from 'react-toastify';
 import { domAnimation, LazyMotion } from 'framer-motion';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
-import PageLayout from '@/components/shared/PageLayout';
+import PageLayout from '@/components/shared/pageLayout';
 import { isProdApiUrl } from '@/utils/common';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
