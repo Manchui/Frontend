@@ -31,11 +31,8 @@ export default function DetailPage() {
     <main className="pb-[80px] pt-[60px]">
       <RootLayout>
         <GatheringCard gatherings={gatherings} />
-
-        <div className="px-4 tablet:px-10 pc:px-5">
-          <Score reviewsList={gatherings.reviewsList} />
-          <section className="mt-6 min-h-20 tablet:mt-9 pc:mt-10">{gatherings.reviewsList && <ReviewListCard reviews={gatherings.reviewsList} />}</section>
-        </div>
+        <Score reviewsList={gatherings.reviewsList} />
+        {gatherings.reviewsList && <ReviewListCard reviews={gatherings.reviewsList} />}
         <FloatingBar id={isId} gatherings={gatherings} usersList={gatherings.usersList} maxUsers={gatherings.maxUsers} />
       </RootLayout>
     </main>

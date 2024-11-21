@@ -54,14 +54,13 @@ export function ProgressBar({ maxValue, value, design, mainValue = 0, imgLength 
   const getBarClass = () => (design === 'primary' ? 'bg-primary-400' : 'bg-gray-900');
 
   return (
-    <div>
+    <>
       <div className="flex items-center justify-center gap-6 font-medium">
         <div className="flex-auto">
           {design === 'basics' && <BasicsStyle maxValue={maxValue} mainValue={mainValue} value={value} closed={closed} />}
           {design === 'details' && (
             <DetailsStyle maxValue={maxValue} mainValue={mainValue} value={value} location="up" imgLength={imgLength} userList={userList} />
           )}
-
           <div className={cx('h-2 w-full rounded-full', getContainerClass())}>
             <div
               className={cx('h-2 rounded-full transition-all duration-1000 ease-out', {
@@ -74,8 +73,7 @@ export function ProgressBar({ maxValue, value, design, mainValue = 0, imgLength 
         </div>
         {design === 'simple' && <div className="w-6 text-gray-400">{value}</div>}
       </div>
-
       {design === 'details' && <DetailsStyle maxValue={maxValue} mainValue={mainValue} value={value} location="down" />}
-    </div>
+    </>
   );
 }

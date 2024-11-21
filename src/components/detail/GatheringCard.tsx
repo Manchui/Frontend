@@ -11,7 +11,6 @@ import Tag from '../shared/Tag';
 export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
   const gatheringDate = new Date(gatherings.gatheringDate);
   const mutation = useHeartChange(gatherings);
-
   const dueDate = useMemo(() => {
     const date = new Date(gatherings.gatheringDate);
     date.setDate(date.getDate() - 1);
@@ -25,8 +24,8 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
 
   return (
     <article className="mx-4 grid grid-cols-1 gap-5 pt-5 tablet:mx-8 tablet:grid-cols-2 tablet:gap-7 tablet:pt-7 pc:grid-cols-2 pc:gap-12 pc:pt-7">
-      <div>
-        <div className="relative min-h-[530px]">
+      <section>
+        <figure className="relative min-h-[530px]">
           <Image
             alt="모임 이미지"
             src={gatherings.gatheringImage}
@@ -37,7 +36,7 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
           <div className="absolute right-0 top-0 z-10">
             {showTag && <Tag Type="detail" Hour={dueDate.getHours() - 5} finish={new Date(gatherings.dueDate).getTime() < new Date().getTime()} />}
           </div>
-        </div>
+        </figure>
         <div className="mt-5 hidden duration-200 tablet:block pc:mt-7 pc:block">
           <ProgressBar
             maxValue={gatherings.maxUsers}
@@ -47,11 +46,11 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
             userList={gatherings.usersList}
           />
         </div>
-      </div>
-      <div>
+      </section>
+      <section>
         <div className="flex justify-between">
           <div>
-            <p className="mt-2 text-lg font-semibold">{gatherings.groupName}</p>
+            <h1 className="mt-2 text-lg font-semibold">{gatherings.groupName}</h1>
             <div className="mb-3 mt-1 text-sm font-medium text-blue-800">
               <span>{gatherings.category}</span>
               <span> | </span>
@@ -85,12 +84,12 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
             userList={gatherings.usersList}
           />
         </div>
-        <section className="my-8">
-          <h1 className="mb-3 text-2lg font-bold">모임설명</h1>
+        <div className="my-8">
+          <h2 className="mb-3 text-2lg font-bold">모임설명</h2>
           <p className="min-h-52 whitespace-pre-line break-words rounded-2xl border border-blue-100 px-4 py-2.5 tablet:min-h-[280px] pc:min-h-[280px]">
             {gatherings.content}
           </p>
-        </section>
+        </div>
         <div className="relative min-h-[323px]">
           <Image
             src="/images/img-detail-page.png"
@@ -100,7 +99,7 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
             sizes="(max-width: 820px) 50vw, (max-width: 1240px) 50vw, 50vw"
           />
         </div>
-      </div>
+      </section>
     </article>
   );
 }
