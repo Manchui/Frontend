@@ -8,7 +8,7 @@ import { Button } from '../shared/button';
 
 export interface DetailPageBaseType {
   gatherings: DetailData;
-  id: string;
+  id: number;
 }
 
 interface FloatingBarProps extends DetailPageBaseType {
