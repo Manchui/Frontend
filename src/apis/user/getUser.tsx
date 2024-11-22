@@ -20,7 +20,8 @@ export const getUserInfo = async () => {
 };
 
 // eslint-disable-next-line consistent-return
-export const getSocialAccess = async (social: string, code: string) => {
+export const getSocialAccess = async (code: string) => {
+  const social = sessionStorage.getItem('social');
   try {
     const res = await instanceWithoutAccess.get(`/login/oauth2/callback/${social}?code=${code}`);
     const accessToken = res.headers.authorization as string;
