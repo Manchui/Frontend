@@ -32,14 +32,14 @@ export default function MyReviewList({ category, review, handleRemoveItem }: { c
       <div className="py-3">
         <div className="absolute left-1/2 w-full -translate-x-1/2">
           <Lottie animationData={Empty} className="h-empty fill-white" />
-          <MessageWithLink message={isReview ? '아직 작성 가능한 리뷰가 없어요.' : '아직 작성한 리뷰가 없어요.'} buttonText="모임 둘러보기" />
+          <MessageWithLink link="/main" message={isReview ? '아직 작성 가능한 리뷰가 없어요.' : '아직 작성한 리뷰가 없어요.'} buttonText="모임 둘러보기" />
         </div>
       </div>
     );
   }
 
   return (
-    <div>
+    <article>
       {reviewableList &&
         (isReview ? (
           <MeetingCard MeetingData={reviewableList.content} category={review} handleRemoveItem={handleRemoveItem} />
@@ -47,6 +47,6 @@ export default function MyReviewList({ category, review, handleRemoveItem }: { c
           <ReviewableCard MeetingData={reviewableList} />
         ))}
       {!isLoading && !isError && reviewableList?.content.length !== 0 && <PaginationBtn page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} />}
-    </div>
+    </article>
   );
 }

@@ -54,12 +54,12 @@ export function CardComponents({ category }: { category: string }) {
   };
 
   const renderEmptyState = (message: string) => (
-    <div className="py-20">
+    <article className="min-h-screen bg-white py-20">
       <div className="absolute left-1/2 w-full -translate-x-1/2">
         <Lottie animationData={Empty} className="h-empty fill-white" />
-        <MessageWithLink message={message} buttonText="모임 둘러보기" />
+        <MessageWithLink link="/main" message={message} buttonText="모임 둘러보기" />
       </div>
-    </div>
+    </article>
   );
 
   if (participatedList?.length === 0) {
@@ -70,7 +70,7 @@ export function CardComponents({ category }: { category: string }) {
   }
 
   return (
-    <>
+    <article className="min-h-screen bg-white">
       {participatedList && <MeetingCard category={category} MeetingData={participatedList} handleRemoveItem={handleRemoveItem} />}
       {category === '나의 리뷰' && (
         <>
@@ -82,6 +82,6 @@ export function CardComponents({ category }: { category: string }) {
       {!isLoading && !isError && participatedList?.length !== 0 && category !== '나의 리뷰' && (
         <PaginationBtn page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} />
       )}
-    </>
+    </article>
   );
 }

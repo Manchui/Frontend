@@ -38,7 +38,11 @@ export default function ReviewButton({ data }: { data: ReviewableList }) {
         buttons={[
           {
             label: '취소',
-            onClick: () => closeModal(),
+            onClick: () => {
+              setIsScore(0);
+              setValue('');
+              closeModal();
+            },
           },
           {
             label: '리뷰 등록하기',

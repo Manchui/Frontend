@@ -5,7 +5,7 @@ import Input from '@/components/shared/Input';
 import Modal from '@/components/shared/Modal';
 import { useModal } from '@/hooks/useModal';
 import * as validator from '@/libs/validateForm';
-import { userStore } from '@/store/userStore';  
+import { userStore } from '@/store/userStore';
 
 export function ProfileCard() {
   const { isOpen, openModal, closeModal } = useModal();
@@ -21,11 +21,8 @@ export function ProfileCard() {
   };
 
   const handleEdit = async () => {
-    const [editVal, nickVal] = [
-      validator.isNotEditted(nick, imagePreview),
-      validator.isValidNickname(nick),
-    ];
-    if(!editVal || !nickVal) return; 
+    const [editVal, nickVal] = [validator.isNotEditted(nick, imagePreview), validator.isValidNickname(nick)];
+    if (!editVal || !nickVal) return;
     await editUserInfo(nick || userInfo.name, imagePreview || userInfo.image);
   };
 
@@ -34,35 +31,29 @@ export function ProfileCard() {
   };
 
   return (
-    <div className="relative m-auto h-auto w-full rounded-3xl p-2.5 tablet:p-4 pc:p-5">
-      <div className="absolute left-[4%] top-[-40%] rounded-full bg-white p-1 phablet:left-[7%] tablet:left-[6%] pc:left-[8.5%]">
-        <Image
-          className="size-[60px] rounded-full object-cover phablet:size-[70px] md:size-[90px]"
-          src={userInfo.image}
-          alt="프로필 이미지"
-          width={70}
-          height={70}
-        />
+    <article className="relative m-auto h-auto w-full rounded-3xl p-4">
+      <div className="absolute left-[6%] top-[-30%] rounded-full bg-white p-1">
+        <div className="size-[60px] tablet:size-[90px]">
+          <Image className="relative rounded-full bg-background object-cover p-1" src={userInfo.image} alt="프로필 이미지" fill />
+        </div>
       </div>
-      <div className="flex">
-        <div className="m-2 size-1/6 phablet:size-1/5 tablet:size-1/6" />
+      <section className="flex pb-10">
+        <div className="m-2 size-1/6" />
         <div className="flex flex-1 justify-between">
-          <div className="flex flex-col gap-1 tablet:gap-2 pc:gap-2">
+          <div className="flex flex-col gap-2">
             <div className="text-16-20-response font-semibold">{userInfo.name}</div>
             <div className="space-y-0.5 text-13-15-response text-gray-400">
               <div>이메일: {userInfo.email}</div>
               <div>가입날짜: {userInfo.createdAt}</div>
             </div>
           </div>
-          <div>
-            <button
-              className="rounded-full bg-blue-800 px-2 py-1 text-xs text-white duration-200 hover:scale-[1.02] active:scale-[0.9] md:px-7 md:py-1.5 md:text-sm"
-              type="button"
-              onClick={openModal}
-            >
-              수정하기
-            </button>
-          </div>
+          <button
+            className="max-h-8 rounded-full bg-blue-800 px-2 py-1.5 text-xs text-white duration-200 hover:scale-[1.02] active:scale-[0.9] md:px-7 md:text-sm"
+            type="button"
+            onClick={openModal}
+          >
+            수정하기
+          </button>
           <Modal
             buttons={[
               { label: '취소', onClick: () => closeModal },
@@ -87,7 +78,7 @@ export function ProfileCard() {
             </div>
           </Modal>
         </div>
-      </div>
-    </div>
+      </section>
+    </article>
   );
 }
