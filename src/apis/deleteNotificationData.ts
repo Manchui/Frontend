@@ -9,7 +9,7 @@ export async function deleteNotificationData({ notificationId }: { notificationI
   }
 
   try {
-    const res = await instance.delete(`/api/notifications/${notificationId}`);
+    const res = await instance.delete<GetNotificationResponse>(`/api/notifications/${notificationId}`);
 
     return res.data;
   } catch (e) {
