@@ -19,51 +19,45 @@ export default function OAuth() {
   const userUpdate = userStore((state) => state.updateUser);
   const isLoggedIn = userStore((state) => state.isLoggedIn);
 
-  const { data, refetch } = useQuery({
+  const { data: userInfo, refetch } = useQuery({
     queryKey: ['queryUserInfo'],
     queryFn: getUserInfo,
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 6,
   });
-  
-  useEffect(() => {
-    async function handleOAuth() {
-      if (!code) return;
 
-      const social = sessionStorage.getItem('social');
-      try {
-        if (!social) {
-          throw new Error('Social is null');
-        }
-        const result = await getSocialAccess(social, code as string);
-        if (result) {
-          loginStore();
-        } else if (!result) {
-          Toast('error', '서버에 문제가 있습니다. 새로고침 후 다시 시도해주세요.');
-          await routerInternal.push('/login');
-        }
-      } catch (error) {
-        Toast('error', '새로고침 후 다시 시도해주세요.');
-        void routerInternal.push('/login');
-        console.log(error);
-      }
+  const { data: socialCode } = useQuery({
+    queryKey: ['querySocialAccess'],
+    queryFn: () => getSocialAccess(code as string),
+  });
+
+  const saveSocialCode = useCallback(() => {
+    if (socialCode) {
+      loginStore();
+    } else {
+      Toast('error', '새로고침 후 다시 시도해주세요.');
+      void routerInternal.push('/login');
     }
+  }, [loginStore, routerInternal, socialCode]);
 
-    void handleOAuth();
-  }, [code, loginStore, routerInternal]);
+  useEffect(() => {
+    if (!code) return;
+
+    saveSocialCode();
+  }, [code, saveSocialCode]);
 
   const saveUserInfo = useCallback(() => {
     void refetch();
-    console.log('refetch is called');
     userUpdate({
-      email: data?.res?.email || '',
-      id: data?.res?.id || '',
-      image: data?.res?.image || '/images/together-findpage-large.png',
-      name: data?.res?.name || '',
-      createdAt: data?.res?.createdAt ? formatDate(data?.res.createdAt) : '',
+      email: userInfo?.res?.email || '',
+      id: userInfo?.res?.id || '',
+      image: userInfo?.res?.image || '/images/together-findpage-large.png',
+      name: userInfo?.res?.name || '',
+      createdAt: userInfo?.res?.createdAt ? formatDate(userInfo?.res.createdAt) : '',
     });
+    Toast('success', '로그인 성공');
     void router.push('/main');
-  }, [refetch, userUpdate, data?.res?.email, data?.res?.id, data?.res?.image, data?.res?.name, data?.res?.createdAt, router]);
+  }, [refetch, userUpdate, userInfo?.res?.email, userInfo?.res?.id, userInfo?.res?.image, userInfo?.res?.name, userInfo?.res?.createdAt, router]);
 
   useEffect(() => {
     if (isLoggedIn) {
