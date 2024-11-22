@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Toast } from '@/components/shared/Toast';
 import type { MyPageBaseData } from '@/types/mypage';
 
-import instance from '../api';
+import { instance } from '../api';
 
 export default async function getMyAttendance(page: number, size: number) {
   try {

@@ -18,7 +18,7 @@ export default function BookmarkCardList({ data, isLoading, isError, skeletonCou
           ? Array.from({ length: skeletonCount }).map((_, idx) => <CardSkeleton key={idx} />)
           : data?.gatheringList.map((gathering) => <CardSection key={gathering.gatheringId} gathering={gathering} />)}
 
-        {data?.gatheringCount === 0 && !isError && <NoData use="bookmark" />}
+        {data?.gatheringCount === 0 && !isError && !isLoading && <NoData use="bookmark" />}
 
         {isError && (
           <div className="absolute left-1/2 w-full -translate-x-1/2">

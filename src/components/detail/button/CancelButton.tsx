@@ -4,11 +4,12 @@ import Modal from '@/components/shared/Modal';
 import { Toast } from '@/components/shared/Toast';
 import { useModal } from '@/hooks/useModal';
 import { userStore } from '@/store/userStore';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import type { DetailPageBaseType } from '../FloatingBar';
 
 export function CancelButton({ id, gatherings }: DetailPageBaseType) {
+  const queryClient = useQueryClient();
   const { isOpen, openModal, closeModal } = useModal();
   const token = localStorage.getItem('accessToken');
   const name = userStore((state) => state.user.name);
@@ -16,9 +17,10 @@ export function CancelButton({ id, gatherings }: DetailPageBaseType) {
 
   const mutation = useMutation({
     mutationFn: () => deleteCancellation(id),
-    onSuccess: () => {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['detail'] });
+
       Toast('success', '신청이 취소 되었습니다!');
-      window.location.reload();
     },
     onError: (error) => {
       Toast('error', error.message);

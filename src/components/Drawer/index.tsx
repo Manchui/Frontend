@@ -4,8 +4,9 @@ import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { logout } from '@/apis/userApi';
+import { logout } from '@/apis/user/postUser';
 import { userStore } from '@/store/userStore';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface DrawerProps {
   isLoggedIn: boolean;
@@ -18,6 +19,7 @@ interface DrawerProps {
 }
 
 export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
+  const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
   const [, setIsMobile] = useState(false);
 
@@ -31,7 +33,7 @@ export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
 
   const handleLogout = async () => {
     if (isLoggedIn) {
-      await logout();
+      await logout(queryClient);
       setIsOpen(false);
     }
   };

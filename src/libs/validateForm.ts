@@ -9,7 +9,7 @@ function isDoubleChecked(doubleCheck: boolean): boolean {
 }
 
 function isValidNickname(nick: string): boolean {
-  if (nick.length < 3) {
+  if (nick.length > 1 && nick.length < 3) {
     Toast('error', '닉네임은 영문, 숫자만 사용가능하며 3자 이상이어야 합니다.');
     return false;
   }
@@ -41,4 +41,12 @@ function isValidEmailFormat(email: string): boolean {
   return true;
 }
 
-export { isDoubleChecked, isPasswordMatching, isValidEmailFormat,isValidNickname, isValidPassword, Toast };
+function isNotEditted(nick: string, imagePreview: string): boolean {
+  if (!nick.trim() && !imagePreview) {
+    Toast('error', '프로필 혹은 닉네임을 수정해주세요.');
+    return false;
+  }
+  return true;
+}
+
+export { isDoubleChecked, isNotEditted,isPasswordMatching, isValidEmailFormat,isValidNickname, isValidPassword };

@@ -1,4 +1,4 @@
-import instance from '@/apis/api';
+import { instance } from '@/apis/api';
 import type { GetGatheringRequest, GetGatheringResponse } from '@manchui-api';
 
 export async function getGatheringData(request: GetGatheringRequest): Promise<GetGatheringResponse> {

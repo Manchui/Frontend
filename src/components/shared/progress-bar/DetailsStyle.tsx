@@ -1,5 +1,7 @@
 import Image from 'next/image';
 
+import { Tooltip } from '../tooltip';
+
 import type { BaseProgressBarProps } from '.';
 
 interface DetailsStyleProps extends BaseProgressBarProps {
@@ -11,7 +13,7 @@ export function DetailsStyle({ maxValue, mainValue = 0, value, location, userLis
     Array.isArray(userList) && userList.length
       ? userList
       : Array.from({ length: imgLength }, (_, index) => ({
-          userId: `abcd-${index + 1}`,
+          name: `abcd-${index + 1}`,
           profileImagePath: '/icons/person-rounded.png',
         }));
 
@@ -24,23 +26,32 @@ export function DetailsStyle({ maxValue, mainValue = 0, value, location, userLis
               <span>모집 정원</span>
               <span>{value}명</span>
             </div>
+
             <div className="flex -space-x-2">
               {testData.length > 5 ? (
                 <>
-                  {testData.slice(0, 4).map((img, i) => (
-                    <div key={i} className="relative size-7 rounded-full border border-blue-200 bg-slate-50 shadow-sm">
-                      <Image src={img.profileImagePath || '/icons/person-rounded.png'} alt="유저이미지" className="rounded-full object-cover" fill />
-                    </div>
-                  ))}
+                  {[...testData]
+                    .sort(() => Math.random() - 0.5)
+                    .slice(0, 4)
+                    .map((img, i) => (
+                      <Tooltip key={i} tooltipText={img.name}>
+                        {' '}
+                        <div className="relative size-7 rounded-full border border-blue-200 bg-slate-50 shadow-sm">
+                          <Image src={img.profileImagePath || '/icons/person-rounded.png'} alt="유저이미지" className="rounded-full object-cover" fill />
+                        </div>
+                      </Tooltip>
+                    ))}
                   <div className="relative flex size-7 items-center justify-center rounded-full bg-[#F3F4F3]">
                     <span className="absolute text-sm font-semibold">+{testData.length - 4}</span>
                   </div>
                 </>
               ) : (
                 testData.map((img, i) => (
-                  <div key={i} className="relative size-7 rounded-full border border-blue-200 bg-slate-50 shadow-sm">
-                    <Image src={img.profileImagePath || '/icons/person-rounded.png'} alt="유저이미지" className="rounded-full object-cover" fill />
-                  </div>
+                  <Tooltip key={i} tooltipText={img.name}>
+                    <div className="relative size-7 rounded-full border border-blue-200 bg-slate-50 shadow-sm">
+                      <Image src={img.profileImagePath || '/icons/person-rounded.png'} alt="유저이미지" className="rounded-full object-cover" fill />
+                    </div>
+                  </Tooltip>
                 ))
               )}
             </div>

@@ -8,7 +8,7 @@
 import { useState } from 'react';
 import clsx from 'clsx';
 import router from 'next/router';
-import instance from '@/apis/api';
+import { instance } from '@/apis/api';
 import { CapacityDropdown } from '@/components/Create/CapacityDropdown';
 import { CategoryDropdown } from '@/components/Create/CategoryDropdown';
 import { DescriptionInput } from '@/components/Create/DescriptionInput';

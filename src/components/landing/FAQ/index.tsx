@@ -5,7 +5,7 @@ import { FAQS } from '@/constants/faq';
 const DEFAULT_OPEN_IDX = 0;
 
 export default function FAQ() {
-  const [activeIndex, setActiveIndex] = useState(DEFAULT_OPEN_IDX);
+  const [activeIndex, setActiveIndex] = useState<number>(DEFAULT_OPEN_IDX);
 
   const onClickActiveFaq = (idx: number) => {
     setActiveIndex((prev) => (prev === idx ? -1 : idx));
