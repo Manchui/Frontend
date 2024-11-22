@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Toast } from '@/components/shared/Toast';
 import type { MyPageBaseData } from '@/types/mypage';
 
-import instance from '../api';
+import { instance } from '../api';
 
 // NOTE: 후기 생성
 export default async function createReview(gatheringId: number, value: string, isScore: number) {

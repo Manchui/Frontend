@@ -1,4 +1,6 @@
-import instance from '@/apis/api';
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import { instance } from '@/apis/api';
 import type { GetBookmarkRequest, GetBookmarkResponse } from '@manchui-api';
 
 export async function getBookmarkData(request: GetBookmarkRequest): Promise<GetBookmarkResponse> {

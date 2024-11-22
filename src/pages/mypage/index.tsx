@@ -7,7 +7,6 @@ import RootLayout from '@/components/shared/RootLayout';
 export default function MyPage() {
   const [category, setCategory] = useState('');
 
-
   return (
     <div>
       <div className="mt-[60px] h-bookmark-banner min-h-[155px] select-none items-center justify-center bg-blue-800 px-11 py-6 text-16-20-response font-semibold text-blue-800 pc:text-white">

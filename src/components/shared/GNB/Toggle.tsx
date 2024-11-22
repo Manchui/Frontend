@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
-import { logout } from '@/apis/userApi';
+import { logout } from '@/apis/user/postUser';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface ToggleProps {
   userData: {
@@ -11,6 +12,7 @@ interface ToggleProps {
   };
 }
 export default function Toggle({ userData }: ToggleProps) {
+  const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isProfileHover, setIsProfileHover] = useState(false);
   const [animation, setAnimation] = useState<'animate-slide-down' | 'animate-slide-up'>('animate-slide-down');
@@ -31,7 +33,7 @@ export default function Toggle({ userData }: ToggleProps) {
   const handleMouseLeave = () => setIsProfileHover(false);
 
   const handleLogout = async () => {
-    await logout();
+    await logout(queryClient);
   };
   const handleClickOutside = (event: MouseEvent) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {

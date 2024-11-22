@@ -1,5 +1,5 @@
 import { userStore } from '@/store/userStore';
-import type { DetailData, UsersList } from '@/types/detail';
+import type { DetailData } from '@/types/detail';
 
 import AttendanceButton from './button/AttendanceButton';
 import { CancelButton } from './button/CancelButton';
@@ -8,25 +8,20 @@ import { Button } from '../shared/button';
 
 export interface DetailPageBaseType {
   gatherings: DetailData;
-  id: string;
+  id: number;
 }
 
-interface FloatingBarProps extends DetailPageBaseType {
-  maxUsers: number;
-  usersList: UsersList[];
-}
-
-export function FloatingBar({ gatherings, id, usersList, maxUsers }: FloatingBarProps) {
+export function FloatingBar({ gatherings, id }: DetailPageBaseType) {
   const myUserName = userStore((state) => state.user.name);
-  const findUserId = usersList.find((user) => user.name === myUserName);
-  const isDisabled = usersList.length === maxUsers;
+  const findUserId = gatherings.usersList.find((user) => user.name === myUserName);
+  const isDisabled = gatherings.usersList.length === gatherings.maxUsers;
   const isClosed = gatherings.closed;
 
   return (
-    <footer className="fixed inset-x-0 bottom-0 flex min-h-[84px] items-center justify-between border-t bg-white px-10 py-5">
+    <footer className="fixed inset-x-0 bottom-0 flex min-h-[84px] items-center justify-between border-t border-blue-100 bg-white px-10 py-5">
       <div className="flex flex-col">
-        <span className="text-base font-semibold text-[#111827]">더 건강한 나와 팀을 위한 프로그램 🏃‍️️</span>
-        <span className="text-sm font-medium text-[#111827]">프로그램을 통해 지친 몸과 마음을 회복해봐요</span>
+        <span className="text-base font-semibold text-blue-800">당신의 취미가 특별해지는 시간 🎮</span>
+        <span className="text-sm font-medium text-blue-800">모임 참여로 새로운 즐거움을 발견하세요.</span>
       </div>
       {isClosed ? (
         <Button label="마감되었습니다" size="primary" variant="primary" disabled />
