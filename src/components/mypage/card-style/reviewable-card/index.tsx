@@ -43,7 +43,7 @@ function Reviewable({ MeetingData }: { MeetingData: ReviewableList }) {
   }, []);
 
   return (
-    <article className="mx-3 flex justify-center rounded-3xl py-2 tablet:justify-start pc:justify-start">
+    <section className="mx-3 flex justify-center rounded-3xl py-2 tablet:justify-start pc:justify-start">
       <div className="w-[280px] flex-col items-center justify-center tablet:w-full">
         <div className="group flex flex-col justify-center gap-4 border-b-2 border-dashed border-gray-50 pb-5 phablet:items-start tablet:flex-row pc:flex-row">
           {MeetingData.gatheringImage ? (
@@ -73,13 +73,13 @@ function Reviewable({ MeetingData }: { MeetingData: ReviewableList }) {
                 <span className="text-xs">·</span>
                 <span className="text-xs font-medium text-blue-700">{MeetingData.location}</span>
               </div>
-              <span className="select-none text-md text-blue-400">
+              <time className="select-none text-md text-blue-400">
                 {`${dateObj.getFullYear()}.${(dateObj.getMonth() + 1).toString().padStart(2, '0')}.${dateObj.getDate().toString().padStart(2, '0')}`}
-              </span>
+              </time>
             </div>
           </div>
         </div>
       </div>
-    </article>
+    </section>
   );
 }
