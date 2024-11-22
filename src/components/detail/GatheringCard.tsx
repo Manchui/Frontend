@@ -29,12 +29,12 @@ export function GatheringCard({ gatherings }: { gatherings: DetailData }) {
   return (
     <article className="mx-4 grid grid-cols-1 gap-5 pt-5 tablet:mx-8 tablet:grid-cols-2 tablet:gap-7 tablet:pt-7 pc:grid-cols-2 pc:gap-12 pc:pt-7">
       <section>
-        <figure className="relative min-h-[530px] rounded-2xl border-2 border-blue-100">
+        <figure className="relative min-h-[530px] rounded-2xl">
           <Image
             alt="모임 이미지"
             src={gatherings.gatheringImage}
             fill
-            className="rounded-2xl object-cover duration-100"
+            className="rounded-2xl border-2 border-blue-100 object-cover duration-100"
             sizes="(max-width: 820px) 50vw, (max-width: 1240px) 50vw, 50vw"
           />
           <div className="absolute right-0 top-0 z-10">

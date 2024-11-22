@@ -20,8 +20,8 @@ export function FloatingBar({ gatherings, id }: DetailPageBaseType) {
   return (
     <footer className="fixed inset-x-0 bottom-0 flex min-h-[84px] items-center justify-between border-t border-blue-100 bg-white px-10 py-5">
       <div className="flex flex-col">
-        <span className="text-base font-semibold text-[#111827]">당신의 취미가 특별해지는 시간 🎮</span>
-        <span className="text-sm font-medium text-[#111827]">모임 참여로 새로운 즐거움을 발견하세요.</span>
+        <span className="text-base font-semibold text-blue-800">당신의 취미가 특별해지는 시간 🎮</span>
+        <span className="text-sm font-medium text-blue-800">모임 참여로 새로운 즐거움을 발견하세요.</span>
       </div>
       {isClosed ? (
         <Button label="마감되었습니다" size="primary" variant="primary" disabled />
