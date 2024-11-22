@@ -25,4 +25,10 @@ declare module '@manchui-api' {
     sort?: string;
     startDate?: string;
   };
+
+  export type GetNotificationRequest = {
+    cursor?: number | undefined;
+    size: number;
+    unreadOnly?: boolean;
+  };
 }

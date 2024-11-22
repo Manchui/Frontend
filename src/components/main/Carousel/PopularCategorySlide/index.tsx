@@ -1,3 +1,4 @@
+/* eslint-disable tailwindcss/no-custom-classname */
 import { useCallback } from 'react';
 import Image from 'next/image';
 import { useSetCategory } from '@/store/useFilterStore';
@@ -34,7 +35,7 @@ export default function PopularCategorySlide({ handleScrollToFilter }: PopularCa
       <div className="relative z-10 mx-auto flex h-full max-w-[1200px] items-center">
         {/* 텍스트와 카테고리 리스트 */}
         <div className="flex flex-1 flex-col items-center justify-center">
-          <h1 className="text-center text-24-40-response font-bold text-[#FB1C49] drop-shadow-lg">🔥 인기 카테고리 🔥</h1>
+          <h1 className="text-lightred text-center text-24-40-response font-bold drop-shadow-lg">🔥 인기 카테고리 🔥</h1>
           <h3 className="mt-2 text-center text-16-20-response font-semibold">실시간으로 모임수가 증가하고 있어요!</h3>
           <div className="mt-10 flex justify-center gap-3 mobile:gap-6">
             {categories.map(({ rank, category, imageSrc }) => (
@@ -43,7 +44,7 @@ export default function PopularCategorySlide({ handleScrollToFilter }: PopularCa
                 onClick={() => handleCategoryClick(category)}
                 className="relative flex cursor-pointer flex-col items-center justify-center gap-3 rounded-md transition-transform duration-300 hover:scale-105"
               >
-                <div className="absolute left-0 top-0 flex h-7 w-14 items-center justify-center rounded-br-md rounded-tl-md bg-[#FB1C49] text-16-20-response font-semibold text-blue-800">
+                <div className="bg-lightred absolute left-0 top-0 flex h-7 w-14 items-center justify-center rounded-br-md rounded-tl-md text-16-20-response font-semibold text-blue-800">
                   {rank}위
                 </div>
                 <Image src={imageSrc} alt={category} width={400} height={400} className="h-full rounded-md object-cover" />
