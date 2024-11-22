@@ -1,4 +1,4 @@
-import instance from '@/apis/api';
+import { instance } from '@/apis/api';
 import type { GetNotificationRequest, GetNotificationResponse } from '@manchui-api';
 
 export async function getNotificationData(request: GetNotificationRequest): Promise<GetNotificationResponse> {

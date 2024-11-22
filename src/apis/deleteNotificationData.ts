@@ -1,4 +1,4 @@
-import instance from '@/apis/api';
+import { instance } from '@/apis/api';
 import type { GetNotificationResponse } from '@manchui-api';
 
 export async function deleteNotificationData({ notificationId }: { notificationId: number }): Promise<GetNotificationResponse> {
