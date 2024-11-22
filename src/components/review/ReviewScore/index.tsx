@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { ProgressBar } from '@/components/shared/progress-bar';
-import useGetReviewData from '@/hooks/useGetReviewData';
 import { useScore, useSetScore } from '@/store/useFilterStore';
 import type { GetReviewResponse } from '@manchui-api';
 
@@ -9,13 +8,9 @@ type ReviewCardListProps = {
 };
 
 export default function ReviewScore({ datas }: ReviewCardListProps) {
-  const score = useScore(); // 현재 선택된 점수
+  const score = useScore();
   const setScore = useSetScore(); // 점수 설정 함수
-  const { data, isLoading, error } = useGetReviewData({
-    page: 1,
-    size: 10,
-    score, // 현재 선택된 score로 필터링
-  });
+ 
 
   const [scoreList, setScoreList] = useState<GetReviewResponse['data']['scoreList'] | null>(null); // scoreList 데이터를 상태로 저장
 
@@ -68,10 +63,7 @@ export default function ReviewScore({ datas }: ReviewCardListProps) {
   return (
     <section className="my-6 flex flex-col-reverse items-center justify-center gap-6 pc:mb-16 pc:mt-10 pc:flex-row pc:gap-[42px]">
       <div className="flex flex-col justify-center gap-6 pc:gap-8">
-        <div className="flex flex-col items-center gap-4">
-          <div className="flex flex-col items-center gap-4 tablet:flex-row pc:flex-row" />
-          {SCORE}
-        </div>
+        <div className="flex flex-col items-center gap-4">{SCORE}</div>
       </div>
     </section>
   );

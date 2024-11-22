@@ -1,12 +1,14 @@
 import Image from 'next/image';
+import { Toast } from '@/components/shared/Toast';
 import { useScore, useSetScore } from '@/store/useFilterStore';
 
 export default function ScoreFilter() {
   const score = useScore();
   const setScore = useSetScore();
-  
+
   const handleScoreRemove = () => {
     setScore(0);
+    Toast('info', '별점 필터가 초기화되었습니다.');
   };
   return (
     <div>

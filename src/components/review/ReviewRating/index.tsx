@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { ProgressBar } from '@/components/shared/progress-bar';
+import { Toast } from '@/components/shared/Toast';
 import { useScore, useSetScore } from '@/store/useFilterStore';
 import type { GetReviewResponse } from '@manchui-api';
 
-
-export default function ReviewRating({  data }: { data?: GetReviewResponse['data'] }) {
+export default function ReviewRating({ data }: { data?: GetReviewResponse['data'] }) {
   const [scoreList, setScoreList] = useState<
     | {
         '1ScoreCount': number;
@@ -21,6 +21,7 @@ export default function ReviewRating({  data }: { data?: GetReviewResponse['data
 
   const handleScoreToggle = (reversedIndex: number) => {
     setScore(reversedIndex);
+    Toast('success',`${reversedIndex}점 필터가 적용되었습니다.`);
   };
 
   useEffect(() => {
@@ -34,9 +35,9 @@ export default function ReviewRating({  data }: { data?: GetReviewResponse['data
     <div className="flex flex-col items-center justify-center gap-4 border-b-2 border-blue-100 py-6 pt-4 tablet:flex-row tablet:gap-[140px] pc:flex-row">
       <div className="flex flex-col items-center gap-1">
         <h1 className="text-13-16-response font-medium text-gray-400">총 리뷰수</h1>
-        <div className="flex items-baseline">
-          <span className="align-baseline text-24-40-response font-bold">{data?.reviewCount || 0}</span>
-          <span className="align-baseline text-16-20-response font-bold pb-1">개</span>
+        <div className="flex items-baseline justify-end">
+          <span className="text-24-40-response font-bold">{data?.reviewCount || 0}</span>
+          <span className="ml-1 text-16-20-response font-bold">개</span>
         </div>
       </div>
       <div>
@@ -59,11 +60,13 @@ export default function ReviewRating({  data }: { data?: GetReviewResponse['data
                         onClick={() => handleScoreToggle(reversedIndex)}
                       >
                         <p
-                          className={`text-right text-md font-medium text-gray-800 ${score === reversedIndex ? 'font-bold text-yellow-500' : ''} group-hover:font-light  group-hover:text-yellow-500`}
+                          className={`text-md font-medium text-gray-800 ${score === reversedIndex ? 'font-bold text-yellow-500' : ''} group-hover:font-light group-hover:text-yellow-500`}
                         >
                           {reversedIndex}점
                         </p>
-                        <div className={`w-[200px] transition-all duration-200 group-hover:brightness-95 group-hover:scale-105 ${score === reversedIndex ? 'brightness-90 scale-105' : ''}`}>
+                        <div
+                          className={`w-[200px] transition-all duration-200 group-hover:scale-105 group-hover:brightness-95 ${score === reversedIndex ? 'scale-105 brightness-90' : ''}`}
+                        >
                           <ProgressBar maxValue={reviewCount || 1} value={scoreValue} design="primary" />
                         </div>
                         <p
