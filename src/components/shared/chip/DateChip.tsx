@@ -25,11 +25,11 @@ export default function DateChip({ dateTime, closed }: DateProps) {
   const end = today.getTime() >= dateTime.getTime();
 
   return (
-    <div className="flex flex-row">
+    <time className="flex flex-row">
       <div className={twMerge(cx(setting, end || closed ? 'bg-gray-200 text-gray-400' : 'bg-black text-white'))}>
         {month}월 {day}일
       </div>
       <div className={twMerge(cx(setting, end || closed ? 'bg-gray-200 px-2 text-gray-400' : 'bg-black px-2 text-yellow-400'))}>{time}</div>
-    </div>
+    </time>
   );
 }

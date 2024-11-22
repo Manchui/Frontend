@@ -1,5 +1,6 @@
 import animation from './src/styles/tailwind.animation';
 import backgroundImage from './src/styles/tailwind.backgroundImage';
+import boxShadow from './src/styles/tailwind.boxShadow';
 import colors from './src/styles/tailwind.colors';
 import height from './src/styles/tailwind.height';
 import inset from './src/styles/tailwind.inset';
@@ -26,6 +27,7 @@ const config = {
       width,
       inset,
       backgroundImage,
+      boxShadow,
       ...typography,
     },
   },

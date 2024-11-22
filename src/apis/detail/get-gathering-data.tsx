@@ -2,11 +2,11 @@ import axios from 'axios';
 import { Toast } from '@/components/shared/Toast';
 import type { BaseData } from '@/types/detail';
 
-import { instanceWithoutAccess } from '../api';
+import { instance } from '../api';
 
-export default async function getGatheringData(gatheringsId: string) {
+export default async function getGatheringData(gatheringsId: number) {
   try {
-    const res = await instanceWithoutAccess.get<BaseData>(`/api/gatherings/public/${gatheringsId}/reviews?page=1&size=10`);
+    const res = await instance.get<BaseData>(`/api/gatherings/public/${gatheringsId}/reviews?page=1&size=10`);
     return res.data.data;
   } catch (e: unknown) {
     if (axios.isAxiosError(e)) {
