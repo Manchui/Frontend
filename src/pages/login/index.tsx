@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import { useCallback, useEffect } from 'react';
 import { getUserInfo } from '@/apis/user/getUser';
 import Carousel from '@/components/loginSignup/Carousel';
 import LoginForm from '@/components/loginSignup/LoginForm';
@@ -6,6 +7,7 @@ import { SEO } from '@/components/shared/SEO';
 import useInternalRouter from '@/hooks/useInternalRouter';
 import { formatDate } from '@/libs/formatDate';
 import { userStore } from '@/store/userStore';
+import { useQuery } from '@tanstack/react-query';
 
 /**
  * 로그인 페이지
@@ -18,22 +20,32 @@ export default function LoginPage() {
   const isLoggedIn = userStore((state) => state.isLoggedIn);
   const router = useInternalRouter();
 
+  const { data, refetch } = useQuery({
+    queryKey: ['queryUserInfo'],
+    queryFn: getUserInfo,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 6,
+  });
+
+  // TODO: type error 수정 필요
+  const saveUserInfo = useCallback(() => {
+    void refetch();
+    console.log('refetch is called');
+    userUpdate({
+      email: data?.res?.email || '',
+      id: data?.res?.id || '',
+      image: data?.res?.image || '/images/together-findpage-large.png',
+      name: data?.res?.name || '',
+      createdAt: data?.res?.createdAt ? formatDate(data?.res.createdAt) : '',
+    });
+    void router.push('/main');
+  }, [refetch, userUpdate, data?.res?.email, data?.res?.id, data?.res?.image, data?.res?.name, data?.res?.createdAt, router]);
+
   useEffect(() => {
-    const fetchUserData = async () => {
-      if (isLoggedIn) {
-        const userData = await getUserInfo();
-        userUpdate({
-          email: userData.res?.email || '',
-          id: userData.res?.id || '',
-          image: userData.res?.image || '/images/together-findpage-large.png',
-          name: userData.res?.name || '',
-          createdAt: userData.res?.createdAt ? formatDate(userData.res.createdAt) : '',
-        });
-        void router.push('/main');
-      }
-    };
-    void fetchUserData();
-  }, [isLoggedIn, router, userUpdate]);
+    if (isLoggedIn) {
+      saveUserInfo();
+    }
+  }, [data, isLoggedIn, saveUserInfo]);
 
   return (
     <>
