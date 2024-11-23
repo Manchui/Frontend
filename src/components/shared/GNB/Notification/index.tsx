@@ -56,22 +56,31 @@ export default function Notification() {
     source.onmessage = (e) => {
       try {
         const notiData = e.data as string;
-        console.log(e);
+
+        console.log('SSE data:', notiData);
 
         if (notiData.trim() === ':ping') {
+          console.log('Ping received');
           return;
         }
 
-        const newNotification: NotificationContent = JSON.parse(notiData);
+        let newNotification: NotificationContent;
+        try {
+          newNotification = JSON.parse(notiData);
+        } catch (error) {
+          console.error('JSON 파싱 실패:', error, 'SSE data:', notiData);
+          return;
+        }
 
         if (!newNotification.content) {
+          console.log('No content in notification:', newNotification);
           return;
         }
 
         setSseNotifications((prev) => {
           const isDuplicate = prev.some((notification) => notification.notificationId === newNotification.notificationId);
           if (isDuplicate) {
-            return prev; // 중복 데이터는 추가 안함
+            return prev;
           }
           return [newNotification, ...prev];
         });
