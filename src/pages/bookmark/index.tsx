@@ -20,7 +20,7 @@ import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query
 
 import Error from 'public/lottie/error.json';
 
-const Lottie = dynamic(import('lottie-react'), { ssr: false });
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
 interface BookmarkProps {
   dehydratedState: DehydratedState;

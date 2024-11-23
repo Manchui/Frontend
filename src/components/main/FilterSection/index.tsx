@@ -1,6 +1,4 @@
-import { useCallback, useMemo, useRef } from 'react';
-import { useInView } from 'framer-motion';
-import * as m from 'framer-motion/m';
+import { useCallback, useMemo } from 'react';
 import CategoryList from '@/components/main/FilterSection/CategoryList';
 import CloseDateToggle from '@/components/main/FilterSection/CloseDateToggle';
 import DateDropdown from '@/components/main/FilterSection/DateDropdown';
@@ -11,9 +9,6 @@ import useInternalRouter from '@/hooks/useInternalRouter';
 
 export default function FilterSection() {
   const router = useInternalRouter();
-
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true });
 
   const isLoggedIn = useMemo(() => !IS_SERVER && !!localStorage.getItem('accessToken'), []);
 
@@ -26,15 +21,7 @@ export default function FilterSection() {
   }, [isLoggedIn, router]);
 
   return (
-    <m.div
-      ref={ref}
-      style={{
-        transform: isInView ? 'none' : 'translateY(10px)',
-        opacity: isInView ? 1 : 0,
-        transition: 'all 1s ease-in-out',
-      }}
-      className="scrollbar-hide relative mb-8 mt-4 flex w-full select-none flex-col gap-2 bg-white px-4 py-5 mobile:rounded-lg"
-    >
+    <div className="scrollbar-hide relative mb-8 mt-4 flex w-full select-none flex-col gap-2 bg-white px-4 py-5 mobile:rounded-lg">
       {/* 카테고리 */}
       <CategoryList />
 
@@ -55,6 +42,6 @@ export default function FilterSection() {
           모임 만들기
         </button>
       </div>
-    </m.div>
+    </div>
   );
 }

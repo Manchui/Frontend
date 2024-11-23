@@ -2,7 +2,7 @@ import dynamic from 'next/dynamic';
 
 import loadingBox from '@/../public/lottie/loading-box.json';
 
-const Lottie = dynamic(import('lottie-react'), { ssr: false });
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
 export default function Loading() {
   return (
