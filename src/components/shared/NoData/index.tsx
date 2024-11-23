@@ -6,7 +6,7 @@ import { useSetCategory } from '@/store/useFilterStore';
 
 import Empty from 'public/lottie/empty.json';
 
-const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
+const Lottie = dynamic(import('lottie-react'), { ssr: false });
 
 function NoData({ use = 'main' }: { use: 'main' | 'bookmark' }) {
   const setCategory = useSetCategory();
