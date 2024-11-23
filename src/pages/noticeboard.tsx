@@ -1,3 +1,4 @@
+/* eslint-disable tailwindcss/no-custom-classname */
 import { useEffect, useRef, useState } from 'react';
 import type { Variants } from 'framer-motion';
 import * as m from 'framer-motion/m';
@@ -66,7 +67,7 @@ export default function NoticeBoard() {
   return (
     <m.div variants={sectionVariants} initial="hidden" animate="visible" transition={{ duration: 0.5 }} className="bg-blue-800">
       <div className="mx-auto flex min-h-screen min-w-[350px] max-w-screen-pc flex-col items-center space-y-5 p-14 px-5">
-        <span className="mb-20 text-landing-title font-bold text-[#3FD9F9]">🫧 공지사항 🫧</span>
+        <span className="text-backend mb-20 text-landing-title font-bold">🫧 공지사항 🫧</span>
         <div className="flex w-full justify-end gap-4 text-13-16-response">
           <button type="button" onClick={handleCloseAll} className="rounded-md bg-gray-700 px-5 py-2 font-semibold text-white duration-300 hover:bg-gray-600">
             전부 닫기
