@@ -9,8 +9,8 @@ export default function IntroduceSlide() {
   const router = useInternalRouter();
 
   const cards = [
-    { ...BACKEND_CARDS[0], bg: '#85c8f5', title: 'SERVER' },
-    { ...FRONTEND_CARDS[0], bg: '#fb9b9b', title: 'WEB' },
+    { ...BACKEND_CARDS[0], bg: '#3FD9F9', title: 'SERVER' },
+    { ...FRONTEND_CARDS[0], bg: '#fd4872', title: 'WEB' },
     { ...DESIGNER_CARDS[0], bg: '#cdf86f', title: 'DESIGN' },
   ];
 

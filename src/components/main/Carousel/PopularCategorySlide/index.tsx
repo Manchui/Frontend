@@ -26,16 +26,13 @@ export default function PopularCategorySlide({ handleScrollToFilter }: PopularCa
 
   return (
     <div className="relative h-[400px] bg-[#000000] text-white mobile:h-[500px] tablet:h-[600px]">
-      {/* 이미지 배경 (콘텐츠 뒤로 배치) */}
       <div className="absolute right-1/4 top-1/2 z-0 size-[400px] -translate-y-1/2">
         <Image src="/images/popular.webp" alt="인기 카테고리" fill className="object-cover" />
       </div>
 
-      {/* 텍스트와 카테고리 리스트 (이미지 위에 표시) */}
       <div className="relative z-10 mx-auto flex h-full max-w-[1200px] items-center">
-        {/* 텍스트와 카테고리 리스트 */}
         <div className="flex flex-1 flex-col items-center justify-center">
-          <h1 className="text-lightred text-center text-24-40-response font-bold drop-shadow-lg">🔥 인기 카테고리 🔥</h1>
+          <h1 className="text-center text-24-40-response font-bold text-lightred drop-shadow-lg">🔥 인기 카테고리 🔥</h1>
           <h3 className="mt-2 text-center text-16-20-response font-semibold">실시간으로 모임수가 증가하고 있어요!</h3>
           <div className="mt-10 flex justify-center gap-3 mobile:gap-6">
             {categories.map(({ rank, category, imageSrc }) => (
@@ -44,7 +41,7 @@ export default function PopularCategorySlide({ handleScrollToFilter }: PopularCa
                 onClick={() => handleCategoryClick(category)}
                 className="relative flex cursor-pointer flex-col items-center justify-center gap-3 rounded-md transition-transform duration-300 hover:scale-105"
               >
-                <div className="bg-lightred absolute left-0 top-0 flex h-7 w-14 items-center justify-center rounded-br-md rounded-tl-md text-16-20-response font-semibold text-blue-800">
+                <div className="absolute left-0 top-0 flex h-7 w-14 items-center justify-center rounded-br-md rounded-tl-md bg-lightred text-16-20-response font-semibold text-blue-800">
                   {rank}위
                 </div>
                 <Image src={imageSrc} alt={category} width={400} height={400} className="h-full rounded-md object-cover" />
