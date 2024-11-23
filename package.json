@@ -31,8 +31,6 @@
     "react": "^18",
     "react-dom": "^18",
     "react-toastify": "^10.0.6",
-    "save-dev": "^0.0.1-security",
-    "swiper": "^11.1.14",
     "tailwind-merge": "^2.5.4",
     "zustand": "^5.0.1"
   },

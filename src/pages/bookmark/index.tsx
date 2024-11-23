@@ -24,21 +24,20 @@ const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
 interface BookmarkProps {
   dehydratedState: DehydratedState;
-  initialPageSize: number;
   seo: {
     title: string;
   };
 }
 
-export default function BookmarkPage({ seo, dehydratedState, initialPageSize }: BookmarkProps) {
-  const [pageSize, setPageSize] = useState(initialPageSize);
+export default function BookmarkPage({ seo, dehydratedState }: BookmarkProps) {
+  const deviceState = useDeviceState();
+
+  const [pageSize, setPageSize] = useState(PAGE_SIZE_BY_DEVICE.MAIN[deviceState]);
 
   const { page, keyword, location, category, closeDate, dateEnd, dateStart } = useFilterStore();
 
   const router = useInternalRouter();
   const resetFilters = useResetFilters();
-
-  const deviceState = useDeviceState();
 
   const {
     data: bookmark,
@@ -104,13 +103,9 @@ export default function BookmarkPage({ seo, dehydratedState, initialPageSize }: 
 export const getServerSideProps = async () => {
   const queryClient = new QueryClient();
 
-  const initialPageSize = PAGE_SIZE_BY_DEVICE.BOOKMARK.PC;
-
-  const request = { page: 1, size: initialPageSize };
-
   await queryClient.prefetchQuery({
-    queryKey: ['bookmark', { page: 1 }],
-    queryFn: () => getBookmarkData(request),
+    queryKey: ['bookmark', { size: 3 }],
+    queryFn: () => getBookmarkData({ size: 3 }),
   });
 
   return {
@@ -119,7 +114,6 @@ export const getServerSideProps = async () => {
       seo: {
         title: '만취 - 찜한 모임 페이지',
       },
-      initialPageSize,
     },
   };
 };

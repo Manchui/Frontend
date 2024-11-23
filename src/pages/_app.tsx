@@ -9,7 +9,6 @@ import { domAnimation, LazyMotion } from 'framer-motion';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import PageLayout from '@/components/shared/pageLayout';
-import { isProdApiUrl } from '@/utils/common';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
@@ -29,8 +28,9 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
       new QueryClient({
         defaultOptions: {
           queries: {
-            retry: isProdApiUrl(process.env.NEXT_PUBLIC_API_URL) ? 3 : false,
-            refetchOnWindowFocus: false,
+            retry: 1,
+            refetchOnWindowFocus: true,
+            refetchOnMount: true,
           },
         },
       }),
