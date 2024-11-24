@@ -11,4 +11,19 @@ declare module '@manchui-api' {
     message: string;
     success: boolean;
   };
+  export type GetCloseGatheringIdResponse = {
+    data: {
+      category: string;
+      content: string;
+      gatheringId: number;
+      gatheringImage: string;
+      groupName: string;
+      location: string;
+      maxUsers: number;
+      minUsers: number;
+    };
+
+    message: string;
+    success: boolean;
+  };
 }

@@ -6,11 +6,12 @@ import Image from 'next/image';
 type LongDropdownProps = {
   disabled?: boolean;
   isCloseGathering?: boolean;
-  listDropdown: string[];
+  listDropdown: Array<string | { gatheringId: number; groupName: string }>;
   maxValue?: number;
   minValue?: number;
   onListChange: (list: string) => void;
   placeholder: string;
+  setGatheringId?: (id: number) => void;
 };
 
 export default function LongDropdown({
@@ -21,28 +22,50 @@ export default function LongDropdown({
   maxValue,
   minValue,
   isCloseGathering = false,
+  setGatheringId,
 }: LongDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedList, setSelectedList] = useState<string>(placeholder);
   const [inputValue, setInputValue] = useState<string>('');
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isCloseDisabled, setIsCloseDisabled] = useState<boolean>(false);
 
   const toggleDropdown = () => {
-    if (!disabled) {
+    if (!disabled && (!isCloseDisabled || !isCloseGathering)) {
       setIsOpen((prev) => !prev);
     }
   };
 
-  const handleListSelect = (list: string) => {
+  const handleListSelect = (list: string | { gatheringId: number; groupName: string }) => {
     if (!disabled) {
-      setSelectedList(list);
-      setInputValue(list);  
-      onListChange?.(list);
+      if (isCloseGathering) {
+        setIsCloseDisabled(true);
+      }
+
+      const selectedGroupName = isCloseGathering && typeof list === 'object' ? list.groupName : (list as string);
+      setSelectedList(selectedGroupName);
+      setInputValue(selectedGroupName);
+      onListChange(selectedGroupName);
+
+      if (isCloseGathering && typeof list === 'object') {
+        if (setGatheringId) {
+          setGatheringId(list.gatheringId);
+        }
+      }
+
       setIsOpen(false);
     }
   };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
+  };
+
+  const handleCloseClick = () => {
+    setIsCloseDisabled(false);
+    setSelectedList('');
+    setInputValue('');
+    onListChange('');
   };
 
   useEffect(() => {
@@ -76,18 +99,30 @@ export default function LongDropdown({
         onClick={toggleDropdown}
         disabled={disabled}
       >
-      {isCloseGathering ? (
+        {isCloseGathering ? (
           <input
             type="text"
             value={inputValue}
             onChange={handleInputChange}
             placeholder={placeholder}
-            className="w-full border-none bg-transparent p-2 text-sm text-gray-800 outline-none"
+            className="-ml-2 w-full border-none bg-transparent p-2 text-sm text-gray-800 outline-none"
+            disabled={isCloseDisabled || disabled}  // Disabled condition
           />
         ) : (
           <span className="truncate">{triggerLabel}</span>
         )}
-        <Image src="/icons/down.svg" alt="down arrow" width={24} height={24} className={`ml-2 duration-300 ${isOpen ? 'rotate-180' : 'rotate-0'}`} />
+        <Image
+          src={isCloseGathering && isCloseDisabled ? '/icons/x.svg' : '/icons/down.svg'}
+          alt="down arrow"
+          width={isCloseGathering && isCloseDisabled ? 12 : 24}
+          height={isCloseGathering && isCloseDisabled ? 12 : 24}
+          className={clsx('ml-2', {
+            'rotate-180 duration-300': !isCloseGathering && isOpen,
+            'rotate-0 duration-300': !isCloseGathering && !isOpen,
+            'mr-1 rotate-180 duration-0': isCloseGathering && isCloseDisabled,
+          })}
+          onClick={isCloseGathering && isCloseDisabled ? handleCloseClick : undefined}
+        />
       </button>
       {isOpen && (
         <div
@@ -97,27 +132,26 @@ export default function LongDropdown({
           )}
         >
           <ul>
-            {listDropdown
-              .filter((list) => list !== placeholder)
-              .map((list, index) => {
-                const isDisabled = maxValue !== undefined && parseInt(list) > maxValue;
+            {listDropdown.map((list, index) => {
+              const displayText = isCloseGathering && typeof list === 'object' ? list.groupName : (list as string);
 
-                const minisDisabled = minValue !== undefined && parseInt(list) < minValue;
+              const isDisabled = maxValue !== undefined && parseInt(displayText) > maxValue;
+              const minisDisabled = minValue !== undefined && parseInt(displayText) < minValue;
 
-                return (
-                  <li
-                    key={index}
-                    onClick={() => !isDisabled && !minisDisabled && handleListSelect(list)}
-                    className={clsx(
-                      'm-2 cursor-pointer rounded-xl px-2 py-1 text-left',
-                      minisDisabled || isDisabled ? 'cursor-not-allowed text-gray-400' : 'hover:bg-gray-100',
-                      selectedList === list && 'bg-gray-50',
-                    )}
-                  >
-                    {list}
-                  </li>
-                );
-              })}
+              return (
+                <li
+                  key={index}
+                  onClick={() => !isDisabled && !minisDisabled && handleListSelect(list)}
+                  className={clsx(
+                    'm-2 cursor-pointer rounded-xl px-2 py-1 text-left',
+                    minisDisabled || isDisabled ? 'cursor-not-allowed text-gray-400' : 'hover:bg-gray-100',
+                    selectedList === displayText && 'bg-gray-50',
+                  )}
+                >
+                  {displayText}
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}

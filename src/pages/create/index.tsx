@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
@@ -5,11 +7,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable radix */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import router from 'next/router';
 import { instance } from '@/apis/api';
-import { getCloseGatheringData } from '@/apis/getCloseGatheringData';
+import { getCloseGatheringIdData } from '@/apis/getCloseGatheringIdData';
 import { CapacityDropdown } from '@/components/Create/CapacityDropdown';
 import { CategoryDropdown } from '@/components/Create/CategoryDropdown';
 import { DescriptionInput } from '@/components/Create/DescriptionInput';
@@ -18,6 +20,7 @@ import ImageUploader from '@/components/Create/ImageUploader';
 import { LocationDropdown } from '@/components/Create/LocationDropdown';
 import Calendar from '@/components/shared/Calendar';
 import { Toast } from '@/components/shared/Toast';
+import useGetCloseGatheringIdData from '@/hooks/useGetCloseGatheringIdData';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 
 type TimeChip = {
@@ -38,11 +41,23 @@ export default function CreatePage() {
   }>({});
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [timeChips, setTimeChips] = useState<TimeChip[]>([...Array.from({ length: 10 }, (_, i) => ({ time: 9 + i, disable: true }))]);
-  
+
   const exampleCurrentDate = new Date();
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
+  const { data: closeGatheringIdData } = useGetCloseGatheringIdData(gatheringId);
+  const [, setIsGatheringIdData] = useState<typeof closeGatheringIdData | null>(null);
+  useEffect(() => {
+    if (gatheringId) {
+      setIsGatheringIdData(closeGatheringIdData);
+    } else {
+      setIsGatheringIdData(null);
+    }
+
+    // console.log('isGatheringIdData:', isGatheringIdData);
+    // console.log('gatheringId:', gatheringId);
+  }, [gatheringId]);
   const fields = [
     { value: name, label: '모임 이름' },
     { value: description, label: '모임 설명' },
@@ -302,7 +317,7 @@ export default function CreatePage() {
         <form onSubmit={handleSubmit} className="w-full space-y-6 mobile:space-y-10">
           <GroupNameInput setGatheringId={setGatheringId} name={name} setName={handleInputChange('모임 이름')} error={errors['모임 이름']} />
 
-          <CategoryDropdown setSelectedCategory={handleInputChange('카테고리')} error={errors['카테고리']} />
+          <CategoryDropdown setSelectedCategory={handleInputChange('카테고리')} error={errors['카테고리']} closeGatheringIdData={closeGatheringIdData?.data} />
 
           <DescriptionInput description={description} setDescription={handleInputChange('모임 설명')} error={errors['모임 설명']} />
 
@@ -408,12 +423,12 @@ export default function CreatePage() {
   );
 }
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = async (gatheringId: number) => {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
     queryKey: ['create'],
-    queryFn: () => getCloseGatheringData(),
+    queryFn: () => getCloseGatheringIdData(gatheringId),
   });
 
   return {
