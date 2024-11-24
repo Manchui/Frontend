@@ -1,6 +1,7 @@
 import * as m from 'framer-motion/m';
 
 /* eslint-disable tailwindcss/no-custom-classname */
+// TODO: eslint 플러그인을 파일 단위로 disable 시키는 곳이 많은데, 필요하지 않은 룰은 config에서 제거할 수 있도록 해주세요.
 export default function BookmarkBanner({ isError }: { isError: boolean }) {
   return (
     <m.div

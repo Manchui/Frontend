@@ -2,6 +2,7 @@
 /* eslint-disable quotes */
 import Image from 'next/image';
 
+// TODO: 같은 구조가 반복 되고 있습니다. 임시로 만든게 아니라면 컴포넌트로 만들어 재사용성을 높여주세요.
 export function IntroduceReview() {
   return (
     <div className="flex-col-center mb-10 gap-6 text-pretty px-5 text-center text-blue-800 mobile:mb-20">

@@ -14,6 +14,8 @@ interface CardSectionProps {
 const gugi = Gugi({ weight: '400', subsets: ['latin'] });
 
 function CardSection({ gathering }: CardSectionProps) {
+  // TODO: path는 파일 하나에 모아서 관리하는 것이 좋습니다.
+  // ex) `/detail` 를 직접 작성하는 대신에 `import { Detail } from '@/paths'`로 관리
   return (
     <Link
       href={`/detail/${gathering.gatheringId}`}

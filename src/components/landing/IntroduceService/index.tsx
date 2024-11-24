@@ -1,6 +1,8 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 import Image from 'next/image';
 
+// TODO: 같은 구조가 반복 되고 있습니다. 임시로 만든게 아니라면 컴포넌트로 만들어 재사용성을 높여주세요.
+
 export default function IntroduceService() {
   return (
     <div className="flex-col-center mb-20 gap-20 text-balance text-center text-blue-800">
