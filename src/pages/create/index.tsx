@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-restricted-globals */
@@ -46,18 +48,18 @@ export default function CreatePage() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const { data: closeGatheringIdData } = useGetCloseGatheringIdData(gatheringId);
-  const [, setIsGatheringIdData] = useState<typeof closeGatheringIdData | null>(null);
-  useEffect(() => {
-    if (gatheringId) {
-      setIsGatheringIdData(closeGatheringIdData);
-    } else {
-      setIsGatheringIdData(null);
-    }
+  // const { data: closeGatheringIdData } = useGetCloseGatheringIdData(gatheringId);
+  // const [, setIsGatheringIdData] = useState<typeof closeGatheringIdData | null>(null);
+  // useEffect(() => {
+  //   if (gatheringId) {
+  //     setIsGatheringIdData(closeGatheringIdData);
+  //   } else {
+  //     setIsGatheringIdData(null);
+  //   }
 
-    // console.log('isGatheringIdData:', isGatheringIdData);
-    // console.log('gatheringId:', gatheringId);
-  }, [gatheringId]);
+  //   // console.log('isGatheringIdData:', isGatheringIdData);
+  //   // console.log('gatheringId:', gatheringId);
+  // }, [gatheringId]);
   const fields = [
     { value: name, label: '모임 이름' },
     { value: description, label: '모임 설명' },
@@ -256,7 +258,6 @@ export default function CreatePage() {
 
     data.append('groupName', name || ''); // 텍스트 값
     const normalizedDescription = description?.replace(/\r\n/g, '\n');
-    console.log(normalizedDescription?.length);
     data.append('gatheringContent', normalizedDescription || ''); // 텍스트 값
     data.append('category', selectedCategory || ''); // 텍스트 값
     data.append('location', selectedLocation || ''); // 텍스트 값
@@ -317,7 +318,7 @@ export default function CreatePage() {
         <form onSubmit={handleSubmit} className="w-full space-y-6 mobile:space-y-10">
           <GroupNameInput setGatheringId={setGatheringId} name={name} setName={handleInputChange('모임 이름')} error={errors['모임 이름']} />
 
-          <CategoryDropdown setSelectedCategory={handleInputChange('카테고리')} error={errors['카테고리']} closeGatheringIdData={closeGatheringIdData?.data} />
+          <CategoryDropdown setSelectedCategory={handleInputChange('카테고리')} error={errors['카테고리']} />
 
           <DescriptionInput description={description} setDescription={handleInputChange('모임 설명')} error={errors['모임 설명']} />
 
