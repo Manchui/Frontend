@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { instance, instanceWithoutAccess } from '@/apis//api';
 import { Toast } from '@/components/shared/Toast';
 import { userStore } from '@/store/userStore';
@@ -55,22 +56,19 @@ export const signup = async (name: string, email: string, password: string, pass
 
 export const logout = async (queryClient: QueryClient | undefined) => {
   const remover = userStore.getState().removeUser;
+  const logoutStore = userStore.getState().logout;
 
   try {
-    await instance.post('/api/auths/signout', undefined, {
-      headers: {
-        Authorization: localStorage.getItem('accessToken'),
-      },
-    });
+    await instance.post('/api/auths/signout');
     remover();
-
+    logoutStore();
     localStorage.removeItem('accessToken');
     if (queryClient) {
-      void queryClient.invalidateQueries({ queryKey: ['getUserInfo'] });
+      void queryClient.invalidateQueries({ queryKey: ['queryUserInfo'] });
     }
     Toast('success', '로그아웃 되었습니다.');
   } catch (error) {
     Toast('error', '로그아웃에 실패했습니다.');
-    throw error;
+    console.log(error);
   }
 };

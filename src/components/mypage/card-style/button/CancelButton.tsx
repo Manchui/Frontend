@@ -7,6 +7,7 @@ import type { GatheringList } from '@/types/mypage';
 import { useMutation } from '@tanstack/react-query';
 
 export default function MyPageCancelButton({
+  isClosed,
   data,
   category,
   handleRemoveItem,
@@ -14,6 +15,7 @@ export default function MyPageCancelButton({
   category: string;
   data: GatheringList;
   handleRemoveItem: (id: number) => void;
+  isClosed: boolean;
 }) {
   const { isOpen, openModal, closeModal } = useModal();
   const token = localStorage.getItem('accessToken');
@@ -32,7 +34,13 @@ export default function MyPageCancelButton({
 
   return (
     <div>
-      <Button onClick={openModal} label={isName ? '모임 취소하기' : '참여 취소하기'} size="small" variant="white" />
+      <Button
+        disabled={isClosed}
+        onClick={openModal}
+        label={isName ? '모임 취소하기' : '참여 취소하기'}
+        size="small"
+        variant={isClosed ? 'primary' : 'white'}
+      />
       <Modal
         buttons={[
           {

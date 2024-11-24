@@ -29,26 +29,31 @@ export default function MyPageCategoryList({ category, setCategory }: MyPageCate
     }
   };
 
-  const getButtonClass = (categoryId: string) =>
-    categoryId === query.category || categoryId === category ? 'flex-1 border-blue-800' : 'flex-1 hover:text-gray-500 text-blue-400 border-b-2 border-blue-100';
+  const getButtonClass = (categoryId: string) => (categoryId === query.category || categoryId === category ? '' : 'hover:text-gray-500 text-blue-400 ');
 
   return (
-    <div>
-      <nav className="flex select-none items-center justify-between text-sub-response font-semibold">
+    <div className="relative">
+      <article className="flex select-none items-center justify-between text-center text-sub-response font-semibold">
         {categories.map((item) => (
           <button
             key={item}
             type="button"
-            onClick={() => {
-              handleCategoryChange(item);
-            }}
-            className={`${getButtonClass(item)}`}
+            onClick={() => handleCategoryChange(item)}
+            className={`relative flex-1 border-b-2 border-blue-100 py-1.5 ${getButtonClass(item)}`}
           >
             <div className="py-1.5">{item}</div>
-            {item === selectedTab ? <m.div className="border-b-2 border-blue-800" layoutId="underline" /> : null}
           </button>
         ))}
-      </nav>
+      </article>
+      <m.div
+        className="absolute bottom-0 h-[2px] rounded-full bg-blue-800"
+        animate={{
+          x: `${categories.indexOf(selectedTab) * 100}%`,
+          width: '33.33%',
+        }}
+        initial={false}
+        transition={{ type: 'spring', stiffness: 300, damping: 40 }}
+      />
     </div>
   );
 }

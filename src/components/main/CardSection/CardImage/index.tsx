@@ -41,7 +41,7 @@ export default function CardImage({ gathering }: CardImageProps) {
         sizes="(max-width: 820px) 50vw, (max-width: 1240px) 50vw, 50vw"
         className="transform rounded-t-2xl object-cover transition-transform duration-300 ease-in-out group-hover:scale-110 mobile:rounded-l-2xl mobile:rounded-tr-none tablet:rounded-t-2xl tablet:rounded-bl-none"
       />
-      <div className="absolute right-0 top-0 z-10">{showTag && <Tag Type="detail" Hour={dueDate.getHours() - 5} />}</div>
+      <div className="absolute right-0 top-0">{showTag && <Tag Type="detail" Hour={dueDate.getHours() - 5} />}</div>
       {(currentUsers >= maxUsers || closed) && (
         <div className="absolute inset-0 flex items-center justify-center rounded-t-2xl bg-black bg-opacity-70">
           <span className={`text-full-response font-bold text-full ${bagelFatOne.className}`}>{closed ? 'CLOSED' : 'FULL'}</span>

@@ -3,26 +3,36 @@ import { CardComponents } from '@/components/mypage/card-style';
 import MyPageCategoryList from '@/components/mypage/category/CategoryList';
 import { ProfileCard } from '@/components/mypage/profile-card';
 import RootLayout from '@/components/shared/RootLayout';
+import { SEO } from '@/components/shared/SEO';
 
-export default function MyPage() {
+interface MainPageProps {
+  seo: {
+    title: string;
+  };
+}
+
+export default function MyPage({ seo }: MainPageProps) {
   const [category, setCategory] = useState('');
 
   return (
-    <div>
-      <div className="mt-[60px] h-bookmark-banner min-h-[155px] select-none items-center justify-center bg-blue-800 px-11 py-6 text-16-20-response font-semibold text-blue-800 pc:text-white">
+    <>
+      <SEO title={seo.title} />
+      <h1 className="mt-[60px] h-bookmark-banner min-h-[155px] select-none items-center justify-center bg-blue-800 px-11 py-6 text-16-20-response font-semibold text-blue-800 pc:text-white">
         마이페이지
-      </div>
+      </h1>
       <RootLayout>
-        <div className="m-auto flex flex-col gap-8 duration-100 tablet:gap-10 pc:gap-14">
-          <ProfileCard />
-          <div>
-            <MyPageCategoryList category={category} setCategory={setCategory} />
-            <div className="flex min-h-screen flex-col bg-white">
-              <CardComponents category={category} />
-            </div>
-          </div>
-        </div>
+        <ProfileCard />
+        <MyPageCategoryList category={category} setCategory={setCategory} />
+        <CardComponents category={category} />
       </RootLayout>
-    </div>
+    </>
   );
 }
+
+export const getServerSideProps = () => ({
+  props: {
+    seo: {
+      title: '마이 페이지',
+    },
+  },
+});

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { logout } from '@/apis/user/postUser';
+import Notification from '@/components/shared/GNB/Notification';
 import { userStore } from '@/store/userStore';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -63,6 +64,7 @@ export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
 
   return (
     <div className="flex items-center">
+      <Notification />
       <button type="button" onClick={toggleDrawer} className="relative flex h-10 w-10 items-center justify-center">
         <div className={clsx('absolute transition-all duration-300 ease-in-out', isOpen ? 'rotate-90 opacity-0' : 'rotate-0 opacity-100')}>
           <Image src="/icons/menu.svg" alt="메뉴" width={38} height={38} />

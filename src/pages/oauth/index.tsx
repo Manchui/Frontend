@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { getSocialAccess, getUserInfo } from '@/apis/user/getUser';
 import Loading from '@/components/shared/Loading';
@@ -9,8 +9,9 @@ import { Toast } from '@/components/shared/Toast';
 import useInternalRouter from '@/hooks/useInternalRouter';
 import { formatDate } from '@/libs/formatDate';
 import { userStore } from '@/store/userStore';
+import { useQuery } from '@tanstack/react-query';
 
-function OAuth() {
+export default function OAuth() {
   const router = useRouter();
   const { code } = router.query;
   const routerInternal = useInternalRouter();
@@ -18,54 +19,51 @@ function OAuth() {
   const userUpdate = userStore((state) => state.updateUser);
   const isLoggedIn = userStore((state) => state.isLoggedIn);
 
-  useEffect(() => {
-    async function handleOAuth() {
-      if (!code) return;
+  const { data: userInfo, refetch } = useQuery({
+    queryKey: ['queryUserInfo'],
+    queryFn: getUserInfo,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 6,
+  });
 
-      const social = sessionStorage.getItem('social');
-      try {
-        if (!social) {
-          throw new Error('Social is null');
-        }
-        const result = await getSocialAccess(social, code as string);
-        if (result) {
-          loginStore(); // 로그인 상태 갱신
-        } else if (!result) {
-          await routerInternal.push('/login');
-        }
-      } catch (error) {
-        Toast('error', '오류가 발생했습니다. 다시 시도해주세요.');
-        await routerInternal.push('/login');
-        throw error;
-      }
+  const { data: socialCode } = useQuery({
+    queryKey: ['querySocialAccess'],
+    queryFn: () => getSocialAccess(code as string),
+  });
+
+  const saveSocialCode = useCallback(() => {
+    if (socialCode) {
+      loginStore();
+    } else {
+      Toast('error', '새로고침 후 다시 시도해주세요.');
+      void routerInternal.push('/login');
     }
-
-    void handleOAuth();
-  }, [code, loginStore, routerInternal]);
+  }, [loginStore, routerInternal, socialCode]);
 
   useEffect(() => {
-    async function fetchUserData() {
-      if (!isLoggedIn) return;
+    if (!code) return;
 
-      try {
-        const userData = await getUserInfo();
-        userUpdate({
-          email: userData.res?.email || '',
-          id: userData.res?.id || '',
-          image: userData.res?.image || '/images/together-findpage-large.png',
-          name: userData.res?.name || '',
-          createdAt: userData.res?.createdAt ? formatDate(userData.res.createdAt) : '',
-        });
-        Toast('success', '로그인 성공');
-        await routerInternal.push('/main');
-      } catch (error) {
-        Toast('error', '사용자 정보를 불러오는데 실패했습니다.');
-        throw error;
-      }
+    saveSocialCode();
+  }, [code, saveSocialCode]);
+
+  const saveUserInfo = useCallback(() => {
+    void refetch();
+    userUpdate({
+      email: userInfo?.res?.email || '',
+      id: userInfo?.res?.id || '',
+      image: userInfo?.res?.image || '/images/together-findpage-large.png',
+      name: userInfo?.res?.name || '',
+      createdAt: userInfo?.res?.createdAt ? formatDate(userInfo?.res.createdAt) : '',
+    });
+    Toast('success', '로그인 성공');
+    void router.push('/main');
+  }, [refetch, userUpdate, userInfo?.res?.email, userInfo?.res?.id, userInfo?.res?.image, userInfo?.res?.name, userInfo?.res?.createdAt, router]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      saveUserInfo();
     }
-
-    void fetchUserData();
-  }, [isLoggedIn, routerInternal, userUpdate]);
+  }, [isLoggedIn, saveUserInfo]);
 
   return (
     <div>
@@ -75,4 +73,3 @@ function OAuth() {
     </div>
   );
 }
-export default OAuth;

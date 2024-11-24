@@ -31,7 +31,7 @@ export const userStore = create<UserStore>()(
       updateUser: (newUser) => set({ user: newUser }),
       removeUser: () => set({
         user: { id: '', name: '', email: '', image: '', createdAt: '' },
-        isLoggedIn: false,
+        // isLoggedIn: false,
       }),
       login: () => set({ isLoggedIn: true }),
       logout: () => set({ isLoggedIn: false }),
