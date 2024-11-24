@@ -1,42 +1,23 @@
-import { useEffect, useState } from 'react';
 import { ProgressBar } from '@/components/shared/progress-bar';
 import { Toast } from '@/components/shared/Toast';
 import { useScore, useSetScore } from '@/store/useFilterStore';
 import type { GetReviewResponse } from '@manchui-api';
 
-export default function ReviewRating({ data }: { data?: GetReviewResponse['data'] }) {
-  const [scoreList, setScoreList] = useState<
-    | {
-        '1ScoreCount': number;
-        '2ScoreCount': number;
-        '3ScoreCount': number;
-        '4ScoreCount': number;
-        '5ScoreCount': number;
-      }
-    | 0
-  >(0);
-  const [reviewCount, setReviewCount] = useState<number>(0);
+export default function ReviewRating({ data, scoreReviewCount }: { data?: GetReviewResponse['data']; scoreReviewCount: number | undefined }) {
   const score = useScore();
   const setScore = useSetScore();
 
   const handleScoreToggle = (reversedIndex: number) => {
     setScore(reversedIndex);
-    Toast('success',`${reversedIndex}점 필터가 적용되었습니다.`);
+    Toast('success', `${reversedIndex}점 필터가 적용되었습니다.`);
   };
-
-  useEffect(() => {
-    if (data && score === 0) {
-      setScoreList(data.scoreList);
-      setReviewCount(data.reviewCount);
-    }
-  }, [data, score]);
 
   return (
     <div className="flex flex-col items-center justify-center gap-4 border-b-2 border-blue-100 py-6 pt-4 tablet:flex-row tablet:gap-[140px] pc:flex-row">
       <div className="flex flex-col items-center gap-1">
         <h1 className="text-13-16-response font-medium text-gray-400">총 리뷰수</h1>
         <div className="flex items-baseline justify-end">
-          <span className="text-24-40-response font-bold">{data?.reviewCount || 0}</span>
+          <span className="text-24-40-response font-bold">{scoreReviewCount || 0}</span>
           <span className="ml-1 text-16-20-response font-bold">개</span>
         </div>
       </div>
@@ -46,8 +27,7 @@ export default function ReviewRating({ data }: { data?: GetReviewResponse['data'
             <div className="flex flex-col items-center gap-4">
               {' '}
               <div>
-                {/* 데이터가 있는 경우 */}
-                {Object.entries(scoreList || {})
+                {Object.entries(data?.scoreList || {})
                   .slice(1)
                   .map(([key, value], index, array) => {
                     const reversedIndex = array.length - index;
@@ -67,7 +47,7 @@ export default function ReviewRating({ data }: { data?: GetReviewResponse['data'
                         <div
                           className={`w-[200px] transition-all duration-200 group-hover:scale-105 group-hover:brightness-95 ${score === reversedIndex ? 'scale-105 brightness-90' : ''}`}
                         >
-                          <ProgressBar maxValue={reviewCount || 1} value={scoreValue} design="primary" />
+                          <ProgressBar maxValue={data?.reviewCount || 1} value={scoreValue} design="primary" />
                         </div>
                         <p
                           className={`text-md font-medium text-gray-800 ${score === reversedIndex ? 'font-bold text-yellow-500' : ''} group-hover:font-light group-hover:text-yellow-500`}

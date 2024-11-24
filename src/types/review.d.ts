@@ -19,13 +19,13 @@ declare module '@manchui-api' {
       }[];
       reviewCount: number;
       scoreList: {
-        '1ScoreCount': number;
-        '2ScoreCount': number;
-        '3ScoreCount': number;
-        '4ScoreCount': number;
-        '5ScoreCount': number;
-       
+        fiveScoreCount: number;
+        fourScoreCount: number;
+        oneScoreCount: number;
+        threeScoreCount: number;
+        twoScoreCount: number;
       };
+      scoreReviewCount: number;
       totalPage: number;
     };
     message: string;

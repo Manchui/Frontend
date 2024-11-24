@@ -1,6 +1,3 @@
-/* eslint-disable react/jsx-no-useless-fragment */
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { getReviewData } from '@/apis/getReviewData';
@@ -13,8 +10,9 @@ import PaginationBtn from '@/components/shared/PaginationBtn';
 import RootLayout from '@/components/shared/RootLayout';
 import { SEO } from '@/components/shared/SEO';
 import useGetReviewData from '@/hooks/useGetReviewData';
+import useGetReviewScoreZeroData from '@/hooks/useGetReviewScoreZeroData';
 import useInternalRouter from '@/hooks/useInternalRouter';
-import useFilterStore, { useResetFilters, useScore, useSetScore } from '@/store/useFilterStore';
+import useFilterStore, { useResetFilters, useScore } from '@/store/useFilterStore';
 import type { DehydratedState } from '@tanstack/react-query';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 
@@ -33,7 +31,6 @@ export default function ReviewPage({ seo, dehydratedState, initialPageSize }: Re
   const [pageSize, setPageSize] = useState(initialPageSize);
   const { page, keyword, location, category, sort, dateEnd, dateStart } = useFilterStore();
   const score = useScore();
-  const setScore = useSetScore();
   const router = useInternalRouter();
   const resetFilters = useResetFilters();
 
@@ -53,7 +50,20 @@ export default function ReviewPage({ seo, dehydratedState, initialPageSize }: Re
     endDate: dateEnd,
     score,
   });
+  const { data: reviewDataZero } = useGetReviewScoreZeroData({
+    page,
+    size: pageSize,
+    query: keyword,
+    location,
+    category,
+    sort,
+    startDate: dateStart,
+    endDate: dateEnd,
+    score: 0,
+  });
+
   const data = reviewData?.data;
+  const zerodata = reviewDataZero?.data;
 
   useEffect(() => {
     if (pageSize !== 10) {
@@ -72,7 +82,7 @@ export default function ReviewPage({ seo, dehydratedState, initialPageSize }: Re
       router.events.off('routeChangeStart', handleRouteChange);
     };
   }, [router, resetFilters]);
-  
+
   return (
     <>
       <SEO title={seo.title} />
@@ -90,11 +100,11 @@ export default function ReviewPage({ seo, dehydratedState, initialPageSize }: Re
             {/* Header (타이틀, 검색창) */}
             <HeaderSection />
             <div className="min-h-screen w-full bg-white">
-              <FilterSection data={data} />
+              <FilterSection data={zerodata} scoreReviewCount={data?.scoreReviewCount} />
 
               {/* 카드 */}
 
-              <ReviewCardList data={reviewData?.data} isLoading={isLoading} isError={isError}  />
+              <ReviewCardList data={reviewData?.data} isLoading={isLoading} isError={isError} />
 
               {!isLoading && !isError && reviewData?.data?.reviewContentList && reviewData.data.reviewContentList.length > 0 && (
                 <PaginationBtn page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} />

@@ -13,10 +13,10 @@ export default function ScoreFilter() {
   return (
     <div>
       {score ? (
-        <div className="relative flex items-center rounded-lg border border-gray-100 bg-blue-800 p-2 text-13-16-response font-semibold text-white ease-out">
-          <span className="mr-2 text-sm">{score}점</span>
-          <button type="button" onClick={handleScoreRemove} className="size-4">
-            <Image src="icons/x-white.svg" alt="x" width={16} height={16} />
+        <div className="relative flex items-center justify-center gap-2 rounded-lg border border-gray-100 bg-blue-800 p-3 text-13-16-response font-semibold text-white ease-out">
+          <span className="leading-none">{score}점</span>
+          <button type="button" onClick={handleScoreRemove} className="flex size-3 items-center justify-center">
+            <Image src="icons/x-white.svg" alt="x" width={12} height={12} />
           </button>
         </div>
       ) : null}
