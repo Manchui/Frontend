@@ -60,4 +60,25 @@ declare module '@manchui-api' {
     message: string;
     success: boolean;
   };
+
+  export type GetNotificationResponse = {
+    data: NotificationData;
+    message: string;
+    success: boolean;
+  };
+
+  export type NotificationData = {
+    nextCursor: number | undefined;
+    notificationContent: NotificationContent[];
+    notificationCount: number;
+  };
+
+  export type NotificationContent = {
+    content: string;
+    createdAt: Date;
+    gatheringId: number;
+    isRead: boolean;
+    notificationId: number;
+    notificationType: 'GATHERING_LIKE' | 'GATHERING_JOIN';
+  };
 }

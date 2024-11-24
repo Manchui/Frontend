@@ -14,6 +14,7 @@ const animation = {
   'active-hamburgerone': 'active-menu-bar1 0.6s forwards',
   'active-hamburgertwo': 'active-menu-bar3 0.3s forwards',
   'active-hamburgerthree': 'active-menu-bar2 0.6s forwards',
+  'fadeout': 'fadeout 0.3s forwards',
 };
 
 export default animation;

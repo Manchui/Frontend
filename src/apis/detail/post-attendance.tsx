@@ -4,7 +4,7 @@ import type { BaseData } from '@/types/detail';
 
 import { instance } from '../api';
 
-export default async function submitAttendance(gatheringsId: string) {
+export default async function submitAttendance(gatheringsId: number) {
   try {
     const res = await instance.post<BaseData>(`/api/gatherings/${gatheringsId}/attendance`);
     return res.data.data;
