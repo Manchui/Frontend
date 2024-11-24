@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
 import { logout } from '@/apis/user/postUser';
@@ -14,7 +13,6 @@ interface ToggleProps {
 export default function Toggle({ userData }: ToggleProps) {
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isProfileHover, setIsProfileHover] = useState(false);
   const [animation, setAnimation] = useState<'animate-slide-down' | 'animate-slide-up'>('animate-slide-down');
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -29,8 +27,6 @@ export default function Toggle({ userData }: ToggleProps) {
       setIsModalOpen(false);
     }, 300);
   };
-  const handleMouseEnter = () => setIsProfileHover(true);
-  const handleMouseLeave = () => setIsProfileHover(false);
 
   const handleLogout = async () => {
     await logout(queryClient);
@@ -44,7 +40,6 @@ export default function Toggle({ userData }: ToggleProps) {
   useEffect(() => {
     const handleResize = () => closeModal();
     window.addEventListener('resize', handleResize);
-
     return () => {
       window.removeEventListener('resize', handleResize);
     };
@@ -65,42 +60,16 @@ export default function Toggle({ userData }: ToggleProps) {
 
   return (
     <div className="relative flex items-center justify-center" ref={dropdownRef}>
-      {/* 배경 */}
-      {(isModalOpen || isProfileHover) && (
-        <div
-          className={clsx(
-            'absolute flex size-12 rounded-full transition-all duration-100 ease-in-out',
-            isModalOpen ? (isProfileHover ? 'bg-gray-50 shadow-md' : 'shadow-md') : 'bg-gray-50 shadow-md',
-          )}
-          onClick={isModalOpen ? closeModal : openModal}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        />
-      )}
-
       {/* 프로필 */}
-      <button
-        type="button"
-        onClick={isModalOpen ? closeModal : openModal}
-        className="relative z-10"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        <div className="rounded-full focus:outline-none">
-          <Image
-            className="size-10 rounded-full"
-            src={userData.image || '/images/profile.svg'}
-            alt="프로필"
-            width={40}
-            height={40}
-            style={{ objectFit: 'cover' }}
-          />
+      <button type="button" onClick={isModalOpen ? closeModal : openModal} className="relative z-10">
+        <div className="shadow-custom-md size-10 rounded-full bg-slate-50 focus:outline-none">
+          <Image className="relative size-10 rounded-full object-cover" src={userData.image || '/icons/person-rounded.png'} alt="프로필" fill />
         </div>
       </button>
 
       {/* 모달 */}
       {isModalOpen && (
-        <div className={`absolute -right-9 top-14 z-50 flex w-32 flex-col gap-1 rounded-lg bg-white p-2 drop-shadow-2xl transition-transform ${animation}`}>
+        <div className={`absolute -right-5 top-14 z-50 flex w-32 flex-col gap-1 rounded-lg bg-white p-2 drop-shadow-2xl transition-transform ${animation}`}>
           <Link href="/mypage" onClick={() => setIsModalOpen(false)} className="rounded-lg p-1 transition-colors duration-100 hover:bg-gray-50">
             <div className="flex flex-row content-between items-center">
               <Image src="/icons/person.svg" className="size-6" alt="프로필" width={24} height={24} />
