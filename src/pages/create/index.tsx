@@ -9,6 +9,7 @@ import { useState } from 'react';
 import clsx from 'clsx';
 import router from 'next/router';
 import { instance } from '@/apis/api';
+import { getCloseGatheringData } from '@/apis/getCloseGatheringData';
 import { CapacityDropdown } from '@/components/Create/CapacityDropdown';
 import { CategoryDropdown } from '@/components/Create/CategoryDropdown';
 import { DescriptionInput } from '@/components/Create/DescriptionInput';
@@ -17,6 +18,7 @@ import ImageUploader from '@/components/Create/ImageUploader';
 import { LocationDropdown } from '@/components/Create/LocationDropdown';
 import Calendar from '@/components/shared/Calendar';
 import { Toast } from '@/components/shared/Toast';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 
 type TimeChip = {
   disable: boolean;
@@ -25,6 +27,7 @@ type TimeChip = {
 
 export default function CreatePage() {
   const [name, setName] = useState<string | null>(null);
+  const [gatheringId, setGatheringId] = useState<number | null>(null);
   const [description, setDescription] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
@@ -35,7 +38,7 @@ export default function CreatePage() {
   }>({});
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [timeChips, setTimeChips] = useState<TimeChip[]>([...Array.from({ length: 10 }, (_, i) => ({ time: 9 + i, disable: true }))]);
-
+  
   const exampleCurrentDate = new Date();
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -51,6 +54,7 @@ export default function CreatePage() {
     { value: selectedTime, label: '시간' },
     { value: selectedImage, label: '이미지' },
   ];
+
   const handleInputChange = (fieldName: string) => (value: any) => {
     switch (fieldName) {
       case '모임 이름':
@@ -296,7 +300,7 @@ export default function CreatePage() {
       </header>
       <div className="mx-auto mb-8 mt-5 flex max-w-[343px] flex-col items-center justify-center px-3 mobile:max-w-[744px] tablet:max-w-[1000px]">
         <form onSubmit={handleSubmit} className="w-full space-y-6 mobile:space-y-10">
-          <GroupNameInput name={name} setName={handleInputChange('모임 이름')} error={errors['모임 이름']} />
+          <GroupNameInput setGatheringId={setGatheringId} name={name} setName={handleInputChange('모임 이름')} error={errors['모임 이름']} />
 
           <CategoryDropdown setSelectedCategory={handleInputChange('카테고리')} error={errors['카테고리']} />
 
@@ -403,3 +407,21 @@ export default function CreatePage() {
     </>
   );
 }
+
+export const getServerSideProps = async () => {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ['create'],
+    queryFn: () => getCloseGatheringData(),
+  });
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+      seo: {
+        title: '만취 - 생성 페이지',
+      },
+    },
+  };
+};

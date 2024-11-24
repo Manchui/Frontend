@@ -5,17 +5,26 @@ import Image from 'next/image';
 
 type LongDropdownProps = {
   disabled?: boolean;
+  isCloseGathering?: boolean;
   listDropdown: string[];
-
   maxValue?: number;
   minValue?: number;
   onListChange: (list: string) => void;
   placeholder: string;
 };
 
-export default function LongDropdown({ listDropdown = [], placeholder, onListChange, disabled, maxValue, minValue }: LongDropdownProps) {
+export default function LongDropdown({
+  listDropdown = [],
+  placeholder,
+  onListChange,
+  disabled,
+  maxValue,
+  minValue,
+  isCloseGathering = false,
+}: LongDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedList, setSelectedList] = useState<string>(placeholder);
+  const [inputValue, setInputValue] = useState<string>('');
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = () => {
@@ -24,12 +33,16 @@ export default function LongDropdown({ listDropdown = [], placeholder, onListCha
     }
   };
 
-  const handleLocationSelect = (list: string) => {
+  const handleListSelect = (list: string) => {
     if (!disabled) {
       setSelectedList(list);
+      setInputValue(list);  
       onListChange?.(list);
       setIsOpen(false);
     }
+  };
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
   };
 
   useEffect(() => {
@@ -63,7 +76,17 @@ export default function LongDropdown({ listDropdown = [], placeholder, onListCha
         onClick={toggleDropdown}
         disabled={disabled}
       >
-        <span className="truncate">{triggerLabel}</span>
+      {isCloseGathering ? (
+          <input
+            type="text"
+            value={inputValue}
+            onChange={handleInputChange}
+            placeholder={placeholder}
+            className="w-full border-none bg-transparent p-2 text-sm text-gray-800 outline-none"
+          />
+        ) : (
+          <span className="truncate">{triggerLabel}</span>
+        )}
         <Image src="/icons/down.svg" alt="down arrow" width={24} height={24} className={`ml-2 duration-300 ${isOpen ? 'rotate-180' : 'rotate-0'}`} />
       </button>
       {isOpen && (
@@ -84,7 +107,7 @@ export default function LongDropdown({ listDropdown = [], placeholder, onListCha
                 return (
                   <li
                     key={index}
-                    onClick={() => !isDisabled && !minisDisabled && handleLocationSelect(list)}
+                    onClick={() => !isDisabled && !minisDisabled && handleListSelect(list)}
                     className={clsx(
                       'm-2 cursor-pointer rounded-xl px-2 py-1 text-left',
                       minisDisabled || isDisabled ? 'cursor-not-allowed text-gray-400' : 'hover:bg-gray-100',
