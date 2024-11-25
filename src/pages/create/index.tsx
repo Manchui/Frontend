@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import router from 'next/router';
 import { instance } from '@/apis/api';
-// import { getCloseGatheringIdData } from '@/apis/getCloseGatheringIdData';
+import { getCloseGatheringIdData } from '@/apis/getCloseGatheringIdData';
 import { CapacityDropdown } from '@/components/Create/CapacityDropdown';
 import { CategoryDropdown } from '@/components/Create/CategoryDropdown';
 import { DescriptionInput } from '@/components/Create/DescriptionInput';
@@ -22,7 +22,7 @@ import ImageUploader from '@/components/Create/ImageUploader';
 import { LocationDropdown } from '@/components/Create/LocationDropdown';
 import Calendar from '@/components/shared/Calendar';
 import { Toast } from '@/components/shared/Toast';
-// import useGetCloseGatheringIdData from '@/hooks/useGetCloseGatheringIdData';
+import useGetCloseGatheringIdData from '@/hooks/useGetCloseGatheringIdData';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 
 type TimeChip = {
@@ -316,7 +316,7 @@ export default function CreatePage() {
       </header>
       <div className="mx-auto mb-8 mt-5 flex max-w-[343px] flex-col items-center justify-center px-3 mobile:max-w-[744px] tablet:max-w-[1000px]">
         <form onSubmit={handleSubmit} className="w-full space-y-6 mobile:space-y-10">
-          <GroupNameInput name={name} setName={handleInputChange('모임 이름')} error={errors['모임 이름']} />
+          <GroupNameInput setGatheringId={setGatheringId} name={name} setName={handleInputChange('모임 이름')} error={errors['모임 이름']} />
 
           <CategoryDropdown setSelectedCategory={handleInputChange('카테고리')} error={errors['카테고리']} />
 
@@ -424,20 +424,20 @@ export default function CreatePage() {
   );
 }
 
-// export const getServerSideProps = async (gatheringId: number) => {
-//   const queryClient = new QueryClient();
+export const getServerSideProps = async (gatheringId: number) => {
+  const queryClient = new QueryClient();
 
-//   await queryClient.prefetchQuery({
-//     queryKey: ['create'],
-//     queryFn: () => getCloseGatheringIdData(gatheringId),
-//   });
+  await queryClient.prefetchQuery({
+    queryKey: ['create'],
+    queryFn: () => getCloseGatheringIdData(gatheringId),
+  });
 
-//   return {
-//     props: {
-//       dehydratedState: dehydrate(queryClient),
-//       seo: {
-//         title: '만취 - 생성 페이지',
-//       },
-//     },
-//   };
-// };
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+      seo: {
+        title: '만취 - 생성 페이지',
+      },
+    },
+  };
+};

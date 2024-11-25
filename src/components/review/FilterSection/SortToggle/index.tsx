@@ -1,26 +1,25 @@
-import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import Dropdown from '@/components/main/Dropdown';
 import { Toast } from '@/components/shared/Toast';
+import { useSetSort, useSort } from '@/store/useFilterStore';
 
 const sortData = [
   { api: 'ratingDesc', name: '별점 높은순' },
   { api: 'ratingAsc', name: '별점 낮은순' },
 ];
 
-interface RegionDropdownProps {
-  setSort: Dispatch<SetStateAction<string | undefined>>;
-  sort?: string;
-}
 
-export default function SortToggle({ sort, setSort }: RegionDropdownProps) {
+
+export default function SortToggle() {
   const [sortDropOpen, setSortDropOpen] = useState(false);
+ const sort=useSort();
+ const setSort=useSetSort();
 
   const handleInitClick = () => {
     setSort(undefined);
     setSortDropOpen(false);
 
-    Toast('success', '순서가 초기화되었습니다.');
+    Toast('info', '순서가 초기화되었습니다.');
   };
 
   const handleSortSelect = (value: { api: string; name: string }) => {
