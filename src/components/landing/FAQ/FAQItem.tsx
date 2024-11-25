@@ -8,7 +8,8 @@ interface QNAItemProps {
   onClickOpenButton: () => void;
   question: string;
 }
-
+// TODO: tailwind theme에 해당 컬러가 등록되어 있는데 색상값을 넣어주는 대신 theme에서 가져와서 사용할 수 없을까요?
+// 이곳 말고도 '#F7C312'를 직접 입력하여 사용하는 곳이 여러 곳 있습니다.
 const headerVariants: Variants = {
   open: { backgroundColor: '#F7C312' },
   closed: { backgroundColor: 'white' },

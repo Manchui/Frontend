@@ -8,6 +8,8 @@ import Review2 from 'public/images/review2.png';
 import Review3 from 'public/images/review3.png';
 import { IS_SERVER } from '@/constants/server';
 
+// TODO: 같은 구조가 반복 되고 있습니다. 임시로 만든게 아니라면 컴포넌트로 만들어 재사용성을 높여주세요.
+
 export default function ReviewSection() {
   const [showScrollTop, setShowScrollTop] = useState<boolean>(false);
 
