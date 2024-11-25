@@ -12,7 +12,7 @@ export interface MobileUIProps {
 }
 
 export const MobileUI = forwardRef<HTMLDivElement, MobileUIProps>(({ notifications, isLoading, onDropClick, isError }, ref) => (
-  <div className="fixed inset-0 z-10 bg-white p-10">
+  <div className="fixed inset-0 z-50 bg-white p-10">
     <div className="mb-5 flex items-center">
       <button type="button" onClick={onDropClick}>
         <ArrowBtn direction="left" color="#fb1c49" className="size-8" />
