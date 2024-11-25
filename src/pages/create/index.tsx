@@ -1,3 +1,7 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
@@ -5,10 +9,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable radix */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import router from 'next/router';
 import { instance } from '@/apis/api';
+// import { getCloseGatheringIdData } from '@/apis/getCloseGatheringIdData';
 import { CapacityDropdown } from '@/components/Create/CapacityDropdown';
 import { CategoryDropdown } from '@/components/Create/CategoryDropdown';
 import { DescriptionInput } from '@/components/Create/DescriptionInput';
@@ -17,6 +22,8 @@ import ImageUploader from '@/components/Create/ImageUploader';
 import { LocationDropdown } from '@/components/Create/LocationDropdown';
 import Calendar from '@/components/shared/Calendar';
 import { Toast } from '@/components/shared/Toast';
+// import useGetCloseGatheringIdData from '@/hooks/useGetCloseGatheringIdData';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 
 type TimeChip = {
   disable: boolean;
@@ -25,6 +32,7 @@ type TimeChip = {
 
 export default function CreatePage() {
   const [name, setName] = useState<string | null>(null);
+  const [gatheringId, setGatheringId] = useState<number | null>(null);
   const [description, setDescription] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
@@ -40,6 +48,18 @@ export default function CreatePage() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
+  // const { data: closeGatheringIdData } = useGetCloseGatheringIdData(gatheringId);
+  // const [, setIsGatheringIdData] = useState<typeof closeGatheringIdData | null>(null);
+  // useEffect(() => {
+  //   if (gatheringId) {
+  //     setIsGatheringIdData(closeGatheringIdData);
+  //   } else {
+  //     setIsGatheringIdData(null);
+  //   }
+
+  //   // console.log('isGatheringIdData:', isGatheringIdData);
+  //   // console.log('gatheringId:', gatheringId);
+  // }, [gatheringId]);
   const fields = [
     { value: name, label: '모임 이름' },
     { value: description, label: '모임 설명' },
@@ -51,6 +71,7 @@ export default function CreatePage() {
     { value: selectedTime, label: '시간' },
     { value: selectedImage, label: '이미지' },
   ];
+
   const handleInputChange = (fieldName: string) => (value: any) => {
     switch (fieldName) {
       case '모임 이름':
@@ -134,6 +155,8 @@ export default function CreatePage() {
     // 1. 셀렉된 날짜가 29시간 후보다 큰 경우
     if (selectedDate > hoursLater29) {
       setTimeChips((prevChips) => prevChips.map((chip) => ({ ...chip, disable: false })));
+      const finalDate = selectedDate.toLocaleDateString('ko-KR').replace(/\.$/, '').replace(/\./g, '-').trim();
+      Toast('info', `선택 날짜는 ${finalDate} 입니다.`);
     }
 
     // 2. 셀렉된 날짜가 29시간 후보다 작은 경우
@@ -155,11 +178,15 @@ export default function CreatePage() {
             disable: chip.time <= hoursLater29Hour,
           })),
         );
+        const finalDate = selectedDate.toLocaleDateString('ko-KR').replace(/\.$/, '').replace(/\./g, '-').trim();
+        Toast('info', `선택 날짜는 ${finalDate} 입니다.`);
       } else if (currentHour >= 19 && currentHour < 24) {
         Toast('error', '모임 생성은 이틀 뒤부터 가능합니다.');
         handleDateReset();
       } else if (currentHour >= 0 && currentHour < 9) {
         setTimeChips((prevChips) => prevChips.map((chip) => ({ ...chip, disable: false })));
+        const finalDate = selectedDate.toLocaleDateString('ko-KR').replace(/\.$/, '').replace(/\./g, '-').trim();
+        Toast('info', `선택 날짜는 ${finalDate} 입니다.`);
       }
       // 29시간 후의 시간이 18시 이후일 때
       else if (hoursLater29Hour >= 18) {
@@ -230,7 +257,8 @@ export default function CreatePage() {
     }
 
     data.append('groupName', name || ''); // 텍스트 값
-    data.append('gatheringContent', description || ''); // 텍스트 값
+    const normalizedDescription = description?.replace(/\r\n/g, '\n');
+    data.append('gatheringContent', normalizedDescription || ''); // 텍스트 값
     data.append('category', selectedCategory || ''); // 텍스트 값
     data.append('location', selectedLocation || ''); // 텍스트 값
 
@@ -261,8 +289,12 @@ export default function CreatePage() {
         },
       });
       Toast('success', '모임 생성 성공');
-      void router.push('/');
+      void router.push('/main');
     } catch (err: any) {
+      if (err.response?.status === 400) {
+        console.error('400 Error: 전송하려던 데이터 내용 확인:');
+        console.log('gatheringContent:', data.get('gatheringContent'));
+      }
       const errorMessage =
         err.response?.data?.message ||
         (err.response?.status === 403
@@ -279,8 +311,8 @@ export default function CreatePage() {
 
   return (
     <>
-      <header className="mt-[60px] flex h-[97px] w-full items-center justify-center bg-blue-800 mobile:mb-10 mobile:h-[118px] tablet:h-[161px]">
-        <h1 className="text-lg font-semibold text-white mobile:font-bold tablet:text-2xl">만취 모임 만들기</h1>
+      <header className="mt-[60px] flex h-bookmark-banner min-w-[340px] flex-col items-center justify-center bg-blue-800 text-16-20-response font-semibold text-white">
+        만취 모임 만들기
       </header>
       <div className="mx-auto mb-8 mt-5 flex max-w-[343px] flex-col items-center justify-center px-3 mobile:max-w-[744px] tablet:max-w-[1000px]">
         <form onSubmit={handleSubmit} className="w-full space-y-6 mobile:space-y-10">
@@ -308,15 +340,22 @@ export default function CreatePage() {
               <div className="-mt-4 flex gap-2">
                 <button
                   type="button"
-                  onClick={handleDateReset}
-                  className="h-10 w-[120px] rounded-xl border-2 border-blue-800 bg-white text-blue-800 hover:border-blue-400 hover:text-blue-400"
+                  onClick={() => {
+                    if (!selectedDates.selectedDate) {
+                      Toast('warning', '날짜를 선택하세요');
+                      return;
+                    }
+                    handleDateReset();
+                    Toast('success', '날짜 선택이 초기화되었습니다.');
+                  }}
+                  className="h-10 w-[120px] rounded-xl border border-blue-800 hover:bg-black/10"
                 >
                   초기화하기
                 </button>
                 <button
                   type="button"
                   onClick={handleDateApply}
-                  className={`h-10 w-[120px] rounded-xl ${selectedDates.selectedDate ? 'bg-blue-800 text-white hover:bg-blue-700' : 'bg-gray-200 text-gray-500'}`}
+                  className={`h-10 w-[120px] rounded-xl ${selectedDates.selectedDate ? 'bg-blue-800 text-white hover:bg-blue-700' : 'cursor-not-allowed bg-gray-300 text-gray-600'}`}
                 >
                   적용하기
                 </button>
@@ -384,3 +423,21 @@ export default function CreatePage() {
     </>
   );
 }
+
+// export const getServerSideProps = async (gatheringId: number) => {
+//   const queryClient = new QueryClient();
+
+//   await queryClient.prefetchQuery({
+//     queryKey: ['create'],
+//     queryFn: () => getCloseGatheringIdData(gatheringId),
+//   });
+
+//   return {
+//     props: {
+//       dehydratedState: dehydrate(queryClient),
+//       seo: {
+//         title: '만취 - 생성 페이지',
+//       },
+//     },
+//   };
+// };
