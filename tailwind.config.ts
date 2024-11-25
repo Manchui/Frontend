@@ -31,7 +31,7 @@ const config = {
       ...typography,
     },
   },
-  safelist: ['bg-[#fb9b9b]', 'bg-[#85c8f5]', 'bg-[#cdf86f]'],
+  safelist: ['bg-[#fd4872]', 'bg-[#3FD9F9]', 'bg-[#cdf86f]'],
   plugins: [],
 };
 export default config;

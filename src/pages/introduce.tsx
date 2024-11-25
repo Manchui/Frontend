@@ -41,7 +41,7 @@ export default function Introduce() {
         {/* Frontend Section */}
         <m.div variants={sectionVariants} transition={{ duration: 0.8, delay: 0.3 }} className="w-full space-y-5">
           <h2
-            className={`${gugi.className} decoration-front inline-block select-none text-introduce-response text-white underline decoration-[6px] underline-offset-8`}
+            className={`${gugi.className} decoration-frontend inline-block select-none text-introduce-response text-white underline decoration-[6px] underline-offset-8`}
           >
             Frontend Dev
           </h2>
@@ -66,7 +66,7 @@ export default function Introduce() {
           </div>
           <m.div variants={sectionVariants} transition={{ duration: 0.8, delay: 1.3 }} className="mx-auto w-full max-w-[290px] flex-1 space-y-5">
             <h2
-              className={`${gugi.className} decoration-design select-none text-center text-introduce-response text-white underline decoration-[6px] underline-offset-8`}
+              className={`${gugi.className} select-none text-center text-introduce-response text-white underline decoration-design decoration-[6px] underline-offset-8`}
             >
               Designer
             </h2>

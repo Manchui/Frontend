@@ -7,9 +7,9 @@ const colors = {
   background: '#F9FAFB',
   full: '#F5BF08',
   cardBorder: '#f3f4f6',
-  front: '#fb9b9b',
-  backend: '#85c8f5',
+  frontend: '#fd4872',
   design: '#cdf86f',
+  backend: '#3FD9F9',
   primary: {
     50: '#FEF5D7',
     100: '#FCE9A6',

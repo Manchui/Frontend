@@ -21,25 +21,25 @@ export const FRONTEND_CARDS: CardInfo[] = [
       '⚬ 소개 페이지',
       'Framer Motion',
     ],
-    bgColorClass: 'bg-[#fb9b9b]',
+    bgColorClass: 'bg-[#fd4872]',
   },
   {
     type: 'web',
     title: '- 이용환 -',
     description: ['⚬ 로그인 & 회원가입', '- accessToken, refreshToken'],
-    bgColorClass: 'bg-[#fb9b9b]',
+    bgColorClass: 'bg-[#fd4872]',
   },
   {
     type: 'web',
     title: '- 장소희 -',
     description: ['⚬ 마이 페이지', '- ~~~~~~'],
-    bgColorClass: 'bg-[#fb9b9b]',
+    bgColorClass: 'bg-[#fd4872]',
   },
   {
     type: 'web',
     title: '- 이인지 -',
     description: ['⚬ 모든 리뷰 페이지', '- ~~~~~'],
-    bgColorClass: 'bg-[#fb9b9b]',
+    bgColorClass: 'bg-[#fd4872]',
   },
 ];
 
@@ -48,13 +48,13 @@ export const BACKEND_CARDS: CardInfo[] = [
     type: 'server',
     title: '- 오예령 -',
     description: ['⚬ 랜딩 페이지', '⚬ 랜딩 페이지'],
-    bgColorClass: 'bg-[#85c8f5]',
+    bgColorClass: 'bg-[#3FD9F9]',
   },
   {
     type: 'server',
     title: '- 강병훈 -',
     description: ['⚬ 랜딩 페이지', '⚬ 랜딩 페이지'],
-    bgColorClass: 'bg-[#85c8f5]',
+    bgColorClass: 'bg-[#3FD9F9]',
   },
 ];
 

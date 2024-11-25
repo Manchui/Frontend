@@ -94,32 +94,28 @@ export default function MainPage({ seo, dehydratedState }: MainPageProps) {
   };
 
   return (
-    <>
+    <HydrationBoundary state={dehydratedState}>
       <SEO title={seo.title} />
-      <HydrationBoundary state={dehydratedState}>
-        <Carousel handleScrollToFilter={handleScrollToFilter} />
-        <RootLayout>
-          <MainContainer>
-            <HeaderSection />
-            <FilterSection />
-            <MainCardSection scrollRef={scrollRef} isError={isError} isLoading={isLoading} pageSize={pageSize} mainData={mainDataList} />
-            {!isError && <div ref={sentinelRef} className="h-20 w-full flex-shrink-0 opacity-0" />}
-            <SpeedDial />
-          </MainContainer>
-        </RootLayout>
-      </HydrationBoundary>
-    </>
+      <Carousel handleScrollToFilter={handleScrollToFilter} />
+      <RootLayout>
+        <MainContainer>
+          <HeaderSection />
+          <FilterSection />
+          <MainCardSection scrollRef={scrollRef} isError={isError} isLoading={isLoading} pageSize={pageSize} mainData={mainDataList} />
+          {!isError && <div ref={sentinelRef} className="h-20 w-full flex-shrink-0 opacity-0" />}
+          <SpeedDial />
+        </MainContainer>
+      </RootLayout>
+    </HydrationBoundary>
   );
 }
 
 export const getServerSideProps = async () => {
   const queryClient = new QueryClient();
 
-  const request = { page: 1, size: PAGE_SIZE_BY_DEVICE.MAIN.MOBILE };
-
   await queryClient.prefetchQuery({
-    queryKey: ['main', { page: 1 }],
-    queryFn: () => getGatheringData(request),
+    queryKey: ['main', { size: 3 }],
+    queryFn: () => getGatheringData({ size: 3 }),
   });
 
   return {

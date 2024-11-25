@@ -26,25 +26,29 @@ export default function OAuth() {
     gcTime: 1000 * 60 * 6,
   });
 
-  const { data: socialCode } = useQuery({
-    queryKey: ['querySocialAccess'],
-    queryFn: () => getSocialAccess(code as string),
-  });
-
-  const saveSocialCode = useCallback(() => {
-    if (socialCode) {
-      loginStore();
-    } else {
-      Toast('error', '새로고침 후 다시 시도해주세요.');
-      void routerInternal.push('/login');
-    }
-  }, [loginStore, routerInternal, socialCode]);
-
   useEffect(() => {
-    if (!code) return;
+    async function handleOAuth() {
+      if (!code) return;
 
-    saveSocialCode();
-  }, [code, saveSocialCode]);
+      const social = sessionStorage.getItem('social');
+      try {
+        if (!social) {
+          throw new Error('Social is null');
+        }
+        const result = await getSocialAccess(code as string);
+        if (result) {
+          loginStore();
+        } else if (!result) {
+          await routerInternal.push('/login');
+        }
+      } catch (error) {
+        Toast('error', '새로고침 후 다시 시도해주세요.');
+        void routerInternal.push('/login');
+        console.log(error);
+      }
+    }
+    void handleOAuth();
+  }, [code, loginStore, routerInternal]);
 
   const saveUserInfo = useCallback(() => {
     void refetch();

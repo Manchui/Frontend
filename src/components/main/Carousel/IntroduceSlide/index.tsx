@@ -9,8 +9,8 @@ export default function IntroduceSlide() {
   const router = useInternalRouter();
 
   const cards = [
-    { ...BACKEND_CARDS[0], bg: '#85c8f5', title: 'SERVER' },
-    { ...FRONTEND_CARDS[0], bg: '#fb9b9b', title: 'WEB' },
+    { ...BACKEND_CARDS[0], bg: '#3FD9F9', title: 'SERVER' },
+    { ...FRONTEND_CARDS[0], bg: '#fd4872', title: 'WEB' },
     { ...DESIGNER_CARDS[0], bg: '#cdf86f', title: 'DESIGN' },
   ];
 
@@ -53,7 +53,18 @@ export default function IntroduceSlide() {
             className="relative flex w-[300px] cursor-pointer flex-col items-center justify-center rounded-xl p-4 shadow-lg"
             style={{ backgroundColor: card.bg }}
           >
-            <Image src={`${POSITION_BASE}/${card.type}.svg`} alt={`${card.title} Icon`} width={200} height={100} priority className="mb-4 object-cover" />
+            <Image
+              src={`${POSITION_BASE}/${card.type}.svg`}
+              alt={`${card.title} Icon`}
+              width={200}
+              height={100}
+              priority
+              style={{
+                width: '100%',
+                height: 'auto',
+                objectFit: 'contain',
+              }}
+            />
             <h2 className="text-16-20-response font-bold text-white">{card.title}</h2>
           </m.div>
         ))}

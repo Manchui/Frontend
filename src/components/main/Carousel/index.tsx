@@ -26,7 +26,6 @@ interface CarouselProps {
 
 export default function Carousel({ handleScrollToFilter }: CarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
 
   const slides = [
     <IntroduceSlide key="introduce" />,
@@ -58,13 +57,6 @@ export default function Carousel({ handleScrollToFilter }: CarouselProps) {
   };
 
   useEffect(() => {
-    if (isHovered) {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-      return undefined;
-    }
-
     intervalRef.current = setInterval(() => {
       handleNext();
     }, 4000);
@@ -74,7 +66,7 @@ export default function Carousel({ handleScrollToFilter }: CarouselProps) {
         clearInterval(intervalRef.current);
       }
     };
-  }, [handleNext, isHovered]);
+  }, [handleNext]);
 
   useEffect(() => {
     if (timeoutRef.current) {
@@ -90,9 +82,7 @@ export default function Carousel({ handleScrollToFilter }: CarouselProps) {
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className="relative min-w-[320px] select-none overflow-hidden bg-black pt-[60px]"
+      className="group relative min-w-[360px] select-none overflow-hidden bg-black pt-[60px]"
     >
       <m.div key={currentIndex} variants={zoomVariants} initial="enter" animate="center" className="w-full">
         {slides[currentIndex]}
@@ -101,23 +91,25 @@ export default function Carousel({ handleScrollToFilter }: CarouselProps) {
       <button
         type="button"
         onClick={handlePrev}
-        className={`absolute left-4 top-1/2 p-2 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+        className="absolute left-4 top-1/2 z-20 p-2 opacity-100 transition-opacity duration-300 group-hover:opacity-100 tablet:opacity-0"
       >
-        <ArrowBtn direction="left" color="lightgray" className="size-12" />
+        <ArrowBtn direction="left" color="white" className="size-12" />
       </button>
 
       <button
         type="button"
         onClick={handleNext}
-        className={`absolute right-4 top-1/2 p-2 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+        className="absolute right-4 top-1/2 z-20 p-2 opacity-100 transition-opacity duration-300 group-hover:opacity-100 tablet:opacity-0"
       >
-        <ArrowBtn direction="right" color="lightgray" className="size-12" />
+        <ArrowBtn direction="right" color="white" className="size-12" />
       </button>
 
-      <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
+      <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 gap-2">
         {slides.map((_, index) => (
-          <div
+          // eslint-disable-next-line jsx-a11y/control-has-associated-label
+          <button
             key={index}
+            type="button"
             onClick={() => setCurrentIndex(index)}
             className={`cursor-pointer rounded-full transition-all duration-500 ${index === currentIndex ? 'h-[10px] w-10 bg-white' : 'size-[10px] bg-gray-400'}`}
             style={{

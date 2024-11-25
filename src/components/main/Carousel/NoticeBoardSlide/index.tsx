@@ -1,3 +1,4 @@
+/* eslint-disable tailwindcss/no-custom-classname */
 import { Gugi } from 'next/font/google';
 import useInternalRouter from '@/hooks/useInternalRouter';
 
@@ -8,9 +9,9 @@ export default function NoticeBoardSlide() {
 
   return (
     <div className="flex h-[400px] flex-col items-center justify-center bg-blue-800 text-white mobile:h-[500px] tablet:h-[600px]">
-      <h1 className="text-center text-landing-title text-[#3FD9F9] font-bold drop-shadow-lg">🫧 공지사항 🫧</h1>
+      <h1 className="text-backend text-center text-landing-title font-bold drop-shadow-lg">🫧 공지사항 🫧</h1>
       <p className="mt-10 text-center text-16-20-response tracking-wide text-gray-300">
-        <span className={`font-bold text-[#3FD9F9] ${gugi.className}`}>New!</span> 만취에서 새로운 카테고리 추가! <br />
+        <span className={`text-backend font-bold ${gugi.className}`}>New!</span> 만취에서 새로운 카테고리 추가! <br />
         <span className={`font-semibold text-white ${gugi.className}`}>&apos;여행&apos;</span>을 즐겨보세요.
       </p>
       <ul className="mb-10 mt-6 space-y-2 text-center text-13-16-response text-gray-400">

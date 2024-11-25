@@ -1,4 +1,3 @@
-/* eslint-disable tailwindcss/enforces-shorthand */
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
@@ -11,6 +10,8 @@ import { useQueryClient } from '@tanstack/react-query';
 
 interface DrawerProps {
   isLoggedIn: boolean;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
   userData: {
     email: string | null;
     id: string | null;
@@ -19,9 +20,8 @@ interface DrawerProps {
   };
 }
 
-export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
+export default function Drawer({ isLoggedIn, userData, setIsOpen, isOpen }: DrawerProps) {
   const queryClient = useQueryClient();
-  const [isOpen, setIsOpen] = useState(false);
   const [, setIsMobile] = useState(false);
 
   const router = useRouter();
@@ -36,6 +36,7 @@ export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
     if (isLoggedIn) {
       await logout(queryClient);
       setIsOpen(false);
+      void router.push('/main');
     }
   };
   const closeDrawer = () => {
@@ -60,12 +61,12 @@ export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [setIsOpen]);
 
   return (
     <div className="flex items-center">
-      <Notification />
-      <button type="button" onClick={toggleDrawer} className="relative flex h-10 w-10 items-center justify-center">
+      {isLoggedIn && <Notification />}
+      <button type="button" onClick={toggleDrawer} className="relative flex size-10 items-center justify-center">
         <div className={clsx('absolute transition-all duration-300 ease-in-out', isOpen ? 'rotate-90 opacity-0' : 'rotate-0 opacity-100')}>
           <Image src="/icons/menu.svg" alt="메뉴" width={38} height={38} />
         </div>
@@ -85,7 +86,7 @@ export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
 
       <div
         className={clsx(
-          'fixed right-0 top-[60px] z-20 flex h-full min-h-[calc(100vh-60px)] w-full transform flex-col bg-blue-800 shadow-lg transition-transform duration-300 mobile:w-[375px]',
+          'fixed right-0 top-[60px] z-20 flex size-full min-h-[calc(100vh-60px)] transform flex-col bg-blue-800 shadow-lg transition-transform duration-300 mobile:w-[375px]',
           {
             'translate-x-full': !isOpen,
             'translate-x-0': isOpen,
@@ -96,12 +97,12 @@ export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
           {isLoggedIn ? (
             <div className="flex items-center justify-between gap-3 border-b border-blue-400 p-4">
               <div className="flex gap-2">
-                <div>
-                  <Image src={userData.image || '/images/profile.svg'} alt="profile" width={40} height={40} className="size-10 rounded-full object-cover" />
+                <div className="shadow-custom-md relative size-10 rounded-full bg-slate-50 focus:outline-none">
+                  <Image className="size-10 rounded-full object-cover" src={userData.image || '/icons/person-rounded.png'} alt="프로필" fill />
                 </div>
-                <div>
-                  <p className="text-sm font-semibold text-white">{userData.name}</p>
-                  <p className="text-[10px] font-medium text-gray-200">{userData.email}</p>
+                <div className="max-w-[160px]">
+                  <p className="truncate text-sm font-semibold text-white">{userData.name}</p>
+                  <p className="truncate text-[10px] font-medium text-gray-200">{userData.email}</p>
                 </div>
               </div>
               <Link
@@ -122,7 +123,7 @@ export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
           )}
         </header>
 
-        <section className="px-4 py-4 text-white">
+        <section className="p-4 text-white">
           <p className="px-2 text-xl font-semibold text-white">모임</p>
           <div className="flex-grow overflow-y-auto pt-4 text-base font-medium">
             <div

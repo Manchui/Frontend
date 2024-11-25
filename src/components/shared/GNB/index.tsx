@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -19,17 +19,22 @@ export default function GNB() {
   const isLoggedIn = userStore((state) => state.isLoggedIn);
   const logoutStore = userStore((state) => state.logout);
   const login = userStore((state) => state.login);
+  const [isOpen, setIsOpen] = useState(false);
 
   const userinfo = userStore((state) => state.user);
   const updateUser = userStore((state) => state.updateUser);
 
-  const { data, isPending, isError, error } = useQuery({
+  const { data } = useQuery({
     queryKey: ['queryUserInfo'],
     queryFn: getUserInfo,
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 6,
   });
-  
+  function toggleDrawer() {
+    if (isOpen) {
+      setIsOpen(false);
+    }
+  }
   useEffect(() => {
     const accessToken: string | null = localStorage.getItem('accessToken');
     if (data && accessToken) {
@@ -46,14 +51,11 @@ export default function GNB() {
     }
   }, [login, data, logoutStore, queryClient, updateUser]);
 
-  if (isPending) return <div>Loading...</div>;
-  if (isError) return <div>Error: {error.message}</div>;
-
   return (
     <nav className="fixed top-0 z-[9999] w-full bg-white">
-      <div className="mx-auto flex h-[60px] max-w-[1500px] items-center justify-between px-4 tablet:px-6 pc:px-10">
+      <div className="mx-auto flex h-[60px] max-w-[1500px] items-center justify-between px-4 tablet:px-6 pc:px-10" onClick={toggleDrawer}>
         <div className="absolute left-1/2 -translate-x-1/2 transform">
-          <Link href="/">
+          <Link href="/main">
             <Image src="/logo/logo.png" alt="로고" width={73} height={35} />
           </Link>
         </div>
@@ -93,7 +95,7 @@ export default function GNB() {
         </div>
 
         <div className="-mr-2 flex flex-grow justify-end tablet:-mr-4 tablet:hidden">
-          <Drawer isLoggedIn={isLoggedIn ?? false} userData={userinfo} />
+          <Drawer isLoggedIn={isLoggedIn ?? false} userData={userinfo} setIsOpen={setIsOpen} isOpen={isOpen} />
         </div>
         <div className="hidden w-[154px] flex-grow tablet:flex tablet:justify-end">
           {isLoggedIn ? (
