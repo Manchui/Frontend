@@ -10,6 +10,8 @@ import { useQueryClient } from '@tanstack/react-query';
 
 interface DrawerProps {
   isLoggedIn: boolean;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
   userData: {
     email: string | null;
     id: string | null;
@@ -18,9 +20,8 @@ interface DrawerProps {
   };
 }
 
-export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
+export default function Drawer({ isLoggedIn, userData, setIsOpen, isOpen }: DrawerProps) {
   const queryClient = useQueryClient();
-  const [isOpen, setIsOpen] = useState(false);
   const [, setIsMobile] = useState(false);
 
   const router = useRouter();
@@ -60,11 +61,11 @@ export default function Drawer({ isLoggedIn, userData }: DrawerProps) {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [setIsOpen]);
 
   return (
     <div className="flex items-center">
-      <Notification />
+      {isLoggedIn && <Notification />}
       <button type="button" onClick={toggleDrawer} className="relative flex size-10 items-center justify-center">
         <div className={clsx('absolute transition-all duration-300 ease-in-out', isOpen ? 'rotate-90 opacity-0' : 'rotate-0 opacity-100')}>
           <Image src="/icons/menu.svg" alt="메뉴" width={38} height={38} />
