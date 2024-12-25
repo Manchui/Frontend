@@ -1,0 +1,4 @@
+{
+  "/main/data/gatheringList": "/gatheringList",
+  "/main/data/gatheringList/:id": "/gatheringList/:id"
+}
