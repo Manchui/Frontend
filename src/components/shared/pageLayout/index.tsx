@@ -3,6 +3,7 @@ import { AnimatePresence } from 'framer-motion';
 import * as m from 'framer-motion/m';
 import GNB from '@/components/shared/GNB';
 import Loading from '@/components/shared/Loading';
+import ScrollToTop from '@/components/shared/ScrollToTop';
 import { IS_SERVER } from '@/constants/server';
 import { useAuthBoundary } from '@/hooks/useAuthBoundary';
 import useInternalRouter from '@/hooks/useInternalRouter';
@@ -65,6 +66,7 @@ export default function PageLayout({ children, showHeader = true }: LayoutProps)
           <Loading />
         ) : (
           <m.div key={router.pathname} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+            <ScrollToTop />
             {children}
             {/* {shouldShowFooter && <Footer />} Footer 나중에 계발하면 넣을 생각입니다! */}
           </m.div>

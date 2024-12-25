@@ -50,15 +50,13 @@ export default function SignupForm() {
   return (
     <form onSubmit={handleSignup} className="flex flex-col items-center bg-white p-8 tablet:w-[600px] tablet:rounded-2xl">
       <Image src="/logo/logo.png" alt="로고" width={250} height={150} className="mb-10 cursor-pointer" onClick={() => router.push('/main')} priority />
-      <Social />
-      <hr className="my-8 w-full" />
       <div className="w-full space-y-4">
         <div className="flex">
           <Input type="text" name="nick" onChange={(e) => setNick(e.target.value)} />
           <button
             type="button"
             onClick={handleDoubleCheck}
-            className="ml-4 mt-6 h-[44px] w-24 rounded-xl border bg-blue-800 text-sm text-white hover:bg-blue-700"
+            className="ml-4 mt-6 h-[44px] w-24 rounded-xl bg-blue-800 text-sm font-medium text-white hover:bg-blue-700"
           >
             중복 확인
           </button>
@@ -71,11 +69,13 @@ export default function SignupForm() {
         생성하기
       </button>
       <p className="mt-4 text-center text-sm mobile:text-base">
-        이미 회원이신가요?{' '}
-        <Link href="/login" className="text-gray-400 underline hover:font-bold hover:text-blue-700">
+        이미 회원이신가요?
+        <Link href="/login" className="ml-1 text-gray-400 underline hover:text-blue-700">
           로그인
         </Link>
       </p>
+      <hr className="my-4 w-full" />
+      <Social />
     </form>
   );
 }

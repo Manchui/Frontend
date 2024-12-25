@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import * as m from 'framer-motion/m';
 import DoubleArrow from 'public/icons/DoubleArrow';
-import FAQItem from '@/components/landing/FAQ/FAQItem';
+import FAQItem from '@/components/FAQ/FAQItem';
 import { FAQS } from '@/constants/faq';
 import useInternalRouter from '@/hooks/useInternalRouter';
 

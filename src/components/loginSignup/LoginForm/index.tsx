@@ -46,7 +46,7 @@ export default function LoginForm() {
 
       <p className="mt-4 text-center text-sm mobile:text-base">
         회원이 아닌가요?{' '}
-        <Link href="/signup" className="text-gray-400 underline hover:font-bold hover:text-blue-700">
+        <Link href="/signup" className="text-gray-400 underline hover:text-blue-700">
           회원가입
         </Link>
       </p>

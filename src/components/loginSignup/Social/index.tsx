@@ -28,15 +28,15 @@ export default function Social() {
   };
 
   return (
-    <div className='flex flex-col items-center'>
-      <p className="font-thin">SNS계정으로 간편 로그인/회원가입</p>
+    <div className="flex flex-col items-center">
+      <span className="text-gray-800 font-normal">SNS계정으로 간편 로그인/회원가입</span>
       <div className="mt-2 flex gap-3">
         {SOCIALS.map(({ name, color, logo, url }) => (
           <button
             key={name}
             type="button"
             onClick={() => handleSocialLogin(name, url)}
-            className={`flex size-14 items-center justify-center rounded-full border border-background ${color} shadow-md`}
+            className={`flex size-12 items-center justify-center rounded-full ${color} shadow-md`}
           >
             <Image src={logo} alt="logo" width={80} height={80} />
           </button>
