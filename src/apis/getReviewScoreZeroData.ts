@@ -13,7 +13,7 @@ type GetReviewProps = {
   startDate?: string;
 };
 
-export async function getReviewData({
+export async function getReviewScoreZeroData({
   page = 0,
   size = 10,
   category,
@@ -22,13 +22,13 @@ export async function getReviewData({
   endDate,
   query,
   sort,
-  score,
+  score = 0,
 }: GetReviewProps): Promise<GetReviewResponse> {
   const params = new URLSearchParams({
     page: page.toString(),
     size: size.toString(),
-    ...(sort && { sort }),
     ...(score && { score: score?.toString() }),
+    ...(sort && { sort }),
     ...(query && { query }),
     ...(category && { category }),
     ...(location && { location }),
@@ -43,7 +43,7 @@ export async function getReviewData({
 
     return res.data;
   } catch (e) {
-    console.error('getReviewData 함수에서 오류 발생:', e);
+    console.error('getReviewScoreZeroData 함수에서 오류 발생:', e);
     throw new Error('리뷰 데이터를 불러오는데 실패했습니다.');
   }
 }

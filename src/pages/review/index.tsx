@@ -1,23 +1,38 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { getReviewData } from '@/apis/getReviewData';
+import BookmarkContainer from '@/components/bookmark/BookmarkContainer';
 import HeaderSection from '@/components/main/HeaderSection';
 import FilterSection from '@/components/review/FilterSection';
 import MainHeader from '@/components/review/MainHeader';
 import ReviewCardList from '@/components/review/ReviewCardList';
-import ReviewContainer from '@/components/review/ReviewContainer';
 import PaginationBtn from '@/components/shared/PaginationBtn';
 import RootLayout from '@/components/shared/RootLayout';
+import { SEO } from '@/components/shared/SEO';
 import useGetReviewData from '@/hooks/useGetReviewData';
-import useFilterStore from '@/store/useFilterStore';
-import { dehydrate, QueryClient } from '@tanstack/react-query';
+import useGetReviewScoreZeroData from '@/hooks/useGetReviewScoreZeroData';
+import useInternalRouter from '@/hooks/useInternalRouter';
+import useFilterStore, { useResetFilters, useScore } from '@/store/useFilterStore';
+import type { DehydratedState } from '@tanstack/react-query';
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 
-export default function ReviewPage() {
-  const [sort, setSort] = useState<string | undefined>(undefined);
-  const { page, keyword, location, category, dateStart, dateEnd } = useFilterStore();
+import Error from 'public/lottie/error.json';
 
-  const [pagesize] = useState(10);
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
+
+type ReviewProps = {
+  dehydratedState: DehydratedState;
+  initialPageSize: number;
+  seo: {
+    title: string;
+  };
+};
+export default function ReviewPage({ seo, dehydratedState, initialPageSize }: ReviewProps) {
+  const [pageSize, setPageSize] = useState(initialPageSize);
+  const { page, keyword, location, category, sort, dateEnd, dateStart } = useFilterStore();
+  const score = useScore();
+  const router = useInternalRouter();
+  const resetFilters = useResetFilters();
 
   const {
     data: reviewData,
@@ -26,47 +41,96 @@ export default function ReviewPage() {
     // isLoading,
   } = useGetReviewData({
     page,
-    size: pagesize,
+    size: pageSize,
     query: keyword,
     location,
     category,
     sort,
     startDate: dateStart,
     endDate: dateEnd,
+    score,
+  });
+  const { data: reviewDataZero } = useGetReviewScoreZeroData({
+    page,
+    size: pageSize,
+    query: keyword,
+    location,
+    category,
+    sort,
+    startDate: dateStart,
+    endDate: dateEnd,
+    score: 0,
   });
 
+  const data = reviewData?.data;
+  const zerodata = reviewDataZero?.data;
+
+  useEffect(() => {
+    if (pageSize !== 10) {
+      setPageSize(10);
+    }
+  }, [pageSize]);
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      resetFilters();
+    };
+
+    router.events.on('routeChangeStart', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+    };
+  }, [router, resetFilters]);
+
   return (
-    <div className="mt-[60px]">
-      <MainHeader />
-      <RootLayout>
-        <ReviewContainer>
-          {/* Header (타이틀, 검색창) */}
-          <HeaderSection />
-          {/* 카테고리 */}
-          <FilterSection sort={sort} setSort={setSort} />
-          {/* 카드 */}
-          <ReviewCardList data={reviewData?.data} isLoading={isLoading} isError={isError} />
-          {!isLoading && !isError && reviewData?.data?.reviewContentList && reviewData.data.reviewContentList.length > 0 && (
-            <div className="w-full bg-white">
-              <PaginationBtn page={reviewData?.data.page ?? 0} totalPage={reviewData?.data.totalPage ?? 0} />
+    <>
+      <SEO title={seo.title} />
+
+      <HydrationBoundary state={dehydratedState}>
+        {isError ? (
+          <div className="mt-[60px] h-bookmark-banner">
+            <Lottie animationData={Error} className="size-full border-b-2 border-cardBorder bg-background" />
+          </div>
+        ) : (
+          <MainHeader isError={isError} />
+        )}
+        <RootLayout>
+          <BookmarkContainer>
+            {/* Header (타이틀, 검색창) */}
+            <HeaderSection />
+            <div className="min-h-screen w-full bg-white">
+              <FilterSection data={zerodata} scoreReviewCount={data?.scoreReviewCount} />
+
+              {/* 카드 */}
+
+              <ReviewCardList data={reviewData?.data} isLoading={isLoading} isError={isError} />
+
+              {!isLoading && !isError && reviewData?.data?.reviewContentList && reviewData.data.reviewContentList.length > 0 && (
+                <PaginationBtn page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} />
+              )}
             </div>
-          )}
-        </ReviewContainer>
-      </RootLayout>
-    </div>
+          </BookmarkContainer>
+        </RootLayout>
+      </HydrationBoundary>
+    </>
   );
 }
+
 export const getServerSideProps = async () => {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ['review', 1, 9],
+    queryKey: ['review', 1, 10],
     queryFn: () => getReviewData({ page: 1, size: 10 }),
   });
 
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
+      seo: {
+        title: '만취 - 리뷰 페이지',
+      },
     },
   };
 };

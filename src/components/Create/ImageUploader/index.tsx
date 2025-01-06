@@ -37,7 +37,7 @@ export default function ImageUploader({ error, setSelectedImage }: ImageUploader
       <div className="scrollbar-hide -mt-3 flex items-center space-x-3 overflow-x-auto">
         <button
           type="button"
-          className="mt-3 flex size-[100px] shrink-0 flex-col items-center justify-center rounded-lg border border-blue-200 text-sm font-medium text-blue-800 mobile:size-[150px]"
+          className="mt-3 flex aspect-[280/156] h-[100px] shrink-0 flex-col items-center justify-center rounded-lg border border-blue-200 text-sm font-medium text-blue-800 tablet:h-[150px]"
           onClick={handleButtonClick}
         >
           <Image src="/icons/+.svg" alt="+" width={18} height={18} className="mb-2" />
@@ -47,7 +47,7 @@ export default function ImageUploader({ error, setSelectedImage }: ImageUploader
         <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }} />
 
         {previewImage && (
-          <div className="relative mt-3 size-[100px] shrink-0 rounded-lg border border-blue-200 mobile:size-[150px]">
+          <div className="relative mt-3 aspect-[280/156] h-[100px] shrink-0 rounded-lg border border-blue-200 tablet:h-[150px]">
             <Image src={previewImage} alt="예시 이미지" layout="fill" objectFit="cover" className="rounded-lg" />
             <button
               type="button"
