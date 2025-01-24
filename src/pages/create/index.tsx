@@ -23,7 +23,7 @@ import { LocationDropdown } from '@/components/Create/LocationDropdown';
 import Calendar from '@/components/shared/Calendar';
 import { Toast } from '@/components/shared/Toast';
 // import useGetCloseGatheringIdData from '@/hooks/useGetCloseGatheringIdData';
-import { dehydrate, QueryClient } from '@tanstack/react-query';
+import { dehydrate, QueryClient, useQueryClient } from '@tanstack/react-query';
 
 type TimeChip = {
   disable: boolean;
@@ -47,6 +47,8 @@ export default function CreatePage() {
   const exampleCurrentDate = new Date();
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const queryClient = useQueryClient();
 
   // const { data: closeGatheringIdData } = useGetCloseGatheringIdData(gatheringId);
   // const [, setIsGatheringIdData] = useState<typeof closeGatheringIdData | null>(null);
@@ -288,6 +290,11 @@ export default function CreatePage() {
           // 자동으로 form-data 설정됨
         },
       });
+
+      await queryClient.invalidateQueries({
+        queryKey: ['main'],
+      });
+
       Toast('success', '모임 생성 성공');
       void router.push('/main');
     } catch (err: any) {

@@ -11,7 +11,7 @@ export default function LandingMain() {
     <header className="relative min-h-screen select-none">
       <div className="absolute left-1/2 top-1/2 size-full -translate-x-1/2 -translate-y-1/2">
         <figure className="h-full">
-          <video muted autoPlay loop playsInline className="h-full object-cover">
+          <video muted autoPlay loop playsInline poster="/images/landing/poster.webp" className="size-full object-cover">
             <source src="/video/main-video.webm" type="video/webm" />
             <source src="/video/main-video.mp4" type="video/mp4" />
           </video>
@@ -24,7 +24,7 @@ export default function LandingMain() {
         transition={{ duration: 0.9, ease: 'easeInOut', delay: 0.4 }}
         className="absolute left-5 top-1/3 -translate-y-1/2 font-bold text-white mobile:left-10 tablet:left-20"
       >
-        <h1 className="text-landing-title leading-[100%]">
+        <h1 className="text-2xl mobile:text-3xl tablet:text-4xl">
           취미에 만취하다
           <br />
           일상에 즐거움을 더하다

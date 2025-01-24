@@ -97,7 +97,7 @@ export default function Drawer({ isLoggedIn, userData, setIsOpen, isOpen }: Draw
           {isLoggedIn ? (
             <div className="flex items-center justify-between gap-3 border-b border-blue-400 p-4">
               <div className="flex gap-2">
-                <div className="shadow-custom-md relative size-10 rounded-full bg-slate-50 focus:outline-none">
+                <div className="relative size-10 rounded-full bg-slate-50 shadow-custom-md focus:outline-none">
                   <Image className="size-10 rounded-full object-cover" src={userData.image || '/icons/person-rounded.png'} alt="프로필" fill />
                 </div>
                 <div className="max-w-[160px]">
@@ -136,7 +136,7 @@ export default function Drawer({ isLoggedIn, userData, setIsOpen, isOpen }: Draw
                 closeDrawer();
               }}
             >
-              <Image src="/icons/search.svg" alt="메뉴" width={20} height={20} />
+              <Image src="/icons/main/search.svg" alt="메뉴" width={20} height={20} className="invert" />
               <span>모임 찾기</span>
             </div>
             <div

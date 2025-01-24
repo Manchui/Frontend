@@ -67,7 +67,10 @@ export default function CalendarGrid({ currentDate, onDateSelect, rangeStart, ra
       'text-gray-300': isPastDate,
     });
 
-    const hoverClasses = selectionType === 'range' && (!rangeStart || (rangeStart && !rangeEnd)) ? 'hover:bg-blue-700' : '';
+    const hoverClasses =
+      selectionType === 'range' && (!rangeStart || (rangeStart && !rangeEnd))
+        ? `hover:bg-blue-700 ${!isSunday && !isSaturday && !isToday ? 'hover:text-white' : ''}`
+        : '';
 
     const dayClasses = twMerge(
       'cursor-pointer rounded-lg py-[6px] text-center text-sm font-medium transition duration-200 ease-in-out',

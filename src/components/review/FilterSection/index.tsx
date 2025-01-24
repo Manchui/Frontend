@@ -1,7 +1,7 @@
 import { type Dispatch, type SetStateAction } from 'react';
-import CategoryList from '@/components/main/FilterSection/CategoryList';
-import DateDropdown from '@/components/main/FilterSection/DateDropdown';
-import RegionDropdown from '@/components/main/FilterSection/RegionDropdown';
+import CategoryList from '@/components/main/HeaderSection/FilterList/CategoryList';
+import DateDropdown from '@/components/main/HeaderSection/FilterList/DateDropdown';
+import RegionDropdown from '@/components/main/HeaderSection/FilterList/RegionDropdown';
 
 import SortToggle from './SortToggle';
 

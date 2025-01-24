@@ -1,8 +1,15 @@
-/* eslint-disable tailwindcss/no-custom-classname */
 import { useCallback, useState } from 'react';
 import clsx from 'clsx';
-import CalendarGrid from '@/components/shared/Calendar/CalendarGrid';
-import CalendarSelector from '@/components/shared/Calendar/CalendarSelector';
+import dynamic from 'next/dynamic';
+
+const CalendarSelector = dynamic(() => import('@/components/shared/Calendar/CalendarSelector'), {
+  loading: () => <div className="h-6 w-[100px]">Loading...</div>,
+  ssr: false,
+});
+const CalendarGrid = dynamic(() => import('@/components/shared/Calendar/CalendarGrid'), {
+  loading: () => <div className="flex h-[190px] w-[250px] items-center justify-center border border-blue-800">Loading...</div>,
+  ssr: false,
+});
 
 interface CalendarProps {
   endDate?: string | null;

@@ -21,7 +21,7 @@ declare module '@manchui-api' {
     location?: string;
     page?: number;
     query?: string;
-    size: number;
+    size?: number;
     sort?: string;
     startDate?: string;
   };

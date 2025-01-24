@@ -42,16 +42,6 @@ const keyframes = {
       transform: 'scale(2)',
     },
   },
-  'slideInFromLeft': {
-    from: {
-      opacity: '0',
-      transform: 'translateX(10px)',
-    },
-    to: {
-      opacity: '1',
-      transform: 'translateX(0)',
-    },
-  },
   'menu-bar1': {
     '0%': { transform: 'translateY(8px) rotate(45deg)' },
     '50%': { transform: 'translateY(8px) rotate(0)' },

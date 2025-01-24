@@ -1,55 +1,65 @@
-/* eslint-disable tailwindcss/no-custom-classname */
-import { memo } from 'react';
-import { Gugi } from 'next/font/google';
-import Link from 'next/link';
-import ArrowBtn from 'public/icons/ArrowBtn';
-import CardContent from '@/components/main/CardSection/CardContent';
-import CardImage from '@/components/main/CardSection/CardImage';
-import type { GetGatheringResponse } from '@manchui-api';
+import { useEffect, useRef } from 'react';
+import dynamic from 'next/dynamic';
+import { MessageWithLink } from '@/components/main/MainCardSection/CardSection';
+import ErrorBoundary from '@/components/shared/ErrorBoundary';
+import Skeleton from '@/components/shared/Skeleton';
+import useGetGatheringData from '@/hooks/useGetGatheringData';
+import useIntersectionObserver from '@/hooks/useIntersectionObserver';
+import useFilterStore from '@/store/useFilterStore';
 
-interface CardSectionProps {
-  gathering: GetGatheringResponse['data']['gatheringList'][number];
-}
+const NoData = dynamic(() => import('@/components/shared/NoData'), { ssr: false });
+const CardItem = dynamic(() => import('./CardItem'), { ssr: false });
 
-const gugi = Gugi({ weight: '400', subsets: ['latin'] });
+function CardSectionContent() {
+  const { keyword, location, category, closeDate, dateStart, dateEnd } = useFilterStore();
 
-function CardSection({ gathering }: CardSectionProps) {
+  const sentinelRef = useRef<HTMLDivElement>(null);
+  const isIntersecting = useIntersectionObserver(sentinelRef);
+
+  const { mainData, isError, hasNextPage, fetchNextPage } = useGetGatheringData({
+    query: keyword,
+    location,
+    category,
+    sort: closeDate,
+    startDate: dateStart,
+    endDate: dateEnd,
+  });
+
+  useEffect(() => {
+    if (isIntersecting && hasNextPage) void fetchNextPage();
+  }, [isIntersecting, hasNextPage, fetchNextPage]);
+
   return (
-    <Link
-      href={`/detail/${gathering.gatheringId}`}
-      className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_4px_16px_0_rgba(17,34,17,0.05)] mobile:flex-row tablet:flex-col"
-    >
-      <CardImage gathering={gathering} />
-      <CardContent gathering={gathering} />
-    </Link>
+    <div className="px-5">
+      <ul className="grid grid-cols-2 gap-5 tablet:grid-cols-3 pc:grid-cols-4">{mainData?.map((data) => <CardItem key={data.gatheringId} data={data} />)}</ul>
+      {mainData?.length === 0 && <NoData use="main" />}
+      {!isError && <div ref={sentinelRef} className="h-10 w-full flex-shrink-0 opacity-0" />}
+    </div>
   );
 }
-
-export default memo(CardSection);
 
 export function CardSkeleton() {
   return (
-    <div className="relative aspect-square min-h-[170px] overflow-hidden rounded-2xl bg-slate-300 shadow-[0_4px_16px_0_rgba(17,34,17,0.05)] mobile:aspect-auto mobile:h-[170px] mobile:flex-row tablet:aspect-square tablet:size-full tablet:min-h-[290px]">
-      <div className="absolute inset-0 animate-skeleton bg-gradient-to-r from-transparent via-slate-100 to-transparent opacity-70" />
+    <div className="px-5">
+      <ul className="grid h-full grid-cols-2 gap-4 tablet:grid-cols-3 pc:grid-cols-4">
+        {Array.from({ length: 8 }).map((_, idx) => (
+          <Skeleton key={idx} className="h-[350px] w-full" />
+        ))}
+      </ul>
     </div>
   );
 }
 
-export function MessageWithLink({ message, buttonText, link, onClick }: { buttonText: string; link?: string; message?: string; onClick?: () => void }) {
+export default function CardSection() {
   return (
-    <div className="flex flex-col items-center gap-4 text-pretty text-bookmark-title font-bold">
-      <span className={`${gugi.className}`}>{message}</span>
-      {link ? (
-        <Link href={link} className="flex items-center rounded-md bg-black px-4 py-2 text-sub-response text-white">
-          {buttonText}
-          <ArrowBtn direction="right" className="size-4 stroke-white mobile:size-7" />
-        </Link>
-      ) : (
-        <button type="button" onClick={onClick} className="flex items-center rounded-md bg-black px-4 py-2 text-10-24-response text-white">
-          {buttonText}
-          <ArrowBtn direction="right" className="size-4 stroke-white mobile:size-7" />
-        </button>
-      )}
-    </div>
+    <ErrorBoundary
+      fallbackComponent={
+        <div className="relative top-[100px]">
+          <MessageWithLink message="네트워크 연결을 확인해주세요." buttonText="다시 시도하기" onClick={() => window.location.reload()} />
+        </div>
+      }
+    >
+      <CardSectionContent />
+    </ErrorBoundary>
   );
 }

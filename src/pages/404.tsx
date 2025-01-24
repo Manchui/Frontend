@@ -3,13 +3,8 @@ import useInternalRouter from '@/hooks/useInternalRouter';
 export default function Custom404() {
   const router = useInternalRouter();
 
-  const handleBack = () => {
-    void router.back();
-  };
-
-  const handleHome = () => {
-    void router.push('/');
-  };
+  const handleBack = () => router.back();
+  const handleHome = () => router.push('/');
 
   return (
     <section className="bg-white">
@@ -31,7 +26,7 @@ export default function Custom404() {
             <button
               type="button"
               onClick={handleBack}
-              className="flex w-1/2 items-center justify-center gap-x-2 rounded-lg border bg-gray-900 px-5 py-2 text-sm font-semibold text-white transition-colors duration-200 hover:bg-gray-700 sm:w-auto"
+              className="flex w-1/2 items-center justify-center gap-x-2 rounded-lg bg-gray-900 px-5 py-2 text-sm font-semibold text-white transition-colors duration-200 hover:bg-gray-700 sm:w-auto"
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />

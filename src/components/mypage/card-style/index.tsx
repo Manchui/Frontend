@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import Lottie from 'lottie-react';
+import dynamic from 'next/dynamic';
 import getMyAttendance from '@/apis/mypage/get-mypage-attendance';
 import getMyGathering from '@/apis/mypage/get-mypage-gathring';
-import { MessageWithLink } from '@/components/main/CardSection';
+import { MessageWithLink } from '@/components/main/MainCardSection/CardSection';
 import PaginationBtn from '@/components/shared/PaginationBtn';
 import useFilterStore from '@/store/useFilterStore';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -12,6 +12,8 @@ import ReviewCategory from '../category/ReviewCategory';
 import MyReviewList from '../my-review-list';
 
 import Empty from 'public/lottie/empty.json';
+
+const Lottie = dynamic(() => import('lottie-light-react'), { ssr: false });
 
 export function CardComponents({ category }: { category: string }) {
   const queryClient = useQueryClient();

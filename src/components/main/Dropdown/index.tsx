@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react';
-import DownArrow from 'public/icons/DownArrow';
+import Image from 'next/image';
 
 interface DropdownProps {
   buttonLabel: React.ReactNode;
@@ -44,7 +44,15 @@ export default function Dropdown({ buttonLabel, children, isOpen, setIsOpen, cla
         className={`flex items-center rounded-lg border border-gray-100 p-2 text-13-16-response font-semibold text-gray-900 mobile:gap-1 tablet:px-4 ${dropOpen && 'bg-blue-800 text-white'} ${value && 'bg-blue-800 text-white'}`}
       >
         {buttonLabel}
-        <DownArrow direction={dropOpen || value ? 'up' : 'down'} color={dropOpen || value ? 'white' : 'black'} className="duration-300" />
+        <Image
+          src="/icons/down-arrow.svg"
+          alt="드롭다운 화살표"
+          width={20}
+          height={20}
+          priority
+          loading="eager"
+          className={`${dropOpen && 'rotate-180 invert'} ${value && 'invert'} duration-300`}
+        />
       </button>
       {isOpen && <div className={`absolute top-full z-10 mt-2 rounded-xl bg-white drop-shadow-2xl ${className}`}>{children}</div>}
     </div>

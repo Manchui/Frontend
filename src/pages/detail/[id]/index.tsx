@@ -5,18 +5,16 @@ import { ReviewListCard } from '@/components/detail/ReviewListCard';
 import Score from '@/components/detail/score';
 import RootLayout from '@/components/shared/RootLayout';
 import { SEO } from '@/components/shared/SEO';
-import type { DehydratedState } from '@tanstack/react-query';
-import { dehydrate, HydrationBoundary, QueryClient, useQuery } from '@tanstack/react-query';
+import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 
 interface DetailPageProps {
-  dehydratedState: DehydratedState;
   isId: number;
   seo: {
     title: string;
   };
 }
 
-export default function DetailPage({ seo, dehydratedState, isId }: DetailPageProps) {
+export default function DetailPage({ seo, isId }: DetailPageProps) {
   const { data: gatherings } = useQuery({
     // NOTE: page,size는 임시값
     queryKey: ['detail', { isId, page: 1, size: 10 }],
@@ -28,16 +26,14 @@ export default function DetailPage({ seo, dehydratedState, isId }: DetailPagePro
   return (
     <>
       <SEO title={seo.title} />
-      <HydrationBoundary state={dehydratedState}>
-        <RootLayout>
-          <div className="bg-white pb-[90px] pt-[60px]">
-            <GatheringCard gatherings={gatherings} />
-            <Score reviewsList={gatherings.reviewsList} />
-            <ReviewListCard reviews={gatherings.reviewsList} />
-            <FloatingBar id={isId} gatherings={gatherings} />
-          </div>
-        </RootLayout>
-      </HydrationBoundary>
+      <RootLayout>
+        <div className="bg-white pb-[90px] pt-[60px]">
+          <GatheringCard gatherings={gatherings} />
+          <Score reviewsList={gatherings.reviewsList} />
+          <ReviewListCard reviews={gatherings.reviewsList} />
+          <FloatingBar id={isId} gatherings={gatherings} />
+        </div>
+      </RootLayout>
     </>
   );
 }

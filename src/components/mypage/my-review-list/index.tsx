@@ -1,7 +1,7 @@
-import Lottie from 'lottie-react';
+import dynamic from 'next/dynamic';
 import getMyReviewable from '@/apis/mypage/get-mypage-reviewable';
 import getMyReviews from '@/apis/mypage/get-mypage-reviews';
-import { MessageWithLink } from '@/components/main/CardSection';
+import { MessageWithLink } from '@/components/main/MainCardSection/CardSection';
 import PaginationBtn from '@/components/shared/PaginationBtn';
 import useFilterStore from '@/store/useFilterStore';
 import { useQuery } from '@tanstack/react-query';
@@ -10,6 +10,8 @@ import { MeetingCard } from '../card-style/meeting-card';
 import { ReviewableCard } from '../card-style/reviewable-card';
 
 import Empty from 'public/lottie/empty.json';
+
+const Lottie = dynamic(() => import('lottie-light-react'), { ssr: false });
 
 export default function MyReviewList({ category, review, handleRemoveItem }: { category: string; handleRemoveItem: (id: number) => void; review: string }) {
   const isReview = category === '나의 리뷰' && review === '작성 가능한 리뷰';

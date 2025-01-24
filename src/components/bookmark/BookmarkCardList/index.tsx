@@ -1,5 +1,5 @@
 /* eslint-disable tailwindcss/no-custom-classname */
-import CardSection, { CardSkeleton, MessageWithLink } from '@/components/main/CardSection';
+import CardSection, { CardSkeleton, MessageWithLink } from '@/components/main/MainCardSection/CardSection';
 import NoData from '@/components/shared/NoData';
 import type { GetBookmarkResponse } from '@manchui-api';
 

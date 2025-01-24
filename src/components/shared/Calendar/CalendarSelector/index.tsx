@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import ArrowBtn from 'public/icons/ArrowBtn';
-import DownArrow from 'public/icons/DownArrow';
+import Image from 'next/image';
 
 interface CalendarSelectorProps {
   currentDate: Date;
@@ -29,8 +28,9 @@ export default function CalendarSelector({ setDropOpen, dropOpen, currentDate, s
 
   return (
     <div className="relative flex w-full items-center justify-between">
-      <span onClick={() => setDropOpen(!dropOpen)} className="flex cursor-pointer items-center gap-1 text-13-15-response font-semibold text-gray-700">
-        {currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월 <DownArrow direction={dropOpen ? 'up' : 'down'} color="black" className="duration-300" />
+      <span onClick={() => setDropOpen(!dropOpen)} className="flex cursor-pointer items-center text-md font-semibold tablet:text-lg">
+        {currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월{' '}
+        <Image src="/icons/arrow-right.svg" alt="오른쪽" className={`${dropOpen ? 'rotate-90' : '-rotate-90'} duration-300`} width={24} height={24} />
       </span>
       {dropOpen && (
         <ul
@@ -47,10 +47,10 @@ export default function CalendarSelector({ setDropOpen, dropOpen, currentDate, s
       )}
       <div className="flex cursor-pointer items-center">
         <button type="button" onClick={() => changeMonth('prev')}>
-          <ArrowBtn direction="left" color="black" />
+          <Image src="/icons/arrow-right.svg" alt="오른쪽" className="rotate-180" width={24} height={24} />
         </button>
         <button type="button" onClick={() => changeMonth('next')}>
-          <ArrowBtn direction="right" color="black" />
+          <Image src="/icons/arrow-right.svg" alt="오른쪽" width={24} height={24} />
         </button>
       </div>
     </div>

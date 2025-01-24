@@ -57,6 +57,7 @@ export type DetailData = {
   name: string;
   opened: boolean;
   reviewsList: ReviewsList;
+  roomId: string;
   updatedAt: string;
   usersList: UsersList[];
 };

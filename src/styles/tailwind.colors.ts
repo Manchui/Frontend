@@ -1,5 +1,6 @@
 const colors = {
   black: '#1B1B1B',
+  rblack: '#000000',
   white: '#ffffff',
   error: '#DC2626',
   lightred: '#FB1C49',

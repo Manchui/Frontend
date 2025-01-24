@@ -52,11 +52,11 @@ export default function GNB() {
   }, [login, data, logoutStore, queryClient, updateUser]);
 
   return (
-    <nav className="fixed top-0 z-[9999] w-full bg-white">
+    <nav className="fixed top-0 z-[9999] w-full border-b border-b-gray-50 bg-white">
       <div className="mx-auto flex h-[60px] max-w-[1500px] items-center justify-between px-4 tablet:px-6 pc:px-10" onClick={toggleDrawer}>
         <div className="absolute left-1/2 -translate-x-1/2 transform">
           <Link href="/main">
-            <Image src="/logo/logo.png" alt="로고" width={73} height={35} />
+            <Image src="/logo/logo.png" alt="로고" width={73} height={35} priority />
           </Link>
         </div>
         <div className="hidden flex-grow tablet:flex tablet:justify-start">

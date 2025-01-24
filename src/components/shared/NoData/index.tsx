@@ -1,18 +1,18 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 import { memo } from 'react';
 import dynamic from 'next/dynamic';
-import { MessageWithLink } from '@/components/main/CardSection';
+import { MessageWithLink } from '@/components/main/MainCardSection/CardSection';
 import { useSetCategory } from '@/store/useFilterStore';
 
 import Empty from 'public/lottie/empty.json';
 
-const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
+const Lottie = dynamic(() => import('lottie-light-react'), { ssr: false });
 
 function NoData({ use = 'main' }: { use: 'main' | 'bookmark' }) {
   const setCategory = useSetCategory();
 
   return (
-    <div className="absolute left-1/2 w-full -translate-x-1/2">
+    <div className="my-10">
       <Lottie animationData={Empty} className={`"fill-background" ${use === 'main' ? 'fill-background' : 'fill-white'}`} />
       <MessageWithLink
         onClick={() => setCategory('')}

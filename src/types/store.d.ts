@@ -1,6 +1,6 @@
 declare module '@manchui-api' {
   export type FilterStateType = {
-    category?: string;
+    category?: string | undefined;
     closeDate?: string;
     dateEnd?: string;
     dateStart?: string;
@@ -8,7 +8,7 @@ declare module '@manchui-api' {
     location?: string | undefined;
     page?: number;
     resetFilters: () => void;
-    setCategory: (category: string) => void;
+    setCategory: (category: string | undefined) => void;
     setCloseDate: (closeDate: string) => void;
     setDateEnd: (dateEnd: string | undefined) => void;
     setDateStart: (dateStart: string | undefined) => void;

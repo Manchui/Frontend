@@ -1,7 +1,7 @@
-import CategoryList from '@/components/main/FilterSection/CategoryList';
-import CloseDateToggle from '@/components/main/FilterSection/CloseDateToggle';
-import DateDropdown from '@/components/main/FilterSection/DateDropdown';
-import RegionDropdown from '@/components/main/FilterSection/RegionDropdown';
+import CategoryList from '@/components/main/HeaderSection/FilterList/CategoryList';
+import CloseDateToggle from '@/components/main/HeaderSection/FilterList/CloseDateToggle';
+import DateDropdown from '@/components/main/HeaderSection/FilterList/DateDropdown';
+import RegionDropdown from '@/components/main/HeaderSection/FilterList/RegionDropdown';
 
 export default function BookmarkFilter() {
   return (

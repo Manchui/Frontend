@@ -1,8 +1,8 @@
 const screens = {
   mobile: '375px',
   phablet: '677px',
-  tablet: '820px',
-  pc: '1240px',
+  tablet: '768px',
+  pc: '992px',
 };
 
 export default screens;

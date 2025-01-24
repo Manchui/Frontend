@@ -1,11 +1,10 @@
 import { create } from 'zustand';
-import { FILTER_OPTIONS } from '@/constants/filter';
 import type { FilterStateType } from '@manchui-api';
 
 const useFilterStore = create<FilterStateType>((set) => ({
   keyword: undefined,
   location: undefined,
-  category: FILTER_OPTIONS[0].id,
+  category: undefined,
   closeDate: undefined,
   dateStart: undefined,
   dateEnd: undefined,

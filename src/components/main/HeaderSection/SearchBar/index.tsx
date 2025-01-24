@@ -1,14 +1,15 @@
 import type { ChangeEvent, FormEvent } from 'react';
 import { useCallback, useEffect, useState } from 'react';
-import Search from 'public/icons/Search';
+import Image from 'next/image';
 import { useKeyword, useSetKeyword, useSetPage } from '@/store/useFilterStore';
 
 export default function SearchBar() {
   const keyword = useKeyword();
-  const setPage = useSetPage();
   const setKeyword = useSetKeyword();
 
   const [searchValue, setSearchValue] = useState<string | undefined>(keyword || '');
+
+  const setPage = useSetPage();
 
   const handleSearchChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -38,18 +39,18 @@ export default function SearchBar() {
   }, [keyword]);
 
   return (
-    <form className="flex gap-1 border-b border-b-black" onSubmit={handleSearchSubmit}>
-      <label htmlFor="input" className="cursor-pointer">
-        <Search color="black" className="size-6 mobile:size-8" />
-      </label>
+    <form className="flex items-center border-b border-b-gray-50 pb-1" onSubmit={handleSearchSubmit}>
       <input
-        id="input"
+        id="search"
         type="text"
         value={searchValue}
         onChange={handleSearchChange}
-        placeholder="만취에서 찾고 계신 모임이 있나요?"
-        className="w-search-180-240 bg-background text-13-16-response font-semibold outline-none placeholder:text-13-16-response placeholder:text-black/60"
+        placeholder="모임 검색"
+        className="w-32 bg-background font-semibold outline-none placeholder:text-sm placeholder:font-semibold tablet:w-48"
       />
+      <label htmlFor="search" className="size-5 cursor-pointer">
+        <Image src="/icons/main/search.svg" alt="검색" width={20} height={20} priority />
+      </label>
     </form>
   );
 }

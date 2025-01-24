@@ -1,25 +1,25 @@
-import Review1 from 'public/images/landing/review1.png';
-import Review2 from 'public/images/landing/review2.png';
-import Review3 from 'public/images/landing/review3.png';
+import Review1 from 'public/images/landing/review1.webp';
+import Review2 from 'public/images/landing/review2.webp';
+import Review3 from 'public/images/landing/review3.webp';
 
 export const LANDING_BUTTONS = [
   {
     number: '𝟏.',
     title: '간편한 회원가입',
     description: '간단히 아이디와 비밀번호만 입력하여 빠르게 가입하실 수 있습니다.',
-    image: '/images/landing/landing-signup.png',
+    image: '/images/landing/landing-signup.webp',
   },
   {
     number: '𝟐.',
     title: '간편한 모임 생성',
     description: '관심 있는 새로운 모임을 빠르게 직접 만들어 사람들을 초대하세요.',
-    image: '/images/landing/landing-create.png',
+    image: '/images/landing/landing-create.webp',
   },
   {
     number: '𝟑.',
     title: '다양한 모임 참여',
     description: '모임 일정에 맞춰 함께 모여 활동을 즐기고, 새로운 사람들과 교류하세요.',
-    image: '/images/landing/landing-moim.png',
+    image: '/images/landing/landing-moim.webp',
   },
 ] as const;
 

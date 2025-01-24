@@ -1,79 +1,37 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { getGatheringData } from '@/apis/getGatheringData';
-import Carousel from '@/components/main/Carousel';
-import FilterSection from '@/components/main/FilterSection';
+import { CardSkeleton } from '@/components/main/CardSection';
+import { CarouselSkeleton } from '@/components/main/Carousel';
 import HeaderSection from '@/components/main/HeaderSection';
-import MainCardSection from '@/components/main/MainCardSection';
-import MainContainer from '@/components/main/MainContainer';
-import SpeedDial from '@/components/main/SpeedDial';
 import RootLayout from '@/components/shared/RootLayout';
 import { SEO } from '@/components/shared/SEO';
-import PAGE_SIZE_BY_DEVICE from '@/constants/pageSize';
-import useDeviceState from '@/hooks/useDeviceState';
-import useGetGatheringData from '@/hooks/useGetGatheringData';
 import useInternalRouter from '@/hooks/useInternalRouter';
-import useIntersectionObserver from '@/hooks/useIntersectionObserver';
-import useFilterStore, { useResetFilters } from '@/store/useFilterStore';
-import { userStore } from '@/store/userStore';
-import type { DehydratedState } from '@tanstack/react-query';
-import { dehydrate, HydrationBoundary, QueryClient, useQueryClient } from '@tanstack/react-query';
+import { useResetFilters } from '@/store/useFilterStore';
+import getBase64 from '@/utils/getBase64';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
+
+const Carousel = dynamic(() => import('@/components/main/Carousel'), { loading: () => <CarouselSkeleton />, ssr: false });
+const CardSection = dynamic(() => import('@/components/main/CardSection'), { loading: () => <CardSkeleton />, ssr: true });
 
 interface MainPageProps {
-  dehydratedState: DehydratedState;
+  base64: {
+    design: string;
+    develop: string;
+    food: string;
+    server: string;
+    study: string;
+    web: string;
+  };
   seo: {
     title: string;
   };
 }
 
-export default function MainPage({ seo, dehydratedState }: MainPageProps) {
-  const { keyword, location, category, closeDate, dateStart, dateEnd } = useFilterStore();
-
-  const scrollRef = useRef<HTMLDivElement>(null);
-
+export default function MainPage({ base64, seo }: MainPageProps) {
   const router = useInternalRouter();
+
   const resetFilters = useResetFilters();
-
-  const sentinelRef = useRef<HTMLDivElement>(null);
-  const isIntersecting = useIntersectionObserver(sentinelRef);
-
-  const deviceState = useDeviceState();
-
-  const isLoggedIn = userStore((state) => state.isLoggedIn);
-  const queryClient = useQueryClient();
-
-  const pageSize = useMemo(() => PAGE_SIZE_BY_DEVICE.MAIN[deviceState], [deviceState]);
-
-  const {
-    data: mainData,
-    isLoading,
-    isError,
-    hasNextPage,
-    fetchNextPage,
-  } = useGetGatheringData({
-    cursor: undefined,
-    size: pageSize,
-    query: keyword,
-    location,
-    category,
-    sort: closeDate,
-    startDate: dateStart,
-    endDate: dateEnd,
-  });
-
-  const mainDataList = useMemo(() => mainData?.pages.flatMap((page) => page.data.gatheringList) || [], [mainData]);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      void queryClient.invalidateQueries({ queryKey: ['main'] });
-    }
-  }, [isLoggedIn, queryClient]);
-
-  useEffect(
-    function handleScrollFetch() {
-      if (isIntersecting && hasNextPage) void fetchNextPage();
-    },
-    [isIntersecting, hasNextPage, fetchNextPage],
-  );
 
   useEffect(() => {
     const handleRouteChange = () => {
@@ -87,43 +45,42 @@ export default function MainPage({ seo, dehydratedState }: MainPageProps) {
     };
   }, [router, resetFilters]);
 
-  const handleScrollToFilter = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
   return (
-    <HydrationBoundary state={dehydratedState}>
+    <>
       <SEO title={seo.title} />
-      <Carousel handleScrollToFilter={handleScrollToFilter} />
+      <Carousel base64={base64} />
       <RootLayout>
-        <MainContainer>
-          <HeaderSection />
-          <FilterSection />
-          <MainCardSection scrollRef={scrollRef} isError={isError} isLoading={isLoading} pageSize={pageSize} mainData={mainDataList} />
-          {!isError && <div ref={sentinelRef} className="h-20 w-full flex-shrink-0 opacity-0" />}
-          <SpeedDial />
-        </MainContainer>
+        <HeaderSection />
+        <CardSection />
       </RootLayout>
-    </HydrationBoundary>
+    </>
   );
 }
 
-export const getServerSideProps = async () => {
+export async function getServerSideProps() {
+  const base64Develop = await getBase64('/images/main/develop.webp');
+  const base64Study = await getBase64('/images/main/study.webp');
+  const base64Food = await getBase64('/images/main/food.webp');
+
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
-    queryKey: ['main', { size: 3 }],
-    queryFn: () => getGatheringData({ size: 3 }),
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: ['main', {}],
+    queryFn: () => getGatheringData({ size: 8 }),
+    initialPageParam: undefined,
   });
 
   return {
     props: {
-      dehydratedState: dehydrate(queryClient),
+      dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))),
+      base64: {
+        develop: base64Develop.base64,
+        study: base64Study.base64,
+        food: base64Food.base64,
+      },
       seo: {
         title: '만취 - 랜딩 페이지',
       },
     },
   };
-};
+}
