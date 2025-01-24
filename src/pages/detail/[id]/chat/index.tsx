@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { instance } from '@/apis/api';
 import { IS_SERVER } from '@/constants/server';
 import { userStore } from '@/store/userStore';
 import type Stomp from '@stomp/stompjs';
