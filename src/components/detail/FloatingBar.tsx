@@ -26,24 +26,33 @@ export function FloatingBar({ gatherings, id }: DetailPageBaseType) {
         <span className="text-base font-semibold text-blue-800">당신의 취미가 특별해지는 시간 🎮</span>
         <span className="text-sm font-medium text-blue-800">모임 참여로 새로운 즐거움을 발견하세요.</span>
       </div>
-      <button
-        type="button"
-        onClick={() => router.push(`/detail/${id}/chat?roomId=${gatherings.roomId}`)}
-        className="rounded-xl bg-blue-800 px-5 py-2 text-sm font-bold text-white"
-      >
-        웹소켓 테스트
-      </button>
       {isClosed ? (
         <Button label="마감되었습니다" size="primary" variant="primary" disabled />
       ) : findUserId ? (
         <div className="flex gap-2">
           <CancelButton gatherings={gatherings} id={id} />
           <ShareButton />
+          <button
+            type="button"
+            onClick={() => router.push(`/detail/${id}/chat?roomId=${gatherings.roomId}`)}
+            className="rounded-xl bg-blue-800 px-5 py-2 text-sm font-bold text-white"
+          >
+            실시간 문의하기
+          </button>
         </div>
       ) : isDisabled ? (
         <Button label="마감되었습니다" size="primary" variant="primary" disabled />
       ) : (
-        <AttendanceButton gatherings={gatherings} id={id} />
+        <div className="flex gap-2">
+          <AttendanceButton gatherings={gatherings} id={id} />
+          <button
+            type="button"
+            onClick={() => router.push(`/detail/${id}/chat?roomId=${gatherings.roomId}`)}
+            className="rounded-xl bg-blue-800 px-5 py-2 text-sm font-bold text-white"
+          >
+            실시간 문의하기
+          </button>
+        </div>
       )}
     </footer>
   );

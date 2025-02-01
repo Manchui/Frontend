@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { instance } from '@/apis/api';
 import type { GetBookmarkRequest, GetBookmarkResponse } from '@manchui-api';
 

@@ -43,7 +43,7 @@ export default function CardItem({ data }: { data: GetGatheringResponse['data'][
       await queryClient.invalidateQueries({ queryKey: ['main'] });
       await queryClient.invalidateQueries({ queryKey: ['bookmark'] });
     } catch (error) {
-      console.error('API 요청에 실패했습니다:', error);
+      console.error('찜하기 실패:', error);
       setIsHearted((prevHearted) => !prevHearted);
     }
   };

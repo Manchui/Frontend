@@ -20,7 +20,7 @@ export default function FilterList() {
   }, [isLoggedIn, router]);
 
   return (
-    <div className="relative my-6 flex items-center text-nowrap text-[14px]">
+    <div className="relative my-6 flex w-full items-center text-nowrap text-[14px]">
       <div className="flex items-center gap-2 overflow-x-auto leading-[100%] after:absolute after:right-0 after:top-0 after:h-full after:w-32 after:bg-gradient-to-l after:from-white after:via-white after:to-transparent">
         <div className="scrollbar-hide flex h-9 items-center gap-2 overflow-x-auto">
           {/* 필터 버튼들 */}

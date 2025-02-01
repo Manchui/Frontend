@@ -1,13 +1,11 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 import { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
 import { getBookmarkData } from '@/apis/getBookmarkData';
 import BookmarkBanner from '@/components/bookmark/BookmarkBanner';
-import BookmarkCardList from '@/components/bookmark/BookmarkCardList';
 import BookmarkContainer from '@/components/bookmark/BookmarkContainer';
-import BookmarkFilter from '@/components/bookmark/BookmarkFilter';
 import BookmarkHeader from '@/components/bookmark/BookmarkHeader';
-import PaginationBtn from '@/components/shared/PaginationBtn';
+import BookmarkSection from '@/components/bookmark/BookmarkSection';
+import FilterList from '@/components/main/HeaderSection/FilterList';
 import RootLayout from '@/components/shared/RootLayout';
 import { SEO } from '@/components/shared/SEO';
 import PAGE_SIZE_BY_DEVICE from '@/constants/pageSize';
@@ -15,21 +13,15 @@ import useDeviceState from '@/hooks/useDeviceState';
 import useGetBookmarkData from '@/hooks/useGetBookmarkData';
 import useInternalRouter from '@/hooks/useInternalRouter';
 import useFilterStore, { useResetFilters } from '@/store/useFilterStore';
-import type { DehydratedState } from '@tanstack/react-query';
-import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-
-import Error from 'public/lottie/error.json';
-
-const Lottie = dynamic(() => import('lottie-light-react'), { ssr: false });
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 
 interface BookmarkProps {
-  dehydratedState: DehydratedState;
   seo: {
     title: string;
   };
 }
 
-export default function BookmarkPage({ seo, dehydratedState }: BookmarkProps) {
+export default function BookmarkPage({ seo }: BookmarkProps) {
   const deviceState = useDeviceState();
 
   const [pageSize, setPageSize] = useState(PAGE_SIZE_BY_DEVICE.MAIN[deviceState]);
@@ -39,11 +31,7 @@ export default function BookmarkPage({ seo, dehydratedState }: BookmarkProps) {
   const router = useInternalRouter();
   const resetFilters = useResetFilters();
 
-  const {
-    data: bookmark,
-    isLoading,
-    isError,
-  } = useGetBookmarkData({
+  const { bookmark, isLoading, isError } = useGetBookmarkData({
     page,
     size: pageSize,
     query: keyword,
@@ -53,8 +41,6 @@ export default function BookmarkPage({ seo, dehydratedState }: BookmarkProps) {
     startDate: dateStart,
     endDate: dateEnd,
   });
-
-  const data = bookmark?.data;
 
   useEffect(() => {
     if (pageSize !== PAGE_SIZE_BY_DEVICE.BOOKMARK[deviceState]) {
@@ -77,25 +63,14 @@ export default function BookmarkPage({ seo, dehydratedState }: BookmarkProps) {
   return (
     <>
       <SEO title={seo.title} />
-      <HydrationBoundary state={dehydratedState}>
-        {isError ? (
-          <div className="mt-[60px] h-bookmark-banner">
-            <Lottie animationData={Error} className="size-full border-b-2 border-cardBorder bg-background" />
-          </div>
-        ) : (
-          <BookmarkBanner isError={isError} />
-        )}
-        <RootLayout>
-          <BookmarkContainer>
-            <BookmarkHeader data={bookmark?.data} />
-            <div className="min-h-screen w-full bg-white">
-              <BookmarkFilter />
-              <BookmarkCardList data={bookmark?.data} isLoading={isLoading} isError={isError} skeletonCount={pageSize} />
-              {!isLoading && !isError && bookmark?.data.gatheringCount !== 0 && <PaginationBtn page={data?.page ?? 0} totalPage={data?.totalPage ?? 0} />}
-            </div>
-          </BookmarkContainer>
-        </RootLayout>
-      </HydrationBoundary>
+      <BookmarkBanner />
+      <RootLayout>
+        <BookmarkContainer>
+          <BookmarkHeader data={bookmark} />
+          <FilterList />
+          <BookmarkSection bookmark={bookmark} isLoading={isLoading} isError={isError} />
+        </BookmarkContainer>
+      </RootLayout>
     </>
   );
 }
@@ -110,7 +85,7 @@ export const getServerSideProps = async () => {
 
   return {
     props: {
-      dehydratedState: dehydrate(queryClient),
+      dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))),
       seo: {
         title: '만취 - 찜한 모임 페이지',
       },

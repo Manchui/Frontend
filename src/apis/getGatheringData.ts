@@ -5,7 +5,7 @@ export async function getGatheringData(request: GetGatheringRequest): Promise<Ge
   const { size, sort, query, category, location, startDate, endDate, cursor } = request;
 
   const params = {
-    cursor,
+    cursor: cursor?.toString(),
     size: size?.toString(),
     ...(sort && { sort }),
     ...(query && { query }),

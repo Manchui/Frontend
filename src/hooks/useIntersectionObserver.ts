@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 export default function useIntersectionObserver(
   elementRef: RefObject<HTMLElement>,
   options: IntersectionObserverInit = {
-    threshold: 0,
+    threshold: 0.1,
     root: null,
     rootMargin: '0px',
   },

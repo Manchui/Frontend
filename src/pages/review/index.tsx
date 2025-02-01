@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from 'react';
 import { getReviewData } from '@/apis/getReviewData';
-import HeaderSection from '@/components/main/HeaderSection';
 import FilterSection from '@/components/review/FilterSection';
 import MainHeader from '@/components/review/MainHeader';
 import ReviewCardList from '@/components/review/ReviewCardList';
@@ -40,8 +39,6 @@ export default function ReviewPage() {
       <MainHeader />
       <RootLayout>
         <ReviewContainer>
-          {/* Header (타이틀, 검색창) */}
-          <HeaderSection />
           {/* 카테고리 */}
           <FilterSection sort={sort} setSort={setSort} />
           {/* 카드 */}

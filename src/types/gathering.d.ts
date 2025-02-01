@@ -81,4 +81,35 @@ declare module '@manchui-api' {
     notificationId: number;
     notificationType: 'GATHERING_LIKE' | 'GATHERING_JOIN';
   };
+
+  export type RoomUserInfo = {
+    name: string;
+    profileImagePath: string;
+  };
+
+  export type RoomUserResponse = {
+    data: {
+      userInfoList: RoomUserInfo[];
+    };
+    message: string;
+    success: boolean;
+  };
+
+  export type ChatMessage = {
+    _id: string;
+    chatMessageType: 'MESSAGE' | 'ENTER';
+    createdAt: string;
+    message: string;
+    sender: string;
+  };
+
+  export type GetChatListResponse = {
+    data: {
+      chatMessageResponseList: ChatMessage[];
+      hasNext: boolean;
+      nextCursor: string | undefined;
+    };
+    message: string;
+    success: boolean;
+  };
 }
