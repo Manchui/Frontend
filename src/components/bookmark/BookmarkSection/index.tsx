@@ -3,7 +3,6 @@ import { MessageWithLink } from '@/components/main/MainCardSection/CardSection';
 import ErrorBoundary from '@/components/shared/ErrorBoundary';
 import NoData from '@/components/shared/NoData';
 import PaginationBtn from '@/components/shared/PaginationBtn';
-import Skeleton from '@/components/shared/Skeleton';
 import type { GetBookmarkResponse } from '@manchui-api';
 
 interface BookmarkSectionProps {
@@ -21,18 +20,6 @@ function BookmarkSectionContent({ bookmark, isLoading, isError }: BookmarkSectio
       {bookmark?.gatheringCount === 0 && <NoData use="main" />}
       {!isLoading && !isError && bookmark?.gatheringCount !== 0 && <PaginationBtn page={bookmark?.page ?? 0} totalPage={bookmark?.totalPage ?? 0} />}
     </>
-  );
-}
-
-export function CardSkeleton() {
-  return (
-    <div className="px-5">
-      <ul className="grid h-full grid-cols-2 gap-4 tablet:grid-cols-3 pc:grid-cols-4">
-        {Array.from({ length: 8 }).map((_, idx) => (
-          <Skeleton key={idx} className="h-[350px] w-full" />
-        ))}
-      </ul>
-    </div>
   );
 }
 

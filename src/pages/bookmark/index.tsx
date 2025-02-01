@@ -1,10 +1,11 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { getBookmarkData } from '@/apis/getBookmarkData';
 import BookmarkBanner from '@/components/bookmark/BookmarkBanner';
 import BookmarkContainer from '@/components/bookmark/BookmarkContainer';
-import BookmarkHeader from '@/components/bookmark/BookmarkHeader';
-import BookmarkSection from '@/components/bookmark/BookmarkSection';
+import { BookmarkHeaderSkeleton } from '@/components/bookmark/BookmarkHeader';
+import { CardSkeleton } from '@/components/main/CardSection';
 import FilterList from '@/components/main/HeaderSection/FilterList';
 import RootLayout from '@/components/shared/RootLayout';
 import { SEO } from '@/components/shared/SEO';
@@ -14,6 +15,9 @@ import useGetBookmarkData from '@/hooks/useGetBookmarkData';
 import useInternalRouter from '@/hooks/useInternalRouter';
 import useFilterStore, { useResetFilters } from '@/store/useFilterStore';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
+
+const BookmarkHeader = dynamic(() => import('@/components/bookmark/BookmarkHeader'), { loading: () => <BookmarkHeaderSkeleton />, ssr: false });
+const BookmarkSection = dynamic(() => import('@/components/bookmark/BookmarkSection'), { loading: () => <CardSkeleton />, ssr: false });
 
 interface BookmarkProps {
   seo: {
