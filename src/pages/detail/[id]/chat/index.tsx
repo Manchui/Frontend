@@ -1,38 +1,40 @@
 import { useEffect, useRef, useState } from 'react';
+import type { GetServerSidePropsContext } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { IS_SERVER } from '@/constants/server';
+import { Toast } from '@/components/shared/Toast';
 import useGetChattingData from '@/hooks/useGetChattingData';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { userStore } from '@/store/userStore';
 import { Client } from '@stomp/stompjs';
 
 interface Message {
+  chatMessageType: 'ENTER' | 'MESSAGE';
   createdAt: number[];
   message: string;
   sender: string;
 }
 
-export default function ChatPage() {
+export default function ChatPage({ roomId }: { roomId: string }) {
   const router = useRouter();
-  const { roomId } = router.query;
 
   const [stompClient, setStompClient] = useState<Client | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
 
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+
   const [isUserListOpen, setIsUserListOpen] = useState<boolean>(false);
   const toggleUserList = () => setIsUserListOpen(!isUserListOpen);
 
   const user = userStore((state) => state.user.name);
-  const accessToken = !IS_SERVER && localStorage.getItem('accessToken');
 
   const sentinelRef = useRef<HTMLDivElement>(null);
   const isIntersecting = useIntersectionObserver(sentinelRef);
 
   const messageContainerRef = useRef<HTMLDivElement>(null);
 
-  const { chatData, roomUser, hasNextPage, fetchNextPage } = useGetChattingData(roomId as string);
+  const { chatData, roomUser, hasNextPage, fetchNextPage } = useGetChattingData(roomId);
 
   useEffect(() => {
     if (messageContainerRef.current) {
@@ -52,6 +54,15 @@ export default function ChatPage() {
   }, [isIntersecting, hasNextPage, fetchNextPage]);
 
   useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      setAccessToken(token);
+    } else {
+      Toast('error', '로그인이 필요합니다.');
+      void router.push('/login');
+      return undefined;
+    }
+
     const stomp = new Client({
       brokerURL: 'wss://manchui.shop/ws',
       connectHeaders: {
@@ -71,10 +82,12 @@ export default function ChatPage() {
     stomp.onConnect = () => {
       console.log('WebSocket 연결에 성공했습니다.');
 
-      stomp.subscribe(`/exchange/chat.exchange/room.${roomId as string}`, (frame) => {
+      stomp.subscribe(`/exchange/chat.exchange/room.${roomId}`, (frame) => {
         try {
           const parsedMessage = JSON.parse(frame.body);
+          console.log('parsedMessage', parsedMessage);
           setMessages((prevMessages) => [parsedMessage as Message, ...prevMessages]);
+          console.log('messages', messages);
         } catch (error) {
           console.error('구독오류가 발생했습니다:', error);
         }
@@ -85,12 +98,12 @@ export default function ChatPage() {
       if (stompClient && stompClient.connected) void stompClient.deactivate();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [roomId]);
+  }, [roomId, accessToken, router, messages]);
 
   const sendMessage = () => {
     if (stompClient && stompClient.connected) {
       stompClient.publish({
-        destination: `/pub/chat.room.${roomId as string}`,
+        destination: `/pub/chat.room.${roomId}`,
         body: JSON.stringify({
           message: inputMessage,
           sender: user,
@@ -99,6 +112,19 @@ export default function ChatPage() {
     }
 
     setInputMessage('');
+  };
+
+  const handleLeaveChat = () => {
+    if (stompClient && stompClient.connected) {
+      stompClient.publish({
+        destination: `/pub/chat.leave.${roomId}`,
+        body: JSON.stringify({
+          message: ' 님이 나가셨습니다.',
+          sender: user,
+        }),
+      });
+      router.back();
+    }
   };
 
   const formatTime = (dateString: string) => {
@@ -168,62 +194,80 @@ export default function ChatPage() {
               </div>
             ))}
           </div>
+
+          <div className="border-t pt-4">
+            <button type="button" className="rounded-lg border px-2 py-1" onClick={handleLeaveChat}>
+              채팅 나가기
+            </button>
+          </div>
         </div>
       </div>
 
       {/* 메시지 목록 */}
-      <div ref={messageContainerRef} className="scrollbar-hide overflow-y-auto px-4 pt-4">
-        <div className="flex flex-col-reverse">
-          {messages.map((msg, index) => (
-            <div key={`new-${index}`} className={`mb-4 flex items-start gap-2 ${msg.sender === user ? 'flex-row-reverse' : 'flex-row'}`}>
-              {msg.sender !== user && (
-                <div className="relative size-[40px] overflow-hidden rounded-full">
-                  <Image
-                    src={roomUser?.find((u) => u.name === msg.sender)?.profileImagePath || '/images/profile.svg'}
-                    alt="프로필"
-                    fill
-                    className="object-cover"
-                    sizes="40px"
-                  />
-                </div>
-              )}
-              <div className={`flex max-w-[70%] flex-col ${msg.sender === user ? 'items-end' : 'items-start'}`}>
-                {msg.sender !== user && <span className="mb-1 text-sm text-gray-300">{msg.sender}</span>}
-                <div className={`flex items-end gap-2 ${msg.sender === user ? 'flex-row-reverse' : 'flex-row'}`}>
-                  <div className={`rounded-lg px-4 py-2 ${msg.sender === user ? 'bg-black text-white' : 'bg-gray-300'}`}>
-                    <div className="break-words">{msg.message}</div>
+      <div ref={messageContainerRef} className="scrollbar-hide flex-1 overflow-y-auto px-4 pt-4">
+        <div className="flex h-full flex-col-reverse">
+          {messages.map((msg, index) =>
+            msg.chatMessageType === 'ENTER' || msg.message.includes('님이 나가셨습니다.') || msg.message.includes('개설하였습니다.') ? (
+              <div key={`new-${index}`} className="my-2 flex justify-center">
+                <div className="rounded-full bg-gray-600 px-4 py-1 text-sm text-gray-300">{msg.sender + msg.message}</div>
+              </div>
+            ) : (
+              <div key={`new-${index}`} className={`mb-4 flex items-start gap-2 ${msg.sender === user ? 'flex-row-reverse' : 'flex-row'}`}>
+                {msg.sender !== user && (
+                  <div className="relative size-[40px] overflow-hidden rounded-full">
+                    <Image
+                      src={roomUser?.find((u) => u.name === msg.sender)?.profileImagePath || '/images/profile.svg'}
+                      alt="프로필"
+                      fill
+                      className="object-cover"
+                      sizes="40px"
+                    />
                   </div>
-                  <span className="text-xs text-gray-500">{formatArrayTime(msg.createdAt)}</span>
+                )}
+                <div className={`flex max-w-[70%] flex-col ${msg.sender === user ? 'items-end' : 'items-start'}`}>
+                  {msg.sender !== user && <span className="mb-1 text-sm text-gray-300">{msg.sender}</span>}
+                  <div className={`flex items-end gap-2 ${msg.sender === user ? 'flex-row-reverse' : 'flex-row'}`}>
+                    <div className={`rounded-lg px-4 py-2 ${msg.sender === user ? 'bg-black text-white' : 'bg-gray-300'}`}>
+                      <div className="break-words">{msg.message}</div>
+                    </div>
+                    <span className="text-xs text-gray-500">{formatArrayTime(msg.createdAt)}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ),
+          )}
           {chatData?.pages.map((page, i) => (
             <div key={i} className="flex flex-col-reverse">
-              {page.data.chatMessageResponseList.map((msg, index) => (
-                <div key={`history-${index}`} className={`mb-4 flex items-start gap-2 ${msg.sender === user ? 'flex-row-reverse' : 'flex-row'}`}>
-                  {msg.sender !== user && (
-                    <div className="relative size-[40px] overflow-hidden rounded-full">
-                      <Image
-                        src={roomUser?.find((u) => u.name === msg.sender)?.profileImagePath || '/images/profile.svg'}
-                        alt="프로필"
-                        fill
-                        className="object-cover"
-                        sizes="40px"
-                      />
-                    </div>
-                  )}
-                  <div className={`flex max-w-[70%] flex-col ${msg.sender === user ? 'items-end' : 'items-start'}`}>
-                    {msg.sender !== user && <span className="mb-1 text-sm text-gray-300">{msg.sender}</span>}
-                    <div className={`flex items-end gap-2 ${msg.sender === user ? 'flex-row-reverse' : 'flex-row'}`}>
-                      <div className={`rounded-lg px-4 py-2 ${msg.sender === user ? 'bg-black text-white' : 'bg-gray-500'}`}>
-                        <div className="break-words">{msg.message}</div>
+              {page.data.chatMessageResponseList.map((msg, index) =>
+                msg.chatMessageType === 'ENTER' || msg.message.includes('님이 나가셨습니다.') || msg.message.includes('개설하였습니다.') ? (
+                  <div key={`history-${index}`} className="my-2 flex justify-center">
+                    <div className="rounded-full bg-gray-600 px-4 py-1 text-sm text-gray-300">{msg.sender + msg.message}</div>
+                  </div>
+                ) : (
+                  <div key={`history-${index}`} className={`mb-4 flex items-start gap-2 ${msg.sender === user ? 'flex-row-reverse' : 'flex-row'}`}>
+                    {msg.sender !== user && (
+                      <div className="relative size-[40px] overflow-hidden rounded-full">
+                        <Image
+                          src={roomUser?.find((u) => u.name === msg.sender)?.profileImagePath || '/images/profile.svg'}
+                          alt="프로필"
+                          fill
+                          className="object-cover"
+                          sizes="40px"
+                        />
                       </div>
-                      <span className="text-xs text-gray-500">{formatTime(msg.createdAt)}</span>
+                    )}
+                    <div className={`flex max-w-[70%] flex-col ${msg.sender === user ? 'items-end' : 'items-start'}`}>
+                      {msg.sender !== user && <span className="mb-1 text-sm text-gray-300">{msg.sender}</span>}
+                      <div className={`flex items-end gap-2 ${msg.sender === user ? 'flex-row-reverse' : 'flex-row'}`}>
+                        <div className={`rounded-lg px-4 py-2 ${msg.sender === user ? 'bg-black text-white' : 'bg-gray-500'}`}>
+                          <div className="break-words">{msg.message}</div>
+                        </div>
+                        <span className="text-xs text-gray-500">{formatTime(msg.createdAt)}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ),
+              )}
             </div>
           ))}
           <div ref={sentinelRef} className="h-4" />
@@ -246,4 +290,14 @@ export default function ChatPage() {
       </div>
     </div>
   );
+}
+
+export function getServerSideProps(context: GetServerSidePropsContext) {
+  const { roomId } = context.query;
+
+  return {
+    props: {
+      roomId,
+    },
+  };
 }

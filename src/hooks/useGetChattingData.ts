@@ -6,7 +6,11 @@ import { keepPreviousData, useInfiniteQuery, useQuery } from '@tanstack/react-qu
 export default function useGetChattingData(roomId: string) {
   const { data: roomData } = useQuery<RoomUserResponse>({
     queryKey: ['roomUsers', roomId],
-    queryFn: () => getRoomUserData(roomId),
+    queryFn: () => {
+      if (!roomId) throw new Error('채팅방 ID가 없습니다.');
+      return getRoomUserData(roomId);
+    },
+    enabled: !!roomId,
   });
 
   const {
@@ -19,6 +23,7 @@ export default function useGetChattingData(roomId: string) {
     getNextPageParam: (lastPage) => (lastPage.data.hasNext ? lastPage.data.nextCursor : undefined),
     initialPageParam: undefined,
     placeholderData: keepPreviousData,
+    enabled: !!roomId,
   });
 
   return { chatData, roomUser: roomData?.data.userInfoList, hasNextPage, fetchNextPage };

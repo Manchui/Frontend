@@ -33,10 +33,14 @@ function CardSectionContent() {
   return (
     <>
       <div className="px-5">
-        <ul className="grid grid-cols-2 gap-5 tablet:grid-cols-3 pc:grid-cols-4">{mainData?.map((data) => <CardItem key={data.gatheringId} data={data} />)}</ul>
+        <ul className="grid grid-cols-2 gap-5 tablet:grid-cols-3 pc:grid-cols-4">
+          {mainData
+            ?.filter((data, index, self) => index === self.findIndex((t) => t.gatheringId === data.gatheringId))
+            .map((data) => <CardItem key={`${data.gatheringId}-${data.createdAt}`} data={data} />)}
+        </ul>
         {mainData?.length === 0 && <NoData use="main" />}
       </div>
-      {hasNextPage && <div ref={sentinelRef} className="h-10 w-full flex-shrink-0 opacity-0" />}
+      <div ref={sentinelRef} className="h-10 w-full flex-shrink-0 opacity-0" />
     </>
   );
 }

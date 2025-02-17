@@ -1,4 +1,6 @@
+import { useCallback } from 'react';
 import { useRouter } from 'next/router';
+import { Toast } from '@/components/shared/Toast';
 import { userStore } from '@/store/userStore';
 import type { DetailData } from '@/types/detail';
 
@@ -14,11 +16,20 @@ export interface DetailPageBaseType {
 
 export function FloatingBar({ gatherings, id }: DetailPageBaseType) {
   const router = useRouter();
+  const isLoggedIn = userStore((state) => state.isLoggedIn);
 
   const myUserName = userStore((state) => state.user.name);
   const findUserId = gatherings.usersList.find((user) => user.name === myUserName);
   const isDisabled = gatherings.usersList.length === gatherings.maxUsers;
   const isClosed = gatherings.closed;
+
+  const handleCreateButtonClick = useCallback(() => {
+    if (isLoggedIn) {
+      void router.push(`/detail/${id}/chat?roomId=${gatherings.roomId}`);
+    } else {
+      Toast('error', '로그인이 필요합니다.');
+    }
+  }, [gatherings.roomId, id, isLoggedIn, router]);
 
   return (
     <footer className="fixed inset-x-0 bottom-0 flex min-h-[84px] items-center justify-between border-t border-blue-100 bg-white px-10 py-5">
@@ -32,11 +43,7 @@ export function FloatingBar({ gatherings, id }: DetailPageBaseType) {
         <div className="flex gap-2">
           <CancelButton gatherings={gatherings} id={id} />
           <ShareButton />
-          <button
-            type="button"
-            onClick={() => router.push(`/detail/${id}/chat?roomId=${gatherings.roomId}`)}
-            className="rounded-xl bg-blue-800 px-5 py-2 text-sm font-bold text-white"
-          >
+          <button type="button" onClick={handleCreateButtonClick} className="rounded-xl bg-blue-800 px-5 py-2 text-sm font-bold text-white">
             실시간 문의하기
           </button>
         </div>
@@ -45,11 +52,7 @@ export function FloatingBar({ gatherings, id }: DetailPageBaseType) {
       ) : (
         <div className="flex gap-2">
           <AttendanceButton gatherings={gatherings} id={id} />
-          <button
-            type="button"
-            onClick={() => router.push(`/detail/${id}/chat?roomId=${gatherings.roomId}`)}
-            className="rounded-xl bg-blue-800 px-5 py-2 text-sm font-bold text-white"
-          >
+          <button type="button" onClick={handleCreateButtonClick} className="rounded-xl bg-blue-800 px-5 py-2 text-sm font-bold text-white">
             실시간 문의하기
           </button>
         </div>

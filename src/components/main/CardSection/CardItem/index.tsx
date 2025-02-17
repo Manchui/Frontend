@@ -58,7 +58,7 @@ export default function CardItem({ data }: { data: GetGatheringResponse['data'][
           height={200}
           priority
           sizes="100vw"
-          className="h-auto w-full object-cover duration-300 group-hover:scale-110"
+          className="h-[170px] w-full object-cover duration-300 group-hover:scale-110"
         />
         <div className="absolute left-0 top-0 h-10 w-full bg-gradient-to-b from-black/50 to-transparent">
           <button type="button" className="absolute right-4 top-2" onClick={toggleHeart}>
