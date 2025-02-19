@@ -35,7 +35,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-toastify": "^10.0.6",
-    "sharp": "^0.33.5",
+    "sharp": "0.32",
     "tailwind-merge": "^2.5.4",
     "zustand": "^5.0.1"
   },
