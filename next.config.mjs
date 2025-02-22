@@ -1,6 +1,5 @@
 import CompressionPlugin from 'compression-webpack-plugin';
 import withBundleAnalyzer from '@next/bundle-analyzer';
-import withPlaiceholder from '@plaiceholder/next';
 
 const bundleAnalyzer = withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
@@ -38,4 +37,4 @@ const nextConfig = {
   },
 };
 
-export default bundleAnalyzer(withPlaiceholder(nextConfig));
+export default bundleAnalyzer(nextConfig);

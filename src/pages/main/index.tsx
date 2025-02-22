@@ -8,27 +8,18 @@ import RootLayout from '@/components/shared/RootLayout';
 import { SEO } from '@/components/shared/SEO';
 import useInternalRouter from '@/hooks/useInternalRouter';
 import { useResetFilters } from '@/store/useFilterStore';
-import getBase64 from '@/utils/getBase64';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 
 const Carousel = dynamic(() => import('@/components/main/Carousel'), { loading: () => <CarouselSkeleton />, ssr: false });
 const CardSection = dynamic(() => import('@/components/main/CardSection'), { loading: () => <CardSkeleton />, ssr: true });
 
 interface MainPageProps {
-  base64: {
-    design: string;
-    develop: string;
-    food: string;
-    server: string;
-    study: string;
-    web: string;
-  };
   seo: {
     title: string;
   };
 }
 
-export default function MainPage({ base64, seo }: MainPageProps) {
+export default function MainPage({ seo }: MainPageProps) {
   const router = useInternalRouter();
 
   const resetFilters = useResetFilters();
@@ -48,7 +39,7 @@ export default function MainPage({ base64, seo }: MainPageProps) {
   return (
     <>
       <SEO title={seo.title} />
-      <Carousel base64={base64} />
+      <Carousel />
       <RootLayout>
         <HeaderSection />
         <CardSection />
@@ -58,10 +49,6 @@ export default function MainPage({ base64, seo }: MainPageProps) {
 }
 
 export async function getServerSideProps() {
-  const base64Develop = await getBase64('/images/main/develop.webp');
-  const base64Study = await getBase64('/images/main/study.webp');
-  const base64Food = await getBase64('/images/main/food.webp');
-
   const queryClient = new QueryClient();
 
   await queryClient.prefetchInfiniteQuery({
@@ -73,11 +60,6 @@ export async function getServerSideProps() {
   return {
     props: {
       dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))),
-      base64: {
-        develop: base64Develop.base64,
-        study: base64Study.base64,
-        food: base64Food.base64,
-      },
       seo: {
         title: '만취 - 랜딩 페이지',
       },

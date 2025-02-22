@@ -7,20 +7,9 @@ const IntroduceSlide = dynamic(() => import('@/components/main/Carousel/Introduc
 const NoticeBoardSlide = dynamic(() => import('@/components/main/Carousel/NoticeBoardSlide'), { loading: () => <CarouselSkeleton />, ssr: true });
 const FAQSlide = dynamic(() => import('@/components/main/Carousel/FAQSlide'), { loading: () => <CarouselSkeleton />, ssr: true });
 
-interface CarouselProps {
-  base64: {
-    design: string;
-    develop: string;
-    food: string;
-    server: string;
-    study: string;
-    web: string;
-  };
-}
-
 const TOTAL_SLIDES = 4;
 
-function Carousel({ base64 }: CarouselProps) {
+function Carousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -46,12 +35,12 @@ function Carousel({ base64 }: CarouselProps) {
 
   const slides = useMemo(
     () => ({
-      0: <PopularCategorySlide base64={base64} />,
+      0: <PopularCategorySlide />,
       1: <IntroduceSlide />,
       2: <NoticeBoardSlide />,
       3: <FAQSlide />,
     }),
-    [base64],
+    [],
   );
 
   useEffect(() => {
