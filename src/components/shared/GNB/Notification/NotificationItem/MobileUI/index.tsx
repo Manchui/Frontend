@@ -70,7 +70,7 @@ export default function MobileUI({ data }: NotificationItemProps) {
         <span className="text-nowrap text-xs font-semibold text-lightred">{formatTimeAgo(String(data.createdAt))}</span>
       </div>
 
-      <div className="flex-center pl-100 absolute inset-y-0 right-0 -z-10 rounded-r-[5px] bg-gradient-to-l from-lightred via-red-200 to-transparent pr-20 text-white">
+      <div className="flex-center pl-100 absolute inset-y-0 right-0 -z-10 rounded-r-[5px] bg-gradient-to-l from-black via-black/50 to-transparent pr-20 text-white">
         삭제
       </div>
     </div>

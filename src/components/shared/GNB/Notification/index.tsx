@@ -98,9 +98,9 @@ export default function Notification() {
 
   return (
     <button type="button" className="relative">
-      <button type="button" onClick={handelDropClick} className="flex items-center justify-center">
+      <div onClick={handelDropClick} className="flex items-center justify-center">
         <Image src="/icons/notificationIcon.svg" alt="알림 버튼" width={28} height={28} />
-      </button>
+      </div>
       {dropOpen && (
         <>
           <div className="hidden tablet:block">

@@ -38,13 +38,15 @@ export default function ChatPage({ roomId }: { roomId: string }) {
 
   useEffect(() => {
     if (messageContainerRef.current) {
-      messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
+      const lastMessage = messages[0];
+      if (lastMessage && lastMessage.sender === user) messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, user]);
 
   useEffect(() => {
     if (messageContainerRef.current && chatData?.pages[0]) {
-      messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
+      // 초기 로딩시에만 스크롤을 아래로 이동
+      if (chatData.pages.length === 1) messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chatData?.pages[0]]);
@@ -85,9 +87,7 @@ export default function ChatPage({ roomId }: { roomId: string }) {
       stomp.subscribe(`/exchange/chat.exchange/room.${roomId}`, (frame) => {
         try {
           const parsedMessage = JSON.parse(frame.body);
-          console.log('parsedMessage', parsedMessage);
           setMessages((prevMessages) => [parsedMessage as Message, ...prevMessages]);
-          console.log('messages', messages);
         } catch (error) {
           console.error('구독오류가 발생했습니다:', error);
         }
@@ -98,9 +98,11 @@ export default function ChatPage({ roomId }: { roomId: string }) {
       if (stompClient && stompClient.connected) void stompClient.deactivate();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [roomId, accessToken, router, messages]);
+  }, [roomId, accessToken, router]);
 
   const sendMessage = () => {
+    if (!inputMessage.trim()) return;
+
     if (stompClient && stompClient.connected) {
       stompClient.publish({
         destination: `/pub/chat.room.${roomId}`,
@@ -140,15 +142,17 @@ export default function ChatPage({ roomId }: { roomId: string }) {
   };
 
   const formatArrayTime = (timeArray: number[]) => {
-    const [hour, minute] = timeArray;
-    let hours = hour;
-    const minutes = String(minute).padStart(2, '0');
+    const [year, month, day, hour, minute] = timeArray;
+    const date = new Date(year, month - 1, day, hour, minute);
+
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, '0');
     const ampm = hours >= 12 ? '오후' : '오전';
 
     hours %= 12;
     hours = hours === 0 ? 12 : hours;
 
-    return `${ampm} ${hours}:${minutes}`;
+    return `${ampm} ${String(hours)}:${minutes}`;
   };
 
   return (
@@ -204,8 +208,8 @@ export default function ChatPage({ roomId }: { roomId: string }) {
       </div>
 
       {/* 메시지 목록 */}
-      <div ref={messageContainerRef} className="scrollbar-hide flex-1 overflow-y-auto px-4 pt-4">
-        <div className="flex h-full flex-col-reverse">
+      <div ref={messageContainerRef} className="scrollbar-hide flex-1 overflow-y-auto overscroll-contain px-4 pt-4">
+        <div className="flex min-h-full flex-col-reverse">
           {messages.map((msg, index) =>
             msg.chatMessageType === 'ENTER' || msg.message.includes('님이 나가셨습니다.') || msg.message.includes('개설하였습니다.') ? (
               <div key={`new-${index}`} className="my-2 flex justify-center">
@@ -280,7 +284,11 @@ export default function ChatPage({ roomId }: { roomId: string }) {
           type="text"
           value={inputMessage}
           onChange={(e) => setInputMessage(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
+              sendMessage();
+            }
+          }}
           className="flex-1 rounded-2xl border bg-gray-600 p-2 pl-5 placeholder:text-gray-400 focus:border-background focus:outline-none"
           placeholder="채팅을 입력하세요..."
         />

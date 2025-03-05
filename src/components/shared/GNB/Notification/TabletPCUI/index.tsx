@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import * as m from 'framer-motion/m';
-import ArrowBtn from 'public/icons/ArrowBtn';
+import Image from 'next/image';
 import NotificationItem from '@/components/shared/GNB/Notification/NotificationItem';
 import type { NotificationContent } from '@manchui-api';
 
@@ -20,12 +20,12 @@ export const TabletPCUI = forwardRef<HTMLDivElement, TabletPCUIProps>(({ notific
     className="absolute right-0 z-50 mt-2 min-h-40 w-[370px] rounded-md bg-background p-5 shadow-2xl"
   >
     <div className="mb-5 flex items-center">
-      <button type="button" onClick={onDropClick}>
-        <ArrowBtn direction="left" color="#fb1c49" className="size-8" />
-      </button>
+      <div onClick={onDropClick}>
+        <Image src="/icons/arrow-right.svg" alt="알림창 끄기" width={32} height={32} className="rotate-180" />
+      </div>
       <div className="flex w-full items-center justify-between gap-4">
-        <h1 className="text-xl font-semibold text-lightred">알림</h1>
-        {!isLoading && <span className="rounded-md bg-lightred px-2 py-1 text-xs font-medium text-white">{`${notifications.length}개`}</span>}
+        <h1 className="text-xl font-semibold">알림</h1>
+        {!isLoading && <span className="rounded-md bg-black px-2 py-1 text-xs font-medium text-white">{`${notifications.length}개`}</span>}
       </div>
     </div>
 

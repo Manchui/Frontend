@@ -62,7 +62,7 @@ export default function Toggle({ userData }: ToggleProps) {
     <div className="relative flex items-center justify-center" ref={dropdownRef}>
       {/* 프로필 */}
       <button type="button" onClick={isModalOpen ? closeModal : openModal} className="relative z-10">
-        <div className="shadow-custom-md size-10 rounded-full bg-slate-50 focus:outline-none">
+        <div className="size-10 rounded-full bg-slate-50 shadow-custom-md focus:outline-none">
           <Image className="relative size-10 rounded-full object-cover" src={userData.image || '/icons/person-rounded.png'} alt="프로필" fill />
         </div>
       </button>
@@ -73,7 +73,7 @@ export default function Toggle({ userData }: ToggleProps) {
           <Link href="/mypage" onClick={() => setIsModalOpen(false)} className="rounded-lg p-1 transition-colors duration-100 hover:bg-gray-50">
             <div className="flex flex-row content-between items-center">
               <Image src="/icons/person.svg" className="size-6" alt="프로필" width={24} height={24} />
-              <p className="ml-1 text-base font-semibold text-blue-800">마이페이지</p>
+              <p className="ml-1 whitespace-nowrap text-base font-semibold text-blue-800">마이페이지</p>
             </div>
           </Link>
 

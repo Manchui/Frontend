@@ -1,6 +1,6 @@
 /* eslint-disable tailwindcss/no-custom-classname */
+import Image from 'next/image';
 import Link from 'next/link';
-import XIcon from 'public/icons/XIcon';
 import { deleteNotificationData } from '@/apis/deleteNotificationData';
 import type { NotificationItemProps } from '@/components/shared/GNB/Notification/NotificationItem';
 import { formatTimeAgo } from '@/utils/dateUtils';
@@ -37,14 +37,14 @@ export default function TabletPCUI({ data }: NotificationItemProps) {
     },
   });
 
-  const handleDelete = (e: React.MouseEvent<SVGSVGElement>) => {
+  const handleDelete = (e: React.MouseEvent<HTMLImageElement>) => {
     e.preventDefault();
     mutation.mutate({ notificationId: data.notificationId });
   };
 
   return (
     <Link href={`/detail/${data.gatheringId}`} className="relative flex min-h-[100px] w-full flex-col bg-white px-8 py-4 text-left hover:bg-gray-50">
-      <XIcon color="black" className="absolute right-2 top-2 hidden size-4 tablet:block" onClick={handleDelete} />
+      <Image src="/icons/x.svg" alt="알림창 끄기" width={20} height={20} onClick={handleDelete} className="absolute right-2 top-2 hidden size-4 tablet:block" />
       <p className="line-clamp-2 text-pretty text-[14px] font-medium leading-[24px]">{data.content}</p>
       <span className="mt-auto text-xs font-semibold text-lightred">{formatTimeAgo(String(data.createdAt))}</span>
     </Link>

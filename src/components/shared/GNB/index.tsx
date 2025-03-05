@@ -61,7 +61,7 @@ export default function GNB() {
         </div>
         <div className="hidden flex-grow tablet:flex tablet:justify-start">
           <div className="hidden items-center gap-3 text-[16px] font-semibold text-black tablet:flex">
-            <Link href="/main" className={clsx('relative flex h-10 w-16 items-center justify-center', 'group')}>
+            <Link href="/main" className={clsx('relative flex h-10 w-20 items-center justify-center', 'group')}>
               모임 찾기
               <span
                 className={clsx(
@@ -71,7 +71,7 @@ export default function GNB() {
                 )}
               />
             </Link>
-            <Link href="/review" className={clsx('relative flex h-10 w-16 items-center justify-center', 'group')}>
+            <Link href="/review" className={clsx('relative flex h-10 w-20 items-center justify-center', 'group')}>
               모든 리뷰
               <span
                 className={clsx(
@@ -81,7 +81,7 @@ export default function GNB() {
                 )}
               />
             </Link>
-            <Link href="/bookmark" className={clsx('relative flex h-10 w-16 items-center justify-center', 'group')}>
+            <Link href="/bookmark" className={clsx('relative flex h-10 w-20 items-center justify-center', 'group')}>
               찜한 모임
               <span
                 className={clsx(

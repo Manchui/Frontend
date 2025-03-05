@@ -3,7 +3,7 @@ import type { GetChatListResponse } from '@manchui-api';
 
 export async function getChatMessageData(roomId: string, lastMessageId: number | undefined) {
   try {
-    const queryParams = lastMessageId ? `?lastMessageId=${lastMessageId}&limit=20` : '?limit=20';
+    const queryParams = lastMessageId ? `?lastMessageId=${lastMessageId}&limit=10` : '?limit=20';
     const res = await instance.get<GetChatListResponse>(`/api/chat/list/${roomId}${queryParams}`);
 
     return res.data;
