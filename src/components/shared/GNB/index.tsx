@@ -105,7 +105,7 @@ export default function GNB() {
             </div>
           ) : (
             <div className="flex gap-4">
-              <Link href="/signup" className={clsx('group relative flex h-10 w-14 items-center justify-center text-base font-semibold')}>
+              <Link href="/signup" className={clsx('group relative flex h-10 w-14 items-center justify-center text-base font-semibold whitespace-nowrap')}>
                 회원가입
                 <span
                   className={clsx(
