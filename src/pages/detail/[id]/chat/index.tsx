@@ -87,6 +87,7 @@ export default function ChatPage({ roomId }: { roomId: string }) {
       stomp.subscribe(`/exchange/chat.exchange/room.${roomId}`, (frame) => {
         try {
           const parsedMessage = JSON.parse(frame.body);
+          console.log(parsedMessage);
           setMessages((prevMessages) => [parsedMessage as Message, ...prevMessages]);
         } catch (error) {
           console.error('구독오류가 발생했습니다:', error);
@@ -213,7 +214,7 @@ export default function ChatPage({ roomId }: { roomId: string }) {
           {messages.map((msg, index) =>
             msg.chatMessageType === 'ENTER' || msg.message.includes('님이 나가셨습니다.') || msg.message.includes('개설하였습니다.') ? (
               <div key={`new-${index}`} className="my-2 flex justify-center">
-                <div className="rounded-full bg-gray-600 px-4 py-1 text-sm text-gray-300">{msg.sender + msg.message}</div>
+                <div className="rounded-full bg-gray-600 px-4 py-1 text-sm text-gray-300">{msg.message}</div>
               </div>
             ) : (
               <div key={`new-${index}`} className={`mb-4 flex items-start gap-2 ${msg.sender === user ? 'flex-row-reverse' : 'flex-row'}`}>
@@ -245,7 +246,7 @@ export default function ChatPage({ roomId }: { roomId: string }) {
               {page.data.chatMessageResponseList.map((msg, index) =>
                 msg.chatMessageType === 'ENTER' || msg.message.includes('님이 나가셨습니다.') || msg.message.includes('개설하였습니다.') ? (
                   <div key={`history-${index}`} className="my-2 flex justify-center">
-                    <div className="rounded-full bg-gray-600 px-4 py-1 text-sm text-gray-300">{msg.sender + msg.message}</div>
+                    <div className="rounded-full bg-gray-600 px-4 py-1 text-sm text-gray-300">{msg.message}</div>
                   </div>
                 ) : (
                   <div key={`history-${index}`} className={`mb-4 flex items-start gap-2 ${msg.sender === user ? 'flex-row-reverse' : 'flex-row'}`}>
